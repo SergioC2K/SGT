@@ -1,0 +1,130 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+    <title>LLamadas</title>
+{% endblock %}
+{% block main %}
+    <div class="hk-pg-wrapper">
+        <!-- Breadcrumb -->
+        <nav class="hk-breadcrumb" aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-light bg-transparent">
+
+            </ol>
+        </nav>
+        <!-- /Breadcrumb -->
+
+        <!-- Container -->
+        <div class="container">
+
+            <!-- Title -->
+            <div class="hk-pg-header">
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="far fa-file-excel"></i></span>Archivo</h4>
+            </div>
+            <!-- /Title -->
+
+            <div class="row">
+                <div class="col-xl-12">
+                    <section class="hk-sec-wrapper">
+
+
+                        <div class="row">
+                            <div class="col-xl-12">
+
+                                <section class="hk-sec-wrapper">
+
+
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="table-wrap">
+
+                                                <table class="table  tablesaw table-hover  mb-0"
+                                                       data-tablesaw-mode="swipe" data-tablesaw-sortable
+                                                       data-tablesaw-sortable-switch data-tablesaw-minimap
+                                                       data-tablesaw-mode-switch>
+
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="row"><input type="checkbox" name="foo" value="bar1">
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="persist">
+                                                            Destinatario
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="persist">
+                                                            Direccion
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-sortable-default-col
+                                                            data-tablesaw-priority="3">Entrega
+                                                        </th>
+
+
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    {% for foo in object_list %}
+                                                        <tr>
+                                                            <th scope="row"><input type="checkbox" name="foo"
+                                                                                   value="bar1">
+                                                            </th>
+                                                            <td>{{ foo.nombre_destinatario }}</td>
+                                                            <td>{{ foo.direccion_des_mcia }}</td>
+                                                            <td>{{ foo.entrega }}</td>
+
+
+                                                        </tr>
+                                                        </tbody>
+                                                    {% endfor %}
+                                                </table>
+
+                                                {% if object_list %}
+                                                {% else %}
+                                                    <h1>NO HAY DATOS PARA MOSTRAR</h1>
+                                                {% endif %}
+
+                                                {% if error %}
+                                                    <h1>{{ error }}</h1>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </section>
+                                <button class="btn btn-success col-md-6" type="submit">Entregar</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!-- /Container -->
+
+        <!-- Footer -->
+        <div class="hk-footer-wrap container">
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <p>Creado por<a href="https://hencework.com/" class="text-dark" target="_blank">La Gerencia</a>
+                            © 2019</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <p class="d-inline-block">Follow us</p>
+                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                                class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>
+                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                                class="btn-icon-wrap"><i class="fa fa-twitter"></i></span></a>
+                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                                class="btn-icon-wrap"><i class="fa fa-google-plus"></i></span></a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- /Footer -->
+    </div>
+    </div>
+{% endblock %}

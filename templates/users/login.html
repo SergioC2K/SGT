@@ -1,0 +1,33 @@
+{% extends "base/baselogin.html" %}
+{% block head_content %}
+    <title>Iniciar Sesion</title>
+{% endblock %}
+{% load static %}
+{% block container %}
+    <form  action="{% url 'usuario:login' %}" method="POST">
+
+        {% csrf_token %}
+        <div class="login-logo">
+            <img src="{% static 'dist/img/LogoSGT.png' %}" alt="" srcset="">
+        </div>
+        <h3>
+            <i class="fas fa-users"></i> INGRESAR
+        </h3>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Nombre usuario" name="username" value=""/>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Contraseña" name="password" value=""/>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btnSubmit" value="Iniciar Sesion"/>
+        </div>
+        <div class="form-group">
+
+            <a href="#" class="btnForgetPwd" value="Login">Olvido su contraseña?</a>
+        </div>
+    </form>
+{% endblock %}
+
+

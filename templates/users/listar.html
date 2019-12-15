@@ -1,0 +1,172 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block main %}
+    {% block title %}
+        <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+        <title>Lista de usuarios</title>
+    {% endblock %}
+
+    <div class="hk-pg-wrapper">
+        <!-- Breadcrumb -->
+        <nav class="hk-breadcrumb" aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-light bg-transparent">
+
+            </ol>
+        </nav>
+        <!-- /Breadcrumb -->
+
+        <!-- Container -->
+        <div class="container">
+
+            <!-- Title -->
+            <div class="hk-pg-header">
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
+                        data-feather="user"></i></span></span>Usuarios</h4>
+            </div>
+            <!-- /Title -->
+
+            <div class="row">
+                <div class="col-xl-12">
+                    <section class="hk-sec-wrapper">
+                        <h5 class="hk-sec-title"><input class="form-control" type="search" placeholder="Buscador"
+                                                        aria-label="Search"></h5>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+
+                                <section class="hk-sec-wrapper">
+                                    <h5 class="hk-sec-title">Operadores</h5>
+
+                                    <div class="row">
+                                        <div class="col-sm">
+
+
+                                            <div class="table-wrap">
+
+                                                <table class="table  tablesaw table-hover  mb-0"
+                                                       data-tablesaw-mode="swipe" data-tablesaw-sortable
+                                                       data-tablesaw-sortable-switch data-tablesaw-minimap
+                                                       data-tablesaw-mode-switch>
+
+                                                    <thead>
+                                                    <tr>
+
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="persist">
+                                                            Estado
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="persist">
+                                                            Usuario
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-sortable-default-col
+                                                            data-tablesaw-priority="3">Cedula
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="2">
+                                                            Nombres
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="1"><abbr
+                                                                title="Rotten Tomato Rating">Apellido</abbr></th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="4">
+                                                            Telefono fijo
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="4">
+                                                            Celular Telemercadeo
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="4">
+                                                            Acciones
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if object_list %}
+                                                        {% for foo in object_list %}
+
+
+                                                            <tr>
+                                                                {% if foo.usuario.is_active %}
+                                                                    <td><span
+                                                                            class="badge badge-pill badge-success">Activo</span>
+                                                                    </td>
+                                                                {% else %}
+                                                                    <td><span class="badge badge-pill badge-danger">Inactivo</span>
+                                                                    </td>
+                                                                {% endif %}
+
+                                                                <td>{{ foo.usuario }}</td>
+                                                                <td>{{ foo.cedula }}</td>
+                                                                <td>{{ foo.usuario.first_name }}</td>
+                                                                <td>{{ foo.usuario.last_name }}</td>
+                                                                <td>{{ foo.telefono_fijo }}</td>
+                                                                <td>{{ foo.celular_telemercadeo }}</td>
+                                                                <td>
+                                                                    <a href="#" class="mr-25" data-toggle="tooltip"
+                                                                       data-original-title="Edit"> <i
+                                                                            class="icon-pencil"></i> </a>
+
+
+                                                                    <a href="{% url 'usuario:desactivar' foo.usuario.pk %}"
+                                                                       data-toggle="tooltip"
+                                                                       data-original-title="Close"> <i
+                                                                            class="icon-trash txt-danger"></i> </a>
+
+                                                                </td>
+
+                                                            </tr>
+
+                                                            </tbody>
+                                                        {% endfor %}
+                                                        </table>
+
+
+                                                    {% else %}
+                                                        <h1>NO HAY DATOS PARA MOSTRAR</h1>
+                                                    {% endif %}
+
+                                                {% if error %}
+                                                    <h1>{{ error }}</h1>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </section>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!-- /Container -->
+
+        <!-- Footer -->
+        <div class="hk-footer-wrap container">
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <p>Creado por<a href="https://hencework.com/" class="text-dark" target="_blank">La Gerencia</a>
+                            © 2019</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <p class="d-inline-block">Follow us</p>
+                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                                class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>
+                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                                class="btn-icon-wrap"><i class="fa fa-twitter"></i></span></a>
+                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                                class="btn-icon-wrap"><i class="fa fa-google-plus"></i></span></a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- /Footer -->
+    </div>
+    </div>
+
+{% endblock %}

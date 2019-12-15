@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+    <title>{{ perfil.usuario.first_name }}</title>
+{% endblock %}
+{% block main %}
+    <div class="hk-pg-wrapper">
+        <br>
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
+                    data-feather="user"></i></span></span>Modificar Contraseña</h4>
+        </div>
+        <div class="container">
+            <div class="container-fluid">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
