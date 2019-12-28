@@ -2,10 +2,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 # Vistas = Listar y crear
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, FormView
 
 # Exception
 from django.db.utils import IntegrityError
@@ -43,56 +43,21 @@ def perfil(request):
     return render(request, 'users/perfil.html')
 
 
-# @user_passes_test(lambda u:u.is_staff, login_url=reverse('perfil'))
-@login_required
-def registrar(request):
-    """Sign up view."""
-    if request.method == 'POST':
+class PerfilCreateView(FormView):
+    template_name = 'users/creacion_usuario.html'
+    form_class = PerfilForm
+    success_url = reverse_lazy('usuario:listar_usuario')
 
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
+class UserCreateView(FormView):
 
-        email = request.POST['email']
+    template_name = 'users/usuario_nuevo.html'
+    form_class = SignupForm
+    success_url = reverse_lazy('usuario:listar_usuario')
 
-        # este de dato tiene que ser 1 o 0
-        is_staff = request.POST['cargo']
-        username = request.POST['username']
-        telefono_fijo = request.POST['telefono_fijo']
-        celular = request.POST['celular']
-        celular_telemercadeo = request.POST['celular_telemercadeo']
-        cedula = request.POST['cedula']
-
-        passwd = request.POST['password']
-        passwd_confirmation = request.POST['cedula_confirmacion']
-
-        if passwd != passwd_confirmation:
-            return render(request, 'users/formulario.html', {'error': 'Password confirmation does not match'})
-
-        else:
-            user = User.objects.create_user(
-                username=username,
-                password=passwd,
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                is_staff=is_staff,
-            )
-
-            profile = Perfil(
-                usuario=user,
-                cedula=cedula,
-                telefono_fijo=telefono_fijo,
-                celular=celular,
-                celular_telemercadeo=celular_telemercadeo,
-            )
-
-            user.save()
-            profile.save()
-
-            return redirect('usuario:listar_usuario')
-
-    return render(request, 'users/formulario.html')
-
+    def form_valid(self, form):
+        """Guardar datos."""
+        form.save()
+        return super().form_valid(form)
 
 @login_required
 def actualizar_usuario(request):
@@ -138,7 +103,7 @@ def actualizar_usuario(request):
 
 
 @login_required
-def cambio_contraseña(request):
+def cambio_contrasena(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -150,7 +115,7 @@ def cambio_contraseña(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'users/nuevaContraseña', {
+    return render(request, 'users/nuevaContrasena.html', {
         'form': form
     })
 

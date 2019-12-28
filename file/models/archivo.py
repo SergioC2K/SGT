@@ -33,3 +33,4 @@ class LlamadasEntrantes(models.Model):
 
     hora_inicio = models.CharField(max_length=50)
     hora_final = models.CharField(max_length=50)
+    creado = models.DateTimeField(auto_now_add=True)

@@ -1,8 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from file.importexport import PersonResource
 from tablib import Dataset
-from .models import LlamadasEntrantes
+from file.models.archivo import LlamadasEntrantes
 import pandas as pd
 from django.views.generic import ListView, CreateView, UpdateView
 

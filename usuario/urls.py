@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from usuario import views
 
 urlpatterns = [
 
@@ -17,8 +17,13 @@ urlpatterns = [
     ),
 
     path(
-        route='signup/',
-        view=views.registrar,
+        route='nuevo/',
+        view=views.UserCreateView.as_view(),
+        name='nuevo'
+    ),
+    path(
+        route='registro/',
+        view=views.PerfilCreateView.as_view(),
         name='signup'
     ),
     path(
@@ -35,7 +40,7 @@ urlpatterns = [
 
     path(
         route='contraseña/',
-        view=views.cambio_contraseña,
+        view=views.cambio_contrasena,
         name='cambio'
     ),
 
