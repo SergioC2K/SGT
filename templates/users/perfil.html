@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>{{ perfil.usuario.first_name }}</title>
@@ -42,19 +43,9 @@
                         <br>
 
                         <div class="form-group">
-                            <label>Nombre</label>
-
 
                             <div class="col-md-6 form-group">
-                                <label>Nombre</label>
-                                <input class="form-control"
-                                       readonly onmousedown="return false"
-                                       name="nombre" id="nombre"
-                                       maxlength="15"
-                                       onkeypress="return soloLetras(event)"
-                                       placeholder="Nombres completos"
-                                       value="{{ perfil.usuario.first_name }}"
-                                       type="text"/>
+                                {{ form.usuario|as_crispy_field }}
                             </div>
                         </div>
 

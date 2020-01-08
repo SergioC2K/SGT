@@ -1,8 +1,8 @@
 from django.db import models
-
+from utils.models import BaseModel
 
 # Create your models here.
-class LlamadasEntrantes(models.Model):
+class LlamadasEntrantes(BaseModel, models.Model):
 
     nombre_solicitante = models.CharField(max_length=50)
     ident_fiscal = models.CharField(max_length=50)
@@ -33,4 +33,3 @@ class LlamadasEntrantes(models.Model):
 
     hora_inicio = models.CharField(max_length=50)
     hora_final = models.CharField(max_length=50)
-    creado = models.DateTimeField(auto_now_add=True)

@@ -23,7 +23,7 @@ urlpatterns = [
     ),
     path(
         route='registro/',
-        view=views.PerfilCreateView.as_view(),
+        view=views.UserCreateView.as_view(),
         name='signup'
     ),
     path(
@@ -34,7 +34,7 @@ urlpatterns = [
 
     path(
         route='perfil/',
-        view=views.actualizar_usuario,
+        view=views.PerfilCreateView.as_view(),
         name='perfil'
     ),
 
@@ -49,7 +49,4 @@ urlpatterns = [
         view=views.deshabilitar,
         name='desactivar'
     ),
-
-
-
 ]

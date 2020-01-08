@@ -27,20 +27,25 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
 
-    # apps localhost
+THIRD_PARTY_APPS = [
+    'crispy_forms',
+]
+LOCAL_APPS = [
     'file',
     'usuario',
 ]
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'SGT.middleware.ProfileCompleteMiddleware'
 ]
 
 ROOT_URLCONF = 'SGT.urls'
@@ -79,7 +85,7 @@ WSGI_APPLICATION = 'SGT.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sgt',
+        'NAME': 'sgt2',
         'USER': 'root',
         'PASSWORD': 'admin',
         'HOST': 'localhost',

@@ -34,7 +34,7 @@ def login_view(request):
             return redirect('usuario:perfil')
 
         else:
-            return render(request, 'users/login.html', {'error': 'Invalid username and password'})
+            return render(request, 'users/login.html', {'error': 'Usuario y/o contraseña invalido'})
 
     return render(request, 'users/login.html')
 
@@ -44,7 +44,7 @@ def perfil(request):
 
 
 class PerfilCreateView(FormView):
-    template_name = 'users/creacion_usuario.html'
+    template_name = 'users/perfil.html'
     form_class = PerfilForm
     success_url = reverse_lazy('usuario:listar_usuario')
 
@@ -58,49 +58,6 @@ class UserCreateView(FormView):
         """Guardar datos."""
         form.save()
         return super().form_valid(form)
-
-@login_required
-def actualizar_usuario(request):
-    perfil = request.user.perfil
-    esto = request.user
-
-    if request.method == 'POST':
-
-        form = PerfilForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            data = form.cleaned_data
-            perfil.usuario.first_name = data['nombre']
-            perfil.usuario.last_name = data['apellido']
-            perfil.cedula = data['cedula']
-            perfil.celular_telemercadeo = data['celular_telemercadeo']
-            perfil.celular = data['celular']
-            perfil.telefono_fijo = data['telefono_fijo']
-
-            perfil.save()
-            esto.save()
-            return redirect('usuario:login')
-        else:
-            return render(request=request,
-                          template_name='users/perfil.html',
-                          context={
-                              'perfil': perfil,
-                              'usuario': request.user,
-                              'form': form,
-                              'errors': 'La contraseña no coincide'
-                          }, )
-    else:
-        form = PerfilForm()
-    return render(
-        request=request,
-        template_name='users/perfil.html',
-        context={
-            'perfil': perfil,
-            'usuario': request.user,
-            'form': form
-        },
-    )
-
 
 @login_required
 def cambio_contrasena(request):
@@ -120,16 +77,14 @@ def cambio_contrasena(request):
     })
 
 
+
+
 @login_required
 def logout_view(request):
     """Logout a user."""
     logout(request)
     return redirect('usuario:login')
 
-
-"""class listar_usuario(ListView):
-    model = Perfil
-    template_name = 'users/listar.html'"""
 
 """@login_required
 def listar_usuario(request):
