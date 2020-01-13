@@ -98,6 +98,13 @@ def listar_usuario(request):
 class listar_usuario(ListView):
     model = Perfil
     template_name = 'users/listar.html'
+    queryset = Perfil.objects.filter(usuario__is_superuser=False)
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Perfil.objects.all()
+        else:
+            return Perfil.objects.filter(usuario__is_superuser=False)
+
 
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))

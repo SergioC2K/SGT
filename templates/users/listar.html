@@ -110,11 +110,19 @@
                                                                        data-original-title="Edit"> <i
                                                                             class="icon-pencil"></i> </a>
 
+                                                                    {% if foo.usuario == request.user %}
+                                                                        <a href=""
+                                                                           data-toggle="tooltip"
+                                                                           data-original-title="Close"> <i
+                                                                                class=""></i> </a>
 
-                                                                    <a href="{% url 'usuario:desactivar' foo.usuario.pk %}"
-                                                                       data-toggle="tooltip"
-                                                                       data-original-title="Close"> <i
-                                                                            class="icon-trash txt-danger"></i> </a>
+                                                                    {% else %}
+                                                                        <a href="{% url 'usuario:desactivar' foo.usuario.pk %}"
+                                                                           data-toggle="tooltip"
+                                                                           data-original-title="Close"> <i
+                                                                                class="icon-trash txt-danger"></i> </a>
+                                                                    {% endif %}
+
 
                                                                 </td>
 

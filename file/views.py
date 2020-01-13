@@ -1,12 +1,17 @@
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from tablib import Dataset
 from file.models.archivo import LlamadasEntrantes
 import pandas as pd
 from django.views.generic import ListView, CreateView, UpdateView
-
+from django.db.models import Q, Count
 
 # Create your views here.
+from usuario.models import Perfil
+
+
 @login_required
 def upload_excel(request):
     if request.method == 'POST':
@@ -52,6 +57,41 @@ def preview_excel(request):
     return render(request, 'archivo/fileimport.html')
 
 
-class listar_archivo(ListView):
+class ListarArchivoListView(ListView):
+    hoy = datetime.datetime.today()
+    dias_antes = hoy - datetime.timedelta(days=9)
+    horas_antes = hoy - datetime.timedelta(hours=12)
+
     model = LlamadasEntrantes
-    template_name = 'archivo/listar_archivo.html'
+    template_name = 'prueba.html'
+    queryset = LlamadasEntrantes.objects.filter(created__range=(horas_antes, hoy))
+    context_object_name = 'llamaditas'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        llamadas_hoy = self.queryset
+        duplicadas = llamadas_hoy.values('entrega')\
+                        .annotate(repetidas=Count('entrega'))\
+                        .order_by()\
+                        .filter(repetidas__gte=2)
+
+
+
+        data['doble_llamada'] = self.queryset.\
+            filter(entrega__in=[repe['entrega'] for repe in duplicadas])
+
+        # Llamadas seguimiento son las llamadas que han quedado pendiente o algun estado similar
+        data['llamadas_seguimiento'] = LlamadasEntrantes.objects. \
+            filter(
+            Q(created__range=(self.dias_antes, self.horas_antes)),
+            Q(entrega__in=self.queryset.values('entrega'))
+        )
+        return data
+
+
+def prueba(request):
+    hoy = datetime.datetime.today()
+    dias = hoy - datetime.timedelta(days=7)
+    mas_d = dias - datetime.timedelta(days=7)
+    llamadas = LlamadasEntrantes.objects.filter(created__range=(mas_d, dias))
+    return render(request=request, template_name='prueba.html', context={'llamadas': llamadas})
