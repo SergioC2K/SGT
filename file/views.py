@@ -57,7 +57,7 @@ def preview_excel(request):
     return render(request, 'archivo/fileimport.html')
 
 
-class ListarArchivoListView(ListView):
+class ListarArchivo(ListView):
     hoy = datetime.datetime.today()
     dias_antes = hoy - datetime.timedelta(days=9)
     horas_antes = hoy - datetime.timedelta(hours=12)
@@ -79,6 +79,8 @@ class ListarArchivoListView(ListView):
 
         data['doble_llamada'] = self.queryset.\
             filter(entrega__in=[repe['entrega'] for repe in duplicadas])
+
+        data['usuario'] = Perfil.objects.all()
 
         # Llamadas seguimiento son las llamadas que han quedado pendiente o algun estado similar
         data['llamadas_seguimiento'] = LlamadasEntrantes.objects. \
