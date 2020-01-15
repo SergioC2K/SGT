@@ -123,8 +123,10 @@
                                                                             {% csrf_token %}
 
                                                                             <input type="hidden" value="{{ foo.usuario.pk }}">
-                                                                            <input type="submit" class="icon-trash" value=""
-                                                                                   name="inhabilitar">
+
+                                                                            <button type="submit" class="icon-trash"></button>
+
+                                                                            <a href="" class="icon-trash"></a>
 
                                                                         </form>
                                                                     {% endif %}

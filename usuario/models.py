@@ -30,3 +30,17 @@ class Perfil(BaseModel, models.Model):
         """Return username"""
 
         return self.usuario.username
+
+class Conectado(BaseModel, models.Model):
+
+    ESTADOS = [
+        (True, 'Conectado'),
+        (False, 'No Conectado')
+    ]
+
+    estado = models.BooleanField(
+        choices=ESTADOS,
+        default=False
+    )
+
+    usuario = models.ForeignKey(Perfil, on_delete=models.PROTECT, null=True)

@@ -43,10 +43,14 @@ urlpatterns = [
         view=views.cambio_contrasena,
         name='cambio'
     ),
-
     path(
         route='deshabilitar/',
         view=views.deshabilitar,
         name='desactivar'
+    ),
+    path(
+        route='conexion/',
+        view=views.deshabilitar,
+        name='conectado'
     ),
 ]

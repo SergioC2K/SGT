@@ -87,11 +87,3 @@ class ListarArchivo(ListView):
             Q(entrega__in=self.queryset.values('entrega'))
         )
         return data
-
-
-def prueba(request):
-    hoy = datetime.datetime.today()
-    dias = hoy - datetime.timedelta(days=7)
-    mas_d = dias - datetime.timedelta(days=7)
-    llamadas = LlamadasEntrantes.objects.filter(created__range=(mas_d, dias))
-    return render(request=request, template_name='prueba.html', context={'llamadas': llamadas})

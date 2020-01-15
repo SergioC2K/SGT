@@ -7,13 +7,13 @@ from usuario import views
 
 
 urlpatterns = [
-
-
     path(
         '',
         views.login_view,
         name='inicio'
      ),
+    path('prueba', views.conectado_desconectado, name='prueba'),
+
     path('archivo/', include(('file.urls', 'file'), namespace='archivo')),
     path('usuario/', include(('usuario.urls', 'usuario'), namespace='usuario'))
 

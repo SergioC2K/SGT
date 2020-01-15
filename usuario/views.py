@@ -128,3 +128,8 @@ def deshabilitar(request):
 
     return redirect(url)
 
+def conectado_desconectado(request):
+
+
+    return render(request, 'prueba.html',)
+
