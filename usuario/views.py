@@ -66,10 +66,10 @@ def cambio_contrasena(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
+            messages.success(request, 'Tu contrasena ha sido cambiada!')
             return redirect('usuario:logout')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Por favor corrija el error a continuación.')
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'users/nuevaContrasena.html', {
@@ -111,15 +111,20 @@ class listar_usuario(ListView):
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
-def deshabilitar(request, id):
-    django = User.objects.get(pk=id)
+def deshabilitar(request):
 
-    if django.is_active:
-        django.is_active = False
-        django.save()
-    else:
-        django.is_active = True
-        django.save()
+    if request.method == 'POST':
+        pk = request.POST.get('')
+        django = User.objects.get(pk=request.user.pk)
 
-    return render(request, template_name='users/listar.html')
+        if django.is_active:
+            django.is_active = False
+            django.save()
+        else:
+            django.is_active = True
+            django.save()
+
+    url = reverse('usuario:listar_usuario')
+
+    return redirect(url)
 

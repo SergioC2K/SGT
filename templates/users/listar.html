@@ -117,10 +117,16 @@
                                                                                 class=""></i> </a>
 
                                                                     {% else %}
-                                                                        <a href="{% url 'usuario:desactivar' foo.usuario.pk %}"
-                                                                           data-toggle="tooltip"
-                                                                           data-original-title="Close"> <i
-                                                                                class="icon-trash txt-danger"></i> </a>
+
+                                                                        <form action="{% url 'usuario:desactivar' %}"
+                                                                              method="POST">
+                                                                            {% csrf_token %}
+
+                                                                            <input type="hidden" value="{{ foo.usuario.pk }}">
+                                                                            <input type="submit" class="icon-trash" value=""
+                                                                                   name="inhabilitar">
+
+                                                                        </form>
                                                                     {% endif %}
 
 

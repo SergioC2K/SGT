@@ -8,9 +8,7 @@ from django import forms
 from file.models.archivo import LlamadasEntrantes
 
 
-class CargaLlamadas(forms.Form):
-    leido = pd.read_excel(request.FILES['myfile'])
-    llamadas = []
-    for data in leido.T.to_dict().values():
-        llamadas.append(LlamadasEntrantes(**data))
+class AsignarLlamadas(forms.Form):
+
+    id_llamada = forms
     pass

@@ -3,16 +3,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from file import views
-
+from usuario import views
 
 
 urlpatterns = [
 
 
     path(
-        'prueba',
-        views.prueba,
-        name='prueba'
+        '',
+        views.login_view,
+        name='inicio'
      ),
     path('archivo/', include(('file.urls', 'file'), namespace='archivo')),
     path('usuario/', include(('usuario.urls', 'usuario'), namespace='usuario'))

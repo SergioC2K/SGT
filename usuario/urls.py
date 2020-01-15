@@ -45,7 +45,7 @@ urlpatterns = [
     ),
 
     path(
-        route='deshabilitar/<id>',
+        route='deshabilitar/',
         view=views.deshabilitar,
         name='desactivar'
     ),

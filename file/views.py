@@ -75,8 +75,6 @@ class ListarArchivo(ListView):
                         .order_by()\
                         .filter(repetidas__gte=2)
 
-
-
         data['doble_llamada'] = self.queryset.\
             filter(entrega__in=[repe['entrega'] for repe in duplicadas])
 
