@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from tablib import Dataset
-from file.models.archivo import LlamadasEntrantes
+from file.models import LlamadasEntrantes
 import pandas as pd
 from django.views.generic import ListView, CreateView, UpdateView
 from django.db.models import Q, Count
@@ -70,15 +70,15 @@ class ListarArchivo(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
         llamadas_hoy = self.queryset
-        duplicadas = llamadas_hoy.values('entrega')\
-                        .annotate(repetidas=Count('entrega'))\
-                        .order_by()\
-                        .filter(repetidas__gte=2)
+        duplicadas = llamadas_hoy.values('entrega') \
+            .annotate(repetidas=Count('entrega')) \
+            .order_by() \
+            .filter(repetidas__gte=2)
 
-        data['doble_llamada'] = self.queryset.\
+        data['doble_llamada'] = self.queryset. \
             filter(entrega__in=[repe['entrega'] for repe in duplicadas])
 
-        data['usuario'] = Perfil.objects.all()
+        data['usuario'] = Perfil.objects.filter(conexion__estado=True)
 
         # Llamadas seguimiento son las llamadas que han quedado pendiente o algun estado similar
         data['llamadas_seguimiento'] = LlamadasEntrantes.objects. \

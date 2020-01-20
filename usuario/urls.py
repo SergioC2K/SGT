@@ -39,7 +39,7 @@ urlpatterns = [
     ),
 
     path(
-        route='contraseña/',
+        route='contrasena/',
         view=views.cambio_contrasena,
         name='cambio'
     ),
@@ -49,8 +49,18 @@ urlpatterns = [
         name='desactivar'
     ),
     path(
-        route='conexion/',
+        route='eliminar/',
         view=views.deshabilitar,
-        name='conectado'
+        name='eliminar'
+    ),
+    path(
+        route='con/',
+        view=views.conectado,
+        name='conexion'
+    ),
+    path(
+        route='dis/',
+        view=views.desconectado,
+        name='desconexion'
     ),
 ]

@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Q
 
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -16,7 +17,7 @@ from django.contrib.auth.models import User
 # Forms
 
 from usuario.forms import SignupForm, PerfilForm
-from usuario.models import Perfil
+from usuario.models import Perfil, Conectado
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -48,8 +49,8 @@ class PerfilCreateView(FormView):
     form_class = PerfilForm
     success_url = reverse_lazy('usuario:listar_usuario')
 
-class UserCreateView(FormView):
 
+class UserCreateView(FormView):
     template_name = 'users/usuario_nuevo.html'
     form_class = SignupForm
     success_url = reverse_lazy('usuario:listar_usuario')
@@ -58,6 +59,7 @@ class UserCreateView(FormView):
         """Guardar datos."""
         form.save()
         return super().form_valid(form)
+
 
 @login_required
 def cambio_contrasena(request):
@@ -77,8 +79,6 @@ def cambio_contrasena(request):
     })
 
 
-
-
 @login_required
 def logout_view(request):
     """Logout a user."""
@@ -86,17 +86,7 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-"""@login_required
-def listar_usuario(request):
-    array = Perfil.objects.all()
-    if array:
-        contexto = {'lista': array}
-        return render(request, 'users/listar.html', contexto)
-    return render(request, 'users/listar.html', {'error': 'No hay datos'})"""
-
-
 class listar_usuario(ListView):
-
     model = Perfil
     template_name = 'users/listar.html'
     queryset = Perfil.objects.filter(usuario__is_superuser=False)
@@ -108,28 +98,35 @@ class listar_usuario(ListView):
             return Perfil.objects.filter(usuario__is_superuser=False)
 
 
-
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
 
     if request.method == 'POST':
-        pk = request.POST.get('')
-        django = User.objects.get(pk=request.user.pk)
-
-        if django.is_active:
-            django.is_active = False
-            django.save()
+        user = User.objects.get(pk=request.user.pk)
+        if user.is_active:
+            user.is_active = False
+            user.save()
         else:
-            django.is_active = True
-            django.save()
+            user.is_active = True
+            user.save()
 
     url = reverse('usuario:listar_usuario')
 
     return redirect(url)
 
-def conectado_desconectado(request):
+
+def conectado(request):
+    persona = Perfil.objects.get(pk=request.user.pk)
+    persona.conexion.estado = True
+    persona.conexion.save()
+    url = reverse('usuario:perfil')
+    return redirect(url)
 
 
-    return render(request, 'prueba.html',)
-
+def desconectado(request):
+    persona = Perfil.objects.get(pk=request.user.pk)
+    persona.conexion.estado = False
+    persona.conexion.save()
+    url = reverse('usuario:perfil')
+    return redirect(url)

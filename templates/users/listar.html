@@ -106,9 +106,8 @@
                                                                 <td>{{ foo.telefono_fijo }}</td>
                                                                 <td>{{ foo.celular_telemercadeo }}</td>
                                                                 <td>
-                                                                    <a href="#" class="mr-25" data-toggle="tooltip"
-                                                                       data-original-title="Edit"> <i
-                                                                            class="icon-pencil"></i> </a>
+                                                                
+                                                                    <button type="submit" class="icon-pencil"></button>
 
                                                                     {% if foo.usuario == request.user %}
                                                                         <a href=""
@@ -125,8 +124,6 @@
                                                                             <input type="hidden" value="{{ foo.usuario.pk }}">
 
                                                                             <button type="submit" class="icon-trash"></button>
-
-                                                                            <a href="" class="icon-trash"></a>
 
                                                                         </form>
                                                                     {% endif %}

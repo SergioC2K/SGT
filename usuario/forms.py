@@ -5,7 +5,7 @@ from django import forms
 
 #  Models
 from django.contrib.auth.models import User
-from usuario.models import Perfil
+from usuario.models import Perfil, Conectado
 
 
 
@@ -76,6 +76,8 @@ class SignupForm(forms.Form):
         user = User.objects.create_user(**data)  # Aqui estamos desplegando el objeto completo
         profile = Perfil(usuario=user)
         profile.save()
+        conexion = Conectado(usuario=profile)
+        conexion.save()
 
 
 class PerfilForm(forms.ModelForm):

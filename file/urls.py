@@ -14,8 +14,8 @@ urlpatterns = [
         name='import'
     ),
     path(
-        route='entregar',
+        route='entregar/',
         view=views.ListarArchivo.as_view(),
         name='listar_llamada'
-    )
+    ),
 ]

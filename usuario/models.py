@@ -3,6 +3,17 @@ from django.db import models
 from django.contrib.auth.models import User
 from utils.models import BaseModel
 
+class Conectado(BaseModel, models.Model):
+
+    ESTADOS = [
+        (True, 'Conectado'),
+        (False, 'No Conectado')
+    ]
+
+    estado = models.BooleanField(
+        choices=ESTADOS,
+        default=False
+    )
 
 class Perfil(BaseModel, models.Model):
     """Modelo de Perfil de Usuario"""
@@ -19,7 +30,7 @@ class Perfil(BaseModel, models.Model):
 
     # Numero de celular con el cual trabajara en el telemercadeo
     celular_telemercadeo = models.CharField(validators=[telefono_regex], max_length=15)
-
+    conexion = models.ForeignKey(Conectado, on_delete=models.PROTECT, null=True)
     foto = models.ImageField(
         upload_to='users/pictures',
         blank=True,
@@ -31,16 +42,3 @@ class Perfil(BaseModel, models.Model):
 
         return self.usuario.username
 
-class Conectado(BaseModel, models.Model):
-
-    ESTADOS = [
-        (True, 'Conectado'),
-        (False, 'No Conectado')
-    ]
-
-    estado = models.BooleanField(
-        choices=ESTADOS,
-        default=False
-    )
-
-    usuario = models.ForeignKey(Perfil, on_delete=models.PROTECT, null=True)
