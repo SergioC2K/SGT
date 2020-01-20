@@ -103,13 +103,13 @@ class listar_usuario(ListView):
 def deshabilitar(request):
 
     if request.method == 'POST':
-        user = User.objects.get(pk=request.user.pk)
-        if user.is_active:
-            user.is_active = False
-            user.save()
+        usuario = request.user
+        if usuario.is_active:
+            usuario.is_active = False
+            usuario.save()
         else:
-            user.is_active = True
-            user.save()
+            usuario.is_active = True
+            usuario.save()
 
     url = reverse('usuario:listar_usuario')
 
@@ -117,7 +117,7 @@ def deshabilitar(request):
 
 
 def conectado(request):
-    persona = Perfil.objects.get(pk=request.user.pk)
+    persona = request.user.perfil
     persona.conexion.estado = True
     persona.conexion.save()
     url = reverse('usuario:perfil')
@@ -125,7 +125,7 @@ def conectado(request):
 
 
 def desconectado(request):
-    persona = Perfil.objects.get(pk=request.user.pk)
+    persona = request.user.perfil
     persona.conexion.estado = False
     persona.conexion.save()
     url = reverse('usuario:perfil')
