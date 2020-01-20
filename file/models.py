@@ -51,6 +51,7 @@ class RegistroLlamada(BaseModel, models.Model):
     observaciones = models.TextField(null=True, blank=True)
     precio_llamada = models.FloatField()
     numero_contesta = models.CharField(max_length=20)
+    id_llamada = models.ForeignKey(LlamadasEntrantes, on_delete=models.PROTECT)
     id_usuario = models.ForeignKey(Perfil, on_delete=models.PROTECT)
     id_estado = models.ForeignKey('Estado', on_delete=models.PROTECT)
     id_grabacion = models.ForeignKey('Grabacion', on_delete=models.PROTECT)
