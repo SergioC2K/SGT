@@ -74,10 +74,11 @@ class SignupForm(forms.Form):
         data = self.cleaned_data
         data.pop('password_confirmation')
         user = User.objects.create_user(**data)  # Aqui estamos desplegando el objeto completo
-        profile = Perfil(usuario=user)
-        profile.save()
-        conexion = Conectado(usuario=profile)
+        conexion = Conectado()
         conexion.save()
+        profile = Perfil(usuario=user, conexion=conexion)
+        profile.save()
+
 
 
 class PerfilForm(forms.ModelForm):
