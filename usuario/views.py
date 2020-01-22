@@ -1,9 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
+from django.http import HttpResponse
 
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
+from django.core import serializers
 
 # Vistas = Listar y crear
 from django.views.generic import ListView, CreateView, UpdateView, FormView
@@ -130,3 +132,13 @@ def desconectado(request):
     persona.conexion.save()
     url = reverse('usuario:perfil')
     return redirect(url)
+
+class ListEstado(ListView):
+    template_name = 'prueba.html'
+    model = Perfil
+
+    def get(self, request, *args, **kwargs):
+        name = request.GET['name']
+        perfiles = Perfil.objects.get(usuario__first_name=name)
+        data = serializers.serialize('json', perfiles, fields=('first_name', 'is_superuser'))
+        return HttpResponse(data, content_type='application/json')

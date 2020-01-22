@@ -4,8 +4,28 @@ from utils.models import BaseModel
 from utils.models import BaseModel
 
 # Create your models here.
+class Grabacion(BaseModel, models.Model):
+    # Url de donde va quedar almacenada la grabacion
+    url = models.URLField()
+
+
+class Estado(BaseModel, models.Model):
+    nombre = models.CharField(max_length=30)
+
+
+class RegistroLlamada(BaseModel, models.Model):
+    nombre_contesta = models.CharField(max_length=45)
+    fecha_entrega = models.DateField()
+    observaciones = models.TextField(null=True, blank=True)
+    precio_llamada = models.FloatField()
+    numero_contesta = models.CharField(max_length=20)
+    id_usuario = models.ForeignKey(Perfil, on_delete=models.PROTECT)
+    id_estado = models.ForeignKey('Estado', on_delete=models.PROTECT)
+    id_grabacion = models.ForeignKey('Grabacion', on_delete=models.PROTECT)
+
 class LlamadasEntrantes(BaseModel, models.Model):
 
+    id_llamada_realizada = models.ForeignKey(RegistroLlamada, on_delete=models.PROTECT, null=True)
     nombre_solicitante = models.CharField(max_length=50)
     ident_fiscal = models.CharField(max_length=50)
 
@@ -35,23 +55,3 @@ class LlamadasEntrantes(BaseModel, models.Model):
 
     hora_inicio = models.CharField(max_length=50)
     hora_final = models.CharField(max_length=50)
-
-class Grabacion(BaseModel, models.Model):
-    # Url de donde va quedar almacenada la grabacion
-    url = models.URLField()
-
-
-class Estado(BaseModel, models.Model):
-    nombre = models.CharField(max_length=30)
-
-
-class RegistroLlamada(BaseModel, models.Model):
-    nombre_contesta = models.CharField(max_length=45)
-    fecha_entrega = models.DateField()
-    observaciones = models.TextField(null=True, blank=True)
-    precio_llamada = models.FloatField()
-    numero_contesta = models.CharField(max_length=20)
-    id_llamada = models.ForeignKey(LlamadasEntrantes, on_delete=models.PROTECT)
-    id_usuario = models.ForeignKey(Perfil, on_delete=models.PROTECT)
-    id_estado = models.ForeignKey('Estado', on_delete=models.PROTECT)
-    id_grabacion = models.ForeignKey('Grabacion', on_delete=models.PROTECT)

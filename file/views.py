@@ -58,14 +58,15 @@ def preview_excel(request):
 
 
 class ListarArchivo(ListView):
-    hoy = datetime.datetime.today()
+    hoy = datetime.date.today()
+    manana = hoy + datetime.timedelta(days=1)
     dias_antes = hoy - datetime.timedelta(days=9)
     horas_antes = hoy - datetime.timedelta(hours=12)
 
     model = LlamadasEntrantes
     template_name = 'prueba.html'
-    queryset = LlamadasEntrantes.objects.filter(created__range=(horas_antes, hoy))
-    context_object_name = 'llamaditas'
+    queryset = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana))
+    context_object_name = 'oelo'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
