@@ -134,11 +134,13 @@
                             <img src="{% static '/dist/img/avatar12.jpg' %}" alt="user"
                                  class="avatar-img rounded-circle">
                         </div>
-                        {% if request.user.perfil.conexion.estado %}
-                            <span class="badge badge-success badge-indicator"></span>
-                        {% else %}
-                            <span class="badge badge-danger badge-indicator"></span>
-                        {% endif %}
+                        <div>
+                            {% if request.user.perfil.conexion.estado %}
+                                <span class="badge badge-success badge-indicator"></span>
+                            {% else %}
+                                <span class="badge badge-danger badge-indicator"></span>
+                            {% endif %}
+                        </div>
 
                     </div>
                     <div class="media-body">
@@ -171,13 +173,28 @@
                         <a href="#" class="dropdown-toggle dropdown-item no-caret"><i
                                 class="dropdown-icon zmdi zmdi-minus-circle-outline text-danger"></i>No Conectado</a>
                     {% endif %}
-                    <div class="dropdown-menu open-left-side">
-                        <a class="dropdown-item" href="{% url 'usuario:conexion' %}"><i
-                                class="dropdown-icon zmdi zmdi-check text-success"></i><span>Conectado</span></a>
+                    {% if request.user.perfil.conexion.estado %}
                         <a class="dropdown-item" href="{% url 'usuario:desconexion' %}"><i
                                 class="dropdown-icon zmdi zmdi-minus-circle-outline text-danger"></i><span>No Conectado</span></a>
+                        </div>
+                    {% else %}
+                        <div id="content-div" class="dropdown-menu open-left-side">
+                        <a id="search-subjects" class="dropdown-item"><i
+                                class="dropdown-icon zmdi zmdi-check text-success"></i><span> Conectado </span></a>
+                    {% endif %}
+                    {% if request.user.perfil.conexion.estado %}
+                        <div id="content-div" class="dropdown-menu open-left-side">
+                            <a id="search-subjects" class="dropdown-item"><i
+                                    class="dropdown-icon zmdi zmdi-minus-circle-outline text-danger"></i><span>No Conectado</span></a>
+                        </div>
+
+                    {% else %}
+                        <div id="content-div" class="dropdown-menu open-left-side">
+                            <a id="search-subjects" class="dropdown-item"><i
+                                    class="dropdown-icon zmdi zmdi-check text-success"></i><span> Conectado </span></a>
+                        </div>
+                    {% endif %}
                     </div>
-                </div>
                 <div class="dropdown-divider"></div>
                 {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'usuario:logout' %}"><i
