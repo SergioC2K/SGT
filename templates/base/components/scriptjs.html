@@ -1,17 +1,42 @@
-    <script type="text/javascript">
-        $(document).ready(function () {
+<script type="text/javascript">
 
-            //verificar cuando se hace click en el elemento boton editar hallazgo que se carga por ajax
-            $('#content-div').on('click', '#search-subjects', function () {
-                //var name = $('#name-student').val();
+    $('#no-conectado').on('click', '#btn-conexion', function () {
+        //var name = $('#name-student').val();
 
-                $.get('{% url "usuario:conexion" %}', function (data) {
-                    console.log(1)
+        $.get('{% url "usuario:conexion" %}', function (data) {
+            console.log(1)
+            document.getElementById("punt").className = "badge badge-success badge-indicator";
+            document.getElementById("no-conectado").id = "conectado";
+            document.getElementById("conectado").innerHTML = "<a href=\"#\" class=\"dropdown-toggle dropdown-item no-caret\"><i\n" +
+                "            class=\"zmdi zmdi-check text-danger\"></i>No Conectado</a>\n" +
+                "    <div class=\"dropdown-menu open-left-side\">\n" +
+                "        <a id=\"btn-conexion\" class=\"dropdown-item\" href=\"#\"><i\n" +
+                "                class=\"dropdown-icon zmdi zmdi-check text-success\"></i><span>Conectado</span></a>\n" +
+                "        <input id=\"estado-a-cambiar\" type=\"hidden\" value=\"True\">\n" +
+                "    </div>";
+        });
+    });
 
-                });
 
-            });
+    $('#conectado').on('click', '#btn-conexion', function () {
+        //var name = $('#name-student').val();
+
+        $.get('{% url "usuario:desconexion" %}', function (data) {
+            console.log(1)
+            document.getElementById("punt").className = "badge badge-danger badge-indicator";
+            document.getElementById("conectado").id = "no-conectado";
+            document.getElementById("no-conectado").innerHTML = "<a href=\"#\" class=\"dropdown-toggle dropdown-item no-caret\"><i\n" +
+                "            class=\"zmdi zmdi-check text-success\"></i>Conectado</a>\n" +
+                "    <div class=\"dropdown-menu open-left-side\">\n" +
+                "        <a id=\"btn-conexion\" class=\"dropdown-item\" href=\"#\">\n" +
+                "            <i class=\"dropdown-icon zmdi zmdi-minus-circle-outline text-danger\"></i>\n" +
+                "            <span>No Conectado</span></a>\n" +
+                "        <input id=\"estado-a-cambiar\" type=\"hidden\" value=\"False\">\n" +
+                "    </div>";
 
 
         });
-    </script>
+    });
+
+
+</script>
