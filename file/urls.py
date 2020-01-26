@@ -18,4 +18,11 @@ urlpatterns = [
         view=views.ListarArchivo.as_view(),
         name='listar_llamada'
     ),
+    path(
+        route='realizar/',
+        view=views.registro_llamada,
+        name='registrar_llamada'
+    ),
+
+
 ]

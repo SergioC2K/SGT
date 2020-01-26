@@ -88,3 +88,7 @@ class ListarArchivo(ListView):
             Q(entrega__in=self.queryset.values('entrega'))
         )
         return data
+
+
+def registro_llamada(request):
+    return render(request, 'llamada/registro_llamada.html')
