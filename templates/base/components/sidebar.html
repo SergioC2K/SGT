@@ -23,11 +23,9 @@
                     <ul id="pages_drp" class="nav flex-column collapse collapse-level-1">
                         <li class="nav-item">
                             <ul class="nav flex-column">
+
                                 <li class="nav-item">
-                                    <a class="nav-link" href="profile.html">Ver llamadas</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="invoice.html">Realizar llamadas</a>
+                                    <a class="nav-link" href="{% url 'file:registrar_llamada' %}">Realizar llamadas</a>
                                 </li>
 
                             </ul>
@@ -57,9 +55,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'file:listar_llamada' %}">Entregar llamadas</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="arc.html">Recibir llamadas</a>
-                                </li>
+
                             </ul>
                         </li>
                     </ul>
