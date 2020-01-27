@@ -5,9 +5,12 @@ from django import forms
 
 #  Models
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+
 from usuario.models import Perfil, Conectado
 
-
+class LoginViewUsuario(LoginView):
+    pass
 
 class SignupForm(forms.Form):
     """Formulario de Registro de Usuario"""

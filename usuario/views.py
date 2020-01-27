@@ -1,25 +1,17 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+
 from django.http import HttpResponse
 
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.core import serializers
 
-# Vistas = Listar y crear
-from django.views.generic import ListView, CreateView, UpdateView, FormView
-
-# Exception
-from django.db.utils import IntegrityError
-
-# Models
-from django.contrib.auth.models import User
-
-# Forms
+from django.views.generic import ListView, FormView
 
 from usuario.forms import SignupForm, PerfilForm
-from usuario.models import Perfil, Conectado
+from usuario.models import Perfil
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -103,7 +95,6 @@ class listar_usuario(ListView):
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
-
     if request.method == 'POST':
         usuario = request.user
         if usuario.is_active:
@@ -132,6 +123,7 @@ def desconectado(request):
     persona.conexion.save()
     url = reverse('usuario:perfil')
     return redirect(url)
+
 
 class ListEstado(ListView):
     template_name = 'prueba.html'

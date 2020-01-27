@@ -64,7 +64,7 @@ class ListarArchivo(ListView):
     horas_antes = hoy - datetime.timedelta(hours=12)
 
     model = LlamadasEntrantes
-    template_name = 'prueba.html'
+    template_name = 'archivo/listar_archivo.html'
     queryset = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana))
     context_object_name = 'oelo'
 
@@ -79,7 +79,7 @@ class ListarArchivo(ListView):
         data['doble_llamada'] = self.queryset. \
             filter(entrega__in=[repe['entrega'] for repe in duplicadas])
 
-        data['usuario'] = Perfil.objects.filter(conexion__estado=True)
+        data['usuario_conectado'] = Perfil.objects.filter(conexion__estado=True)
 
         # Llamadas seguimiento son las llamadas que han quedado pendiente o algun estado similar
         data['llamadas_seguimiento'] = LlamadasEntrantes.objects. \
