@@ -17,6 +17,15 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 
 
+class LoginViewUsuario(LoginView):
+
+    template_name = 'users/login.html'
+
+    def get_success_url(self):
+        url = self.get_redirect_url()
+        return url or reverse('usuario:perfil')
+
+
 def login_view(request):
     """Login view."""
     if request.method == 'POST':

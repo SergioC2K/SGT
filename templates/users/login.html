@@ -4,7 +4,12 @@
 {% endblock %}
 {% load static %}
 {% block container %}
-    <form  action="{% url 'usuario:login' %}" method="POST">
+
+       <p> {{ form.non_field_errors }}</p>
+
+
+
+    <form action="{% url 'usuario:login' %}" method="POST">
 
         {% csrf_token %}
         <div class="login-logo">
