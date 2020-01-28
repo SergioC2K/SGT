@@ -30,24 +30,6 @@ class LoginViewUsuario(LoginView):
             return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
-
-def login_view(request):
-    """Login view."""
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
-
-            return redirect('usuario:perfil')
-
-        else:
-            return render(request, 'users/login.html', {'error': 'Usuario y/o contraseña invalido'})
-
-    return render(request, 'users/login.html')
-
-
 def perfil(request):
     return render(request, 'users/perfil.html')
 
