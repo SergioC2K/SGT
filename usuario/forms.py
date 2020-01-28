@@ -15,28 +15,8 @@ class SignupForm(forms.Form):
         (True, 'Coordinador'),
         (False, 'Operador'),
     )
-    username = forms.CharField(label='Usuario', min_length=4, max_length=50)
 
-    password = forms.CharField(
-        label='Contraseña',
-        max_length=70,
-        widget=forms.PasswordInput()
-    )
-    password_confirmation = forms.CharField(
-        label='Confirmacion de Contraseña',
-        max_length=70,
-        widget=forms.PasswordInput()
-    )
 
-    first_name = forms.CharField(label='Nombres',min_length=2, max_length=50)
-    last_name = forms.CharField(label='Apellidos',min_length=2, max_length=50)
-
-    email = forms.CharField(
-        label='Correo Electronico',
-        min_length=6,
-        max_length=70,
-        widget=forms.EmailInput()
-    )
     is_staff = forms.ChoiceField(label='Cargo',choices=CARGOS, widget=forms.RadioSelect)
 
     def clean_email(self):

@@ -100,6 +100,7 @@ class listar_usuario(ListView):
             return Perfil.objects.filter(usuario__is_superuser=False)
 
 
+
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
