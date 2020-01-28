@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -24,6 +24,11 @@ class LoginViewUsuario(LoginView):
     def get_success_url(self):
         url = self.get_redirect_url()
         return url or reverse('usuario:perfil')
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
+        return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
 
 def login_view(request):
