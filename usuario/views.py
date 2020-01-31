@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -93,13 +94,14 @@ class listar_usuario(ListView):
 @login_required
 def deshabilitar(request):
     if request.method == 'POST':
-        usuario = request.user
-        if usuario.is_active:
-            usuario.is_active = False
-            usuario.save()
+        usuario_pk = request.POST['user']
+        user = User.objects.get(pk=usuario_pk)
+        if user.is_active:
+            user.is_active = False
+            user.save()
         else:
-            usuario.is_active = True
-            usuario.save()
+            user.is_active = True
+            user.save()
 
     url = reverse('usuario:listar_usuario')
 
