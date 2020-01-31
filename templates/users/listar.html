@@ -121,7 +121,7 @@
                                                                               method="POST">
                                                                             {% csrf_token %}
 
-                                                                            <input type="hidden" value="{{ foo.usuario.pk }}">
+                                                                            <input id="user" name="user" type="hidden" value="{{ foo.usuario.pk }}">
 
                                                                             <button type="submit" class="icon-trash"></button>
 
