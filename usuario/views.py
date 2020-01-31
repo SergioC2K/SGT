@@ -1,46 +1,34 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.db.models import Q
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+
+from django.http import HttpResponse, HttpResponseRedirect
 
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.core import serializers
 
-# Vistas = Listar y crear
-from django.views.generic import ListView, CreateView, UpdateView, FormView
-
-# Exception
-from django.db.utils import IntegrityError
-
-# Models
-from django.contrib.auth.models import User
-
-# Forms
+from django.views.generic import ListView, FormView
 
 from usuario.forms import SignupForm, PerfilForm
-from usuario.models import Perfil, Conectado
+from usuario.models import Perfil
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 
 
-def login_view(request):
-    """Login view."""
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
+class LoginViewUsuario(LoginView):
 
-            return redirect('usuario:perfil')
+    template_name = 'users/login.html'
 
-        else:
-            return render(request, 'users/login.html', {'error': 'Usuario y/o contraseña invalido'})
+    def get_success_url(self):
+        url = self.get_redirect_url()
+        return url or reverse('usuario:perfil')
 
-    return render(request, 'users/login.html')
-
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
+        return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
 def perfil(request):
     return render(request, 'users/perfil.html')
@@ -104,7 +92,6 @@ class listar_usuario(ListView):
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
-
     if request.method == 'POST':
         usuario = request.user
         if usuario.is_active:
@@ -133,6 +120,7 @@ def desconectado(request):
     persona.conexion.save()
     url = reverse('usuario:perfil')
     return redirect(url)
+
 
 class ListEstado(ListView):
     template_name = 'prueba.html'

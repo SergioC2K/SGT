@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-{% block title %}
-     <title>Unamed</title>
-{% endblock %}
+    {% block title %}
+        <title>Unamed</title>
+    {% endblock %}
     {% block head_content %}
         <meta charset="UTF-8">
         <meta name="viewport"
@@ -21,8 +21,8 @@
         <link href="{% static 'vendors/jquery-toggles/css/toggles.css' %}" rel="stylesheet" type="text/css">
         <link href="{% static 'vendors/jquery-toggles/css/themes/toggles-light.css' %}" rel="stylesheet"
               type="text/css">
-         <!-- Tablesaw table CSS -->
-        <link href="{% static 'vendors/tablesaw/dist/tablesaw.css'%}" rel="stylesheet" type="text/css"/>
+        <!-- Tablesaw table CSS -->
+        <link href="{% static 'vendors/tablesaw/dist/tablesaw.css' %}" rel="stylesheet" type="text/css"/>
 
         <!-- Toastr CSS -->
         <link href="{% static 'vendors/jquery-toast-plugin/dist/jquery.toast.min.css' %}" rel="stylesheet"
@@ -31,7 +31,8 @@
         <link rel="stylesheet" href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}">
         <!-- Custom CSS -->
         <link href="{% static 'dist/css/style.css' %}" rel="stylesheet" type="text/css">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="{% static 'dist/css/css-jf.css' %}">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
     {% endblock %}
 </head>
 <body>
@@ -56,7 +57,7 @@
 
 </body>
 {% block scripts %}
-
+    <script src="{% static 'dist/js/script-jf.js' %}"></script>
     {% include 'base/components/scripts.html' %}
     {% include 'base/components/scriptjs.html' %}
 {% endblock %}

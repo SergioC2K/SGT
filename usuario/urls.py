@@ -1,15 +1,23 @@
-from django.urls import path
+from django.urls import path, include
 
 from usuario import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 
     path(
-        '',
-        views.login_view,
+        route='login/',
+        view=views.LoginViewUsuario.as_view(),
         name='login'
-     ),
-
+    ),
+    path(
+        route='cambio-contrasena/',
+        view=auth_views.
+            PasswordChangeView.as_view(
+            template_name='users/nuevaContrasena.html'
+        ),
+        name='cambio'
+    ),
     path(
         route='logout/',
         view=views.logout_view,
@@ -31,17 +39,10 @@ urlpatterns = [
         view=views.listar_usuario.as_view(),
         name='listar_usuario'
     ),
-
     path(
         route='perfil/',
         view=views.PerfilCreateView.as_view(),
         name='perfil'
-    ),
-
-    path(
-        route='contrasena/',
-        view=views.cambio_contrasena,
-        name='cambio'
     ),
     path(
         route='deshabilitar/',
