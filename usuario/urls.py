@@ -28,7 +28,7 @@ urlpatterns = [
     ),
     path(
         route='listar/',
-        view=views.listar_usuario.as_view(),
+        view=views.ListarUsuario.as_view(),
         name='listar_usuario'
     ),
 

@@ -177,7 +177,8 @@
         <!-- /Container -->
 
         <!-- Modal and Form-->
-        <div  style="box-shadow: inset 0 0 20px #36876a" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+        <div style="box-shadow: inset 0 0 20px #36876a" class="modal fade bd-example-modal-lg" tabindex="-1"
+             role="dialog"
              aria-labelledby="myLargeModalLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -193,14 +194,15 @@
 
                         <div class="container">
 
-                            <form class="needs-validation" novalidate
+                            <form class="needs-validation" 
+                                  action="{% url 'usuario:listar_usuario' %}"
+                                  novalidate
                                   autocomplete="off" method="POST">
+                                {% csrf_token %}
                                 <div class="form-row">
                                     <div class="col-md-4 mb-3">
                                         <label for="validationTooltip01">Nombres</label>
-                                        <input type="text" class="form-control"
-                                               id="validationTooltip01"
-                                               placeholder="Nombres" required>
+                                        {{ form.first_name }}
                                         <div class="valid-tooltip">
                                             Bien hecho!
                                         </div>
@@ -210,9 +212,8 @@
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="validationTooltip02">Apellidos</label>
-                                        <input type="text" class="form-control"
-                                               id="validationTooltip02"
-                                               placeholder="Apellidos" required>
+                                        {# INPUT #}
+                                        {{ form.last_name }}
                                         <div class="valid-tooltip">
                                             Bien hecho!
                                         </div>
@@ -227,11 +228,8 @@
                                                 <span class="input-group-text"
                                                       id="validationTooltipUsernamePrepend">@</span>
                                             </div>
-                                            <input type="text" class="form-control"
-                                                   id="validationTooltipUsername"
-                                                   placeholder="Email"
-                                                   aria-describedby="validationTooltipUsernamePrepend"
-                                                   required>
+                                            {# INPUT #}
+                                            {{ form.email }}
                                             <div class="invalid-tooltip">
                                                 Email invalido
                                             </div>
@@ -242,20 +240,16 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="validationTooltip03">Nombre de
                                             usuario</label>
-                                        <input type="text" class="form-control"
-                                               id="validationTooltip03"
-                                               placeholder="Nombre de usuario"
-                                               required>
+                                        {# INPUT #}
+                                        {{ form.username }}
                                         <div class="invalid-tooltip">
                                             Elija un nombre de usuario único y válido.
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-3">
                                         <label for="validationTooltip04">Contraseña</label>
-                                        <input type="password" class="form-control"
-                                               id="validationTooltip04"
-                                               placeholder="Contraseña"
-                                               required>
+                                        {# INPUT #}
+                                        {{ form.password }}
                                         <div class="invalid-tooltip">
                                             Contraseña minima de 8 caracteres
                                         </div>
@@ -263,14 +257,15 @@
                                     <div class="col-md-3 mb-3">
                                         <label for="validationTooltip05">Confirmar
                                             contraseña</label>
-                                        <input type="password" class="form-control"
-                                               id="validationTooltip05"
-                                               placeholder="Confirmacion"
-                                               required>
+                                        {{ form.password_confirmation }}
                                         <div class="invalid-tooltip">
                                             Las contraseñas no coinciden
                                         </div>
                                     </div>
+                                    <div class="col-md-3 mb-3">
+                                        {{ form.is_staff }}
+                                    </div>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-primary" type="submit">Enviar
@@ -288,7 +283,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Footer -->
         <div class="hk-footer-wrap container">
             <footer class="footer">

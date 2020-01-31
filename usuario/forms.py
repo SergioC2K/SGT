@@ -15,9 +15,79 @@ class SignupForm(forms.Form):
         (True, 'Coordinador'),
         (False, 'Operador'),
     )
+    username = forms.CharField(
+        label='Usuario',
+        min_length=4,
+        max_length=50,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'validationTooltip03',
+            'placeholder': 'Nombre de Usuario',
+            'required': True
+        }
+        )
+    )
 
+    password = forms.CharField(
+        label='Contraseña',
+        max_length=70,
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'id': 'validationTooltip04',
+            'placeholder': 'Contraseña',
+            'required': True
+        }
+        )
+    )
 
-    is_staff = forms.ChoiceField(label='Cargo',choices=CARGOS, widget=forms.RadioSelect)
+    password_confirmation = forms.CharField(
+        label='Confirmacion de Contraseña',
+        max_length=70,
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'id': 'validationTooltip05',
+            'placeholder': 'Confirmacion',
+            'required': True
+        }
+        )
+    )
+
+    first_name = forms.CharField(
+        min_length=2,
+        max_length=50,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'validationTooltip01',
+            'placeholder': 'Nombres',
+            'required': True
+        }
+        )
+    )
+    last_name = forms.CharField(
+        min_length=2,
+        max_length=50,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'validationTooltip02',
+            'placeholder': 'Apellidos',
+            'required': True
+        }
+        )
+    )
+
+    email = forms.CharField(
+        label='Correo Electronico',
+        min_length=6,
+        max_length=70,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'id': 'validationTooltipUsername',
+            'placeholder': 'Email',
+            'required': True,
+            'aria - describedby': 'validationTooltipUsernamePrepend'
+        })
+    )
+    is_staff = forms.ChoiceField(label='Cargo', choices=CARGOS, widget=forms.RadioSelect)
 
     def clean_email(self):
         """Username sea unico"""

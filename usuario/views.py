@@ -17,6 +17,7 @@ from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
 
 # Forms
+from django.views.generic.edit import FormMixin
 
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil, Conectado
@@ -88,10 +89,12 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-class listar_usuario(ListView):
+class ListarUsuario(ListView, FormView):
     model = Perfil
+    form_class = SignupForm
     template_name = 'users/listar.html'
     queryset = Perfil.objects.filter(usuario__is_superuser=False)
+    success_url = reverse_lazy('usuario:listar_usuario')
 
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -99,12 +102,14 @@ class listar_usuario(ListView):
         else:
             return Perfil.objects.filter(usuario__is_superuser=False)
 
-
+    def form_valid(self, form):
+        """Guardar datos."""
+        form.save()
+        return super().form_valid(form)
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
-
     if request.method == 'POST':
         usuario = request.user
         if usuario.is_active:
@@ -133,6 +138,7 @@ def desconectado(request):
     persona.conexion.save()
     url = reverse('usuario:perfil')
     return redirect(url)
+
 
 class ListEstado(ListView):
     template_name = 'prueba.html'
