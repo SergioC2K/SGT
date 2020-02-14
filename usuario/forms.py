@@ -136,10 +136,11 @@ class PerfilForm(forms.ModelForm):
 
     class Meta:
         model = Perfil
-        fields = '__all__'
+        exclude = ['usuario','conexion']
 
     def clean(self):
         """Verificar cedula unica"""
+        data = super().clean()
         cedula = self.cleaned_data['cedula']
         cedula_query = Perfil.objects.filter(cedula=cedula).exists()
         if cedula_query:

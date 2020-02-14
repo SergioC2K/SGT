@@ -130,17 +130,14 @@
                                                                         <form action="{% url 'usuario:desactivar' %}"
                                                                               method="POST">
                                                                             {% csrf_token %}
+                                                                            <input id="user" name="user" type="hidden"
+                                                                                   value="{{ foo.usuario.pk }}">
 
                                                                             <input type="hidden"
                                                                                    value="{{ foo.usuario.pk }}">
 
                                                                             <div class="custom-control custom-switch">
-                                                                                <input type="checkbox"
-                                                                                       class="custom-control-input"
-                                                                                       disabled id="customSwitch2">
-                                                                                <label class="custom-control-label"
-                                                                                       for="customSwitch2">Disabled
-                                                                                    switch element</label>
+                                                                                <input type="submit">
                                                                             </div>
 
                                                                         </form>
@@ -194,7 +191,7 @@
 
                         <div class="container">
 
-                            <form class="needs-validation" 
+                            <form class="needs-validation"
                                   action="{% url 'usuario:listar_usuario' %}"
                                   novalidate
                                   autocomplete="off" method="POST">
@@ -273,7 +270,7 @@
                                     <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Cancelar
                                     </button>
-                                    <button onclick="myFunction()">Try it</button>
+
                                 </div>
 
                             </form>
@@ -304,7 +301,6 @@
             </footer>
         </div>
         <!-- /Footer -->
-    </div>
     </div>
 
     <script>

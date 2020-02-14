@@ -1,11 +1,15 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.db.models import Q
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+
+from django.http import HttpResponse, HttpResponseRedirect
 
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.core import serializers
+
+from django.views.generic import ListView, FormView
 
 # Vistas = Listar y crear
 from django.views.generic import ListView, CreateView, UpdateView, FormView
@@ -20,38 +24,48 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import FormMixin
 
 from usuario.forms import SignupForm, PerfilForm
-from usuario.models import Perfil, Conectado
+from usuario.models import Perfil
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 
 
-def login_view(request):
-    """Login view."""
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
+class LoginViewUsuario(LoginView):
 
-            return redirect('usuario:perfil')
+    template_name = 'users/login.html'
 
-        else:
-            return render(request, 'users/login.html', {'error': 'Usuario y/o contraseña invalido'})
+    def get_success_url(self):
+        url = self.get_redirect_url()
+        return url or reverse('usuario:listar_usuario')
 
-    return render(request, 'users/login.html')
-
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse_lazy('usuario:listar_usuario'))
+        return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
 def perfil(request):
     return render(request, 'users/perfil.html')
 
 
-class PerfilCreateView(FormView):
-    template_name = 'users/perfil.html'
-    form_class = PerfilForm
-    success_url = reverse_lazy('usuario:listar_usuario')
+#class PerfilCreateView(FormView):
+#    template_name = 'users/perfil.html'
+#    form_class = PerfilForm
+#    success_url = reverse_lazy('usuario:listar_usuario')
 
+class UpdateProfileView(UpdateView):
+    """Update profile view."""
+    template_name = 'users/perfil.html'
+    model = Perfil
+    form_class = PerfilForm
+
+    def get_object(self, **kwargs):
+        """Return user's profile."""
+        return self.request.user.perfil
+
+    def get_success_url(self):
+        """Return to user's profile."""
+        username = self.object.usuario.username
+        return reverse('usuario:listar_usuario')
 
 class UserCreateView(FormView):
     template_name = 'users/usuario_nuevo.html'
@@ -105,19 +119,21 @@ class ListarUsuario(ListView, FormView):
     def form_valid(self, form):
         """Guardar datos."""
         form.save()
+        
         return super().form_valid(form)
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
     if request.method == 'POST':
-        usuario = request.user
-        if usuario.is_active:
-            usuario.is_active = False
-            usuario.save()
+        usuario_pk = request.POST['user']
+        user = User.objects.get(pk=usuario_pk)
+        if user.is_active:
+            user.is_active = False
+            user.save()
         else:
-            usuario.is_active = True
-            usuario.save()
+            user.is_active = True
+            user.save()
 
     url = reverse('usuario:listar_usuario')
 
