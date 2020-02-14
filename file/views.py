@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from tablib import Dataset
 from file.models import LlamadasEntrantes
@@ -123,43 +123,6 @@ def buzon(request):
     return render(request, 'llamada/Buzon.html')
 
 
-def repartir(request):
-    operadores = Perfil.objects.all()
-    llamadas = LlamadasEntrantes.objects.all()
-    if operadores and llamadas:
-        contexto = {'operadores': operadores, 'llamadas': llamadas}
-        return render(request, 'archivo/repartir.html', contexto)
-
-
-def enviarLlamadas(request):
-    if request.method == 'POST':
-        valor = request.POST.getlist('valor[]')
-        operador = request.POST.getlist('usuario[]')
-        dato = len(valor)
-        consulta = []
-        contador = int(dato)
-        for i in range(contador):
-            consulta = LlamadasEntrantes.objects.exclude(estado=True).order_by('-pk')[1:int(valor[i]) + 1]
-            for obj in consulta:
-                obj.ruta = operador[i]
-                obj.estado = True
-                obj.save()
-
-        Traer = LlamadasEntrantes.objects.all()
-        lista = {'clave': Traer}
-
-        return render(request=request, template_name='llamada/registro.html', context=lista)
-
-
-def archivoLlamadas(request):
-    join = LlamadasEntrantes.objects.filter(id_archivo__id=3).values('id_archivo__nombre', 'id_archivo__fecha_ingreso',
-                                                                     'estado', 'ruta')
-    for obj in join:
-        obj.estado = False
-    diccionario = {'consulta': join}
-    return render(request, 'archivo/eliminar archivo.html', diccionario)
-
-
 class entregar(ListView):
     template_name = 'llamada/entregar.html'
     model = Perfil
@@ -204,7 +167,7 @@ def enviarLlamadas(request):
         #  Segun la cantidad del array hacemos un for que recorra esa cantidad de datos
         for i in range(contador):
             #  Hacemos una consulta que nos traiga la cantidad de llamadas indicada en el array "valor"
-            consulta = LlamadasEntrantes.objects.filter(id_archivo=archivo, estado=False).order_by('-pk')[
+            consulta = LlamadasEntrantes.objects.filter(id_archivo=archivo, estado=True).order_by('-pk')[
                        1:int(valor[i]) + 1]
             #  Recorremos la consulta anterior y la actualizamos segun el operador que indica el array "operador"
             for obj in consulta:
@@ -231,3 +194,29 @@ def ver_Llamadas(request):
     diccionario = {'array': registro}
 
     return render(request, 'llamada/llegadas.html', diccionario)
+
+
+class archivoLlamadas(ListView):
+    model = Archivo
+    template_name = 'archivo/eliminar_archivo.html'
+
+
+def eliminarArchivo(request):
+    archivo = request.GET.get('id', None)
+    consulta = LlamadasEntrantes.objects.filter(id_archivo=archivo)
+    auxiliar = 0
+    for i in consulta:
+        if i.estado:
+            auxiliar = auxiliar + 1
+
+    if auxiliar == 0:
+        Archivo.objects.get(id=archivo).delete()
+        data = {
+            'deleted': True
+        }
+    else:
+        data = {
+            'deleted': False
+        }
+
+    return JsonResponse(data)
