@@ -1,0 +1,129 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+    <title>Liquidacion</title>
+{% endblock %}
+
+{% block main %}
+
+     <div class="row">
+                <div class="col-xl-12">
+                    <section class="hk-sec-wrapper">
+                        <h5 class="hk-sec-title"><input class="form-control" type="search" placeholder="Buscador"
+                                                        aria-label="Search"></h5>
+
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="table-wrap">
+
+                                    <table class="table tablesaw table-bordered table-hover  mb-0"
+                                           data-tablesaw-mode="swipe" data-tablesaw-sortable
+                                           data-tablesaw-sortable-switch data-tablesaw-minimap
+                                           data-tablesaw-mode-switch>
+
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
+                                                Operador
+                                            </th>
+                                            <th scope="col" data-tablesaw-sortable-col
+                                                data-tablesaw-sortable-default-col data-tablesaw-priority="3">Numero de
+                                                llamadas
+                                            </th>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">
+                                                Fecha
+                                            </th>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1"><abbr
+                                                    title="Rotten Tomato Rating">Efectividad</abbr></th>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">
+                                                Ganancia
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Sergio orejas marcadas</a>
+                                            </td>
+                                            <td>1</td>
+                                            <td>20/07/2019</td>
+                                            <td>83%</td>
+                                            <td>$230.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Juan Felipe Leño</a></td>
+                                            <td>2</td>
+                                            <td>20/07/2019</td>
+                                            <td>88%</td>
+                                            <td>$210.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Johnatan Gramos Tussy</a>
+                                            </td>
+                                            <td>3</td>
+                                            <td>09/08/2019</td>
+                                            <td>92%</td>
+                                            <td>$150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Esperanza Gomez</a></td>
+                                            <td>4</td>
+                                            <td>09/08/2019</td>
+                                            <td>96%</td>
+                                            <td>$150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Mia Khalifa</a></td>
+                                            <td>5</td>
+                                            <td>09/08/2019</td>
+                                            <td>89%</td>
+                                            <td>$150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Andres Dobby Uchima</a></td>
+                                            <td>6</td>
+                                            <td>09/08/2019</td>
+                                            <td>78%</td>
+                                            <td>$150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Gisella</a></td>
+                                            <td>7</td>
+                                            <td>09/08/2019</td>
+                                            <td>36%</td>
+                                            <td>$150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Cristian Serna</a></td>
+                                            <td>8</td>
+                                            <td>09/08/2019</td>
+                                            <td>95%</td>
+                                            <td>$150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Doris Serna</a></td>
+                                            <td>9</td>
+                                            <td>09/08/2019</td>
+                                            <td>92%</td>
+                                            <td>$150.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title"><a href="javascript:void(0)">Sebastian Giraldo</a></td>
+                                            <td>10</td>
+                                            <td>09/08/2019</td>
+                                            <td>18%</td>
+                                            <td>$150.000</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

@@ -35,6 +35,7 @@
                                     <input type="file" id="input" name="myfile"
                                            accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                     />
+
                                     <button type="submit">enviar</button>
                                 </form>
                             </div>
@@ -62,28 +63,6 @@
 
 
     {% load static %}
-
-
-
-
-    <style>
-        #sampleContainer ol {
-            padding: 0px 0px 0px 15px;
-            margin: 0;
-        }
-
-        #sampleContainer input {
-            margin: 10px 0;
-        }
-
-        #result {
-            display: none;
-            color: red;
-        }
-    </style>
-
-
-
 {% endblock %}
 {% block scripts %}
     {{ block.super }}
@@ -124,4 +103,26 @@
     <script type="text/javascript"
             src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
     <script src="{% static "dist/js/excel_upload.js" %}"></script>
+    <script>
+        function papa() {
+            nombre = document.getElementById('input').files[0].name;
+            document.getElementById('nombre').value = nombre;
+        }
+    </script>
+
+    <style>
+        #sampleContainer ol {
+            padding: 0px 0px 0px 15px;
+            margin: 0;
+        }
+
+        #sampleContainer input {
+            margin: 10px 0;
+        }
+
+        #result {
+            display: none;
+            color: red;
+        }
+    </style>
 {% endblock %}

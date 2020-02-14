@@ -1,10 +1,12 @@
 {% extends 'base/base.html' %}
 {% load static %}
+
+{% block title %}
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+    <title>Lista de usuarios</title>
+
+{% endblock %}
 {% block main %}
-    {% block title %}
-        <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
-        <title>Lista de usuarios</title>
-    {% endblock %}
 
     <div class="hk-pg-wrapper">
         <!-- Breadcrumb -->
@@ -14,10 +16,6 @@
             </ol>
         </nav>
         <!-- /Breadcrumb -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-              crossorigin="anonymous">
-
 
         <!-- Container -->
         <div class="container">
@@ -27,7 +25,7 @@
                 <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
                         data-feather="user"></i></span></span>Usuarios</h4>
             </div>
-
+            <!-- /Title -->
 
             <div class="row">
                 <div class="col-xl-12">
@@ -39,12 +37,10 @@
                             <div class="col-xl-12">
 
                                 <section class="hk-sec-wrapper">
-                                    <h5 class="hk-sec-title">Operadores
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    <h5 class="hk-sec-title">Operadores</h5>
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
                                                 data-target=".bd-example-modal-lg"><i
                                                 class="fas fa-user-plus"></i></button>
-
-                                    </h5>
 
                                     <div class="row">
                                         <div class="col-sm">
@@ -104,8 +100,7 @@
                                                                             class="badge badge-pill badge-success">Activo</span>
                                                                     </td>
                                                                 {% else %}
-                                                                    <td><span
-                                                                            class="badge badge-pill badge-danger">Inactivo</span>
+                                                                    <td><span class="badge badge-pill badge-danger">Inactivo</span>
                                                                     </td>
                                                                 {% endif %}
 
@@ -117,7 +112,6 @@
                                                                 <td>{{ foo.celular_telemercadeo }}</td>
                                                                 <td>
 
-                                                                    <i class="fas fa-edit"></i>
 
                                                                     {% if foo.usuario == request.user %}
                                                                         <a href=""
@@ -130,21 +124,40 @@
                                                                         <form action="{% url 'usuario:desactivar' %}"
                                                                               method="POST">
                                                                             {% csrf_token %}
+
                                                                             <input id="user" name="user" type="hidden"
                                                                                    value="{{ foo.usuario.pk }}">
 
-                                                                            <input type="hidden"
-                                                                                   value="{{ foo.usuario.pk }}">
 
-                                                                            <div class="custom-control custom-switch">
-                                                                                <input type="submit">
-                                                                            </div>
+                                                                            {% if foo.usuario.is_active %}
+                                                                                <button type="submit"
+                                                                                        class="btn btn-danger "><i
+                                                                                        class="fas fa-power-off"></i>
+                                                                                </button>
 
+                                                                                </button>
+                                                                                <button type="submit"
+                                                                                        class="btn btn-dark"><i
+                                                                                        class="fa fa-pencil"></i>
+                                                                                </button>
+
+                                                                            {% else %}
+                                                                                <button type="submit"
+                                                                                        class="btn btn"
+                                                                                        style="background-color: #36876a">
+                                                                                    <i
+                                                                                            style="color: #fff1f1"
+                                                                                            class="fas fa-power-off"></i>
+                                                                                </button>
+
+                                                                            {% endif %}
                                                                         </form>
                                                                     {% endif %}
 
+                                                                    &nbsp;
 
                                                                 </td>
+
 
                                                             </tr>
 
@@ -172,8 +185,6 @@
             </div>
         </div>
         <!-- /Container -->
-
-        <!-- Modal and Form-->
         <div style="box-shadow: inset 0 0 20px #36876a" class="modal fade bd-example-modal-lg" tabindex="-1"
              role="dialog"
              aria-labelledby="myLargeModalLabel"
@@ -199,6 +210,7 @@
                                 <div class="form-row">
                                     <div class="col-md-4 mb-3">
                                         <label for="validationTooltip01">Nombres</label>
+                                        {# INPUT #}
                                         {{ form.first_name }}
                                         <div class="valid-tooltip">
                                             Bien hecho!
@@ -270,7 +282,7 @@
                                     <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Cancelar
                                     </button>
-
+                                    <button onclick="myFunction()">Try it</button>
                                 </div>
 
                             </form>
@@ -285,25 +297,16 @@
             <footer class="footer">
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
-                        <p>Creado por<a href="https://hencework.com/" class="text-dark" target="_blank">La Gerencia</a>
+                        <p>Creado por<a href="https://xvideos.com/" class="text-dark" target="_blank">La Gerencia</a>
                             © 2019</p>
                     </div>
-                    <div class="col-md-6 col-sm-12">
-                        <p class="d-inline-block">Follow us</p>
-                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
-                                class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>
-                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
-                                class="btn-icon-wrap"><i class="fa fa-twitter"></i></span></a>
-                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
-                                class="btn-icon-wrap"><i class="fa fa-google-plus"></i></span></a>
-                    </div>
+
                 </div>
             </footer>
         </div>
         <!-- /Footer -->
-    </div>
 
-    <script>
+      <script>
         function myFunction() {
             Swal.fire(
                 'Good job!',
@@ -340,5 +343,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    </div>
+    </div>
 
 {% endblock %}

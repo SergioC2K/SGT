@@ -36,27 +36,23 @@ class LoginViewUsuario(LoginView):
 
     def get_success_url(self):
         url = self.get_redirect_url()
-        return url or reverse('usuario:listar_usuario')
+        return url or reverse('usuario:perfil')
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse_lazy('usuario:listar_usuario'))
+            return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
 def perfil(request):
     return render(request, 'users/perfil.html')
 
 
-#class PerfilCreateView(FormView):
-#    template_name = 'users/perfil.html'
-#    form_class = PerfilForm
-#    success_url = reverse_lazy('usuario:listar_usuario')
-
 class UpdateProfileView(UpdateView):
     """Update profile view."""
     template_name = 'users/perfil.html'
     model = Perfil
     form_class = PerfilForm
+    success_url = reverse_lazy('usuario:listar_usuario')
 
     def get_object(self, **kwargs):
         """Return user's profile."""
@@ -103,6 +99,7 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
+
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
@@ -119,8 +116,9 @@ class ListarUsuario(ListView, FormView):
     def form_valid(self, form):
         """Guardar datos."""
         form.save()
-        
         return super().form_valid(form)
+
+
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
