@@ -85,9 +85,9 @@ WSGI_APPLICATION = 'SGT.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sgt2',
+        'NAME': 'proyecto',
         'USER': 'root',
-        'PASSWORD': 'admin',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -142,3 +142,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/usuario/login/'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'sgtelemercadeoadsi@gmail.com'
+EMAIL_HOST_PASSWORD = 'sgt2019adsi'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

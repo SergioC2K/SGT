@@ -2,30 +2,20 @@ from django.db import models
 from usuario.models import Perfil
 from utils.models import BaseModel
 from utils.models import BaseModel
-
-# Create your models here.
-class Grabacion(BaseModel, models.Model):
-    # Url de donde va quedar almacenada la grabacion
-    url = models.URLField()
+from django.contrib.auth.models import User
 
 
-class Estado(BaseModel, models.Model):
-    nombre = models.CharField(max_length=30)
+class Archivo(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
+    fecha_ingreso = models.DateTimeField(auto_now_add=True)
 
-
-class RegistroLlamada(BaseModel, models.Model):
-    nombre_contesta = models.CharField(max_length=45)
-    fecha_entrega = models.DateField()
-    observaciones = models.TextField(null=True, blank=True)
-    precio_llamada = models.FloatField()
-    numero_contesta = models.CharField(max_length=20)
-    id_usuario = models.ForeignKey(Perfil, on_delete=models.PROTECT)
-    id_estado = models.ForeignKey('Estado', on_delete=models.PROTECT)
-    id_grabacion = models.ForeignKey('Grabacion', on_delete=models.PROTECT)
 
 class LlamadasEntrantes(BaseModel, models.Model):
 
-    id_llamada_realizada = models.ForeignKey(RegistroLlamada, on_delete=models.PROTECT, null=True)
+    id_archivo = models.ForeignKey(Archivo, on_delete=models.CASCADE)
+    estado = models.BooleanField(default=False)
+    id_usuario = models.ForeignKey(User, null=True, on_delete=models.PROTECT)
+
     nombre_solicitante = models.CharField(max_length=50)
     ident_fiscal = models.CharField(max_length=50)
 
@@ -55,3 +45,25 @@ class LlamadasEntrantes(BaseModel, models.Model):
 
     hora_inicio = models.CharField(max_length=50)
     hora_final = models.CharField(max_length=50)
+
+
+class Grabacion(BaseModel, models.Model):
+    # Url de donde va quedar almacenada la grabacion
+    url = models.URLField()
+
+
+class Estado(BaseModel, models.Model):
+    nombre = models.CharField(max_length=30)
+
+
+class RegistroLlamada(BaseModel, models.Model):
+    nombre_contesta = models.CharField(max_length=45, blank=False, null=True)
+    fecha_entrega = models.DateField(null=True, blank=False, auto_now_add=True)
+    observaciones = models.TextField(null=True, blank=True)
+    precio_llamada = models.FloatField(null=True)
+    numero_contesta = models.CharField(max_length=20,null=True)
+    realizado = models.BooleanField(default=False,null=True)
+    id_llamada = models.ForeignKey(LlamadasEntrantes, on_delete=models.PROTECT)
+    id_usuario = models.ForeignKey(Perfil, null=True, on_delete=models.PROTECT)
+    id_estado = models.ForeignKey('Estado', null=True, blank=False, on_delete=models.PROTECT)
+    id_grabacion = models.ForeignKey('Grabacion', null=True, on_delete=models.PROTECT)

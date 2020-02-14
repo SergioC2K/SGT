@@ -32,7 +32,10 @@
                             <div class="custom-file col-md-6 ">
                                 <form action="" method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
+                                    <input type="text" id="nombre" name="nombre" hidden>
+
                                     <input type="file" id="input" name="myfile"
+                                           onchange="papa()"
                                            accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                     />
 
@@ -56,6 +59,9 @@
                     </table>
                 </div>
             </div>
+            {% block scripts %}
+                {{ block.super }}
+            {% endblock %}
 
         </div>
 
@@ -101,6 +107,12 @@
     <script type="text/javascript"
             src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
     <script src="{% static "dist/js/excel_upload.js" %}"></script>
+    <script>
+        function papa() {
+            nombre = document.getElementById('input').files[0].name;
+            document.getElementById('nombre').value = nombre;
+        }
+    </script>
 
     </body>
     <style>

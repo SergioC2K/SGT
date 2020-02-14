@@ -44,32 +44,33 @@
 
                         <div class="form-group">
 
-                            <div class="col-md-6 form-group">
-                                {{ form.usuario|as_crispy_field }}
+                            <div class="col-md-8 form-group">
+                                <input class="form-control" type="text" value="{{ user.first_name }}" readonly
+                                       onmousedown="return false">
                             </div>
                         </div>
 
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-8 form-group">
                             <label>Apellido</label>
                             <input class="form-control"
                                    readonly onmousedown="return false"
                                    name="apellido" id="apellido"
                                    maxlength="15"
-                                   placeholder="Apellidos"
-                                   value="{{ perfil.usuario.last_name }}"
+
+                                   value="{{ user.last_name }}"
                                    onkeypress="return soloLetras(event)"
                                    type="text"/>
                         </div>
 
-                        <div class="col-md-6 form-group">
-                            <label>Apellido</label>
+                        <div class="col-md-8 form-group">
+                            <label>Email</label>
                             <input
                                     class="form-control"
                                     type="text"
                                     name="email"
                                     placeholder=""
                                     readonly onmousedown="return false"
-                                    value="{{ perfil.usuario.email }}"/>
+                                    value="{{ user.email }}"/>
                         </div>
 
                         <div class="form-group">
@@ -79,7 +80,7 @@
                                        name="telefono_fijo" id="telefono_fijo"
                                        placeholder="Telefono fijo"
                                        onkeypress="return soloNumeros(event)"
-                                       value="{{ perfil.telefono_fijo }}"
+                                       value=""
                                        type="text"/>
                             </div>
                         </div>

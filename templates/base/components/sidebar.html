@@ -6,14 +6,12 @@
         <div class="navbar-nav-wrap">
             <ul class="navbar-nav flex-column">
                 <li class="nav-item active">
-
-
-                    <span class="nav-link-text"><img src="{% static 'dist/img/SGT.png' %}" width="200px"
-                                                     srcset=""></span>
+                         <span class="nav-link-text"><img src="{% static 'dist/img/SGT.png' %}" width="200px"
+                                                          srcset=""></span>
                     </a>
 
                 </li>
-                <li class="nav-item">
+
 
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#pages_drp">
@@ -32,11 +30,29 @@
                         </li>
                     </ul>
                 </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <span class="nav-link-text">Bandeja de entrada</span>
+                    </a>
+                    <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                        <li class="nav-item">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'file:buzon' %}">Mensajes</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <hr class="nav-separator">
             <div class="nav-header">
                 <span>Opciones</span>
-                <span>UI</span>
+                <span>SGT</span>
             </div>
             <ul class="navbar-nav flex-column">
                 <li class="nav-item">
@@ -87,10 +103,10 @@
                         <li class="nav-item">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="background.html">Exportar liquidacion</a>
+                                    <a class="nav-link" href="background.html">Reportes</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="border.html">Ver liquidaciones</a>
+                                    <a class="nav-link" href="border.html">liquidaciones</a>
                                 </li>
 
                             </ul>
@@ -110,22 +126,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'usuario:listar_usuario' %}">Operadores</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'usuario:signup' %}">Registro</a>
-                                </li>
-
 
                             </ul>
                         </li>
                     </ul>
                 </li>
-
-
             </ul>
-            </li>
-
-            </ul>
-
         </div>
     </div>
 </nav>

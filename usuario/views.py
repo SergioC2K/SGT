@@ -41,6 +41,7 @@ class PerfilCreateView(FormView):
     success_url = reverse_lazy('usuario:listar_usuario')
 
 
+
 class UserCreateView(FormView):
     template_name = 'users/usuario_nuevo.html'
     form_class = SignupForm
@@ -77,16 +78,24 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-class listar_usuario(ListView):
+
+class ListarUsuario(ListView, FormView):
     model = Perfil
+    form_class = SignupForm
     template_name = 'users/listar.html'
     queryset = Perfil.objects.filter(usuario__is_superuser=False)
+    success_url = reverse_lazy('usuario:listar_usuario')
 
     def get_queryset(self):
         if self.request.user.is_superuser:
             return Perfil.objects.all()
         else:
             return Perfil.objects.filter(usuario__is_superuser=False)
+
+    def form_valid(self, form):
+        """Guardar datos."""
+        form.save()
+        return super().form_valid(form)
 
 
 
@@ -124,12 +133,12 @@ def desconectado(request):
     return redirect(url)
 
 
-class ListEstado(ListView):
-    template_name = 'prueba.html'
+"""class ListEstado(ListView):
+    template_name = 'base/components/tablaUserConect.html'
     model = Perfil
 
     def get(self, request, *args, **kwargs):
         name = request.GET['name']
         perfiles = Perfil.objects.get(usuario__first_name=name)
         data = serializers.serialize('json', perfiles, fields=('first_name', 'is_superuser'))
-        return HttpResponse(data, content_type='application/json')
+        return HttpResponse(data, content_type='application/json')"""
