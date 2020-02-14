@@ -38,32 +38,27 @@ urlpatterns = [
         view=views.enviarLlamadas,
         name='enviarLlamada'
     ),
-    path(
-        route='eliminar',
-        view=views.archivoLlamadas,
-        name='eliminar'
-    ),
 
     path(
         route='entregar_l/',
         view=views.entregar.as_view(),
         name='entregar_l'
     ),
-path(
-        route='repartir/',
-        view=views.repartir,
-        name='repartir'
-    ),
     path(
-        route='enviar',
-        view=views.enviarLlamadas,
-        name='enviarLlamada'
-    ),
-path(
         route='entrega',
         view=views.ver_Llamadas,
         name='entrega'
     ),
 
+    path(
+        route='eliminar',
+        view=views.archivoLlamadas.as_view(),
+        name='eliminar'
+    ),
+    path(
+        route='borrar',
+        view=views.eliminarArchivo,
+        name='borrar'
+    ),
 
 ]
