@@ -72,6 +72,7 @@ def preview_excel(request):
 
     return render(request, 'archivo/fileimport.html')
 
+
 hoy = datetime.date.today()
 manana = hoy + datetime.timedelta(days=1)
 dias_antes = hoy - datetime.timedelta(days=9)
@@ -81,8 +82,8 @@ horas_antes = hoy - datetime.timedelta(hours=12)
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
-    queryset = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana))
-    context_object_name = 'oelo'
+    queryset = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)).exclude(estado=True)
+    context_object_name = 'llamadas_entrantes'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -102,7 +103,7 @@ class ListarArchivo(ListView):
             filter(
             Q(created__range=(dias_antes, horas_antes)),
             Q(entrega__in=self.queryset.values('entrega'))
-        )
+        ).exclude(estado=True)
         return data
 
 
@@ -115,28 +116,6 @@ def registro_llamada(request):
         response = JsonResponse(data)
         response.status_code = 200
     return response
-
-
-def repartir_llamada(request):
-
-    if request.method == 'POST':
-        pass
-    return render(request, 'llamada/registro_llamada.html')
-
-
-def buzon(request):
-    return render(request, 'llamada/Buzon.html')
-
-
-class entregar(ListView):
-    template_name = 'llamada/entregar.html'
-    model = Perfil
-
-    def get(self, request, *args, **kwargs):
-        name = request.GET['name']
-        perfiles = Perfil.objects.get(usuario__first_name=name)
-        data = serializers.serialize('json', perfiles, fields=('first_name', 'is_superuser'))
-        return HttpResponse(data, content_type='application/json')
 
 
 def repartir(request):
@@ -155,41 +134,38 @@ def repartir(request):
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
 
 
+def buzon(request):
+    return render(request, 'llamada/Buzon.html')
+
+
+class entregar(ListView):
+    template_name = 'llamada/entregar.html'
+    model = Perfil
+
+    def get(self, request, *args, **kwargs):
+        name = request.GET['name']
+        perfiles = Perfil.objects.get(usuario__first_name=name)
+        data = serializers.serialize('json', perfiles, fields=('first_name', 'is_superuser'))
+        return HttpResponse(data, content_type='application/json')
+
+
 def enviarLlamadas(request):
     if request.method == 'POST':
-
         #  Capturamos los valores ingresados en la reparticion de las llamadas con un array
         valor = request.POST.getlist('valor[]')
         operador = request.POST.getlist('usuario[]')
 
-        #  Miramos cual es la cantidad que tienen el array anterior
-        dato = len(valor)
-        contador = int(dato)
-
-        #  Se consulta el ultimo archivo ingresado para traer las ultimas llamdadas registradas
-        archivo = Archivo.objects.last()
-
         #  Segun la cantidad del array hacemos un for que recorra esa cantidad de datos
-        for i in range(contador):
+        for i in range(len(valor)):
             #  Hacemos una consulta que nos traiga la cantidad de llamadas indicada en el array "valor"
-            consulta = LlamadasEntrantes.objects.filter(id_archivo=archivo, estado=True).order_by('-pk')[
-                       1:int(valor[i]) + 1]
+            llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)).exclude(estado=True) \
+                [:int(valor[i])]
             #  Recorremos la consulta anterior y la actualizamos segun el operador que indica el array "operador"
-            for obj in consulta:
-                usuario = User.objects.filter(username=operador[i])
-                obj.id_usuario = usuario.get()
-                obj.estado = True
-                obj.save()
-
-        #  Hacemos una consulta que nos traiga las ultimas llamdas ingresadas
-        Registra = LlamadasEntrantes.objects.filter(id_archivo=archivo)
-        for i in Registra:
-            #  Ingresamos en la tabla "Registro llamada" el id de "Llamadas entrates"
-            #  Esto se hace para poder conocer cuales son las llamadas que aun no se han realizado
-            #  pero que si se han repartidor, Para despues poder hacer la validacion y mostrarselas a el operador
-            creacion = RegistroLlamada.objects.create(id_llamada_id=int(i.id))
-            creacion.save()
-
+            for llam in llamadas:
+                registro = RegistroLlamada(id_llamada=llam, id_usuario_id=operador[i])
+                registro.save()
+                llam.estado = True
+                llam.save()
         return redirect('archivo:import')
 
 

@@ -29,14 +29,13 @@
                                               action="{% url 'archivo:enviarLlamada' %}">
 
                                             {% csrf_token %}
-
-
                                             {% for operador in operadores %}
                                                 <div class="form-row">
                                                 <div class="form-group">
-                                                <input value="{{ operador.usuario.first_name }}" name="usuario[]"
+                                                <input value="{{ operador.pk }}" name="usuario[]"
                                                        id="usuario" class="form-control col-xl-12">
                                                 <input name="valor[]" class="form-control col-xl-3" id="valor">
+                                                <input name="" class="" id="valor" value="{% widthratio llamadas|length operadores|length 1 %}">
                                             {% endfor %}
 
                                             <br>
@@ -44,21 +43,21 @@
                                             <button type="submit" class="btn" style="background-color:#36876a">
                                                 enviar
                                             </button>
-                                        </div>
-                                        </div>
+                                            </div>
+                                            </div>
                                         </form>
                                     {% endif %}
                                     {% if error %}
                                         {{ error }}
                                     {% endif %}
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     </div>
 {% endblock %}

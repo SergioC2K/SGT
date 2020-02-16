@@ -4,8 +4,6 @@
 
 from django import forms
 
-# Modelos
-from file.models.archivo import LlamadasEntrantes
 
 
 class AsignarLlamadas(forms.Form):
