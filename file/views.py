@@ -154,12 +154,12 @@ def enviarLlamadas(request):
         #  Segun la cantidad del array hacemos un for que recorra esa cantidad de datos
         for i in range(contador):
             #  Hacemos una consulta que nos traiga la cantidad de llamadas indicada en el array "valor"
-            consulta = LlamadasEntrantes.objects.filter(id_archivo=archivo, estado=True).order_by('-pk')[
+            consulta = LlamadasEntrantes.objects.filter(id_archivo=archivo, estado=False).order_by('-pk')[
                        1:int(valor[i]) + 1]
             #  Recorremos la consulta anterior y la actualizamos segun el operador que indica el array "operador"
             for obj in consulta:
-                usuario = User.objects.filter(username=operador[i])
-                obj.id_usuario = usuario.get()
+                usuario = User.objects.get(id=operador[i])
+                obj.id_usuario = usuario.id
                 obj.estado = True
                 obj.save()
 

@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'SGT.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sgt',
+        'NAME': 'proyecto',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',

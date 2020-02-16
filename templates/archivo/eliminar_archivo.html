@@ -36,8 +36,16 @@
 
         <script>
             function eliminar(id) {
-                var action = confirm("Are you sure you want to delete this user?");
-                if (action !== false) {
+
+                var action = Swal.fire({
+                    title: 'Estas a punto de eliminar un archivo',
+                    text: "Esta seguro de eliminarlo?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si eliminar!'
+                }).then((result) => {
                     $.ajax({
                         url: '{% url "archivo:borrar" %}',
                         data: {
@@ -50,7 +58,15 @@
                             } else mensaje()
                         }
                     });
-                }
+                    if (result.value) {
+                        Swal.fire(
+                            'Borrado!',
+                            'Tu archivo se ha borrado',
+                            'success'
+                        )
+                    }
+                })
+
             }
 
             function mensaje() {

@@ -7,501 +7,476 @@
 {% endblock %}
 
 {% block main %}
-    <div class="hk-pg-wrapper pb-0 px-0">
-        <!-- Container -->
-        <div class="container-fluid">
-            <!-- Row -->
-            <div class="row">
-                <div class="col-xl-12 pa-0">
-                    <div class="emailapp-wrap">
-                        <div class="emailapp-sidebar">
-                            <div class="nicescroll-bar">
-                                <div class="emailapp-nav-wrap">
-                                    <a id="close_emailapp_sidebar" href="javascript:void(0)"
-                                       class="close-emailapp-sidebar">
-                                        <span class="feather-icon"><i data-feather="chevron-left"></i></span>
+
+
+    <!-- Container -->
+    <div class="container-fluid">
+        <!-- Row -->
+        <div class="row">
+            <div class="col-xl-12 pa-0">
+                <div class="emailapp-wrap">
+                    <div class="emailapp-sidebar">
+                        <div class="nicescroll-bar">
+                            <div class="emailapp-nav-wrap">
+                                <a id="close_emailapp_sidebar" href="javascript:void(0)" class="close-emailapp-sidebar">
+                                    <span class="feather-icon"><i data-feather="chevron-left"></i></span>
+                                </a>
+                                <ul class="nav flex-column mail-category">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);">Inbox<span
+                                                class="badge badge-primary">50</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);">Sent mail</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);">Important</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);">Draft<span
+                                                class="badge badge-secondary">5</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);">Trash</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);">Chat</a>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-pink btn-block mt-20 mb-20" data-toggle="modal"
+                                        data-target="#exampleModalEmail">
+                                    Compose email
+                                </button>
+                                <ul class="nav flex-column mail-labels">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);"><span
+                                                class="badge badge-primary badge-indicator"></span>clients</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);"><span
+                                                class="badge badge-danger badge-indicator"></span>personal</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);"><span
+                                                class="badge badge-warning badge-indicator"></span>office</a>
+                                    </li>
+                                </ul>
+                                <hr>
+                                <ul class="nav flex-column mail-settings">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="javascript:void(0);"><i
+                                                class="zmdi zmdi-settings"></i>settings</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="email-box">
+                        <div class="emailapp-left">
+                            <header>
+                                <a href="javascript:void(0)" id="emailapp_sidebar_move" class="emailapp-sidebar-move">
+                                    <span class="feather-icon"><i data-feather="menu"></i></span>
+                                </a>
+                                <span class="">Inbox</span>
+                                <a href="javascript:void(0)" class="email-compose" data-toggle="modal"
+                                   data-target="#exampleModalEmail">
+                                    <span class="feather-icon"><i data-feather="edit"></i></span>
+                                </a>
+                            </header>
+                            <form role="search" class="email-search">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="feather-icon"><i data-feather="search"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                            </form>
+                            <div class="emailapp-emails-list">
+                                <div class="nicescroll-bar">
+                                    <a href="javascript:void(0);" class="media">
+                                        <div class="media-img-wrap">
+                                            <div class="avatar">
+                                                <img src="dist/img/avatar1.jpg" alt="user"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <div class="email-head">Clay Masse (8)</div>
+                                                <div class="email-subject">Creation timelines for the standard lorem
+                                                    ipsum
+                                                </div>
+                                                <div class="email-text">
+                                                    <p>So how did the classical Latin become so incoherent? According to
+                                                        McClintock.</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="last-email-details"><span
+                                                        class="badge badge-danger badge-indicator"></span> 2:30 PM
+                                                </div>
+                                                <span class="email-star"><span class="feather-icon"><i
+                                                        data-feather="star"></i></span></span>
+                                            </div>
+                                        </div>
                                     </a>
-                                    <ul class="nav flex-column mail-category">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);">Inbox<span
-                                                    class="badge badge-primary">50</span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);">Sent mail</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);">Important</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);">Draft<span
-                                                    class="badge badge-secondary">5</span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);">Trash</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);">Chat</a>
-                                        </li>
-                                    </ul>
-                                    <button type="button" class="btn btn-pink btn-block mt-20 mb-20" data-toggle="modal"
-                                            data-target="#exampleModalEmail">
-                                        Compose email
+                                    <div class="email-hr-wrap">
+                                        <hr>
+                                    </div>
+                                    <a href="javascript:void(0);" class="media">
+                                        <div class="media-img-wrap">
+                                            <div class="avatar">
+                                                <img src="dist/img/avatar2.jpg" alt="user"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <div class="email-head">Evie Ono</div>
+                                                <div class="email-subject">McClintock wrote to Before & After to explain
+                                                    his discovery
+                                                </div>
+                                                <div class="email-text">
+                                                    <p>“What I find remarkable is that this text has been the industry's
+                                                        standard dummy text ever since some printer.</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="last-email-details"><span
+                                                        class="badge badge-danger badge-indicator"></span> 2:30 PM
+                                                </div>
+                                                <span class="email-star starred block"><span class="feather-icon"><i
+                                                        data-feather="star"></i></span></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="email-hr-wrap">
+                                        <hr>
+                                    </div>
+                                    <a href="javascript:void(0);" class="media read-email">
+                                        <div class="media-img-wrap">
+                                            <div class="avatar">
+                                                <img src="dist/img/avatar3.jpg" alt="user"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <div class="email-head">Madalyn Rascon (5)</div>
+                                                <div class="email-subject">Whether a medieval typesetter</div>
+                                                <div class="email-text">
+                                                    <p>As an alternative theory, and because Latin scholars do this sort
+                                                        of thing someone tracked down a 1914 Latin edition of De Finibus
+                                                        which challenges.</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="last-email-details"><span
+                                                        class="email-attachment-label"><span class="feather-icon"><i
+                                                        data-feather="paperclip"></i></span></span><span
+                                                        class="badge badge-warning badge-indicator"></span> 2:30 PM
+                                                </div>
+                                                <span class="email-star"><span class="feather-icon"><i
+                                                        data-feather="star"></i></span></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="email-hr-wrap">
+                                        <hr>
+                                    </div>
+                                    <a href="javascript:void(0);" class="media active-email read-email">
+                                        <div class="media-img-wrap">
+                                            <div class="avatar">
+                                                <img src="dist/img/avatar4.jpg" alt="user"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <div class="email-head">Mitsuko Heid (2)</div>
+                                                <div class="email-subject">Purposefully designed to have no meaning
+                                                </div>
+                                                <div class="email-text">
+                                                    <p>Don't bother typing “lorem ipsum” into Google translate. If you
+                                                        already tried, you may have gotten anything from "NATO" to
+                                                        "China"</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="last-email-details"><span
+                                                        class="badge badge-primary badge-indicator"></span> 2:30 PM
+                                                </div>
+                                                <span class="email-star starred block"><span class="feather-icon"><i
+                                                        data-feather="star"></i></span></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="email-hr-wrap">
+                                        <hr>
+                                    </div>
+                                    <a href="javascript:void(0);" class="media">
+                                        <div class="media-img-wrap">
+                                            <div class="avatar">
+                                                <img src="dist/img/avatar5.jpg" alt="user"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <div class="email-head">Ezequiel Merideth</div>
+                                                <div class="email-subject">Popularized in the 1960s</div>
+                                                <div class="email-text">
+                                                    <p>The decade that brought us Star Trek and Doctor Who also
+                                                        resurrected Cicero—or at least what used to be Cicero</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="last-email-details"><span
+                                                        class="email-attachment-label"><span class="feather-icon"><i
+                                                        data-feather="paperclip"></i></span></span><span
+                                                        class="badge badge-warning badge-indicator"></span> 2:30 PM
+                                                </div>
+                                                <span class="email-star"><span class="feather-icon"><i
+                                                        data-feather="star"></i></span></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="email-hr-wrap">
+                                        <hr>
+                                    </div>
+                                    <a href="javascript:void(0);" class="media read-email">
+                                        <div class="media-img-wrap">
+                                            <div class="avatar">
+                                                <img src="dist/img/avatar6.jpg" alt="user"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <div class="email-head">Jonnie Metoyer</div>
+                                                <div class="email-subject">Some claim lorem ipsum threatens</div>
+                                                <div class="email-text">
+                                                    <p>Among design professionals, there's a bit of controversy
+                                                        surrounding the filler text. Controversy, as in Death to Lorem
+                                                        Ipsum.</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="last-email-details"><span
+                                                        class="email-attachment-label"><span class="feather-icon"><i
+                                                        data-feather="paperclip"></i></span></span><span
+                                                        class="badge badge-warning badge-indicator"></span> 2:30 PM
+                                                </div>
+                                                <span class="email-star"><span class="feather-icon"><i
+                                                        data-feather="star"></i></span></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="email-hr-wrap">
+                                        <hr>
+                                    </div>
+                                    <a href="javascript:void(0);" class="media read-email">
+                                        <div class="media-img-wrap">
+                                            <div class="avatar">
+                                                <img src="dist/img/avatar7.jpg" alt="user"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <div class="email-head">Angelic Lauver (2)</div>
+                                                <div class="email-subject">Generally, lorem ipsum is best suited</div>
+                                                <div class="email-text">
+                                                    <p> It's like the props in a furniture store—filler text makes it
+                                                        look like someone is home.</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="last-email-details"><span
+                                                        class="email-attachment-label"><span class="feather-icon"><i
+                                                        data-feather="paperclip"></i></span></span><span
+                                                        class="badge badge-warning badge-indicator"></span> 2:30 PM
+                                                </div>
+                                                <span class="email-star"><span class="feather-icon"><i
+                                                        data-feather="star"></i></span></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="email-hr-wrap">
+                                        <hr>
+                                    </div>
+                                    <a href="javascript:void(0);" class="media read-email">
+                                        <div class="media-img-wrap">
+                                            <div class="avatar">
+                                                <img src="dist/img/avatar8.jpg" alt="user"
+                                                     class="avatar-img rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <div class="email-head">Prischila Shy</div>
+                                                <div class="email-subject">Coming full circle, the internet's remixing
+                                                </div>
+                                                <div class="email-text">
+                                                    <p>Of course, we'd be remiss not to include the veritable cadre of
+                                                        lorem ipsum knock offs featuring</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="last-email-details"><span
+                                                        class="email-attachment-label"><span class="feather-icon"><i
+                                                        data-feather="paperclip"></i></span></span><span
+                                                        class="badge badge-warning badge-indicator"></span> 2:30 PM
+                                                </div>
+                                                <span class="email-star"><span class="feather-icon"><i
+                                                        data-feather="star"></i></span></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="emailapp-right">
+                            <header>
+                                <a id="back_email_list" href="javascript:void(0)" class="back-email-list">
+                                    <span class="feather-icon"><i data-feather="chevron-left"></i></span>
+                                </a>
+                                <div class="email-options-wrap">
+                                    <a href="javascript:void(0)" class=""><span class="feather-icon"><i
+                                            data-feather="printer"></i></span></a>
+                                    <a href="javascript:void(0)" class=""><span class="feather-icon"><i
+                                            data-feather="trash"></i></span></a>
+                                    <a href="javascript:void(0)" class="text-smoke"><span class="feather-icon"><i
+                                            data-feather="more-vertical"></i></span></a>
+                                </div>
+                            </header>
+                            <div class="email-body">
+                                <div class="nicescroll-bar">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Compose email -->
+                    <div class="modal fade" id="exampleModalEmail" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalEmail" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-dark">
+                                    <h6 class="modal-title text-white" id="exampleModalPopoversLabel">New Email</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
                                     </button>
-                                    <ul class="nav flex-column mail-labels">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);"><span
-                                                    class="badge badge-primary badge-indicator"></span>clients</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);"><span
-                                                    class="badge badge-danger badge-indicator"></span>personal</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);"><span
-                                                    class="badge badge-warning badge-indicator"></span>office</a>
-                                        </li>
-                                    </ul>
-                                    <hr>
-                                    <ul class="nav flex-column mail-settings">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript:void(0);"><i
-                                                    class="zmdi zmdi-settings"></i>settings</a>
-                                        </li>
-                                    </ul>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="email-box">
-                            <div class="emailapp-left">
-                                <header>
-                                    <a href="javascript:void(0)" id="emailapp_sidebar_move"
-                                       class="emailapp-sidebar-move">
-                                        <span class="feather-icon"><i data-feather="menu"></i></span>
-                                    </a>
-                                    <span class="">Inbox</span>
-                                    <a href="javascript:void(0)" class="email-compose" data-toggle="modal"
-                                       data-target="#exampleModalEmail">
-                                        <span class="feather-icon"><i data-feather="edit"></i></span>
-                                    </a>
-                                </header>
-                                <form role="search" class="email-search">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="feather-icon"><i data-feather="search"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Search">
-                                    </div>
-                                </form>
-                                <div class="emailapp-emails-list">
-                                    <div class="nicescroll-bar">
-                                        <a href="javascript:void(0);" class="media">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar1.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Clay Masse (8)</div>
-                                                    <div class="email-subject">Creation timelines for the standard lorem
-                                                        ipsum
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p>So how did the classical Latin become so incoherent?
-                                                            According to McClintock.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="badge badge-danger badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar2.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Evie Ono</div>
-                                                    <div class="email-subject">McClintock wrote to Before & After to
-                                                        explain his discovery
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p>“What I find remarkable is that this text has been the
-                                                            industry's standard dummy text ever since some printer.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="badge badge-danger badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star starred block"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar3.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Madalyn Rascon (5)</div>
-                                                    <div class="email-subject">Whether a medieval typesetter</div>
-                                                    <div class="email-text">
-                                                        <p>As an alternative theory, and because Latin scholars do this
-                                                            sort of thing someone tracked down a 1914 Latin edition of
-                                                            De Finibus which challenges.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media active-email read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar4.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Mitsuko Heid (2)</div>
-                                                    <div class="email-subject">Purposefully designed to have no
-                                                        meaning
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p>Don't bother typing “lorem ipsum” into Google translate. If
-                                                            you already tried, you may have gotten anything from "NATO"
-                                                            to "China"</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="badge badge-primary badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star starred block"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar5.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Ezequiel Merideth</div>
-                                                    <div class="email-subject">Popularized in the 1960s</div>
-                                                    <div class="email-text">
-                                                        <p>The decade that brought us Star Trek and Doctor Who also
-                                                            resurrected Cicero—or at least what used to be Cicero</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar6.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Jonnie Metoyer</div>
-                                                    <div class="email-subject">Some claim lorem ipsum threatens</div>
-                                                    <div class="email-text">
-                                                        <p>Among design professionals, there's a bit of controversy
-                                                            surrounding the filler text. Controversy, as in Death to
-                                                            Lorem Ipsum.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar7.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Angelic Lauver (2)</div>
-                                                    <div class="email-subject">Generally, lorem ipsum is best suited
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p> It's like the props in a furniture store—filler text makes
-                                                            it look like someone is home.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar8.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Prischila Shy</div>
-                                                    <div class="email-subject">Coming full circle, the internet's
-                                                        remixing
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p>Of course, we'd be remiss not to include the veritable cadre
-                                                            of lorem ipsum knock offs featuring</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="emailapp-right">
-                                <header>
-                                    <a id="back_email_list" href="javascript:void(0)" class="back-email-list">
-                                        <span class="feather-icon"><i data-feather="chevron-left"></i></span>
-                                    </a>
-                                    <div class="email-options-wrap">
-                                        <a href="javascript:void(0)" class=""><span class="feather-icon"><i
-                                                data-feather="printer"></i></span></a>
-                                        <a href="javascript:void(0)" class=""><span class="feather-icon"><i
-                                                data-feather="trash"></i></span></a>
-                                        <a href="javascript:void(0)" class="text-smoke"><span class="feather-icon"><i
-                                                data-feather="more-vertical"></i></span></a>
-                                    </div>
-                                </header>
-                                <div class="email-body">
-                                    <div class="nicescroll-bar">
-                                        <div>
+                                <div class="modal-body">
 
-                                            <hr class="mt-10 mb-20">
+                                    <div class="card" style="box-shadow: inset 0 0 20px #36876a">
+                                        <h5 class="card-header"><i class="far fa-address-book"></i> Informacion del
+                                            cliente</h5>
+                                        <div class="card-body">
 
-                                            <hr class="hr-light">
+                                            <div class="form-row">
 
+                                                <div class="form-group ">
+                                                    <strong>Nombre almacen</strong>
+                                                    <input type="text" class="form-control" id="alm_soli"
+                                                           name="alm_soli">
+                                                </div>&nbsp;&nbsp;&nbsp;
+                                                <div class="form-group">
+                                                    <strong>Nombre cliente</strong>
+                                                    <input type="text" class="form-control" id="alm_soli"
+                                                           name="alm_soli">
+                                                </div>
+                                                &nbsp;&nbsp;&nbsp;
+                                                <div class="form-group">
+                                                    <strong>Telefono</strong>
+                                                    <input type="text" class="form-control" id="alm_soli"
+                                                           name="alm_soli">
+                                                </div>
 
-                                            <hr class="hr-light">
-                                            <div class="email-reply-block">
-                                                Click here to <a href="javascript:void(0)"
-                                                                 class="text-capitalize">reply</a> or <a
-                                                    href="javascript:void(0)" class="text-capitalize">forwrd</a>
+                                                &nbsp;&nbsp;&nbsp;
+                                                <div class="form-group">
+                                                    <strong>Direccion</strong>
+                                                    <input type="text" class="form-control" id="alm_soli"
+                                                           name="alm_soli">
+                                                </div>
+                                                &nbsp;&nbsp;&nbsp;
+                                                <div class="form-group">
+                                                    <strong>Ruta</strong>
+                                                    <input type="text" class="form-control" id="alm_soli"
+                                                           name="alm_soli">
+                                                </div>
+                                                &nbsp;&nbsp;&nbsp;
+                                                <div class="form-group">
+                                                    <strong>localidad</strong>
+                                                    <input type="text" class="form-control" id="alm_soli"
+                                                           name="alm_soli">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Compose email -->
-                        <div class="modal fade" id="exampleModalEmail" tabindex="-1" role="dialog"
-                             aria-labelledby="exampleModalEmail" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-dark">
-                                        <h6 class="modal-title text-white" id="exampleModalPopoversLabel">New Email</h6>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-
+                                    <form>
                                         <div class="card" style="box-shadow: inset 0 0 20px #36876a">
-                                            <h5 class="card-header"><i class="far fa-address-book"></i> Informacion del
-                                                cliente</h5>
+                                            <h5 class="card-header"><i class="fas fa-phone-alt"></i> Llamada</h5>
                                             <div class="card-body">
 
                                                 <div class="form-row">
 
                                                     <div class="form-group ">
-                                                        <strong>Nombre almacen</strong>
+                                                        <strong>Nombre contesta</strong>
                                                         <input type="text" class="form-control" id="alm_soli"
                                                                name="alm_soli">
                                                     </div>&nbsp;&nbsp;&nbsp;
                                                     <div class="form-group">
-                                                        <strong>Nombre cliente</strong>
-                                                        <input type="text" class="form-control" id="alm_soli"
-                                                               name="alm_soli">
-                                                    </div>
-                                                    &nbsp;&nbsp;&nbsp;
+                                                        <strong>Resultado de llamada</strong>
+
+                                                        <select id="resultado_llamada" name="resultado_llamada"
+                                                                class="form-control">
+                                                            <option selected value="">Seleccion</option>
+                                                            <option value="IE">Informacion de entrega</option>
+                                                            <option value="NC">No contesta</option>
+                                                            <option value="CA">Cliente aplaza</option>
+                                                            <option value="FR">Fuera de ruta</option>
+                                                        </select>
+                                                    </div>&nbsp;&nbsp;&nbsp;
                                                     <div class="form-group">
-                                                        <strong>Telefono</strong>
-                                                        <input type="text" class="form-control" id="alm_soli"
-                                                               name="alm_soli">
+
+
+                                                        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+                                                        <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js"
+                                                                type="text/javascript"></script>
+
+                                                        <strong>Fecha de entrega</strong>
+                                                        <input id="datepicker" width="276"/>
+
+
+                                                        <script>
+                                                            $('#datepicker').datepicker({
+                                                                uiLibrary: 'bootstrap4'
+                                                            });
+                                                        </script>
+
                                                     </div>
 
-                                                    &nbsp;&nbsp;&nbsp;
-                                                    <div class="form-group">
-                                                        <strong>Direccion</strong>
-                                                        <input type="text" class="form-control" id="alm_soli"
-                                                               name="alm_soli">
+                                                    <div class="col-6 col-md-4  ">
+                                                        <input type="file" class="custom-file-input " id="customFile">
+                                                        <label class="custom-file-label" for="customFile"><i
+                                                                class="fas fa-microphone-alt"></i>Seleccionar</label>
                                                     </div>
-                                                    &nbsp;&nbsp;&nbsp;
-                                                    <div class="form-group">
-                                                        <strong>Ruta</strong>
-                                                        <input type="text" class="form-control" id="alm_soli"
-                                                               name="alm_soli">
-                                                    </div>
-                                                    &nbsp;&nbsp;&nbsp;
-                                                    <div class="form-group">
-                                                        <strong>localidad</strong>
-                                                        <input type="text" class="form-control" id="alm_soli"
-                                                               name="alm_soli">
-                                                    </div>
+
                                                 </div>
+                                                <br>
+                                                <button type="submit" class="btn" style="background-color:#36876a">
+                                                    Terminar llamada
+                                                </button>
                                             </div>
                                         </div>
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-md-8 offset-md-3">
-                                                    <div class="card" style="box-shadow: inset 0 0 20px #36876a">
-                                                        <h5 class="card-header"><i class="fas fa-phone-alt"></i> Llamada
-                                                        </h5>
-                                                        <div class="card-body">
 
-                                                            <div class="form-row">
-
-                                                                <div class="form-group ">
-                                                                    <strong>Nombre contesta</strong>
-                                                                    <input type="text" class="form-control"
-                                                                           id="alm_soli" name="alm_soli">
-                                                                </div>&nbsp;&nbsp;&nbsp;
-                                                                <div class="form-group">
-                                                                    <strong>Resultado de llamada</strong>
-
-                                                                    <select id="resultado_llamada"
-                                                                            name="resultado_llamada"
-                                                                            class="form-control">
-                                                                        <option selected value="">Seleccion</option>
-                                                                        <option value="IE">Informacion de entrega
-                                                                        </option>
-                                                                        <option value="NC">No contesta</option>
-                                                                        <option value="CA">Cliente aplaza</option>
-                                                                        <option value="FR">Fuera de ruta</option>
-                                                                    </select>
-                                                                </div>&nbsp;&nbsp;&nbsp;
-                                                                <div class="form-group">
-
-
-                                                                    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-                                                                    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js"
-                                                                            type="text/javascript"></script>
-
-                                                                    <strong>Fecha de entrega</strong>
-                                                                    <input id="datepicker" width="276"/>
-
-
-                                                                    <script>
-                                                                        $('#datepicker').datepicker({
-                                                                            uiLibrary: 'bootstrap4'
-                                                                        });
-                                                                    </script>
-
-                                                                </div>
-
-                                                                <div class="col-6 col-md-4  ">
-                                                                    <input type="file" class="custom-file-input "
-                                                                           id="customFile">
-                                                                    <label class="custom-file-label" for="customFile"><i
-                                                                            class="fas fa-microphone-alt"></i>Seleccionar</label>
-                                                                </div>
-
-                                                            </div>
-                                                            <br>
-                                                            <button type="submit" class="btn"
-                                                                    style="background-color:#36876a">Terminar llamada
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="form-group mb-0">
                                             <button class="btn btn-primary" type="submit">Send</button>
-                                        </form>
-                                    </div>
-
-
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -514,6 +489,6 @@
 
     </div>
     <!-- /Container -->
-    </div>
+
 
 {% endblock %}

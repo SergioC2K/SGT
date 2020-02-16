@@ -34,7 +34,7 @@
                                             {% for operador in operadores %}
                                                 <div class="form-row">
                                                 <div class="form-group">
-                                                <input value="{{ operador.usuario.first_name }}" name="usuario[]"
+                                                <input value="{{ operador.usuario.pk }}" name="usuario[]"
                                                        id="usuario" class="form-control col-xl-12">
                                                 <input name="valor[]" class="form-control col-xl-3" id="valor">
                                             {% endfor %}
@@ -42,7 +42,7 @@
                                             <br>
 
                                             <button type="submit" class="btn" style="background-color:#36876a">
-                                                enviar
+                                                Enviar
                                             </button>
                                         </div>
                                         </div>
