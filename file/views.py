@@ -10,6 +10,7 @@ from file.models import LlamadasEntrantes
 import pandas as pd
 from django.views.generic import ListView, CreateView, UpdateView
 from django.db.models import Q, Count
+from django.db import IntegrityError
 from file.models import RegistroLlamada
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -22,11 +23,15 @@ from usuario.models import Perfil
 @login_required
 def upload_excel(request):
     if request.method == 'POST':
-        leido = pd.read_excel(request.FILES['myfile'])
+        nombre = request.FILES['myfile']
+        leido = pd.read_excel(nombre)
         llamadas = []
-        nombre = request.POST['nombre']
-        crear = Archivo.objects.create(nombre=nombre)
-        crear.save()
+        try:
+            crear = Archivo.objects.create(nombre=nombre)
+            crear.save()
+        except IntegrityError as e:
+            return render(request, 'archivo/fileimport.html', {"message": e.message})
+
         for data in leido.T.to_dict().values():
             llamadas.append(
                 LlamadasEntrantes(
@@ -51,8 +56,8 @@ def upload_excel(request):
                     ruta=data['ruta'],
                     hora_inicio=data['hora inicial'],
                     hora_final=data['hora final']
-                ))
-
+                )
+            )
         LlamadasEntrantes.objects.bulk_create(llamadas)
     return render(request, 'archivo/fileimport.html')
 
@@ -95,7 +100,7 @@ class ListarArchivo(ListView):
         # Llamadas seguimiento son las llamadas que han quedado pendiente o algun estado similar
         data['llamadas_seguimiento'] = LlamadasEntrantes.objects. \
             filter(
-            Q(created__range=(self.dias_antes, self.horas_antes)),
+            Q(created__range=(dias_antes, horas_antes)),
             Q(entrega__in=self.queryset.values('entrega'))
         )
         return data

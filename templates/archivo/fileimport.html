@@ -35,8 +35,9 @@
                                     <input type="file" id="input" name="myfile"
                                            accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                     />
+                                    <input id="nombre" type="hidden">
 
-                                    <button type="submit">enviar</button>
+                                    <button onclick="enviarNombre()" type="submit">enviar</button>
                                 </form>
                             </div>
 
@@ -104,7 +105,7 @@
             src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
     <script src="{% static "dist/js/excel_upload.js" %}"></script>
     <script>
-        function papa() {
+        function enviarNombre() {
             nombre = document.getElementById('input').files[0].name;
             document.getElementById('nombre').value = nombre;
         }
