@@ -4,11 +4,17 @@
     <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><i
             class="ion ion-ios-menu"></i>
     </a>
-    <a class="navbar-brand" href="">
-        Coordinador</i>
+    {% if user.is_staff %}
 
+        <a class="navbar-brand" href="">
+            Coordinador</i>
+        </a>
+    {% else %}
+        <a class="navbar-brand" href="">
+            Operador</i>
+        </a>
 
-    </a>
+    {% endif %}
     <ul class="navbar-nav hk-navbar-content">
 
         <li class="nav-item dropdown dropdown-notifications">
@@ -152,7 +158,7 @@
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
-               <a class="dropdown-item" href="{% url 'usuario:perfil' %}"><i
+                <a id="oelo" class="dropdown-item" href="{% url 'usuario:perfil' %}"><i
                         class="dropdown-icon zmdi zmdi-account"></i><span>Perfil</span></a>
 
 

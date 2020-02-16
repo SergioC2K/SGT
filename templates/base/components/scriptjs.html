@@ -7,13 +7,6 @@
             console.log(1)
             document.getElementById("punt").className = "badge badge-success badge-indicator";
             document.getElementById("no-conectado").id = "conectado";
-            document.getElementById("conectado").innerHTML = "<a href=\"#\" class=\"dropdown-toggle dropdown-item no-caret\"><i\n" +
-                "            class=\"zmdi zmdi-check text-danger\"></i>No Conectado</a>\n" +
-                "    <div class=\"dropdown-menu open-left-side\">\n" +
-                "        <a id=\"btn-conexion\" class=\"dropdown-item\" href=\"#\"><i\n" +
-                "                class=\"dropdown-icon zmdi zmdi-check text-success\"></i><span>Conectado</span></a>\n" +
-                "        <input id=\"estado-a-cambiar\" type=\"hidden\" value=\"True\">\n" +
-                "    </div>";
         });
     });
 
@@ -25,14 +18,13 @@
             console.log(1)
             document.getElementById("punt").className = "badge badge-danger badge-indicator";
             document.getElementById("conectado").id = "no-conectado";
-            document.getElementById("no-conectado").innerHTML = "<a href=\"#\" class=\"dropdown-toggle dropdown-item no-caret\"><i\n" +
-                "            class=\"zmdi zmdi-check text-success\"></i>Conectado</a>\n" +
-                "    <div class=\"dropdown-menu open-left-side\">\n" +
-                "        <a id=\"btn-conexion\" class=\"dropdown-item\" href=\"#\">\n" +
-                "            <i class=\"dropdown-icon zmdi zmdi-minus-circle-outline text-danger\"></i>\n" +
-                "            <span>No Conectado</span></a>\n" +
-                "        <input id=\"estado-a-cambiar\" type=\"hidden\" value=\"False\">\n" +
-                "    </div>";
+            document.getElementById("no-conectado").innerHTML = `<a href="#" class="dropdown-toggle dropdown-item no-caret"><i class="zmdi zmdi-check text-success"></i>Conectado</a>
+<div class="dropdown-menu open-left-side"><a id="btn-conexion" class="dropdown-item" href="#">
+    <i class="dropdown-icon zmdi zmdi-minus-circle-outline text-danger"></i>
+    <span>No Conectado</span>
+</a>
+    <input id="estado-a-cambiar" type="hidden" value="False">
+</div>`;
 
 
         });

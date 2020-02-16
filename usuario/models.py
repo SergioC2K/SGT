@@ -30,7 +30,7 @@ class Perfil(BaseModel, models.Model):
 
     # Numero de celular con el cual trabajara en el telemercadeo
     celular_telemercadeo = models.CharField(validators=[telefono_regex], max_length=15)
-    conexion = models.ForeignKey(Conectado, on_delete=models.PROTECT, null=True)
+    conexion = models.ForeignKey(Conectado, on_delete=models.PROTECT)
     foto = models.ImageField(
         upload_to='users/pictures',
         blank=True,

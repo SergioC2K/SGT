@@ -11,6 +11,18 @@ from django.core import serializers
 
 from django.views.generic import ListView, FormView
 
+# Vistas = Listar y crear
+from django.views.generic import ListView, CreateView, UpdateView, FormView
+
+# Exception
+from django.db.utils import IntegrityError
+
+# Models
+from django.contrib.auth.models import User
+
+# Forms
+from django.views.generic.edit import FormMixin
+
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil
 from django.contrib.auth.forms import PasswordChangeForm
@@ -24,11 +36,11 @@ class LoginViewUsuario(LoginView):
 
     def get_success_url(self):
         url = self.get_redirect_url()
-        return url or reverse('usuario:perfil')
+        return url or reverse('usuario:listar_usuario')
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
+            return HttpResponseRedirect(reverse_lazy('usuario:listar_usuario'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
 def perfil(request):
@@ -37,10 +49,17 @@ def perfil(request):
 
 class PerfilCreateView(FormView):
     template_name = 'users/perfil.html'
+    model = Perfil
     form_class = PerfilForm
-    success_url = reverse_lazy('usuario:listar_usuario')
 
+    def get_object(self, **kwargs):
+        """Return user's profile."""
+        return self.request.user.perfil
 
+    def get_success_url(self):
+        """Return to user's profile."""
+        username = self.object.usuario.username
+        return reverse('usuario:listar_usuario')
 
 class UserCreateView(FormView):
     template_name = 'users/usuario_nuevo.html'
@@ -78,7 +97,6 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
@@ -95,9 +113,8 @@ class ListarUsuario(ListView, FormView):
     def form_valid(self, form):
         """Guardar datos."""
         form.save()
+
         return super().form_valid(form)
-
-
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
@@ -133,12 +150,12 @@ def desconectado(request):
     return redirect(url)
 
 
-"""class ListEstado(ListView):
-    template_name = 'base/components/tablaUserConect.html'
+class ListEstado(ListView):
+    template_name = 'prueba.html'
     model = Perfil
 
     def get(self, request, *args, **kwargs):
         name = request.GET['name']
         perfiles = Perfil.objects.get(usuario__first_name=name)
         data = serializers.serialize('json', perfiles, fields=('first_name', 'is_superuser'))
-        return HttpResponse(data, content_type='application/json')"""
+        return HttpResponse(data, content_type='application/json')

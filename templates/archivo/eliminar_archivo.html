@@ -1,61 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-    <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base/base.html' %}
+{% load static %}
+<meta charset="UTF-8">
 
-<table class="table table-striped" id="Tablet">
-    <thead>
-    <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Fecha</th>
-        <th scope="col">Accion</th>
-    </tr>
-    </thead>
-    <tbody>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+{% block title %}
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+    <title>Administrar archivo</title>
+{% endblock %}
 
-    {% for i in object_list %}
-        <tr id="archivo-{{ i.pk }}">
-            <td>{{ i.nombre }}</td>
-            <td>{{ i.fecha_ingreso }}</td>
-            <td>
-                <button onclick="eliminar({{ i.pk }})">
-                    Eliminar
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    {% endfor %}
-</table>
-</body>
-</html>
-<script>
-    function eliminar(id) {
-        var action = confirm("Are you sure you want to delete this user?");
-        if (action !== false) {
-            $.ajax({
-                url: '{% url "archivo:borrar" %}',
-                data: {
-                    'id': id,
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data.deleted) {
-                        $("#Tablet #archivo-" + id).remove();
-                    }
-                    else mensaje()
+{% block main %}
+    <div class="hk-pg-wrapper">
+        <table class="table table-striped" id="Tablet">
+            <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Accion</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for i in object_list %}
+                <tr id="archivo-{{ i.pk }}">
+                    <td>{{ i.nombre }}</td>
+                    <td>{{ i.fecha_ingreso }}</td>
+                    <td>
+                        <button class="btn btn-danger " onclick="eliminar({{ i.pk }}) ">
+                            <i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+
+        <script>
+            function eliminar(id) {
+                var action = confirm("Are you sure you want to delete this user?");
+                if (action !== false) {
+                    $.ajax({
+                        url: '{% url "archivo:borrar" %}',
+                        data: {
+                            'id': id,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.deleted) {
+                                $("#Tablet #archivo-" + id).remove();
+                            } else mensaje()
+                        }
+                    });
                 }
-            });
-        }
-    }
+            }
 
-    function mensaje() {
-        alert('No se puede eliminar este archivo');
-    }
-    </script>
+            function mensaje() {
+                alert('No se puede eliminar este archivo');
+            }
+        </script>
+    </div>
+{% endblock %}

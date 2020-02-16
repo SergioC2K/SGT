@@ -3,6 +3,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from tablib import Dataset
 from file.models import LlamadasEntrantes
@@ -16,6 +17,7 @@ from usuario.models import Perfil, User
 
 # Create your views here.
 from usuario.models import Perfil
+import time
 
 
 @login_required
@@ -76,7 +78,7 @@ class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
     queryset = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana))
-    context_object_name = 'oelo'
+    context_object_name = 'llamadas_hoy'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)

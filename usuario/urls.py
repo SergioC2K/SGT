@@ -41,7 +41,7 @@ urlpatterns = [
     ),
     path(
         route='perfil/',
-        view=views.PerfilCreateView.as_view(),
+        view=views.UpdateProfileView.as_view(),
         name='perfil'
     ),
     path(

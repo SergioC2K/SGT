@@ -1,146 +1,40 @@
+
 {% extends 'base/base.html' %}
 {% block main %}
-
-
-    <!-- Main Content -->
     <br>
-    <div class="hk-pg-wrapper hk-auth-wrapper">
-        <div class="hk-pg-header">
-            <nav class="hk-breadcrumb" aria-label="breadcrumb">
-                <ol class="breadcrumb breadcrumb-light bg-transparent">
+    <br>
+    <br>
 
-                </ol>
-            </nav>
-            <div class="container">
-                <h4 class="hk-pg-title"><span class="pg-title-icon"><i
-                        class="fas fa-user-plus"></i></span>Registro</h4>
-            </div>
+{% load crispy_forms_tags %}
 
-        </div>
+    <div class="container text-center mx-auto">
+        <form action="{% url 'usuario:nuevo' %}" method="post">
+            {% csrf_token %}
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xl-9 mt-0">
-                    <div class="auth-form-wrap pt-xl-0 pt-70">
-                        <div class="auth-form w-xl-60 w-lg-55 w-sm-85 w-100">
 
-                            <form class="form-group" method="POST" action="" autocomplete="off">
-
-                                {% csrf_token %}
-
-                                {{ form.as_p }}
-
-                                <p class="mb-70 text-center"></p>
-                                <div class="form-group" id="document-form">
-                                    <input class="form-control" id="cedula" name="cedula" maxlength="18"
-
-                                           placeholder="Documento de identidad" type="text">
-                                </div>
-                                <div class="form-row">
-
-                                    <div class="col-md-6 form-group">
-                                        <input class="form-control" name="first_name" id="first_name" maxlength="15"
-                                               placeholder="Nombres completos"
-                                               value="" type="text">
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <input class="form-control" name="last_name" id="last_name" maxlength="15"
-                                               placeholder="Apellidos" value=""
-
-                                               type="text">
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <input class="form-control" placeholder="Usuario" id="username" maxlength="15"
-                                               minlength="8" name="username"
-                                               value="" type="text">
-                                    </div>
-
-                                    <div class="col-md-6 form-group">
-                                        <input class="form-control" name="telefono_fijo" maxlength="15"
-                                               placeholder="Telefono fijo"
-
-                                               value="" type="text">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" name="email" id="email" maxlength="30"
-                                           placeholder="Email" type="email">
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" name="celular" id="celular" placeholder="Movil"
-                                           maxlength="15" minlength="8"
-                                            type="tex">
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" name="celular_telemercadeo" id="celular_telemercadeo"
-                                           maxlength="15" minlength="8"
-
-                                           placeholder="Movil telemercadeo" type="tex">
-                                </div>
-
-                                <div class="container">
-                                    <h7 class="page-header">Cargo</h7>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <select class="form-control" name="cargo" id="cargo" required>
-                                                <option value="{{ value|yesno:"Coordinador,Operador,no" }}">Seleccione
-                                                </option>
-                                                <option value="True">Coordinador</option>
-                                                <option value="False">Operador</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="form-group">
-                                        <input class="form-control" name="password" id="password"
-                                               placeholder="Contraseña"
-                                               minlength="8" maxlength="15"
-                                               type="password">
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" name="cedula_confirmacion" placeholder="Contraseña"
-                                               minlength="8" maxlength="15"
-                                               type="password">
-
-                                    </div>
-                                    {% if error %}
-                                        {{ error }}
-                                    {% endif %}
-                                    <button class="btn btn-green btn-block" onclick="Registrar()" type="submit">
-                                        Registrar
-                                    </button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.username|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.password|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.password_confirmation|as_crispy_field }}
                 </div>
             </div>
 
-            <br>
-            <br>
-        </div>
+            {{ form.first_name|as_crispy_field }}
+            {{ form.last_name|as_crispy_field }}
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.email|as_crispy_field }}
+                </div>
+            </div>
+            {{ form.is_staff|as_crispy_field }}
+            <button type="submit" class="btn btn-primary">Sign in</button>
+
+
+        </form>
     </div>
-
-    <!-- /Main Content -->
-
-
-    <script>
-        $(document).ready(function () {
-            $("#V").submit(function (event) {
-                event.preventDefault();
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'usuario:nuevo' %}",
-
-                    success: function () {
-                        alert("registro exitoso")
-                    }
-                });
-                return false;
-            });
-        });
-    </script>
-
 {% endblock %}
-

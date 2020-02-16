@@ -19,6 +19,11 @@ urlpatterns = [
         name='listar_llamada'
     ),
     path(
+        route='asignar/',
+        view=views.registro_llamada,
+        name='asignar'
+    ),
+    path(
         route='realizar/',
         view=views.registro_llamada,
         name='registrar_llamada'

@@ -9,6 +9,34 @@
     <br>
     <br>
     <br>
+    <div id="demo" onmouseup="unaFuncion()" class="row">
+        <div class="col-lg-3 offset-lg-2">
+            <div class="wrapper">
+                <div id="wrapper">
+                    <div id="container">
+                        {% for llamada in llamadas_hoy %}
+                            <div class="box">
+                                <p class="nota">{{ llamada.entrega }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div id="threshold">
+                        <div class="threshold"></div>
+                        <div class="threshold"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'base/components/tablaUserConect.html' %}
+        <h2 id="cant_ll" class="col-lg-1 offset-9">{{ llamadas_hoy|length }}</h2>
+        <h2 id="conteo" class="col-lg-1 offset-9"></h2>
+        <h2 id="llam_res" class="col-lg-1 offset-9"></h2>
+        <h2 id="division" class="col-lg-1 offset-9"></h2>
+        <a id="nea" href="{% url 'archivo:asignar' %}" hidden></a>
+        <button id="clickes"></button>
+
+    </div>
+
     <div class="col"></div>
 
     <div class="hk-pg-wrapper">
@@ -161,4 +189,19 @@
         </div>
         <!-- /Footer -->
     </div>
+
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    {% load static %}
+    <script src="{% static 'dist/js/selectable/selectable.js' %}"></script>
+
+    <script src="{% static 'dist/js/codigo.js' %}"></script>
+    <script src="{% static 'dist/js/code.js' %}"></script>
+    <script>
+        var urlAsignar = document.getElementById('nea').getAttribute('href');
+        var aux = document.location.href.substr(0, 21);
+        var urlCompleta = aux + urlAsignar;
+
+    </script>
 {% endblock %}

@@ -38,7 +38,6 @@
                                            onchange="papa()"
                                            accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                     />
-
                                     <button type="submit">enviar</button>
                                 </form>
                             </div>
@@ -59,9 +58,7 @@
                     </table>
                 </div>
             </div>
-            {% block scripts %}
-                {{ block.super }}
-            {% endblock %}
+
 
         </div>
 
@@ -70,6 +67,30 @@
 
     {% load static %}
 
+
+
+
+    <style>
+        #sampleContainer ol {
+            padding: 0px 0px 0px 15px;
+            margin: 0;
+        }
+
+        #sampleContainer input {
+            margin: 10px 0;
+        }
+
+        #result {
+            display: none;
+            color: red;
+        }
+    </style>
+
+
+
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
 
     <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>

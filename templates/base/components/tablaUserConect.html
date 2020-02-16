@@ -1,13 +1,33 @@
-{% for usuario in usuario_conectado %}
-    <tbody>
-
-    <td>
-        {{ usuario.usuario.get_username }}
-    </td>
-    <th scope="row"><input type="checkbox" name="foo"
-                           value="bar1">
-    </th>
-    </tbody>
-{% endfor %}
-
+<div class="col-lg-4 offset-lg-3">
+    <div class="col-11 offset-1">
+        <div class="caja">
+            <div style="font-size: 20px;
+    height: auto;
+    width: auto;
+    padding: 1px 5px ;
+    padding-top: 15px ;
+    padding-left: 20% ;
+    color: #006709;
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;">
+                Usuarios Conectados
+            </div>
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <div class="otra-caja">
+                        {% for usuario in usuario_conectado %}
+                            <div id="hablalo" class="chat_people">
+                                <p hidden>{{ usuario.pk }}</p>
+                                <div class="chat_img"><img src="https://ptetutorials.com/images/user-profile.png"
+                                                           alt="sunil"></div>
+                                <div class="chat_ib">
+                                    <h5>{{ usuario.usuario.get_username }} <span class="green led"></span></h5>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
