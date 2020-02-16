@@ -1,44 +1,38 @@
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}
+
+<head>
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
-    <title>{{ perfil.usuario.first_name }}</title>
+    <title>{{ user }}</title>
     <link rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}">
+    <script src="https://kit.fontawesome.com/c7e6a57cdf.js" crossorigin="anonymous"></script>
 </head>
 
 {% block form %}
+
     <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="col-8 p-4" id="profile-box">
-                <div class="card" style="border-radius: 20px">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fa fa-user"></i>Complete los siguientes campos para continuar
-                        </h5>
-                        <form method="POST" action="{% url 'usuario:perfil' %}">
-                            {% csrf_token %}
+        <div class="card mt-4" style="border-radius: 20px">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-user"></i> Complete los siguientes campos para continuar
+                </h5>
+                <hr>
+                <form method="POST" action="{% url 'usuario:perfil' %}">
 
-                            {% if form.errors %}
-                                <p>{{ form.errors }}</p>
+                    {% csrf_token %}
 
+                    {% if form.errors %}
+                        <p>{{ form.errors }}</p>
 
-                                <div class="media">
-
-
-                                <br> <br>
-                                <img src="{% static 'dist/img/avatar1.jpg' %}" class="rounded-circle" height="50"/>
-
-
-                                <div class="media-body">
-                                <h5 class="ml-4"></h5>
-                                <p class="ml-4"><input type="file" name="picture"></p>
-
-                                <div class="alert alert-danger">
-
-                                    <b>Picture: </b>{{ error }}
-                                </div>
-                            {% endif %}
-                            </div>
+                    {% endif %}
+                    <div class="media">
+                        <div class="media-body">
                             <div class="container">
+                                <div class="form-group">
+                                    <img src="{% static 'dist/img/avatar1.jpg' %}"
+                                         class="rounded-circle" height="120"/>&nbsp;
+                                    <input type="file" name="picture">
+                                </div>
+
                                 <div class="row">
                                     <div class="col">
 
@@ -48,7 +42,7 @@
                                                readonly onmousedown="return false"
                                                name="firts_name" id="firts_name"
                                                maxlength="15"
-
+                                               required
                                                value="{{ user.first_name }}"
                                                onkeypress="return soloLetras(event)"
                                                type="text"/>
@@ -61,7 +55,8 @@
                                                 class="form-control"
                                                 type="text"
                                                 name="last_name"
-                                                placeholder=""
+                                                placeholder="Apellidos"
+                                                required
                                                 readonly onmousedown="return false"
                                                 value="{{ user.last_name }}"/>
 
@@ -76,6 +71,7 @@
                                                 type="text"
                                                 name="email"
                                                 placeholder=""
+                                                required
                                                 readonly onmousedown="return false"
                                                 value="{{ user.email }}"/>
 
@@ -86,8 +82,8 @@
                                             <input class="form-control"
                                                    name="telefono_fijo" id="telefono_fijo"
                                                    placeholder="Telefono fijo"
-                                                   onkeypress="return soloNumeros(event)"
                                                    value="{{ perfil.telefono_fijo }}"
+                                                   required
                                                    type="text"/>
 
                                         </div>
@@ -99,14 +95,12 @@
                                                 <input class="form-control"
                                                        id="cedula" name="cedula"
                                                        maxlength="10"
-                                                       onkeypress="return soloNumeros(event)"
-                                                       VALUE="{{ perfil.cedula }}"
+                                                       value="{{ perfil.cedula }}"
                                                        placeholder="Documento de identidad"
                                                        type="text"
                                                 />
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +115,6 @@
                                                        name="celular" id="celular"
                                                        placeholder="Movil"
                                                        maxlength="15" minlength="8"
-                                                       onkeypress="return soloNumeros(event)"
                                                        value="{{ perfil.celular }}"
                                                        type="text"/>
                                             </div>
@@ -134,7 +127,6 @@
                                                 <input class="form-control"
                                                        name="celular_telemercadeo" id="celular_telemercadeo"
                                                        maxlength="15" minlength="8"
-                                                       onkeypress="return soloNumeros(event)"
                                                        placeholder="Movil telemercadeo"
                                                        type="text"
                                                        value="{{ perfil.celular_telemercadeo }}"/>
@@ -143,23 +135,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer mt-3">
-                                {# Phone number field #}
+
+
+                            <div class="modal-footer justify-content-center">
+                                <br>
+                                <img src="{% static 'dist/img/LogoSGT.png' %}" height="85" class="fixed-bottom">
                                 <button type="submit" class="btn btn-success">Guardar cambios</button>
                                 {% if errors %}
                                     <p class="text-red">{{ errors }}</p>
                                 {% endif %}
-                        </form>
-
-                        <a class="btn btn-info" href="{% url 'usuario:cambio' %}">Cambiar contraseña</a>
-                    </div>
+                                <a class="btn btn-dark" href="{% url 'usuario:cambio' %}">Cambiar contraseña</a>
 
 
-                </div>
+                            </div>
+                        </div>
+                </form>
             </div>
         </div>
+
+
     </div>
     </div>
+    </div>
+    <button class="btn btn-success fixed-top mt-1" href=""><i class="fas fa-arrow-left"></i></button>
 {% endblock %}
 <style>
 

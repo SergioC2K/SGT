@@ -1,69 +1,71 @@
 {% load static %}
-<nav class="hk-nav hk-nav-dark bg-grey-dark-4">
-    <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i
-            data-feather="x"></i></span></a>
-    <div class="nicescroll-bar">
-        <div class="navbar-nav-wrap">
-            <ul class="navbar-nav flex-column">
-                <li class="nav-item active">
+{% block sidebar %}
+    <nav class="hk-nav hk-nav-dark bg-grey-dark-4">
+        <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i
+                data-feather="x"></i></span></a>
+        <div class="nicescroll-bar">
+            <div class="navbar-nav-wrap">
+                <ul class="navbar-nav flex-column">
+                    <li class="nav-item active">
                          <span class="nav-link-text"><img src="{% static 'dist/img/SGT.png' %}" width="200px"
                                                           srcset=""></span>
-                    </a>
+                        </a>
 
-                </li>
-
-
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#pages_drp">
-                        <i class="fa fa-phone-alt"></i>
-                        <span class="nav-link-text">Llamadas</span>
-                    </a>
-                    <ul id="pages_drp" class="nav flex-column collapse collapse-level-1">
-                        <li class="nav-item">
-                            <ul class="nav flex-column">
-
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'file:registrar_llamada' %}">Realizar llamadas</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+                    </li>
 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
-                        <i class="fas fa-envelope-open-text"></i>
-                        <span class="nav-link-text">Bandeja de entrada</span>
-                    </a>
-                    <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
-                        <li class="nav-item">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'file:buzon' %}">Mensajes</a>
-                                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#pages_drp">
+                            <i class="fa fa-phone-alt"></i>
+                            <span class="nav-link-text">Llamadas</span>
+                        </a>
+                        <ul id="pages_drp" class="nav flex-column collapse collapse-level-1">
+                            <li class="nav-item">
+                                <ul class="nav flex-column">
 
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <hr class="nav-separator">
-            <div class="nav-header">
-                <span>Opciones</span>
-                <span>SGT</span>
-            </div>
-            <ul class="navbar-nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                       data-target="#Components_drp">
-                        <i class="far fa-file-archive"></i>
-                        <span class="nav-link-text">Archivo</span>
-                    </a>
-                    <ul id="Components_drp" class="nav flex-column collapse collapse-level-1">
-                        <li class="nav-item">
-                            <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'file:registrar_llamada' %}">Realizar
+                                            llamadas</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
+                            <i class="fas fa-envelope-open-text"></i>
+                            <span class="nav-link-text">Bandeja de entrada</span>
+                        </a>
+                        <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                            <li class="nav-item">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'file:buzon' %}">Mensajes</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <hr class="nav-separator">
+                <div class="nav-header">
+                    <span>Opciones</span>
+                    <span>SGT</span>
+                </div>
+                <ul class="navbar-nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                           data-target="#Components_drp">
+                            <i class="far fa-file-archive"></i>
+                            <span class="nav-link-text">Archivo</span>
+                        </a>
+                        <ul id="Components_drp" class="nav flex-column collapse collapse-level-1">
+                            <li class="nav-item">
+                                <ul class="nav flex-column">
 
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'file:import' %}">Importa archivo</a>
@@ -75,66 +77,67 @@
                                     <a class="nav-link" href="{% url 'file:eliminar' %}">Administrar archivo</a>
                                 </li>
 
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                       data-target="#content_drp">
-                        <i class="fas fa-poll"></i>
-                        <span class="nav-link-text">Resultados</span>
-                    </a>
-                    <ul id="content_drp" class="nav flex-column collapse collapse-level-1">
-                        <li class="nav-item">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link" >Exportar archivos</a>
-                                </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                           data-target="#content_drp">
+                            <i class="fas fa-poll"></i>
+                            <span class="nav-link-text">Resultados</span>
+                        </a>
+                        <ul id="content_drp" class="nav flex-column collapse collapse-level-1">
+                            <li class="nav-item">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="typography.html">Exportar archivos</a>
+                                    </li>
 
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                       data-target="#utilities_drp">
-                        <i class="fa fa-money-check-alt"></i>
-                        <span class="nav-link-text">Liquidaciones</span>
-                    </a>
-                    <ul id="utilities_drp" class="nav flex-column collapse collapse-level-1">
-                        <li class="nav-item">
-                            <ul class="nav flex-column">
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                           data-target="#utilities_drp">
+                            <i class="fa fa-money-check-alt"></i>
+                            <span class="nav-link-text">Liquidaciones</span>
+                        </a>
+                        <ul id="utilities_drp" class="nav flex-column collapse collapse-level-1">
+                            <li class="nav-item">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="background.html">Reportes</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="border.html">liquidaciones</a>
+                                    </li>
 
-                                <li class="nav-item">
-                                    <a class="nav-link" href="border.html">liquidaciones</a>
-                                </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
 
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#forms_drp">
+                            <i class="fa fa-user-alt"></i>
+                            <span class="nav-link-text">Usuarios</span>
+                        </a>
+                        <ul id="forms_drp" class="nav flex-column collapse collapse-level-1">
+                            <li class="nav-item">
+                                <ul class="nav flex-column">
 
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#forms_drp">
-                        <i class="fa fa-user-alt"></i>
-                        <span class="nav-link-text">Usuarios</span>
-                    </a>
-                    <ul id="forms_drp" class="nav flex-column collapse collapse-level-1">
-                        <li class="nav-item">
-                            <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'usuario:listar_usuario' %}">Operadores</a>
+                                    </li>
 
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'usuario:listar_usuario' %}">Operadores</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-
-
+    </nav>
+{% endblock %}

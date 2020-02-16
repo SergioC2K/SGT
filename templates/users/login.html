@@ -5,7 +5,7 @@
 {% load static %}
 {% block container %}
 
-       <p> {{ form.non_field_errors }}</p>
+
 
 
 
@@ -33,6 +33,10 @@
             <a href="{% url 'password_reset' %}" class="btnForgetPwd" value="Login">Olvido su contraseña?</a>
         </div>
     </form>
+    <script>
+
+    {{ form.non_field_errors }}
+    </script>
 {% endblock %}
 
 
