@@ -116,7 +116,7 @@
                                                                 {% else %}
 
                                                                     <form id="Disabled"
-                                                                          action="{% url 'usuario:desactivar' %}"
+
                                                                           method="POST">
 
                                                                         {% csrf_token %}
@@ -135,7 +135,7 @@
 
                                                                             <button type="submit"
                                                                                     class="btn btn-dark"
-                                                                            ><i
+                                                                                    onclick="Inhabilitar()"><i
                                                                                     class="fa fa-pencil"></i>
                                                                             </button>
 
@@ -303,6 +303,41 @@
 
         {% block javascript %}
             <script>
+
+                function Inhabilitar(id) {
+                    Swal.fire({
+                        title: 'Esta seguro?',
+                        text: "Desea inhabiliatal el usuario",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#31d64e',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+
+
+                    }).then((result) => {
+                        $.ajax({
+                            url: '{% url "usuario:desactivar" %}',
+                            data: {
+                                'id': id,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.deleted) {
+                                    $("#Tablet #archivo-" + id).remove();
+                                } else mensaje()
+                            }
+                        });
+                        if (result.value) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                        }
+                    })
+                }
+
                 (function () {
                     'use strict';
                     window.addEventListener('load', function () {

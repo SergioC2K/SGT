@@ -145,7 +145,7 @@
             </div>
         </div>
     </div>
-    </div>
+
     <button class="btn btn-success fixed-top mt-1" href=""><i class="fas fa-arrow-left"></i></button>
 {% endblock %}
 
@@ -161,7 +161,9 @@
         let prism = true
 
 
-        let formulario = [
+
+
+         const formulario = [
             telefono = telefono[0],
             celular = celular[1],
             cedula = cedula[2],
@@ -169,8 +171,8 @@
         ]
 
         let PerfilForm = document.getElementById("perfilform").addEventListener('submit', function (event) {
-            event.preventDefault()
-            for (form = 0; form < formulario.length; form++) {
+
+            for(form = 0; form < formulario.length; form++) {
                 if (formulario[form].type == 'text') {
                     if (formulario[form].value == null || formulario[form].value.length == 0 || /^\s*$/.test(formulario[form].value)) {
                         console.log(formulario[form] + 'no puede estar vacío o contener sólo espacios en blanco');
