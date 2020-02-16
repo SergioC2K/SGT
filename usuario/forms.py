@@ -141,7 +141,7 @@ class PerfilForm(forms.ModelForm):
 
     class Meta:
         model = Perfil
-        exclude = ['usuario','conexion']
+        exclude = ['usuario', 'conexion']
 
     def clean(self):
         """Verificar cedula unica"""

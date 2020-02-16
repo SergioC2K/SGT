@@ -133,8 +133,10 @@
                 <div class="media">
                     <div id="boton-conexion" class="media-img-wrap">
                         <div class="avatar">
-                            <img src="{% static '/dist/img/avatar3.jpg' %}" alt="user"
+
+                            <img src="{{ user.firts_name }}" alt="user"
                                  class="avatar-img rounded-circle">
+
                         </div>
                         <div id="punto-conexion">
                             {% if request.user.perfil.conexion.estado %}
