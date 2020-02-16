@@ -10,7 +10,6 @@ from django.contrib.auth.models import User
 from usuario.models import Perfil, Conectado
 
 
-
 class SignupForm(forms.Form):
     """Formulario de Registro de Usuario"""
     CARGOS = (
@@ -141,7 +140,7 @@ class PerfilForm(forms.ModelForm):
 
     class Meta:
         model = Perfil
-        fields = '__all__'
+        exclude = ['usuario', 'conexion']
 
     def clean(self):
         """Verificar cedula unica"""

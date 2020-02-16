@@ -6,6 +6,7 @@
     <title>{{ user }}</title>
     <link rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}">
     <script src="https://kit.fontawesome.com/c7e6a57cdf.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 
 {% block form %}
@@ -16,7 +17,7 @@
                 <h5 class="card-title"><i class="fa fa-user"></i> Complete los siguientes campos para continuar
                 </h5>
                 <hr>
-                <form method="POST" action="{% url 'usuario:perfil' %}">
+                <form method="POST" action="{% url 'usuario:perfil' %}" id="perfilform">
 
                     {% csrf_token %}
 
@@ -153,11 +154,60 @@
             </div>
         </div>
 
-
+        <button id="boton">alert</button>
     </div>
     </div>
     </div>
     <button class="btn btn-success fixed-top mt-1" href=""><i class="fas fa-arrow-left"></i></button>
+{% endblock %}
+
+{% block javaript %}
+    <script>
+        let telefono = document.getElementById('telefono_fijo');
+        let cedula = document.getElementById('cedula');
+        let celular = document.getElementById('celular');
+        let celular_telemercadeo = document.getElementById('celular_telemercadeo');
+
+
+        function setInputFilter(textbox, inputFilter) {
+            ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+                textbox.addEventListener(event, function () {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    } else {
+                        this.value = "";
+                    }
+                });
+            });
+        }
+
+
+        setInputFilter(document.getElementById("telefono_fijo"), function (value) {
+            return /^-?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("cedula"), function (value) {
+            return /^-?\d*[.,]?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("celular"), function (value) {
+            return /^-?\d*[.,]?\d*$/.test(value);
+        });
+        setInputFilter(document.getElementById("celular_telemercadeo"), function (value) {
+            return /^-?\d*[.,]?\d*$/.test(value);
+        });
+
+
+        const form = document.getElementById('perfilform').addEventListener("submit", function (event) {
+
+
+        })
+
+
+    </script>
 {% endblock %}
 <style>
 
@@ -173,3 +223,6 @@
 
     }
 </style>
+
+
+
