@@ -29,16 +29,6 @@ urlpatterns = [
         name='registrar_llamada'
     ),
     path(
-        route='buzon/',
-        view=views.buzon,
-        name='buzon'
-    ),
-    path(
-        route='repartir/',
-        view=views.repartir,
-        name='repartir'
-    ),
-    path(
         route='enviar',
         view=views.enviarLlamadas,
         name='enviarLlamada'
@@ -50,8 +40,8 @@ urlpatterns = [
         name='entregar_l'
     ),
     path(
-        route='entrega',
-        view=views.ver_Llamadas,
+        route='oelo/',
+        view=views.repartir,
         name='entrega'
     ),
 

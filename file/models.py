@@ -5,9 +5,8 @@ from utils.models import BaseModel
 from django.contrib.auth.models import User
 
 
-class Archivo(models.Model):
+class Archivo(BaseModel, models.Model):
     nombre = models.CharField(max_length=50, unique=True)
-    fecha_ingreso = models.DateTimeField(auto_now_add=True)
 
 
 class LlamadasEntrantes(BaseModel, models.Model):
@@ -54,13 +53,13 @@ class Grabacion(BaseModel, models.Model):
 
 class Estado(BaseModel, models.Model):
     nombre = models.CharField(max_length=30)
+    precio = models.DecimalField(max_digits=3, decimal_places=2)
 
 
 class RegistroLlamada(BaseModel, models.Model):
     nombre_contesta = models.CharField(max_length=45, blank=False, null=True)
     fecha_entrega = models.DateField(null=True, blank=False, auto_now_add=True)
     observaciones = models.TextField(null=True, blank=True)
-    precio_llamada = models.FloatField(null=True)
     numero_contesta = models.CharField(max_length=20,null=True)
     realizado = models.BooleanField(default=False,null=True)
     id_llamada = models.ForeignKey(LlamadasEntrantes, on_delete=models.PROTECT)

@@ -113,15 +113,17 @@ def registro_llamada(request):
         operador = request.GET['operador']
         llamadas = request.GET.getlist('llamadas[]')
         for i in range(len(llamadas)):
-            registro_llamada = RegistroLlamada(id_llamada_id=llamadas[i], id_usuario_id=operador)
-            registro_llamada.save()
+            registro_llamadas = RegistroLlamada(id_llamada_id=llamadas[i], id_usuario_id=operador)
+            registro_llamadas.save()
             llamada_repartida = LlamadasEntrantes.objects.get(id=llamadas[i])
             llamada_repartida.estado = True
             llamada_repartida.save()
-
+            oelo = 1
         devolver_llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)) \
             .exclude(estado=True)
         qsssss = serializers.serialize('json', devolver_llamadas, fields=('pk', 'entrega'))
+        qeee = qsssss
+        qweee = qsssss
     return HttpResponse(qsssss, content_type='application/json')
 
 
