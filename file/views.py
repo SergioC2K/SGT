@@ -83,7 +83,7 @@ class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
     queryset = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)).exclude(estado=True)
-    context_object_name = 'llamadas_entrantes'
+    context_object_name = 'llamadas_hoy'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -108,14 +108,21 @@ class ListarArchivo(ListView):
 
 
 def registro_llamada(request):
-    global response
+    global response, llamadas, calls, qs, qsssss
     if request.is_ajax():
-        data = {
-            'is_taken': LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana))
-        }
-        response = JsonResponse(data)
-        response.status_code = 200
-    return response
+        operador = request.GET['operador']
+        llamadas = request.GET.getlist('llamadas[]')
+        for i in range(len(llamadas)):
+            registro_llamada = RegistroLlamada(id_llamada_id=llamadas[i], id_usuario_id=operador)
+            registro_llamada.save()
+            llamada_repartida = LlamadasEntrantes.objects.get(id=llamadas[i])
+            llamada_repartida.estado = True
+            llamada_repartida.save()
+
+        devolver_llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)) \
+            .exclude(estado=True)
+        qsssss = serializers.serialize('json', devolver_llamadas, fields=('pk', 'entrega'))
+    return HttpResponse(qsssss, content_type='application/json')
 
 
 def repartir(request):

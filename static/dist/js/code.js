@@ -5,35 +5,51 @@ document.getElementById("llam_res").innerHTML = llamadasRest;
 var usuarioPK;
 var primary = [];
 var daticos;
-var datass;
 
 
-function array_llamadas() {
+function llamadasSelecionadas() {
     cajas = selectable.getSelectedNodes();
     for (let i = 0; i < cajas.length; i++) {
         console.log(cajas[i].innerText);
-        notaEntrega.push(cajas[i].innerText)
+        notaEntrega.push(cajas[i].childNodes[3].innerText);
     }
-    usuarioPK = document.getElementById('activo').childNodes[1].innerHTML;
-    daticos = [usuarioPK, notaEntrega];
+    daticos = notaEntrega;
     return daticos
 }
 
+function usuarioSeleccionado() {
+    usuarioPK = document.getElementById('activo').childNodes[1].innerHTML;
+    return usuarioPK
+}
+
+function cajas_llamadas(entrega, primary) {
+    return (`<p class="nota">${entrega}</p><p hidden>${primary}</p>`)
+}
+
+function cajas_retorno(entrega, primary) {
+    for (let i = 0; i < datos.length; i++) {
+        var array = {};
+        array.push(cajas_llamadas(entrega[i], primary[i]))
+    }
+    return array
+}
+
+const llamadasRecibidas = [];
 $("#clickes").click(function () {
-    alert("oelo");
+    var llamadas = llamadasSelecionadas();
+    var usuarioPK = usuarioSeleccionado();
     $.ajax({
         url: urlCompleta, //TODO cambiar la url cuando ya este en produccion
         data: {
-            'username': array_llamadas()
+            'operador': usuarioPK,
+            'llamadas': llamadas
         },
         dataType: 'json',
         success: function (data) {
-            if (data.is_taken) {
-                alert("Ya dio" + data);
-            }
+            location.reload();
         },
         error: function (data) {
-            alert("No dio " + data)
+            alert("Ha ocurrido un error. verifique los datos enviados " + data)
         }
     });
 });

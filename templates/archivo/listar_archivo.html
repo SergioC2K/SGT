@@ -17,6 +17,7 @@
                         {% for llamada in llamadas_hoy %}
                             <div class="box">
                                 <p class="nota">{{ llamada.entrega }}</p>
+                                <p hidden>{{ llamada.id }}</p>
                             </div>
                         {% endfor %}
                     </div>
