@@ -29,7 +29,7 @@
                         <div class="media">
                             <div class="media-img-wrap">
                                 <div class="avatar avatar-sm">
-                                    <img src="{% static '/dist/img/avatar1.jpg' %}" alt="user"
+                                    <img src="{% static '/dist/img/avatar3.jpg' %}" alt=""
                                          class="avatar-img rounded-circle">
                                 </div>
                             </div>
@@ -133,9 +133,14 @@
                 <div class="media">
                     <div id="boton-conexion" class="media-img-wrap">
                         <div class="avatar">
+                            {% if user.perfil.foto %}
+                                <img src="{{ user.perfil.foto }}" alt="user"
+                                     class="avatar-img rounded-circle">
+                            {% else %}
+                                <img src="{% static 'dist/img/avatar1.jpg' %}" alt="user"
+                                     class="avatar-img rounded-circle">
+                            {% endif %}
 
-                            <img src="{{ user.firts_name }}" alt="user"
-                                 class="avatar-img rounded-circle">
 
                         </div>
                         <div id="punto-conexion">
@@ -149,12 +154,9 @@
                     </div>
                     <div class="media-body">
                         {% if user.is_authenticated %}
-
-
                             <span>{{ user.get_username }}<i class="zmdi zmdi-chevron-down"></i></span>
                         {% else %}
                             <span>nnn<i class="zmdi zmdi-chevron-down"></i></span>
-
                         {% endif %}
                     </div>
                 </div>

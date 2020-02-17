@@ -9,9 +9,13 @@
 </head>
 
 {% block form %}
-
+    {% if request.user.is_anonymous %}
+        <a class="btn btn-success mt-2" href="{% url 'usuario:login' %}"><i class="fas fa-arrow-left"></i></a>
+    {% else %}
+        &nbsp;<a class="btn btn-success mt-2 justify-content-center" href="{% url 'file:buzon' %}"><i class="fas fa-arrow-left"></i></a>
+    {% endif %}
     <div class="container">
-        <div class="card mt-4" style="border-radius: 20px">
+        <div class="card" style="border-radius: 20px">
             <div class="card-body">
                 <h5 class="card-title"><i class="fa fa-user"></i> Complete los siguientes campos para continuar
                 </h5>
@@ -135,18 +139,19 @@
                                     <p class="text-red">{{ errors }}</p>
                                 {% endif %}
                                 <a class="btn btn-dark" href="{% url 'usuario:cambio' %}">Cambiar contraseña</a>
-
-
                             </div>
                         </div>
-
                     </div>
                 </form>
             </div>
         </div>
+
     </div>
 
-    <button class="btn btn-success fixed-top mt-1" href=""><i class="fas fa-arrow-left"></i></button>
+
+
+
+
 {% endblock %}
 
 {% block javascript %}
@@ -161,9 +166,7 @@
         let prism = true
 
 
-
-
-         const formulario = [
+        const formulario = [
             telefono = telefono[0],
             celular = celular[1],
             cedula = cedula[2],
@@ -172,7 +175,7 @@
 
         let PerfilForm = document.getElementById("perfilform").addEventListener('submit', function (event) {
 
-            for(form = 0; form < formulario.length; form++) {
+            for (form = 0; form < formulario.length; form++) {
                 if (formulario[form].type == 'text') {
                     if (formulario[form].value == null || formulario[form].value.length == 0 || /^\s*$/.test(formulario[form].value)) {
                         console.log(formulario[form] + 'no puede estar vacío o contener sólo espacios en blanco');

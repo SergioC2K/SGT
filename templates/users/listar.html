@@ -36,95 +36,93 @@
                                     Operadores
 
                                 </h5>
+                            </section>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="table-wrap">
+                                        <table id="table_id" class="table table-striped"
+                                               style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Estado</th>
+                                                <th>Nombres</th>
+                                                <th>Apellidos</th>
+                                                <th>Cedula</th>
+                                                <th>Telefono fijo</th>
+                                                <th>Celular telemercadeo</th>
+                                                <th>Celular</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% if object_list %}
+                                                {% for foo in object_list %}
+                                                    <tr>
+                                                        <td>
+                                                            {% if foo.usuario.is_active %}
+
+                                                                <span class="badge badge-pill badge-success">Activo</span>
+
+                                                            {% else %}
+
+                                                                <span class="badge badge-pill badge-danger">Inactivo</span>
+
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>{{ foo.usuario }}</td>
+                                                        <td>{{ foo.usuario.first_name }}</td>
+                                                        <td>{{ foo.usuario.last_name }}</td>
+                                                        <td>{{ foo.cedula }}</td>
+                                                        <td>{{ foo.telefono_fijo }}</td>
+                                                        <td>{{ foo.celular_telemercadeo }}</td>
+                                                        <td>
+                                                            {% if foo.usuario == request.user %}
+                                                                <p><i class="fas fa-users-cog"></i>Coordinador</p>
+
+                                                            {% else %}
+                                                                <form action="{% url 'usuario:desactivar' %}"
+                                                                      method="POST">
+                                                                    {% csrf_token %}
+
+                                                                    <input id="user" name="user" type="hidden"
+                                                                           value="{{ foo.usuario.pk }}">
 
 
-                                <div class="row">
-                                    <div class="col-sm">
-                                        <div class="table-wrap">
-                                            <table id="table_id" class="table table-striped"
-                                                   style="width:100%">
-                                                <thead>
-                                                <tr>
-                                                    <th>Estado</th>
-                                                    <th>Nombres</th>
-                                                    <th>Apellidos</th>
-                                                    <th>Cedula</th>
-                                                    <th>Telefono fijo</th>
-                                                    <th>Celular telemercadeo</th>
-                                                    <th>Celular</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% if object_list %}
-                                                    {% for foo in object_list %}
-                                                        <tr>
-                                                            <td>
-                                                                {% if foo.usuario.is_active %}
+                                                                    {% if foo.usuario.is_active %}
+                                                                        <button type="submit"
+                                                                                class="btn btn-danger "><i
+                                                                                class="fas fa-power-off"></i>
+                                                                        </button>
 
-                                                                    <span class="badge badge-pill badge-success">Activo</span>
+                                                                        </button>
+                                                                        <button type="submit"
+                                                                                class="btn btn-dark"><i
+                                                                                class="fa fa-pencil"></i>
+                                                                        </button>
 
-                                                                {% else %}
-
-                                                                    <span class="badge badge-pill badge-danger">Inactivo</span>
-
-                                                                {% endif %}
-                                                            </td>
-                                                            <td>{{ foo.usuario }}</td>
-                                                            <td>{{ foo.usuario.first_name }}</td>
-                                                            <td>{{ foo.usuario.last_name }}</td>
-                                                            <td>{{ foo.cedula }}</td>
-                                                            <td>{{ foo.telefono_fijo }}</td>
-                                                            <td>{{ foo.celular_telemercadeo }}</td>
-                                                            <td>
-                                                                {% if foo.usuario == request.user %}
-                                                                    <p><i class="fas fa-users-cog"></i>Coordinador</p>
-
-                                                                {% else %}
-                                                                    <form action="{% url 'usuario:desactivar' %}"
-                                                                          method="POST">
-                                                                        {% csrf_token %}
-
-                                                                        <input id="user" name="user" type="hidden"
-                                                                               value="{{ foo.usuario.pk }}">
-
-
-                                                                        {% if foo.usuario.is_active %}
-                                                                            <button type="submit"
-                                                                                    class="btn btn-danger "><i
+                                                                    {% else %}
+                                                                        <button type="submit"
+                                                                                class="btn btn"
+                                                                                style="background-color: #36876a">
+                                                                            <i
+                                                                                    style="color: #fff1f1"
                                                                                     class="fas fa-power-off"></i>
-                                                                            </button>
+                                                                        </button>
 
-                                                                            </button>
-                                                                            <button type="submit"
-                                                                                    class="btn btn-dark"><i
-                                                                                    class="fa fa-pencil"></i>
-                                                                            </button>
+                                                                    {% endif %}
+                                                                </form>
+                                                            {% endif %}
+                                                        </td>
 
-                                                                        {% else %}
-                                                                            <button type="submit"
-                                                                                    class="btn btn"
-                                                                                    style="background-color: #36876a">
-                                                                                <i
-                                                                                        style="color: #fff1f1"
-                                                                                        class="fas fa-power-off"></i>
-                                                                            </button>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+                                            </tbody>
+                                        </table>
 
-                                                                        {% endif %}
-                                                                    </form>
-                                                                {% endif %}
-                                                            </td>
-
-                                                        </tr>
-                                                    {% endfor %}
-                                                {% endif %}
-                                                </tbody>
-                                            </table>
-
-                                        </div>
                                     </div>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 </section>
