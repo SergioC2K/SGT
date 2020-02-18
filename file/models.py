@@ -52,6 +52,31 @@ class Grabacion(BaseModel, models.Model):
 
 
 class Estado(BaseModel, models.Model):
+    INFO_EN = 'Informacion de la entrega'
+    NOCON = 'No contesta'
+    DATERR = 'Datos Errados'
+    CLEAL = 'Cliente pide entrega en almacen'
+    ZNCUB = 'Zona no cubierta TCL'
+    CLAPLE = 'Cliente aplaza entrega'
+    CLINOSOL = 'Cliente no sabe de la solicitud'
+    ALCOMPE = 'Almacen se compromete con entrega'
+    CLDES = 'Cliente Desiste de la compra'
+    ESTADOS = [
+        (INFO_EN, 'Informacion de la entrega'),
+        (NOCON, 'No contesta'),
+        (DATERR, 'Datos Errados'),
+        (CLEAL, 'Cliente pide entrega en almacen'),
+        (ZNCUB, 'Zona no cubierta TCL'),
+        (CLAPLE, 'Cliente aplaza entrega'),
+        (CLINOSOL, 'Cliente no sabe de la solicitud'),
+        (ALCOMPE, 'Almacen se compromete con entrega'),
+        (CLDES, 'Cliente Desiste de la compra'),
+    ]
+    id_estado = models.IntegerField(
+        primary_key=True,
+        choices=ESTADOS,
+        default=NOCON
+    )
     nombre = models.CharField(max_length=30)
 
 
