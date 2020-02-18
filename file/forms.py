@@ -6,7 +6,7 @@ from django import forms
 
 
 
-class AsignarLlamadas(forms.Form):
+class RealizarLlamada(forms.Form):
 
-    id_llamada = forms
+    nombre_contesta = forms.CharField(max_length=45)
     pass
