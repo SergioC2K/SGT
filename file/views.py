@@ -207,3 +207,7 @@ def eliminarArchivo(request):
         }
 
     return JsonResponse(data)
+
+
+def reportes(request):
+    return render(request, 'llamada/reportes.html')
