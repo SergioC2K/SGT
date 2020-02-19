@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     {% block title %}
-        <title>Unamed</title>
+        <title>Telemercadeo</title>
     {% endblock %}
     {% block head_content %}
         <meta charset="UTF-8">
@@ -16,14 +16,12 @@
 
         <!-- vector map CSS -->
         <link href="{% static 'vendors/vectormap/jquery-jvectormap-2.0.3.css' %}" rel="stylesheet" type="text/css"/>
-
         <!-- Toggles CSS -->
         <link href="{% static 'vendors/jquery-toggles/css/toggles.css' %}" rel="stylesheet" type="text/css">
         <link href="{% static 'vendors/jquery-toggles/css/themes/toggles-light.css' %}" rel="stylesheet"
               type="text/css">
         <!-- Tablesaw table CSS -->
         <link href="{% static 'vendors/tablesaw/dist/tablesaw.css' %}" rel="stylesheet" type="text/css"/>
-
         <!-- Toastr CSS -->
         <link href="{% static 'vendors/jquery-toast-plugin/dist/jquery.toast.min.css' %}" rel="stylesheet"
               type="text/css">
@@ -31,15 +29,15 @@
         <link rel="stylesheet" href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}">
         <!-- Custom CSS -->
         <link href="{% static 'dist/css/style.css' %}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'dist/css/css-jf.css' %}">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
 
-        <link rel="stylesheet" href="{% static 'dist/css/selectable.css' %}">
     {% endblock %}
 </head>
 <body>
 <div class="preloader-it">
-    <div class="loader-pendulums"></div>
+    <div class="loader-pendulums">
+    </div>
 </div>
 
 <div class="hk-wrapper hk-vertical-nav">
@@ -51,21 +49,22 @@
             {% include 'base/components/sidebar.html' %}
         </nav>
     {% endblock %}
-    {% block main %}
-
-        <div class="hk-pg-wrapper">
-
-        </div>
+    <div class="hk-pg-wrapper">
+        {% block main %}
 
 
 
-    {% endblock %}
+
+
+
+        {% endblock %}
+    </div>
 </div>
 
 
 </body>
+<!-- Bloque con Scripts -->
 {% block scripts %}
-    <script src="{% static 'dist/js/script-jf.js' %}"></script>
     {% include 'base/components/scripts.html' %}
     {% include 'base/components/scriptjs.html' %}
 {% endblock %}

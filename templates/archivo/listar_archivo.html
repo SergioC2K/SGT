@@ -38,6 +38,8 @@
 
     </div>
 
+    <div class="col"></div>
+
     <div class="hk-pg-wrapper">
         <!-- Breadcrumb -->
         <nav class="hk-breadcrumb" aria-label="breadcrumb">
@@ -48,7 +50,144 @@
         <!-- /Breadcrumb -->
 
         <!-- Container -->
+        <div class="container">
 
+            <!-- Title -->
+            <div class="hk-pg-header">
+                <h4 class="hk-pg-title"><span class="pg-title-icon"><i class="far fa-file-excel"></i></span>Archivo</h4>
+            </div>
+            <!-- /Title -->
+
+            <div class="row">
+                <div class="col-xl-12">
+                    <section class="hk-sec-wrapper">
+
+
+                        <div class="row">
+                            <div class="col-xl-12">
+
+                                <section class="hk-sec-wrapper">
+
+
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="table-wrap">
+
+                                                <table class="table  tablesaw table-hover  mb-0"
+                                                       data-tablesaw-mode="swipe">
+                                                    <button type="button" class="btn btn-dark"
+                                                            style="background-color:#36876a"
+                                                            data-toggle="modal"
+                                                            data-target=".bd-example-modal-sm">Seleccionar operador
+                                                    </button>
+
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="row"><input type="checkbox" name="foo" value="bar1">
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="persist">
+                                                            Destinatario
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-priority="persist">
+                                                            Direccion
+                                                        </th>
+                                                        <th scope="col" data-tablesaw-sortable-col
+                                                            data-tablesaw-sortable-default-col
+                                                            data-tablesaw-priority="3">Entrega
+                                                        </th>
+
+
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    {% for foo in object_list %}
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <input type="checkbox" name="foo"
+                                                                                   value="bar1">
+                                                            </th>
+                                                            <td>{{ foo.nombre_destinatario }}</td>
+                                                            <td>{{ foo.direccion_des_mcia }}</td>
+                                                            <td>{{ foo.entrega }}</td>
+
+
+                                                        </tr>
+                                                        </tbody>
+                                                    {% endfor %}
+                                                </table>
+
+                                                {% if object_list %}
+                                                {% else %}
+                                                    <h1>NO HAY DATOS PARA MOSTRAR</h1>
+                                                {% endif %}
+
+                                                {% if error %}
+                                                    <h1>{{ error }}</h1>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </section>
+                                <button class="btn btn-success col-md-6" type="submit">Entregar</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+             aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <h5 class="card-header">Operadores en linea</h5>
+                    <table class="table table-striped">
+                        <thead>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Seleccionar
+                        </th>
+                        </thead>
+
+                        {% include 'base/components/tablaUserConect.html' %}
+
+                    </table>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-primary">Enviar Llamada</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Container -->
+
+        <!-- Footer -->
+        <div class="hk-footer-wrap container">
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <p>Creado por<a href="https://hencework.com/" class="text-dark" target="_blank">La Gerencia</a>
+                            © 2019</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <p class="d-inline-block">Follow us</p>
+                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                                class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>
+                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                                class="btn-icon-wrap"><i class="fa fa-twitter"></i></span></a>
+                        <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                                class="btn-icon-wrap"><i class="fa fa-google-plus"></i></span></a>
+                    </div>
+                </div>
+            </footer>
+        </div>
         <!-- /Footer -->
     </div>
 

@@ -3,19 +3,16 @@
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>Importe</title>
-    <link href="https://cdn-na.infragistics.com/igniteui/2016.2/latest/css/themes/infragistics/infragistics.theme.css"
-          rel="stylesheet"/>
-    <link href="https://cdn-na.infragistics.com/igniteui/2016.2/latest/css/structure/infragistics.css"
-          rel="stylesheet"/>
+
 {% endblock %}
 
 
 {% block main %}
 
-    <div class="hk-pg-wrapper">
-        <div class="container mt-4">
-            <div class="hk-pg-header">
-                <h4 class="hk-pg-title">
+
+    <div class="container mt-4">
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title">
                     <span class="pg-title-icon">
                         <span class="feather-icon">
 
@@ -23,10 +20,10 @@
 
 
                     </span><i class="fas fa-file-excel"></i>&nbsp Importe de archivo </h4>
-            </div>
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-body">
+        </div>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
 
                         <div class="container">
                             <div class="custom-file col-md-6 ">
@@ -49,23 +46,13 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body">
-
-                    <div id="result" style="overflow:scroll"></div>
-
-                    <table id="grid1">
-
-
-                    </table>
-                </div>
-            </div>
-
         </div>
 
+        {% block scripts %}
+            {{ block.super }}
+        {% endblock %}
+
     </div>
-
-
     {% load static %}
 {% endblock %}
 {% block scripts %}

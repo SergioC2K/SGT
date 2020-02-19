@@ -54,14 +54,6 @@ class UpdateProfileView(UpdateView):
     form_class = PerfilForm
     success_url = reverse_lazy('usuario:listar_usuario')
 
-    def get_object(self, **kwargs):
-        """Return user's profile."""
-        return self.request.user.perfil
-
-    def get_success_url(self):
-        """Return to user's profile."""
-        username = self.object.usuario.username
-        return reverse('usuario:listar_usuario')
 
 class UserCreateView(FormView):
     template_name = 'users/usuario_nuevo.html'
@@ -163,3 +155,19 @@ class ListEstado(ListView):
         perfiles = Perfil.objects.get(usuario__first_name=name)
         data = serializers.serialize('json', perfiles, fields=('first_name', 'is_superuser'))
         return HttpResponse(data, content_type='application/json')
+
+class UpdateProfileView(UpdateView):
+    """Update profile view."""
+    template_name = 'users/perfil.html'
+    model = Perfil
+    form_class = PerfilForm
+    success_url = reverse_lazy('usuario:listar_usuario')
+
+    def get_object(self, **kwargs):
+        """Return user's profile."""
+        return self.request.user.perfil
+
+    def get_success_url(self):
+        """Return to user's profile."""
+        username = self.object.usuario.username
+        return reverse('usuario:listar_usuario')

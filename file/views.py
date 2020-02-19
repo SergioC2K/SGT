@@ -1,6 +1,8 @@
 import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.http import JsonResponse
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -8,7 +10,7 @@ from django.shortcuts import render
 from tablib import Dataset
 from file.models import LlamadasEntrantes
 import pandas as pd
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.db.models import Q, Count
 from django.db import IntegrityError
 from file.models import RegistroLlamada
@@ -18,6 +20,7 @@ from file.models import LlamadasEntrantes, Archivo
 
 # Create your views here.
 from usuario.models import Perfil
+import time
 
 
 @login_required
