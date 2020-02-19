@@ -4,6 +4,8 @@
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>Lista de usuarios</title>
+    <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
 {% endblock %}
 {% block main %}
 
@@ -34,146 +36,94 @@
                                     Operadores
 
                                 </h5>
-
-
-                                <div class="row">
-                                    <div class="col-sm">
-
-
-                                        <div class="table-wrap">
-
-                                            <table id="table_id" class="table table-striped">
-
-                                                <thead>
-                                                <tr>
-
-                                                    <th scope="col" data-tablesaw-sortable-col
-                                                        data-tablesaw-priority="persist">
-                                                        Estado
-                                                    </th>
-                                                    <th scope="col" data-tablesaw-sortable-col
-                                                        data-tablesaw-priority="persist">
-                                                        Usuario
-                                                    </th>
-                                                    <th scope="col" data-tablesaw-sortable-col
-                                                        data-tablesaw-sortable-default-col
-                                                        data-tablesaw-priority="3">Cedula
-                                                    </th>
-                                                    <th scope="col" data-tablesaw-sortable-col
-                                                        data-tablesaw-priority="2">
-                                                        Nombres
-                                                    </th>
-                                                    <th scope="col" data-tablesaw-sortable-col
-                                                        data-tablesaw-priority="1"
-                                                        title="Rotten Tomato Rating">Apellido
-                                                    </th>
-                                                    <th scope="col" data-tablesaw-sortable-col
-                                                        data-tablesaw-priority="4">
-                                                        Telefono fijo
-                                                    </th>
-                                                    <th scope="col" data-tablesaw-sortable-col
-                                                        data-tablesaw-priority="4">
-                                                        Celular Telemercadeo
-                                                    </th>
-                                                    <th scope="col" data-tablesaw-sortable-col
-                                                        data-tablesaw-priority="4">
-                                                        Acciones
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% if object_list %}
-                                                    {% for foo in object_list %}
-
-
-                                                        <tr>
+                            </section>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="table-wrap">
+                                        <table id="table_id" class="table table-striped"
+                                               style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Estado</th>
+                                                <th>Nombres</th>
+                                                <th>Apellidos</th>
+                                                <th>Cedula</th>
+                                                <th>Telefono fijo</th>
+                                                <th>Celular telemercadeo</th>
+                                                <th>Celular</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% if object_list %}
+                                                {% for foo in object_list %}
+                                                    <tr>
+                                                        <td>
                                                             {% if foo.usuario.is_active %}
-                                                                <td><span
-                                                                        class="badge badge-pill badge-success">Activo</span>
-                                                                </td>
+
+                                                                <span class="badge badge-pill badge-success">Activo</span>
+
                                                             {% else %}
-                                                                <td><span
-                                                                        class="badge badge-pill badge-danger">Inactivo</span>
-                                                                </td>
+
+                                                                <span class="badge badge-pill badge-danger">Inactivo</span>
+
                                                             {% endif %}
+                                                        </td>
+                                                        <td>{{ foo.usuario }}</td>
+                                                        <td>{{ foo.usuario.first_name }}</td>
+                                                        <td>{{ foo.usuario.last_name }}</td>
+                                                        <td>{{ foo.cedula }}</td>
+                                                        <td>{{ foo.telefono_fijo }}</td>
+                                                        <td>{{ foo.celular_telemercadeo }}</td>
+                                                        <td>
+                                                            {% if foo.usuario == request.user %}
+                                                                <p><i class="fas fa-users-cog"></i>Coordinador</p>
 
-                                                            <td>{{ foo.usuario }}</td>
-                                                            <td>{{ foo.cedula }}</td>
-                                                            <td>{{ foo.usuario.first_name }}</td>
-                                                            <td>{{ foo.usuario.last_name }}</td>
-                                                            <td>{{ foo.telefono_fijo }}</td>
-                                                            <td>{{ foo.celular_telemercadeo }}</td>
-                                                            <td>
+                                                            {% else %}
+                                                                <form action="{% url 'usuario:desactivar' %}"
+                                                                      method="POST">
+                                                                    {% csrf_token %}
 
-
-                                                                {% if foo.usuario == request.user %}
-                                                                    <a href=""
-                                                                       data-toggle="tooltip"
-                                                                       data-original-title="Close"> <i
-                                                                            class=""></i> </a>
-
-                                                                {% else %}
-
-                                                                    <form id="Disabled"
-
-                                                                          method="POST">
-
-                                                                        {% csrf_token %}
-
-                                                                        <input id="user" name="user" type="hidden"
-                                                                               value="{{ foo.usuario.pk }}">
+                                                                    <input id="user" name="user" type="hidden"
+                                                                           value="{{ foo.usuario.pk }}">
 
 
-                                                                        {% if foo.usuario.is_active %}
-                                                                            <button type="submit"
-                                                                                    class="btn btn-danger "><i
+                                                                    {% if foo.usuario.is_active %}
+                                                                        <button type="submit"
+                                                                                class="btn btn-danger "><i
+                                                                                class="fas fa-power-off"></i>
+                                                                        </button>
+
+                                                                        </button>
+                                                                        <button type="submit"
+                                                                                class="btn btn-dark"><i
+                                                                                class="fa fa-pencil"></i>
+                                                                        </button>
+
+                                                                    {% else %}
+                                                                        <button type="submit"
+                                                                                class="btn btn"
+                                                                                style="background-color: #36876a">
+                                                                            <i
+                                                                                    style="color: #fff1f1"
                                                                                     class="fas fa-power-off"></i>
-                                                                            </button>
+                                                                        </button>
 
-                                                                            </button>
+                                                                    {% endif %}
+                                                                </form>
+                                                            {% endif %}
+                                                        </td>
 
-                                                                            <button type="submit"
-                                                                                    class="btn btn-dark"
-                                                                                    onclick="Inhabilitar()"><i
-                                                                                    class="fa fa-pencil"></i>
-                                                                            </button>
-
-                                                                        {% else %}
-                                                                            <button type="submit"
-                                                                                    class="btn btn"
-                                                                                    style="background-color: #36876a">
-                                                                                <i style="color: #fff1f1"
-                                                                                   class="fas fa-power-off"></i>
-                                                                            </button>
-
-                                                                        {% endif %}
-                                                                    </form>
-                                                                {% endif %}
-
-                                                                &nbsp;
-
-                                                            </td>
-
-
-                                                        </tr>
-
-                                                        </tbody>
-                                                    {% endfor %}
-                                                    </table>
-
-
-                                                {% else %}
-                                                    <h1>NO HAY DATOS PARA MOSTRAR</h1>
-                                                {% endif %}
-
-                                            {% if error %}
-                                                <h1>{{ error }}</h1>
+                                                    </tr>
+                                                {% endfor %}
                                             {% endif %}
-                                        </div>
+                                            </tbody>
+                                        </table>
+
                                     </div>
                                 </div>
+                            </div>
 
-                            </section>
                         </div>
                     </div>
                 </section>
@@ -302,7 +252,14 @@
         </footer>
 
         {% block javascript %}
+
+
             <script>
+
+                $(document).ready(function () {
+                    $('#table_id').DataTable();
+                });
+
 
                 function Inhabilitar(id) {
                     Swal.fire({
@@ -361,8 +318,9 @@
                                         'Registro Exitoso',
                                         'success'
                                     )
-
                                 }
+
+
                                 form.classList.add('was-validated');
                             }, false);
                         });

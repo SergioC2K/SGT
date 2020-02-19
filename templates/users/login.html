@@ -5,11 +5,7 @@
 {% load static %}
 {% block container %}
 
-
-
-
-
-    <form action="{% url 'usuario:login' %}" method="POST">
+    <form id="Login" action="{% url 'usuario:login' %}" method="POST">
 
         {% csrf_token %}
         <div class="login-logo">
@@ -33,10 +29,35 @@
             <a href="{% url 'password_reset' %}" class="btnForgetPwd" value="Login">Olvido su contraseña?</a>
         </div>
     </form>
-    <script>
 
-    {{ form.non_field_errors }}
-    </script>
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+                Swal.fire(
+                    'Bien!',
+                    '{{ message }}',
+                    'success'
+                );
+            </script>
+        {% endfor %}
+
+
+    {% endif %}
+
+    {% if form.errors %}
+        <script>
+            {% for field in form %}
+                {% if field.errors %}
+                    Swal.fire(
+                        '<h2>{{ form.non_field_errors }}</h2>',
+                        '<h3>{{ field.label }}: {{ field.errors|striptags }}</h3>',
+                        'error'
+                    )
+                {% endif %}
+            {% endfor %}
+        </script>
+    {% endif %}
+
 {% endblock %}
 
 

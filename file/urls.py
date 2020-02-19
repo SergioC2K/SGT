@@ -65,5 +65,10 @@ urlpatterns = [
         view=views.eliminarArchivo,
         name='borrar'
     ),
+    path(
+        route='reportes',
+        view=views.reportes,
+        name='reportes'
+    ),
 
 ]

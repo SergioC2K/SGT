@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -20,6 +20,8 @@ from django.db.utils import IntegrityError
 # Models
 from django.contrib.auth.models import User
 
+from django.contrib import messages
+
 # Forms
 from django.views.generic.edit import FormMixin
 
@@ -31,7 +33,6 @@ from django.contrib.auth import update_session_auth_hash
 
 
 class LoginViewUsuario(LoginView):
-
     template_name = 'users/login.html'
 
     def get_success_url(self):
@@ -40,30 +41,22 @@ class LoginViewUsuario(LoginView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
+            messages.success(request, f"Bienvenido: {Perfil.usuario}")
             return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
+
 
 def perfil(request):
     return render(request, 'users/perfil.html')
 
 
-class UpdateProfileView(UpdateView):
-    """Update profile view."""
-    template_name = 'users/perfil.html'
-    model = Perfil
-    form_class = PerfilForm
-    success_url = reverse_lazy('usuario:listar_usuario')
-
-
-class UserCreateView(FormView):
-    template_name = 'users/usuario_nuevo.html'
-    form_class = SignupForm
-    success_url = reverse_lazy('usuario:listar_usuario')
-
-    def form_valid(self, form):
-        """Guardar datos."""
-        form.save()
-        return super().form_valid(form)
+def UserCreateView(request):
+    if request.is_ajax():
+        formula = SignupForm(request.POST)
+    if formula.is_valid():
+        guardar = formula.save()
+    data = {'estado': 'guardado'}
+    return JsonResponse(data)
 
 
 @login_required
@@ -91,8 +84,7 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-
-class ListarUsuario(ListView, FormView):
+class ListarUsuario(ListView,FormView):
     model = Perfil
     form_class = SignupForm
     template_name = 'users/listar.html'
@@ -108,6 +100,7 @@ class ListarUsuario(ListView, FormView):
     def form_valid(self, form):
         """Guardar datos."""
         form.save()
+
         return super().form_valid(form)
 
 
@@ -155,6 +148,7 @@ class ListEstado(ListView):
         perfiles = Perfil.objects.get(usuario__first_name=name)
         data = serializers.serialize('json', perfiles, fields=('first_name', 'is_superuser'))
         return HttpResponse(data, content_type='application/json')
+
 
 class UpdateProfileView(UpdateView):
     """Update profile view."""
