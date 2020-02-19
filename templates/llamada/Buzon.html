@@ -94,249 +94,43 @@
                                 </form>
                                 <div class="emailapp-emails-list">
                                     <div class="nicescroll-bar">
-                                        <a href="javascript:void(0);" class="media">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar1.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
+
+                                        {% for foo in registro %}
+
+                                            <a href="javascript:void(0);" class="media read-email">
+                                                <div class="media-img-wrap">
+
                                                 </div>
+                                                <div class="media-body">
+                                                    <div>
+                                                        <div class="email-head">{{ foo.id_llamada_id }}</div>
+                                                        <div class="email-subject">Coming full circle, the internet's
+                                                            remixing
+                                                        </div>
+                                                        <div class="email-text">
+                                                            <p>Of course, we'd be remiss not to include the veritable
+                                                                cadre
+                                                                of lorem ipsum knock offs featuring</p>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="last-email-details"><span
+                                                                class="email-attachment-label"><span
+                                                                class="feather-icon"><i
+                                                                data-feather="paperclip"></i></span></span><span
+                                                                class="badge badge-warning badge-indicator"></span> 2:30
+                                                            PM
+                                                        </div>
+                                                        <span class="email-star"><span class="feather-icon"><i
+                                                                data-feather="star"></i></span></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <div class="email-hr-wrap">
+                                                <hr>
                                             </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Clay Masse (8)</div>
-                                                    <div class="email-subject">Creation timelines for the standard lorem
-                                                        ipsum
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p>So how did the classical Latin become so incoherent?
-                                                            According to McClintock.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="badge badge-danger badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar2.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Evie Ono</div>
-                                                    <div class="email-subject">McClintock wrote to Before & After to
-                                                        explain his discovery
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p>“What I find remarkable is that this text has been the
-                                                            industry's standard dummy text ever since some printer.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="badge badge-danger badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star starred block"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar3.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Madalyn Rascon (5)</div>
-                                                    <div class="email-subject">Whether a medieval typesetter</div>
-                                                    <div class="email-text">
-                                                        <p>As an alternative theory, and because Latin scholars do this
-                                                            sort of thing someone tracked down a 1914 Latin edition of
-                                                            De Finibus which challenges.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media active-email read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar4.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Mitsuko Heid (2)</div>
-                                                    <div class="email-subject">Purposefully designed to have no
-                                                        meaning
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p>Don't bother typing “lorem ipsum” into Google translate. If
-                                                            you already tried, you may have gotten anything from "NATO"
-                                                            to "China"</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="badge badge-primary badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star starred block"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar5.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Ezequiel Merideth</div>
-                                                    <div class="email-subject">Popularized in the 1960s</div>
-                                                    <div class="email-text">
-                                                        <p>The decade that brought us Star Trek and Doctor Who also
-                                                            resurrected Cicero—or at least what used to be Cicero</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar6.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Jonnie Metoyer</div>
-                                                    <div class="email-subject">Some claim lorem ipsum threatens</div>
-                                                    <div class="email-text">
-                                                        <p>Among design professionals, there's a bit of controversy
-                                                            surrounding the filler text. Controversy, as in Death to
-                                                            Lorem Ipsum.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar7.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Angelic Lauver (2)</div>
-                                                    <div class="email-subject">Generally, lorem ipsum is best suited
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p> It's like the props in a furniture store—filler text makes
-                                                            it look like someone is home.</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="email-hr-wrap">
-                                            <hr>
-                                        </div>
-                                        <a href="javascript:void(0);" class="media read-email">
-                                            <div class="media-img-wrap">
-                                                <div class="avatar">
-                                                    <img src="dist/img/avatar8.jpg" alt="user"
-                                                         class="avatar-img rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="email-head">Prischila Shy</div>
-                                                    <div class="email-subject">Coming full circle, the internet's
-                                                        remixing
-                                                    </div>
-                                                    <div class="email-text">
-                                                        <p>Of course, we'd be remiss not to include the veritable cadre
-                                                            of lorem ipsum knock offs featuring</p>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="last-email-details"><span
-                                                            class="email-attachment-label"><span class="feather-icon"><i
-                                                            data-feather="paperclip"></i></span></span><span
-                                                            class="badge badge-warning badge-indicator"></span> 2:30 PM
-                                                    </div>
-                                                    <span class="email-star"><span class="feather-icon"><i
-                                                            data-feather="star"></i></span></span>
-                                                </div>
-                                            </div>
-                                        </a>
+                                        {% endfor %}
+
                                     </div>
                                 </div>
                             </div>
@@ -370,7 +164,7 @@
                                                 <div class="media">
                                                     <div class="media-img-wrap">
                                                         <div class="avatar">
-                                                            <img src="dist/img/avatar1.jpg" alt="user"
+                                                            <img src="dist/img/avatar1.jpg" alt=""
                                                                  class="avatar-img rounded-circle">
                                                         </div>
                                                     </div>

@@ -177,11 +177,10 @@ def enviarLlamadas(request):
 
 
 def ver_Llamadas(request):
-    registro = RegistroLlamada.objects.filter(realizado=False)
+    usuario = request.user.pk
+    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
 
-    diccionario = {'array': registro}
-
-    return render(request, 'llamada/llegadas.html', diccionario)
+    return render(request, 'llamada/Buzon.html', context={'registro': registro})
 
 
 class archivoLlamadas(ListView):
