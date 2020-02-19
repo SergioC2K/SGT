@@ -14,9 +14,6 @@
         <div class="hk-pg-header">
             <h4 class="hk-pg-title">
                     <span class="pg-title-icon">
-                        <span class="feather-icon">
-
-                        </span>
 
 
                     </span><i class="fas fa-file-excel"></i>&nbsp Importe de archivo </h4>
@@ -31,37 +28,59 @@
                                 {% csrf_token %}
                                 <input type="text" id="nombre" name="nombre" hidden>
                                 <div class="form-group">
-
                                     <input class="form-control" type="file" id="input" name="myfile"
                                            onchange="papa()"
                                            accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                     />
                                 </div>
 
-                                {% if errors %}
-                                    {{ errors }}
-                                {% endif %}
-                                <button type="submit">enviar</button>
+
+                                <button class="btn btn-success" id="btn" type="submit">Enviar</button>
                             </form>
                         </div>
                     </div>
+
+
                 </div>
             </div>
+            {% if errors %}
+
+                <div class="alert alert-danger">
+                    <strong>¡Error este archivo ya existe!</strong>
+
+                </div>
+
+
+            {% endif %}
         </div>
+
 
         {% block scripts %}
             {{ block.super }}
         {% endblock %}
 
     </div>
-    {% load static %}
+
     <script>
         function papa() {
             nombre = document.getElementById('input').files[0].name;
             document.getElementById('nombre').value = nombre;
         }
-    </script>
 
+        document.getElementById('btn').addEventListener("click", function () {
+            let file = document.getElementById('input');
+            if (file.files.length == 0) {
+                event.preventDefault()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Por favor seleccione un archivo!',
+
+                })
+
+            }
+        })
+    </script>
     </body>
     <style>
         #sampleContainer ol {
