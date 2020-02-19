@@ -41,7 +41,7 @@ class LoginViewUsuario(LoginView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            messages.success(request, f"Bienvenido: {Perfil.username}")
+            messages.success(request, f"Bienvenido: {Perfil.usuario}")
             return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 

@@ -37,6 +37,10 @@
                                            accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                     />
                                 </div>
+
+                                {% if errors %}
+                                    {{ errors }}
+                                {% endif %}
                                 <button type="submit">enviar</button>
                             </form>
                         </div>

@@ -30,7 +30,7 @@ urlpatterns = [
     ),
     path(
         route='buzon/',
-        view=views.buzon,
+        view=views.buzon.as_view(),
         name='buzon'
     ),
     path(

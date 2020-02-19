@@ -1,5 +1,7 @@
 import datetime
 
+from django.db import IntegrityError
+
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -23,9 +25,17 @@ import time
 @login_required
 def upload_excel(request):
     if request.method == 'POST':
-        leido = pd.read_excel(request.FILES['myfile'])
+        nombre = request.FILES['myfile']
+        try:
+            crear = Archivo.objects.create(nombre=nombre)
+
+            crear.save()
+        except IntegrityError as e:
+
+            return render(request, 'archivo/fileimport.html', context={'errors': e})
+
+        leido = pd.read_excel(nombre)
         llamadas = []
-        nombre = request.POST['nombre']
         crear = Archivo.objects.create(nombre=nombre)
         crear.save()
         for data in leido.T.to_dict().values():
@@ -106,8 +116,9 @@ def registro_llamada(request):
     return render(request, 'llamada/registro_llamada.html')
 
 
-def buzon(request):
-    return render(request, 'llamada/Buzon.html')
+class buzon(ListView):
+    model = LlamadasEntrantes
+    template_name = 'llamada/Buzon.html'
 
 
 class entregar(ListView):
@@ -177,7 +188,6 @@ def enviarLlamadas(request):
 
 def ver_Llamadas(request):
     registro = RegistroLlamada.objects.filter(realizado=False)
-
     diccionario = {'array': registro}
 
     return render(request, 'llamada/llegadas.html', diccionario)
