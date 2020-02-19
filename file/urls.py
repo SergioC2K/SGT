@@ -66,9 +66,9 @@ urlpatterns = [
         name='borrar'
     ),
     path(
-        route='reportes',
-        view=views.reportes,
-        name='reportes'
-    ),
+        route='traer',
+        view=views.traer,
+        name='traer'
+    )
 
 ]

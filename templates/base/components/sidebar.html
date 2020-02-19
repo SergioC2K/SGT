@@ -15,35 +15,20 @@
 
 
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#pages_drp">
-                            <i class="fa fa-phone-alt"></i>
-                            <span class="nav-link-text">Llamadas</span>
-                        </a>
-                        <ul id="pages_drp" class="nav flex-column collapse collapse-level-1">
-                            <li class="nav-item">
-                                <ul class="nav flex-column">
 
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'file:registrar_llamada' %}">Realizar
-                                            llamadas</a>
-                                    </li>
-
-                                </ul>
-                            </li>
-                        </ul>
                     </li>
 
 
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
-                            <i class="fas fa-envelope-open-text"></i>
-                            <span class="nav-link-text">Bandeja de entrada</span>
+                            <i class="fas fa-headset"></i>
+                            <span class="nav-link-text">Bandeja de llamadas</span>
                         </a>
                         <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
                             <li class="nav-item">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'file:buzon' %}">Mensajes</a>
+                                        <a class="nav-link" href="{% url 'file:buzon' %}">Llamar</a>
                                     </li>
 
                                 </ul>
@@ -107,7 +92,7 @@
                             <li class="nav-item">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'file:reportes' %}">Reportes</a>
+                                        <a class="nav-link" href="">Reportes</a>
                                     </li>
                                 </ul>
                             </li>
