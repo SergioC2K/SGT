@@ -1,0 +1,96 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    <head>
+        <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+        <title>Exportar</title>
+        <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
+    </head>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="card">
+            <h4 class="hk-pg-title mt-2">
+                    <span class="pg-title-icon">
+                    </span> &nbsp; <i class="fas fa-file-excel"></i>&nbsp Exporte de archivo </h4>
+            <hr>
+            <h5>&nbsp;<i class="fas fa-phone-alt"></i> Llamadas</h5>
+            <br>
+            <div class="container">
+                <table id="table_id" class="table table-striped display nowrap" style="width: 800px;margin: 0 auto;">
+                    <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Usuario</th>
+                        <th>Solicitante</th>
+                        <th>Identidad fiscal</th>
+                        <th>Destinatario</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>Telebox</th>
+                        <th>Material</th>
+                        <th>Texto breve material</th>
+                        <th>Documento de ventas</th>
+                        <th>Entrega</th>
+                        <th>Pedidio de cliente</th>
+                        <th>Cantidad del pedido</th>
+                        <th>Observacion inicial</th>
+                        <th>Denomiancion de articulos</th>
+                        <th>Localidad</th>
+                        <th>Barrio</th>
+                        <th>Ruta</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Final</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>Prism</td>
+                        <td>fin</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    {% block javascript %}
+        <script>
+            $(document).ready(function () {
+                $('#table_id').DataTable({
+                    "scrollX": true
+                });
+            });
+
+
+        </script>
+    {% endblock %}
+
+{% endblock %}
+

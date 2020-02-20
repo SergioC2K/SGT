@@ -91,7 +91,7 @@
                             <li class="nav-item">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="">Exportar archivos</a>
+                                        <a class="nav-link" href="{% url 'file:exportar' %}">Exportar archivos</a>
                                     </li>
                                 </ul>
                             </li>
@@ -113,8 +113,8 @@
                             </li>
                         </ul>
                     </li>
+                    {% if user.is_staff %}
                     <li class="nav-item">
-
                         <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#forms_drp">
                             <i class="fa fa-user-alt"></i>
                             <span class="nav-link-text">Usuarios</span>
@@ -131,6 +131,7 @@
                             </li>
                         </ul>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

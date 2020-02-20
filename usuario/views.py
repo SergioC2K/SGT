@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 
@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.core import serializers
+from django.utils.decorators import method_decorator
 
 from django.views.generic import ListView, FormView
 
@@ -84,24 +85,30 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-class ListarUsuario(ListView,FormView):
+superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
+
+
+@method_decorator(superuser_required, name='dispatch')
+class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
     template_name = 'users/listar.html'
     queryset = Perfil.objects.filter(usuario__is_superuser=False)
     success_url = reverse_lazy('usuario:listar_usuario')
 
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Perfil.objects.all()
-        else:
-            return Perfil.objects.filter(usuario__is_superuser=False)
 
-    def form_valid(self, form):
-        """Guardar datos."""
-        form.save()
+def get_queryset(self):
+    if self.request.user.is_superuser:
+        return Perfil.objects.all()
+    else:
+        return Perfil.objects.filter(usuario__is_superuser=False)
 
-        return super().form_valid(form)
+
+def form_valid(self, form):
+    """Guardar datos."""
+    form.save()
+
+    return super().form_valid(form)
 
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))

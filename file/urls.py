@@ -70,5 +70,10 @@ urlpatterns = [
         view=views.reportes,
         name='reportes'
     ),
+    path(
+        route='exporte',
+        view=views.export,
+        name='exportar'
+    )
 
 ]
