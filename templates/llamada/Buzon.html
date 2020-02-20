@@ -148,39 +148,44 @@
                                             <div class="form-row">
                                                 <div class="form-group ">
                                                     <strong>Nombre almacen</strong>
-                                                    <input type="text" class="form-control" id="alm_soli"
-                                                           name="alm_soli" >
+                                                    <input type="text" class="form-control" readonly
+                                                           onmousedown="return false" id="alm_soli"
+                                                           name="alm_soli">
                                                 </div>&nbsp;&nbsp;&nbsp;
                                                 <div class="form-group">
                                                     <strong>Nombre cliente</strong>
-                                                    <input type="text" class="form-control" id="nombre_solicitante"
+                                                    <input type="text" class="form-control" readonly
+                                                           onmousedown="return false" id="nombre_solicitante"
                                                            name="nombre_solicitante"
-                                                           >
+                                                    >
                                                 </div>
                                                 &nbsp;&nbsp;&nbsp;
                                                 <div class="form-group">
                                                     <strong>Telefono</strong>
                                                     <input type="text" class="form-control" id="telefono"
-                                                           name="telefono" >
+                                                           readonly onmousedown="return false" name="telefono">
                                                 </div>
 
                                                 &nbsp;&nbsp;&nbsp;
                                                 <div class="form-group">
                                                     <strong>Direccion</strong>
                                                     <input type="text" class="form-control" id="direccion_des_mcia"
-                                                           name="direccion_des_mcia" >
+                                                           readonly onmousedown="return false"
+                                                           name="direccion_des_mcia">
                                                 </div>
                                                 &nbsp;&nbsp;&nbsp;
                                                 <div class="form-group">
                                                     <strong>Ruta</strong>
                                                     <input type="text" class="form-control" id="ruta" name="ruta"
-                                                           >
+                                                           readonly onmousedown="return false"
+                                                    >
                                                 </div>
                                                 &nbsp;&nbsp;&nbsp;
                                                 <div class="form-group">
                                                     <strong>localidad</strong>
                                                     <input type="text" class="form-control" id="localidad"
-                                                           name="localidad" value="{{ call.localidad }}">
+                                                           readonly onmousedown="return false" name="localidad"
+                                                           value="{{ call.localidad }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -305,6 +310,7 @@
                 $("#direccion_des_mcia").val(user.direccion_des_mcia);
                 $("#alm_soli").val(user.alm_soli);
                 $("#localidad").val(user.localidad);
+
             }
         </script>
     {% endblock %}

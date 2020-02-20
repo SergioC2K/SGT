@@ -218,8 +218,8 @@ def traer(request):
 
     data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
             'telefono': consulta.id_llamada.telefono,
-            'direccion_des_mcia':consulta.id_llamada.direccion_des_mcia,
-            'alm_soli':consulta.id_llamada.nombre_solicitante,
-            'localidad':consulta.id_llamada.localidad}
+            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
+            'alm_soli': consulta.id_llamada.nombre_solicitante,
+            'localidad': consulta.id_llamada.localidad}
 
     return JsonResponse(data)
