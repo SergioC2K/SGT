@@ -19,99 +19,40 @@
         <div class="row">
             <div class="col-xl-12 pa-0">
                 <div class="emailapp-wrap">
-                    <div class="emailapp-sidebar">
-                        <div class="nicescroll-bar">
-                            <div class="emailapp-nav-wrap">
-                                <a id="close_emailapp_sidebar" href="javascript:void(0)" class="close-emailapp-sidebar">
-                                    <span class="feather-icon"><i data-feather="chevron-left"></i></span>
-                                </a>
-                                <ul class="nav flex-column mail-category">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);">Inbox<span
-                                                class="badge badge-primary">50</span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);">Sent mail</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);">Important</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);">Draft<span
-                                                class="badge badge-secondary"></span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);">Trash</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);">Chat</a>
-                                    </li>
-                                </ul>
-                                <button type="button" class="btn btn-pink btn-block mt-20 mb-20" data-toggle="modal"
-                                        data-target="#exampleModalEmail">
-                                    Compose email
-                                </button>
-                                <ul class="nav flex-column mail-labels">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);"><span
-                                                class="badge badge-primary badge-indicator"></span>clients</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);"><span
-                                                class="badge badge-danger badge-indicator"></span>personal</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);"><span
-                                                class="badge badge-warning badge-indicator"></span>office</a>
-                                    </li>
-                                </ul>
-                                <hr>
-                                <ul class="nav flex-column mail-settings">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="javascript:void(0);"><i
-                                                class="zmdi zmdi-settings"></i>settings</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="email-box">
 
                         <div class="emailapp-left">
                             <header>
-                                <a href="javascript:void(0)" id="emailapp_sidebar_move" class="emailapp-sidebar-move">
-                                    <span class="feather-icon"><i data-feather="menu"></i></span>
-                                </a>
-                                <span class="">Llamadas</span>
-                                <a href="javascript:void(0)" class="email-compose" data-toggle="modal"
-                                   data-target="#exampleModalEmail">
 
-                                </a>
+                                <span class="">Llamadas</span>
+
                             </header>
 
                             <div class="emailapp-emails-list">
 
                                 <div class="nicescroll-bar">
 
-                                    <div class="media-img-wrap">
 
-                                    </div>
                                     <div class="media-body">
+
                                         {% for foo in registro %}
 
-                                            <button onclick="recuperar({{ foo.id_llamada_id }})"
-                                                    class="media read-email">
-                                                <div class="media-img-wrap">
+                                            <a onclick="recuperar({{ foo.id_llamada_id }})"
+                                               class="media read-email">
 
-                                                </div>
-                                                <div class="media-body">
+                                                <div class="email-subject">
                                                     <div>
-                                                        <div class="email-head">{{ foo.id_llamada_id }}</div>
+                                                        <div class="email-head">{{ foo.id_llamada_id }}
+                                                        </div>
 
                                                     </div>
                                                 </div>
 
-                                            </button>
+                                            </a>
+                                            <div class="email-head">
+                                                {{ foo.id_llamada.nombre_destinatario }}
+                                            </div>
                                             <div class="email-hr-wrap">
                                                 <hr>
                                             </div>
@@ -127,16 +68,9 @@
 
                         <div class="emailapp-right">
                             <header>
-                                <a id="back_email_list" href="javascript:void(0)" class="back-email-list">
-                                    <span class="feather-icon"><i data-feather="chevron-left"></i></span>
-                                </a>
+
                                 <div class="email-options-wrap">
-                                    <a href="javascript:void(0)" class=""><span class="feather-icon"><i
-                                            data-feather="printer"></i></span></a>
-                                    <a href="javascript:void(0)" class=""><span class="feather-icon"><i
-                                            data-feather="trash"></i></span></a>
-                                    <a href="javascript:void(0)" class="text-smoke"><span class="feather-icon"><i
-                                            data-feather="more-vertical"></i></span></a>
+
                                 </div>
                             </header>
                             <div class="email-body">
