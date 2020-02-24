@@ -71,9 +71,9 @@ urlpatterns = [
         name='reportes'
     ),
     path(
-        route='exporte',
-        view=views.export,
-        name='exportar'
+        route='ListFile',
+        view=views.ListFile.as_view(),
+        name='ListFile'
     )
 
 ]

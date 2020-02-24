@@ -222,10 +222,12 @@ def eliminarArchivo(request):
 def reportes(request):
     return render(request, 'llamada/reportes.html')
 
-def export(request):
-    id_archivo = request.GET('id', None)
-    consulta = RegistroLlamada.objects.get(id=id_archivo)
 
-    data={}
+class ListFile(ListView):
+    model = Perfil
+    template_name = 'llamada/exportar.html'
 
-    return render(request,'llamada/exportar.html')
+
+
+
+
