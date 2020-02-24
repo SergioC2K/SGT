@@ -7,8 +7,8 @@
         <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
         <title>Exportar</title>
         <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
-        <script src="{% static 'dist/Datatables/xlsx.full.min.js' %}"></script>
-        <script src="{% static 'dist/Datatables/FileSaver.min.js' %}"></script>
+        <script src="{% static 'dist/js/FileSaver.min.js' %}"></script>
+        <script src="{% static 'dist/js/xlsx.full.min.js' %}"></script>
         <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
 
     </head>
@@ -25,8 +25,35 @@
 
             </h5>
             <div class="container">
-                <div class="form-group">
-                </div>
+
+
+
+
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Opciones</label>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect01">
+                                <option selected>Liquidacion</option>
+                                <option value="1">Mas alta</option>
+                                <option value="2">Mas baja</option>
+                                <option value="3">Usuarios</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Opciones</label>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect01">
+                                <option selected>Estados</option>
+                                <option href="" value="1">No contesta</option>
+                                <option href="" value="2">Efectivas</option>
+                                <option href="" value="3">Total</option>
+                            </select>
+                        </div>
+
+
 
                 <table id="table_id" class="table table-striped " style="width: 800px;margin: 0 auto;">
 
