@@ -223,3 +223,13 @@ def traer(request):
             'localidad': consulta.id_llamada.localidad}
 
     return JsonResponse(data)
+
+
+class ListFile(ListView):
+    model = Perfil
+    template_name = 'llamada/exportar.html'
+
+
+
+
+

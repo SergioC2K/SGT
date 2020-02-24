@@ -1,0 +1,127 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    <head>
+        <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+        <title>Exportar</title>
+        <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/xlsx.full.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/FileSaver.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
+
+    </head>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="card">
+            <h4 class="hk-pg-title mt-2">
+                    <span class="pg-title-icon">
+                    </span> &nbsp; <i class="fas fa-file-excel"></i>&nbsp Exporte de archivo </h4>
+            <hr>
+            <h5>&nbsp;<i class="fas fa-phone-alt"></i> Llamadas
+
+            </h5>
+            <div class="container">
+                <div class="form-group">
+                </div>
+
+                <table id="table_id" class="table table-striped " style="width: 800px;margin: 0 auto;">
+
+                    <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Usuario</th>
+                        <th>Solicitante</th>
+                        <th>Identidad fiscal</th>
+                        <th>Destinatario</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>Telebox</th>
+                        <th>Material</th>
+                        <th>Texto breve material</th>
+                        <th>Documento de ventas</th>
+                        <th>Entrega</th>
+                        <th>Pedidio de cliente</th>
+                        <th>Cantidad del pedido</th>
+                        <th>Observacion inicial</th>
+                        <th>Denomiancion de articulos</th>
+                        <th>Localidad</th>
+                        <th>Barrio</th>
+                        <th>Ruta</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Final</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for foo in object_list %}
+                        <tr>
+                            <td>{{ foo.usuario.first_name }}</td>
+                            <td>{{ foo.usuario.last_name }}</td>
+                            <td>{{ foo.cedula }}</td>
+                            <td>{{ foo.telefono_fijo }}</td>
+                            <td>{{ foo.celular_telemercadeo }}</td>
+                            <td>{{ foo.usuario.first_name }}</td>
+                            <td>{{ foo.usuario.last_name }}</td>
+                            <td>{{ foo.cedula }}</td>
+                            <td>{{ foo.telefono_fijo }}</td>
+                            <td>{{ foo.celular_telemercadeo }}</td>
+                            <td>{{ foo.usuario.first_name }}</td>
+                            <td>{{ foo.usuario.last_name }}</td>
+                            <td>{{ foo.cedula }}</td>
+                            <td>{{ foo.telefono_fijo }}</td>
+                            <td>{{ foo.celular_telemercadeo }}</td>
+                            <td>{{ foo.usuario.first_name }}</td>
+                            <td>{{ foo.usuario.last_name }}</td>
+                            <td>{{ foo.cedula }}</td>
+                            <td>{{ foo.telefono_fijo }}</td>
+                            <td>{{ foo.celular_telemercadeo }}</td>
+                            <td>{{ foo.celular_telemercadeo }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                &nbsp;<button class="btn btn-success" id="button-a">Exportar datos</button>
+            </div>
+        </div>
+
+    </div>
+
+
+    {% block javascript %}
+        <script>
+            $(document).ready(function () {
+                $('#table_id').DataTable({
+
+                    "scrollX": true,
+                    "scrollY": "200px",
+                    "scrollCollapse": true,
+                    "paging": false
+                });
+
+
+            })
+            var wb = XLSX.utils.table_to_book(document.getElementById('table_id'), {sheet: "Sheet JS"});
+            var wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
+
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            $("#button-a").click(function () {
+                saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
+            });
+
+
+        </script>
+    {% endblock %}
+
+
+
+{% endblock %}
+

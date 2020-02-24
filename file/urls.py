@@ -69,6 +69,11 @@ urlpatterns = [
         route='traer',
         view=views.traer,
         name='traer'
+    ),
+    path(
+        route='ListFile',
+        view=views.ListFile.as_view(),
+        name='ListFile'
     )
 
 ]
