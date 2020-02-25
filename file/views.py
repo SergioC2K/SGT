@@ -136,7 +136,7 @@ def repartir(request):
     archivo = Archivo.objects.last()
 
     #  Se consultan las ultimas llamadas ingresadas de acuerdo a el archivo
-    llamadas = LlamadasEntrantes.objects.filter(id_archivo=archivo).exclude(estado=True)
+    llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)).exclude(estado=True)
     if operadores and llamadas:
         contexto = {'operadores': operadores, 'llamadas': llamadas}
         return render(request, 'archivo/repartir.html', contexto)
@@ -181,7 +181,7 @@ def enviarLlamadas(request):
 
 def ver_Llamadas(request):
     usuario = request.user.pk
-    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
+    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario).exclude(realizado=True)
 
     return render(request, 'llamada/Buzon.html', context={'registro': registro})
 

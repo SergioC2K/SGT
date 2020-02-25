@@ -16,43 +16,79 @@
 
 {% block main %}
     <div class="container">
+
         <div class="card">
             <h4 class="hk-pg-title mt-2">
-                    <span class="pg-title-icon">
-                    </span> &nbsp; <i class="fas fa-file-excel"></i>&nbsp Exporte de archivo </h4>
+                &nbsp; <i class="fas fa-poll"></i>  Resultados</i><a id="emailapp_sidebar_move"
+                 class="fas fa-bars mb-3 mb-md-0 emailapp-sidebar-move email-box float-right">&nbsp;&nbsp;
+               </a>
+
+
+            </h4>
+            <div class="emailapp-wrap">
+                <div class="emailapp-sidebar">
+                    <div class="nicescroll-bar">
+                        <div class="emailapp-nav-wrap">
+                            <a id="close_emailapp_sidebar" href="javascript:void(0)" class="close-emailapp-sidebar">
+                                <span class="feather-icon"><i data-feather="chevron-left"></i></span>
+                            </a>
+                            <ul class="nav flex-column mail-category">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Inbox<span
+                                            class="badge badge-primary">50</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Sent mail</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Important</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Draft<span
+                                            class="badge badge-secondary">5</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Trash</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Chat</a>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-pink btn-block mt-20 mb-20" data-toggle="modal"
+                                    data-target="#exampleModalEmail">
+                                Compose email
+                            </button>
+                            <ul class="nav flex-column mail-labels">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);"><span
+                                            class="badge badge-primary badge-indicator"></span>clients</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);"><span
+                                            class="badge badge-danger badge-indicator"></span>personal</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);"><span
+                                            class="badge badge-warning badge-indicator"></span>office</a>
+                                </li>
+                            </ul>
+                            <hr>
+                            <ul class="nav flex-column mail-settings">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);"><i
+                                            class="zmdi zmdi-settings"></i>settings</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
             <hr>
-            <h5>&nbsp;<i class="fas fa-phone-alt"></i> Llamadas
 
-            </h5>
+
             <div class="container">
-
-
-
-
-                        <div class="input-group mb-1">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Opciones</label>
-                            </div>
-                            <select class="custom-select" id="inputGroupSelect01">
-                                <option selected>Liquidacion</option>
-                                <option value="1">Mas alta</option>
-                                <option value="2">Mas baja</option>
-                                <option value="3">Usuarios</option>
-                            </select>
-                        </div>
-
-                        <div class="input-group mb-1">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Opciones</label>
-                            </div>
-                            <select class="custom-select" id="inputGroupSelect01">
-                                <option selected>Estados</option>
-                                <option href="" value="1">No contesta</option>
-                                <option href="" value="2">Efectivas</option>
-                                <option href="" value="3">Total</option>
-                            </select>
-                        </div>
-
 
 
                 <table id="table_id" class="table table-striped " style="width: 800px;margin: 0 auto;">
@@ -121,7 +157,6 @@
         <script>
             $(document).ready(function () {
                 $('#table_id').DataTable({
-
                     "scrollX": true,
                     "scrollY": "200px",
                     "scrollCollapse": true,
