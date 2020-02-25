@@ -43,6 +43,7 @@ class LoginViewUsuario(LoginView):
             return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
+
 def perfil(request):
     return render(request, 'users/perfil.html')
 
@@ -62,6 +63,7 @@ class UpdateProfileView(UpdateView):
         """Return to user's profile."""
         username = self.object.usuario.username
         return reverse('usuario:listar_usuario')
+
 
 class UserCreateView(FormView):
     template_name = 'users/usuario_nuevo.html'
@@ -99,7 +101,6 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
@@ -117,7 +118,6 @@ class ListarUsuario(ListView, FormView):
         """Guardar datos."""
         form.save()
         return super().form_valid(form)
-
 
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))

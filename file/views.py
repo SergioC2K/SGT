@@ -1,22 +1,21 @@
+# Date
 import datetime
-
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+# Excel
+from django.views.generic.edit import BaseUpdateView
 from tablib import Dataset
-from file.models import LlamadasEntrantes
 import pandas as pd
-from django.views.generic import ListView, CreateView, UpdateView
+# Django
+from django.contrib.auth.decorators import login_required
+from django.core import serializers
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, UpdateView, FormView
 from django.db.models import Q, Count
 from django.db import IntegrityError
+# Modelos
+from file.forms import RealizarLlamada, LlamadaModelo
 from file.models import RegistroLlamada
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
 from file.models import LlamadasEntrantes, Archivo
-
-# Create your views here.
 from usuario.models import Perfil
 
 
@@ -30,7 +29,7 @@ def upload_excel(request):
             crear = Archivo.objects.create(nombre=nombre)
             crear.save()
         except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', {"message": e.message})
+            return render(request, 'archivo/fileimport.html', {"message": e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(
@@ -122,8 +121,6 @@ def registro_llamada(request):
         devolver_llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)) \
             .exclude(estado=True)
         qsssss = serializers.serialize('json', devolver_llamadas, fields=('pk', 'entrega'))
-        qeee = qsssss
-        qweee = qsssss
     return HttpResponse(qsssss, content_type='application/json')
 
 
@@ -179,11 +176,9 @@ def enviarLlamadas(request):
 
 
 def ver_Llamadas(request):
-    registro = RegistroLlamada.objects.filter(realizado=False)
-
-    diccionario = {'array': registro}
-
-    return render(request, 'llamada/llegadas.html', diccionario)
+    usuario = request.user.pk
+    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
+    return render(request, 'llamada/llegadas.html', context={'diccionario': registro})
 
 
 class archivoLlamadas(ListView):
@@ -210,3 +205,30 @@ def eliminarArchivo(request):
         }
 
     return JsonResponse(data)
+
+
+def realizar_llamada(request, number):
+    global llamadas
+    if request.method == 'POST':
+        form = RealizarLlamada(request.POST, request.FILES, request.user)
+        if form.is_valid():
+            form.save()
+        else:
+            return render(request=request, template_name='prueba.html', context={'form': form,
+                                                                                 })
+    else:
+        form = RealizarLlamada()
+        llamadas = get_object_or_404(RegistroLlamada, pk=number)
+
+    return render(
+        request=request,
+        template_name='prueba.html',
+        context={'form': form,
+                 'llamadas': llamadas}
+    )
+
+
+class RealizarLlamadass(UpdateView):
+    template_name = 'users/perfil.html'
+    model = LlamadasEntrantes
+    form_class = RealizarLlamada

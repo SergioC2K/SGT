@@ -5,7 +5,7 @@ from django.urls import path
 
 # Views
 import file.views as ImporteControl
-from . import views
+from file import views
 
 urlpatterns = [
     path(
@@ -33,7 +33,6 @@ urlpatterns = [
         view=views.enviarLlamadas,
         name='enviarLlamada'
     ),
-
     path(
         route='entregar_l/',
         view=views.entregar.as_view(),
@@ -44,7 +43,6 @@ urlpatterns = [
         view=views.repartir,
         name='entrega'
     ),
-
     path(
         route='eliminar',
         view=views.archivoLlamadas.as_view(),
@@ -54,6 +52,16 @@ urlpatterns = [
         route='borrar',
         view=views.eliminarArchivo,
         name='borrar'
+    ),
+    path(
+        route='verllamadas',
+        view=views.ver_Llamadas,
+        name='borrar'
+    ),
+    path(
+        route='prueba/<int:number>/',
+        view=views.realizar_llamada,
+        name='prueba'
     ),
 
 ]

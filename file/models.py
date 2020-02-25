@@ -48,7 +48,9 @@ class LlamadasEntrantes(BaseModel, models.Model):
 
 class Grabacion(BaseModel, models.Model):
     # Url de donde va quedar almacenada la grabacion
-    url = models.URLField()
+
+    nombre = models.CharField(max_length=45)
+    url = models.FileField(upload_to='audio/mp3')
 
 
 class Estado(BaseModel, models.Model):
@@ -60,7 +62,7 @@ class Estado(BaseModel, models.Model):
     CLAPLE = 'Cliente aplaza entrega'
     CLINOSOL = 'Cliente no sabe de la solicitud'
     ALCOMPE = 'Almacen se compromete con entrega'
-    CLDES = 'Cliente Desiste de la compra'
+    CLDES = 'Cliente desiste de la compra'
     ESTADOS = [
         (INFO_EN, 'Informacion de la entrega'),
         (NOCON, 'No contesta'),
@@ -82,7 +84,7 @@ class Estado(BaseModel, models.Model):
 
 class RegistroLlamada(BaseModel, models.Model):
     nombre_contesta = models.CharField(max_length=45, blank=False, null=True)
-    fecha_entrega = models.DateField(null=True, blank=False, auto_now_add=True)
+    fecha_entrega = models.DateField(null=True, blank=False)
     observaciones = models.TextField(null=True, blank=True)
     realizado = models.BooleanField(default=False,null=True)
     id_llamada = models.ForeignKey(LlamadasEntrantes, on_delete=models.PROTECT)
