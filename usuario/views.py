@@ -56,13 +56,14 @@ def UserCreateView(request):
         formula = SignupForm(request.POST)
         if formula.is_valid():
             guardar = formula.save()
-            data = {'estado': 'guardado'}
-        else:
             data = {'estado': True}
+        else:
+            data = {'estado': False}
 
         return JsonResponse(data=data)
     else:
         return redirect('users/listar.html')
+
 
 
 @login_required
