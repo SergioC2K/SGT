@@ -120,19 +120,19 @@ def form_valid(self, form):
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
-    if request.method == 'POST':
-        usuario_pk = request.POST['user']
-        user = User.objects.get(pk=usuario_pk)
-        if user.is_active:
-            user.is_active = False
-            user.save()
-        else:
-            user.is_active = True
-            user.save()
+    id = request.GET.get('id', None)
+    user = User.objects.get(pk=id)
 
-    url = reverse('usuario:listar_usuario')
+    if user.is_active:
+        user.is_active = False
+        user.save()
+        data = {'desactive': True}
+    else:
+        user.is_active = True
+        user.save()
+        data = {'desactive': False}
 
-    return redirect(url)
+    return JsonResponse(data)
 
 
 def conectado(request):

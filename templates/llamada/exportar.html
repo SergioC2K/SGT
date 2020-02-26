@@ -146,8 +146,15 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                &nbsp;<button class="btn btn-success" id="button-a">Exportar datos</button>
+
             </div>
+            <hr>
+            <div class="row justify-content-center h-100"> &nbsp;<button class="btn btn-success" id="button-a">Exportar
+                datos
+            </button>
+            </div>
+
+
         </div>
 
     </div>
@@ -176,7 +183,27 @@
             }
 
             $("#button-a").click(function () {
-                saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
+
+                Swal.fire({
+                    title: 'Desea exportar los datos?',
+                    text: "Verifique los datos de la tabla!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#36876a',
+                    cancelButtonColor: '#409ec1',
+                    confirmButtonText: 'Si deseo exportar!'
+                }).then((result) => {
+                    if (result.value) {
+                        saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
+                        Swal.fire(
+                            'Exportado!',
+                            'Su reporte esta listo',
+                            'success'
+                        )
+                    }
+                })
+
+
             });
 
 
