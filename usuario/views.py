@@ -54,10 +54,15 @@ def perfil(request):
 def UserCreateView(request):
     if request.is_ajax():
         formula = SignupForm(request.POST)
-    if formula.is_valid():
-        guardar = formula.save()
-    data = {'estado': 'guardado'}
-    return JsonResponse(data)
+        if formula.is_valid():
+            guardar = formula.save()
+            data = {'estado': True}
+        else:
+            data = {'estado': False}
+
+        return JsonResponse(data=data)
+    else:
+        return redirect('users/listar.html')
 
 
 @login_required

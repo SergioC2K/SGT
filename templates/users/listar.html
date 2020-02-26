@@ -131,7 +131,7 @@
         </div>
     </div>
     <!-- /Container -->
-    <div style="box-shadow: inset 0 0 20px #36876a" class="modal fade bd-example-modal-lg" tabindex="-1"
+    <div style="box-shadow: inset 0 0 20px #36876a" id="mymodal" class="modal fade bd-example-modal-lg" tabindex="-1"
          role="dialog"
          aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
@@ -250,87 +250,7 @@
             </div>
         </footer>
 
-        {% block javascript %}
 
-
-            <script>
-
-                $(document).ready(function () {
-                    $('#table_id').DataTable();
-                });
-
-
-                function Inhabilitar(id) {
-                    Swal.fire({
-                        title: 'Esta seguro?',
-                        text: "Desea inhabiliatal el usuario",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#31d64e',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-
-
-                    }).then((result) => {
-                        $.ajax({
-                            url: '{% url "usuario:desactivar" %}',
-                            data: {
-                                'id': id,
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                if (data.deleted) {
-                                    $("#Tablet #archivo-" + id).remove();
-                                } else mensaje()
-                            }
-                        });
-                        if (result.value) {
-                            Swal.fire(
-                                'Deleted!',
-                                'Your file has been deleted.',
-                                'success'
-                            )
-                        }
-                    })
-                }
-
-                (function () {
-                    'use strict';
-                    window.addEventListener('load', function () {
-                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                        var forms = document.getElementsByClassName('needs-validation');
-                        // Loop over them and prevent submission
-                        var validation = Array.prototype.filter.call(forms, function (form) {
-                            form.addEventListener('submit', function (event) {
-                                if (form.checkValidity() === false) {
-                                    event.preventDefault();
-                                    Swal.fire(
-                                        'Error',
-                                        'Por favor complete los campos',
-                                        'error'
-                                    )
-                                    event.stopPropagation();
-                                } else {
-
-                                    Swal.fire(
-                                        'Bien',
-                                        'Registro Exitoso',
-                                        'success'
-                                    )
-                                }
-
-
-                                form.classList.add('was-validated');
-                            }, false);
-                        });
-                    }, false);
-                })();
-            </script>
-
-
-
-
-        {% endblock %}
     </div>
 
     </div>

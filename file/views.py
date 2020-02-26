@@ -28,7 +28,6 @@ def upload_excel(request):
         nombre = request.FILES['myfile']
         try:
             crear = Archivo.objects.create(nombre=nombre)
-
             crear.save()
         except IntegrityError as e:
 
