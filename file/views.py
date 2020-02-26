@@ -33,7 +33,7 @@ def upload_excel(request):
             crear = Archivo.objects.create(nombre=nombre)
             crear.save()
         except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', {"message": e.message})
+            return render(request, 'archivo/fileimport.html', context={'errors': e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(

@@ -28,24 +28,18 @@
                                 <div class="form-group">
                                     <input class="form-control" type="file" id="input" name="myfile"
                                            onchange="papa()"
-                                           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                                    />
+                                           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
                                 </div>
-
-
                                 <button class="btn btn-success" id="btn" type="submit">Enviar</button>
                             </form>
                         </div>
                     </div>
-
-
                 </div>
             </div>
             {% if errors %}
                 <div class="alert alert-danger alert-dismissible fade show ">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <strong>¡Error este archivo ya existe!</strong>
-
                 </div>
             {% endif %}
         </div>
