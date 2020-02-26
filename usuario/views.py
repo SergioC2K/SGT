@@ -54,10 +54,15 @@ def perfil(request):
 def UserCreateView(request):
     if request.is_ajax():
         formula = SignupForm(request.POST)
-    if formula.is_valid():
-        guardar = formula.save()
-    data = {'estado': 'guardado'}
-    return JsonResponse(data)
+        if formula.is_valid():
+            guardar = formula.save()
+            data = {'estado': 'guardado'}
+        else:
+            data = {'estado': True}
+
+        return JsonResponse(data=data)
+    else:
+        return redirect('users/listar.html')
 
 
 @login_required
@@ -109,7 +114,6 @@ def form_valid(self, form):
     form.save()
 
     return super().form_valid(form)
-
 
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
