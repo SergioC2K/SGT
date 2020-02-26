@@ -9,13 +9,31 @@ from django.core.exceptions import ValidationError
 
 from SGT import settings
 from file.models import Estado, RegistroLlamada, Grabacion
-import os
-from mutagen.mp3 import MP3, HeaderNotFoundError, InvalidMPEGHeader
-
-from django.conf import settings
 
 
 class RealizarLlamada(forms.Form):
+
+    NOCON = 1
+    INFO_EN = 2
+    DATERR = 3
+    CLEAL = 4
+    ZNCUB = 5
+    CLAPLE = 6
+    CLINOSOL = 7
+    ALCOMPE = 8
+    CLDES = 9
+    ESTADOS = [
+        (NOCON, 'No contesta'),
+        (INFO_EN, 'Informacion de la entrega'),
+        (DATERR, 'Datos Errados'),
+        (CLEAL, 'Cliente pide entrega en almacen'),
+        (ZNCUB, 'Zona no cubierta TCL'),
+        (CLAPLE, 'Cliente aplaza entrega'),
+        (CLINOSOL, 'Cliente no sabe de la solicitud'),
+        (ALCOMPE, 'Almacen se compromete con entrega'),
+        (CLDES, 'Cliente Desiste de la compra'),
+    ]
+
     nombre_contesta = forms.CharField(
         max_length=45,
         widget=forms.TextInput(attrs={
@@ -37,7 +55,7 @@ class RealizarLlamada(forms.Form):
     observaciones = forms.CharField(widget=forms.Textarea)
     realizado = forms.BooleanField(initial=True, widget=forms.HiddenInput())
     id_estado = forms.ChoiceField(
-        choices=Estado.ESTADOS,
+        choices=ESTADOS,
         widget=forms.Select(attrs={
             'class': 'form-control',
             'id': 'resultado_llamada',

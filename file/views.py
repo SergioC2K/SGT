@@ -18,6 +18,11 @@ from file.models import RegistroLlamada
 from file.models import LlamadasEntrantes, Archivo
 from usuario.models import Perfil
 
+hoy = datetime.date.today()
+manana = hoy + datetime.timedelta(days=1)
+dias_antes = hoy - datetime.timedelta(days=9)
+horas_antes = hoy - datetime.timedelta(hours=12)
+
 
 @login_required
 def upload_excel(request):
@@ -59,23 +64,6 @@ def upload_excel(request):
             )
         LlamadasEntrantes.objects.bulk_create(llamadas)
     return render(request, 'archivo/fileimport.html')
-
-
-def preview_excel(request):
-    if request.method == 'POST':
-        dataset = Dataset()
-        new_persons = request.FILES['myfile']
-
-        imported_data = dataset.load(new_persons.read())
-        data_final = imported_data.export('json')
-
-    return render(request, 'archivo/fileimport.html')
-
-
-hoy = datetime.date.today()
-manana = hoy + datetime.timedelta(days=1)
-dias_antes = hoy - datetime.timedelta(days=9)
-horas_antes = hoy - datetime.timedelta(hours=12)
 
 
 class ListarArchivo(ListView):
