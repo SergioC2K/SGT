@@ -223,7 +223,7 @@ def traer(request):
 
 
 class ListFile(ListView):
-    model = Perfil
+    model = LlamadasEntrantes
     template_name = 'llamada/exportar.html'
 
 
