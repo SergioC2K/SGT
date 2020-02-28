@@ -1,22 +1,21 @@
 # Date
 import datetime
 # Excel
-from django.views.generic.edit import BaseUpdateView
-from tablib import Dataset
 import pandas as pd
 # Django
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, UpdateView, FormView
+from django.views.generic import ListView, UpdateView
 from django.db.models import Q, Count
 from django.db import IntegrityError
 # Modelos
-from file.forms import RealizarLlamada, LlamadaModelo
+from file.forms import RealizarLlamada
 from file.models import RegistroLlamada
 from file.models import LlamadasEntrantes, Archivo
 from usuario.models import Perfil
+from .filters import RegistroLlamadaFilter
 
 hoy = datetime.date.today()
 manana = hoy + datetime.timedelta(days=1)
@@ -105,7 +104,6 @@ def registro_llamada(request):
             llamada_repartida = LlamadasEntrantes.objects.get(id=llamadas[i])
             llamada_repartida.estado = True
             llamada_repartida.save()
-            oelo = 1
         devolver_llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)) \
             .exclude(estado=True)
         qsssss = serializers.serialize('json', devolver_llamadas, fields=('pk', 'entrega'))
@@ -220,3 +218,9 @@ class RealizarLlamadass(UpdateView):
     template_name = 'users/perfil.html'
     model = LlamadasEntrantes
     form_class = RealizarLlamada
+
+
+def pruebas_llamadas(request):
+    user_list = RegistroLlamada.objects.all()
+    user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
+    return render(request, 'prueba.html', {'filter': user_filter})

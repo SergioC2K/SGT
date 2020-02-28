@@ -59,6 +59,11 @@ urlpatterns = [
         name='borrar'
     ),
     path(
+        route='prueballamadas',
+        view=views.pruebas_llamadas,
+        name='prueballamada'
+    ),
+    path(
         route='prueba/<int:number>/',
         view=views.realizar_llamada,
         name='prueba'

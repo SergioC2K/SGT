@@ -38,6 +38,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'crispy_forms',
+    'django_filters',
 ]
 LOCAL_APPS = [
     'file',
