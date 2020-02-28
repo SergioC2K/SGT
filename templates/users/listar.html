@@ -30,17 +30,18 @@
                             </section>
                             <div class="row">
                                 <div class="col-sm">
-                                    <div class="table-wrap">
-                                        <table id="table_id" class="table table-striped"
+
+                                    {% if object_list %}
+                                        <table id="table_id" class="table table-hover"
                                                style="width:100%">
-                                            <thead>
+                                            <thead class="thead-dark">
                                             <tr>
                                                 <th>Estado</th>
                                                 <th>Usuario</th>
                                                 <th>Nombres</th>
                                                 <th>Apellidos</th>
                                                 <th>Cedula</th>
-                                                <th>Telefono fijo</th>
+                                                <th>Fijo</th>
                                                 <th>Celular</th>
                                                 <th>Acciones</th>
                                             </tr>
@@ -110,8 +111,10 @@
                                             {% endif %}
                                             </tbody>
                                         </table>
+                                    {% else %}
+                                        <h1>NO HAY DATOS PARA MOSTRAR</h1>
+                                    {% endif %}
 
-                                    </div>
                                 </div>
                             </div>
 
@@ -190,22 +193,19 @@
                                         Ingrese el nombre de usuario
                                     </div>
                                 </div>
+
                                 <div class="col-md-3 mb-3">
                                     <label for="validationTooltip04">Contraseña</label>
                                     {# INPUT #}
                                     {{ form.password }}
-                                    <div class="invalid-tooltip">
-                                        Contraseña minima de 8 caracteres
+                                    <div id="Prism2" class="invalid-tooltip">
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="validationTooltip05">Confirmar
                                         contraseña</label>
                                     {{ form.password_confirmation }}
-                                    <div class="invalid-tooltip">
-                                        {% if form.errors %}
-                                            {{ form.password_confirmation.errors }}
-                                        {% endif %}
+                                    <div id="Prism" class="invalid-tooltip">
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-2 mt-4 ">
@@ -214,10 +214,9 @@
                                         {{ form.is_staff }}
                                     </div>
                                 </div>
-
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-primary" type="submit">Enviar
+                                <button class="btn btn-primary" id="submit" type="submit">Enviar
                                 </button>
                                 <button type="button" class="btn btn-secondary"
                                         data-dismiss="modal">Cancelar
@@ -248,8 +247,20 @@
 
             <script>
 
+                let password = document.getElementById('validationTooltip04');
+                let password_confirmation = document.getElementById('validationTooltip05');
+
+
                 $(document).ready(function () {
-                    $('#table_id').DataTable();
+                    $('#table_id').DataTable({
+
+                        bfilter: false,
+                        ordering: true,
+                        searching: true,
+                        info: false
+
+                    });
+
                 });
 
                 function Inhabilitar(id) {
@@ -321,15 +332,36 @@
                             $('#mymodal').modal('hide');
                         }
 
+                        (function () {
+
+                            if (password_confirmation != "" && password != "") {
+
+                                document.getElementById('Prism').innerHTML = "ingrese la contraseña";
+                                document.getElementById('Prism2').innerHTML = "ingrese la contraseña";
+                            }
+
+                        })();
+
+
                         function Error() {
-                            Swal.fire(
-                                'Mal !',
-                                'Peligro',
-                                'error'
-                            );
+
+                            if (password != password_confirmation) {
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error...',
+                                    text: 'Las contraseñas no coinciden!',
+
+                                })
+                                return false;
+                            } else {
+                                return true;
+                            }
                         }
+
                     });
-                });
+                })
+                ;
             </script>
         {% endblock %}
     </div>
@@ -337,3 +369,12 @@
     </div>
 
 {% endblock %}
+<style>
+    div.dataTables_wrapper
+    .dataTables_length select {
+        width: 100%;
+        float: none;
+        text-align: center;
+        margin-top: 1.5rem !important;
+    }
+</style>

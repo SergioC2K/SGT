@@ -1,26 +1,26 @@
+# Date
 import datetime
-
+# Excel
+import pandas as pd
+# Django
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.http import JsonResponse
-from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
-from tablib import Dataset
-from file.models import LlamadasEntrantes
-import pandas as pd
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, UpdateView
 from django.db.models import Q, Count
 from django.db import IntegrityError
+# Modelos
+from file.forms import RealizarLlamada
 from file.models import RegistroLlamada
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
 from file.models import LlamadasEntrantes, Archivo
-
-# Create your views here.
 from usuario.models import Perfil
-import time
+from .filters import RegistroLlamadaFilter
+
+hoy = datetime.date.today()
+manana = hoy + datetime.timedelta(days=1)
+dias_antes = hoy - datetime.timedelta(days=9)
+horas_antes = hoy - datetime.timedelta(hours=12)
 
 
 @login_required
@@ -33,7 +33,7 @@ def upload_excel(request):
             crear = Archivo.objects.create(nombre=nombre)
             crear.save()
         except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', context={'errors': e})
+            return render(request, 'archivo/fileimport.html', {"message": e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(
@@ -63,23 +63,6 @@ def upload_excel(request):
             )
         LlamadasEntrantes.objects.bulk_create(llamadas)
     return render(request, 'archivo/fileimport.html')
-
-
-def preview_excel(request):
-    if request.method == 'POST':
-        dataset = Dataset()
-        new_persons = request.FILES['myfile']
-
-        imported_data = dataset.load(new_persons.read())
-        data_final = imported_data.export('json')
-
-    return render(request, 'archivo/fileimport.html')
-
-
-hoy = datetime.date.today()
-manana = hoy + datetime.timedelta(days=1)
-dias_antes = hoy - datetime.timedelta(days=9)
-horas_antes = hoy - datetime.timedelta(hours=12)
 
 
 class ListarArchivo(ListView):
@@ -121,12 +104,9 @@ def registro_llamada(request):
             llamada_repartida = LlamadasEntrantes.objects.get(id=llamadas[i])
             llamada_repartida.estado = True
             llamada_repartida.save()
-            oelo = 1
         devolver_llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)) \
             .exclude(estado=True)
         qsssss = serializers.serialize('json', devolver_llamadas, fields=('pk', 'entrega'))
-        qeee = qsssss
-        qweee = qsssss
     return HttpResponse(qsssss, content_type='application/json')
 
 
@@ -138,7 +118,7 @@ def repartir(request):
     archivo = Archivo.objects.last()
 
     #  Se consultan las ultimas llamadas ingresadas de acuerdo a el archivo
-    llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)).exclude(estado=True)
+    llamadas = LlamadasEntrantes.objects.filter(id_archivo=archivo).exclude(estado=True)
     if operadores and llamadas:
         contexto = {'operadores': operadores, 'llamadas': llamadas}
         return render(request, 'archivo/repartir.html', contexto)
@@ -183,9 +163,8 @@ def enviarLlamadas(request):
 
 def ver_Llamadas(request):
     usuario = request.user.pk
-    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario).exclude(realizado=True)
-
-    return render(request, 'llamada/Buzon.html', context={'registro': registro})
+    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
+    return render(request, 'llamada/llegadas.html', context={'diccionario': registro})
 
 
 class archivoLlamadas(ListView):
@@ -214,24 +193,34 @@ def eliminarArchivo(request):
     return JsonResponse(data)
 
 
-def traer(request):
-    persona = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id=persona)
+def realizar_llamada(request, number):
+    global llamadas
+    if request.method == 'POST':
+        form = RealizarLlamada(request.POST, request.FILES, request.user)
+        if form.is_valid():
+            form.save()
+        else:
+            return render(request=request, template_name='prueba.html', context={'form': form,
+                                                                                 })
+    else:
+        form = RealizarLlamada()
+        llamadas = get_object_or_404(RegistroLlamada, pk=number)
 
-    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
-            'telefono': consulta.id_llamada.telefono,
-            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
-            'alm_soli': consulta.id_llamada.nombre_solicitante,
-            'localidad': consulta.id_llamada.localidad}
-
-    return JsonResponse(data)
-
-
-class ListFile(ListView):
-    model = Perfil
-    template_name = 'llamada/exportar.html'
+    return render(
+        request=request,
+        template_name='prueba.html',
+        context={'form': form,
+                 'llamadas': llamadas}
+    )
 
 
+class RealizarLlamadass(UpdateView):
+    template_name = 'users/perfil.html'
+    model = LlamadasEntrantes
+    form_class = RealizarLlamada
 
 
-
+def pruebas_llamadas(request):
+    user_list = RegistroLlamada.objects.all()
+    user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
+    return render(request, 'prueba.html', {'filter': user_filter})

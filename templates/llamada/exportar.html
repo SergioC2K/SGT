@@ -7,21 +7,21 @@
         <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
         <title>Exportar</title>
         <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
-        <script src="{% static 'dist/js/FileSaver.min.js' %}"></script>
-        <script src="{% static 'dist/js/xlsx.full.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/FileSaver.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/xlsx.full.min.js' %}"></script>
         <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
 
     </head>
 {% endblock %}
 
 {% block main %}
+    <div class="container mt-4">
 
-    <div class="container mt-3">
         <div class="card">
             <h4 class="hk-pg-title mt-2">
-                &nbsp; <i class="fas fa-poll"></i>  Resultados</i><a id="emailapp_sidebar_move"
-                 class="fas fa-bars mb-3 mb-md-0 emailapp-sidebar-move email-box float-right">&nbsp;&nbsp;
-               </a>
+                &nbsp; <i class="fas fa-poll"></i> Resultados</i><a id="emailapp_sidebar_move"
+                                                                    class="fas fa-bars mb-3 mb-md-0 emailapp-sidebar-move email-box float-right">&nbsp;&nbsp;
+            </a>
 
 
             </h4>
@@ -121,33 +121,40 @@
                     <tbody>
                     {% for foo in object_list %}
                         <tr>
-                            <td>{{ foo.usuario.first_name }}</td>
-                            <td>{{ foo.usuario.last_name }}</td>
-                            <td>{{ foo.cedula }}</td>
-                            <td>{{ foo.telefono_fijo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
-                            <td>{{ foo.usuario.first_name }}</td>
-                            <td>{{ foo.usuario.last_name }}</td>
-                            <td>{{ foo.cedula }}</td>
-                            <td>{{ foo.telefono_fijo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
-                            <td>{{ foo.usuario.first_name }}</td>
-                            <td>{{ foo.usuario.last_name }}</td>
-                            <td>{{ foo.cedula }}</td>
-                            <td>{{ foo.telefono_fijo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
-                            <td>{{ foo.usuario.first_name }}</td>
-                            <td>{{ foo.usuario.last_name }}</td>
-                            <td>{{ foo.cedula }}</td>
-                            <td>{{ foo.telefono_fijo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
+                            <td>{{ foo.estado }}</td>
+                            <td>{{ foo.id_usuario }}</td>
+                            <td>{{ foo.nombre_solicitante }}</td>
+                            <td>{{ foo.ident_fiscal }}</td>
+                            <td>{{ foo.nombre_destinatario }}</td>
+                            <td>{{ foo.direccion_des_mcia }}</td>
+                            <td>{{ foo.telefono }}</td>
+                            <td>{{ foo.telebox }}</td>
+                            <td>{{ foo.material }}</td>
+                            <td>{{ foo.texto_breve_material }}</td>
+                            <td>{{ foo.documento_ventas }}</td>
+                            <td>{{ foo.entrega }}</td>
+                            <td>{{ foo.num_pedido_cliente }}</td>
+                            <td>{{ foo.cantidad_pedido }}</td>
+                            <td>{{ foo.observaciones_inicial }}</td>
+                            <td>{{ foo.denom_articulos }}</td>
+                            <td>{{ foo.localidad }}</td>
+                            <td>{{ foo.barrio }}</td>
+                            <td>{{ foo.ruta }}</td>
+                            <td>{{ foo.hora_inicio }}</td>
+                            <td>{{ foo.hora_final }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-                &nbsp;<button class="btn btn-success" id="button-a">Exportar datos</button>
+
             </div>
+            <hr>
+            <div class="row justify-content-center h-100"> &nbsp;<button class="btn btn-success" id="button-a">Exportar
+                datos
+            </button>
+            </div>
+
+
         </div>
 
     </div>
@@ -176,7 +183,27 @@
             }
 
             $("#button-a").click(function () {
-                saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
+
+                Swal.fire({
+                    title: 'Desea exportar los datos?',
+                    text: "Verifique los datos de la tabla!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#36876a',
+                    cancelButtonColor: '#409ec1',
+                    confirmButtonText: 'Si deseo exportar!'
+                }).then((result) => {
+                    if (result.value) {
+                        saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
+                        Swal.fire(
+                            'Exportado!',
+                            'Su reporte esta listo',
+                            'success'
+                        )
+                    }
+                })
+
+
             });
 
 

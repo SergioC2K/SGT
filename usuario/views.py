@@ -51,17 +51,29 @@ def perfil(request):
     return render(request, 'users/perfil.html')
 
 
+
 def UserCreateView(request):
     if request.is_ajax():
         formula = SignupForm(request.POST)
+        userna = request.POST.get('username')
         if formula.is_valid():
             guardar = formula.save()
-            data = {'estado': True}
+            persona = User.objects.get(username=userna)
+            usuario = Perfil.objects.get(usuario_id=persona.pk)
+            d = {'id': usuario.id, 'name': usuario.usuario.first_name,
+                 'cedula': usuario.cedula,
+                 'estado': usuario.usuario.is_active,
+                 'apellido': usuario.usuario.last_name,
+                 'telefono_fijo': usuario.telefono_fijo,
+                 'celular': usuario.celular}
+            data = {'estado': True, 'person': d}
         else:
             data = {'estado': False}
+
         return JsonResponse(data=data)
     else:
         return redirect('users/listar.html')
+
 
 
 @login_required
@@ -115,22 +127,23 @@ def form_valid(self, form):
     return super().form_valid(form)
 
 
+
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
-    if request.method == 'POST':
-        usuario_pk = request.POST['user']
-        user = User.objects.get(pk=usuario_pk)
-        if user.is_active:
-            user.is_active = False
-            user.save()
-        else:
-            user.is_active = True
-            user.save()
+    id = request.GET.get('id', None)
+    user = User.objects.get(pk=id)
 
-    url = reverse('usuario:listar_usuario')
+    if user.is_active:
+        user.is_active = False
+        user.save()
+        data = {'desactive': True}
+    else:
+        user.is_active = True
+        user.save()
+        data = {'desactive': False}
 
-    return redirect(url)
+    return JsonResponse(data)
 
 
 def conectado(request):

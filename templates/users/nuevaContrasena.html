@@ -1,23 +1,39 @@
-{% extends 'base/base.html' %}
 {% load static %}
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>{{ perfil.usuario.first_name }}</title>
+    <link href="{% static 'dist/css/style.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block main %}
-    <div class="hk-pg-wrapper">
-        <br>
-        <div class="hk-pg-header">
-            <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="user"></i></span></span>Modificar Contraseña</h4>
-        </div>
-        <div class="container">
-            <div class="container-fluid">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form }}
-                    <button type="submit">Guardar Cambios</button>
-                </form>
+
+    <div class="hk-pg-wrapper hk-auth-wrapper">
+        <header class="d-flex justify-content-end align-items-center">
+        </header>
+        <div class="container-fluid">
+
+            <div class="auth-form-wrap pt-xl-0 pt-70">
+                <div class="auth-form w-xl-30 w-sm-50 w-100">
+                    <a class="auth-brand text-center d-block mb-20" href="#">
+                        <img class="" src="{% static 'dist/img/LogoSGT.png' %}" height="150" size="90"/>
+                    </a>
+                    <form method="post">
+                        {% csrf_token %}
+                        <h2 class="display-5 mb-10 text-center">Modificar Contraseña</h2>
+
+                        <div class="form-group">
+                            {{ form }}
+                        </div>
+                        <button class="btn  btn-block mb-20" style="background-color:#36876a;color: white"
+                                type="submit">
+                            Cambiar contraseña
+                        </button>
+                        {% if auth_user %}
+
+                        {% endif %}
+                        <p class="text-right"><a href="{% url 'usuario:login' %}">Regresar</a>
+                        </p>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
