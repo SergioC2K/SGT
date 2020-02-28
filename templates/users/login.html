@@ -5,18 +5,13 @@
 {% load static %}
 {% block container %}
 
-       <p> {{ form.non_field_errors }}</p>
-
-
-
-    <form action="{% url 'usuario:login' %}" method="POST">
-
+    <form id="Login" action="{% url 'usuario:login' %}" method="POST" autocomplete="off" >
         {% csrf_token %}
         <div class="login-logo">
             <img src="{% static 'dist/img/LogoSGT.png' %}" alt="" srcset="">
         </div>
         <h3>
-            <i class="fas fa-users"></i> INGRESAR
+            <i class="fas fa-users"></i>INGRESAR
         </h3>
 
         <div class="form-group">
@@ -33,6 +28,35 @@
             <a href="{% url 'password_reset' %}" class="btnForgetPwd" value="Login">Olvido su contraseña?</a>
         </div>
     </form>
+
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+                Swal.fire(
+                    'Bien!',
+                    '{{ message }}',
+                    'success'
+                );
+            </script>
+        {% endfor %}
+
+
+    {% endif %}
+
+    {% if form.errors %}
+        <script>
+            {% for field in form %}
+                {% if field.errors %}
+                    Swal.fire(
+                        '<h2>{{ form.non_field_errors }}</h2>',
+                        '<h3>{{ field.label }}: {{ field.errors|striptags }}</h3>',
+                        'error'
+                    )
+                {% endif %}
+            {% endfor %}
+        </script>
+    {% endif %}
+
 {% endblock %}
 
 

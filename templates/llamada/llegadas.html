@@ -1,10 +1,10 @@
 {% for i in array %}
-    {% if i.id_llamada.id_usuario == request.user %}
-        {% if i.id_llamada.estado %}
-            <tr>
-                <td>{{ i.id_llamada.barrio }}</td>
-                <td>{{ i.id_llamada.estado }}</td>
-            </tr>
+        {% if i.id_llamada.id_usuario == request.user %}
+            {% if i.id_llamada.estado %}
+                <tr>
+                    <td>{{ i.id_llamada.barrio }}</td>
+                    <td>{{ i.id_llamada.estado }}</td>
+                </tr>
+            {% endif %}
         {% endif %}
-    {% endif %}
-{% endfor %}
+    {% endfor %}

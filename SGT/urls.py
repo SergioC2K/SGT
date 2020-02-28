@@ -3,10 +3,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from django.views.generic import TemplateView
-from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
-    PasswordResetCompleteView
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import re_path
-
+from django.urls import reverse_lazy
 urlpatterns = [
 
                   path('archivo/', include(('file.urls', 'file'), namespace='archivo')),

@@ -4,6 +4,7 @@
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>Asignar llamada</title>
+
 {% endblock %}
 
 {% block main %}
@@ -13,51 +14,55 @@
 
             <div class="container-fluid">
                 <div class="row mt-50">
-                    <div class="col-md-8 offset-md-3">
+                    <div class="col-md-8 offset-md-auto">
                         <div class="card" style="box-shadow: inset 0 0 20px #36876a">
                             <h5 class="card-header"><i class="far fa-share-square"></i> Entregar llamadas</h5>
                             <div class="card-body">
 
-                                <div class="form-row">
-                                    {% if llamadas %}
+                                {% if llamadas %}
 
 
-                                        <input name="cantidad" class="form-control col-xl-3" readonly
-                                               onmousedown="return false" id="cantidad" value="{{ llamadas.count }}">
+                                    <input name="cantidad" class="form-control col-xl-3" readonly
+                                           onmousedown="return false" id="cantidad" value="{{ llamadas.count }}">
 
-                                        <form name="formulario" id="formulario" method="post"
-                                              action="{% url 'archivo:enviarLlamada' %}">
+                                    <form name="formulario" id="formulario" method="post"
+                                          action="{% url 'archivo:enviarLlamada' %}">
 
+                                        <div class="">
                                             {% csrf_token %}
                                             {% for operador in operadores %}
-                                                <div class="form-row">
-                                                <div class="form-group">
-                                                <input value="{{ operador.pk }}" name="usuario[]"
-                                                       id="usuario" class="form-control col-xl-12">
-                                                <input name="valor[]" class="form-control col-xl-3" id="valor">
-                                                <input name="" class="" id="valor" value="{% widthratio llamadas|length operadores|length 1 %}">
-                                            {% endfor %}
 
-                                            <br>
+                                                <div class="form-group">
+                                                    <input value="{{ operador.pk }}" name="usuario[]"
+                                                           id="usuario" class="form-control col-xl-9">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input name="valor[]" class="form-control col-xl-3" id="valor">
+                                                </div>
+                                            {% endfor %}
+                                            {{ operadores|length }}
+
 
                                             <button type="submit" class="btn" style="background-color:#36876a">
                                                 enviar
                                             </button>
-                                            </div>
-                                            </div>
-                                        </form>
-                                    {% endif %}
-                                    {% if error %}
-                                        {{ error }}
-                                    {% endif %}
+                                        </div>
+                                    </form>
+                                    </div>
 
-                                </div>
-                            </div>
+
+                                {% endif %}
+                            {% if error %}
+                                {{ error }}
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
     </div>
     </div>
 {% endblock %}

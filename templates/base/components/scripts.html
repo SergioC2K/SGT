@@ -1,6 +1,7 @@
 {% load static %}
-<script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
 <!-- Bootstrap Core JavaScript -->
+<script src="{% static 'dist/popper.js/dist/umd/popper.min.js' %}"></script>
 <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 <!-- Slimscroll JavaScript -->
 <script src="{% static 'dist/js/jquery.slimscroll.js' %}"></script>
@@ -12,7 +13,7 @@
 <script src="{% static 'vendors/jquery-toggles/toggles.min.js' %}"></script>
 <script src="{% static 'dist/js/toggle-data.js' %}"></script>
 <!-- Counter Animation JavaScript -->
-<script src="{% static 'vendors/waypoints/lib/jquery.waypoints.min.js' %}"></script>
+
 <script src="{% static 'vendors/jquery.counterup/jquery.counterup.min.js' %}"></script>
 <!-- Vector Maps JavaScript -->
 <script src="{% static 'vendors/vectormap/jquery-jvectormap-2.0.3.min.js' %}"></script>
@@ -22,11 +23,7 @@
 <!-- Owl JavaScript -->
 <script src="{% static 'vendors/owl.carousel/dist/owl.carousel.min.js' %}"></script>
 
-<!---tablas--->
-<script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
-<script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
-<script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'dist/js/dataTables-data.js' %}"></script>
+
 <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
 <script src="{% static 'vendors/datatables.net-dt/js/dataTables.dataTables.min.js' %}"></script>
@@ -34,24 +31,27 @@
 <script src="{% static 'vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
 <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
 <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
-<script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
-<script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
-<!-- Toastr JS -->
 
-<!-- Apex JavaScript -->
-<!-- Tablesaw JavaScript -->
-<script src="{% static 'vendors/tablesaw/dist/tablesaw.jquery.js' %}"></script>
-<script src="{% static 'dist/js/tablesaw-data.js' %}"></script>
 
 <script src="{% static 'vendors/apexcharts/dist/apexcharts.min.js' %}"></script>
 <script src="{% static 'dist/js/irregular-data-series.js' %}"></script>
 <!-- Init JavaScript -->
 <script src="{% static 'dist/js/init.js' %}"></script>
-<script src="{% static 'dist/js/dashboard-data.js' %}"></script>
+
 
 <!--Validaciones JS -->
 <script src="{% static 'dist/js/validaciones.js' %}"></script>
 <!-- SweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
 <!---Font awesome---->
 <script src="https://kit.fontawesome.com/c7e6a57cdf.js" crossorigin="anonymous"></script>
+
+<!--Calendar -->
+
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
+
+<!--File import excel-->
+
+<script src="{% static "dist/js/excel_upload.js" %}"></script>

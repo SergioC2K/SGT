@@ -29,6 +29,16 @@ urlpatterns = [
         name='registrar_llamada'
     ),
     path(
+        route='buzon/',
+        view=views.ver_Llamadas,
+        name='buzon'
+    ),
+    path(
+        route='repartir/',
+        view=views.repartir,
+        name='repartir'
+    ),
+    path(
         route='enviar',
         view=views.enviarLlamadas,
         name='enviarLlamada'
@@ -39,8 +49,8 @@ urlpatterns = [
         name='entregar_l'
     ),
     path(
-        route='oelo/',
-        view=views.repartir,
+        route='entrega',
+        view=views.ver_Llamadas,
         name='entrega'
     ),
     path(
@@ -52,6 +62,16 @@ urlpatterns = [
         route='borrar',
         view=views.eliminarArchivo,
         name='borrar'
+    ),
+    path(
+        route='traer',
+        view=views.traer,
+        name='traer'
+    ),
+    path(
+        route='ListFile',
+        view=views.ListFile.as_view(),
+        name='ListFile'
     ),
     path(
         route='verllamadas',

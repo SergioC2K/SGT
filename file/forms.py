@@ -1,11 +1,19 @@
 """Formulario Modulo de Llamadas"""
+
+# Django
+
+from django import forms
 # Date
 import datetime
 
 # Django
+
 from django import forms
 from django.core.exceptions import ValidationError
+
+from SGT import settings
 from file.models import Estado, RegistroLlamada, Grabacion
+
 
 
 class RealizarLlamada(forms.Form):

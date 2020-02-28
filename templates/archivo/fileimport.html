@@ -3,111 +3,81 @@
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>Importe</title>
-    <link href="https://cdn-na.infragistics.com/igniteui/2016.2/latest/css/themes/infragistics/infragistics.theme.css"
-          rel="stylesheet"/>
-    <link href="https://cdn-na.infragistics.com/igniteui/2016.2/latest/css/structure/infragistics.css"
-          rel="stylesheet"/>
+
 {% endblock %}
 
 
 {% block main %}
 
-    <div class="hk-pg-wrapper">
-        <div class="container mt-4">
-            <div class="hk-pg-header">
-                <h4 class="hk-pg-title">
+
+    <div class="container mt-4">
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title">
                     <span class="pg-title-icon">
-                        <span class="feather-icon">
-
-                        </span>
-
-
                     </span><i class="fas fa-file-excel"></i>&nbsp Importe de archivo </h4>
-            </div>
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-body">
-
-                        <div class="container">
-                            <div class="custom-file col-md-6 ">
-                                <form action="" method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <input type="file" id="input" name="myfile"
-                                           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                                    />
-                                    <input id="nombre" type="hidden">
-                                    {% if message %}
-                                        {{ message }}
-                                    {% endif %}
-
-                                    <button onclick="" type="submit">enviar</button>
-                                </form>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
+        <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
 
-                    <div id="result" style="overflow:scroll"></div>
+                    <div class="container">
+                        <div class="custom-file col-md-6 ">
+                            <form action="" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="text" id="nombre" name="nombre" hidden>
+                                <div class="form-group">
+                                    <input class="form-control" type="file" id="input" name="myfile"
+                                           onchange="papa()"
+                                           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                    />
+                                </div>
 
-                    <table id="grid1">
+
+                                <button class="btn btn-success" id="btn" type="submit">Enviar</button>
+                            </form>
+                        </div>
+                    </div>
 
 
-                    </table>
                 </div>
             </div>
+            {% if errors %}
+                <div class="alert alert-danger alert-dismissible fade show ">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>¡Error este archivo ya existe!</strong>
 
+                </div>
+            {% endif %}
         </div>
+
+
+        {% block scripts %}
+            {{ block.super }}
+        {% endblock %}
 
     </div>
 
+    <script>
+        function papa() {
+            nombre = document.getElementById('input').files[0].name;
+            document.getElementById('nombre').value = nombre;
+        }
 
-    {% load static %}
-{% endblock %}
-{% block scripts %}
-    {{ block.super }}
+        document.getElementById('btn').addEventListener("click", function () {
+            let file = document.getElementById('input');
+            if (file.files.length == 0) {
+                event.preventDefault()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Por favor seleccione un archivo!',
 
-    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+                })
 
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/infragistics.core.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/infragistics.lob.js"></script>
-
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.ext_core.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.ext_collections.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.ext_text.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.ext_io.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.ext_ui.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.documents.core_core.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.ext_collectionsextended.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.excel_core.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.ext_threading.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.ext_web.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.xml.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.documents.core_openxml.js"></script>
-    <script type="text/javascript"
-            src="http://cdn-na.infragistics.com/igniteui/2019.2/latest/js/modules/infragistics.excel_serialization_openxml.js"></script>
-    <script src="{% static "dist/js/excel_upload.js" %}"></script>
-
+            }
+        })
+    </script>
+    </body>
     <style>
         #sampleContainer ol {
             padding: 0px 0px 0px 15px;

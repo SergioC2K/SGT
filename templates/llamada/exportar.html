@@ -1,0 +1,216 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    <head>
+        <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+        <title>Exportar</title>
+        <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/FileSaver.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/xlsx.full.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
+
+    </head>
+{% endblock %}
+
+{% block main %}
+    <div class="container mt-4">
+
+        <div class="card">
+            <h4 class="hk-pg-title mt-2">
+                &nbsp; <i class="fas fa-poll"></i> Resultados</i><a id="emailapp_sidebar_move"
+                                                                    class="fas fa-bars mb-3 mb-md-0 emailapp-sidebar-move email-box float-right">&nbsp;&nbsp;
+            </a>
+
+
+            </h4>
+            <div class="emailapp-wrap">
+                <div class="emailapp-sidebar">
+                    <div class="nicescroll-bar">
+                        <div class="emailapp-nav-wrap">
+                            <a id="close_emailapp_sidebar" href="javascript:void(0)" class="close-emailapp-sidebar">
+                                <span class="feather-icon"><i data-feather="chevron-left"></i></span>
+                            </a>
+                            <ul class="nav flex-column mail-category">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Inbox<span
+                                            class="badge badge-primary">50</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Sent mail</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Important</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Draft<span
+                                            class="badge badge-secondary">5</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Trash</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);">Chat</a>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-pink btn-block mt-20 mb-20" data-toggle="modal"
+                                    data-target="#exampleModalEmail">
+                                Compose email
+                            </button>
+                            <ul class="nav flex-column mail-labels">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);"><span
+                                            class="badge badge-primary badge-indicator"></span>clients</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);"><span
+                                            class="badge badge-danger badge-indicator"></span>personal</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);"><span
+                                            class="badge badge-warning badge-indicator"></span>office</a>
+                                </li>
+                            </ul>
+                            <hr>
+                            <ul class="nav flex-column mail-settings">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="javascript:void(0);"><i
+                                            class="zmdi zmdi-settings"></i>settings</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <hr>
+
+
+            <div class="container">
+
+
+                <table id="table_id" class="table table-striped " style="width: 800px;margin: 0 auto;">
+
+                    <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Usuario</th>
+                        <th>Solicitante</th>
+                        <th>Identidad fiscal</th>
+                        <th>Destinatario</th>
+                        <th>Direccion</th>
+                        <th>Telefono</th>
+                        <th>Telebox</th>
+                        <th>Material</th>
+                        <th>Texto breve material</th>
+                        <th>Documento de ventas</th>
+                        <th>Entrega</th>
+                        <th>Pedidio de cliente</th>
+                        <th>Cantidad del pedido</th>
+                        <th>Observacion inicial</th>
+                        <th>Denomiancion de articulos</th>
+                        <th>Localidad</th>
+                        <th>Barrio</th>
+                        <th>Ruta</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Final</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for foo in object_list %}
+                        <tr>
+                            <td>{{ foo.estado }}</td>
+                            <td>{{ foo.id_usuario }}</td>
+                            <td>{{ foo.nombre_solicitante }}</td>
+                            <td>{{ foo.ident_fiscal }}</td>
+                            <td>{{ foo.nombre_destinatario }}</td>
+                            <td>{{ foo.direccion_des_mcia }}</td>
+                            <td>{{ foo.telefono }}</td>
+                            <td>{{ foo.telebox }}</td>
+                            <td>{{ foo.material }}</td>
+                            <td>{{ foo.texto_breve_material }}</td>
+                            <td>{{ foo.documento_ventas }}</td>
+                            <td>{{ foo.entrega }}</td>
+                            <td>{{ foo.num_pedido_cliente }}</td>
+                            <td>{{ foo.cantidad_pedido }}</td>
+                            <td>{{ foo.observaciones_inicial }}</td>
+                            <td>{{ foo.denom_articulos }}</td>
+                            <td>{{ foo.localidad }}</td>
+                            <td>{{ foo.barrio }}</td>
+                            <td>{{ foo.ruta }}</td>
+                            <td>{{ foo.hora_inicio }}</td>
+                            <td>{{ foo.hora_final }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+            <hr>
+            <div class="row justify-content-center h-100"> &nbsp;<button class="btn btn-success" id="button-a">Exportar
+                datos
+            </button>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    {% block javascript %}
+        <script>
+            $(document).ready(function () {
+                $('#table_id').DataTable({
+                    "scrollX": true,
+                    "scrollY": "200px",
+                    "scrollCollapse": true,
+                    "paging": false
+                });
+
+
+            })
+            var wb = XLSX.utils.table_to_book(document.getElementById('table_id'), {sheet: "Sheet JS"});
+            var wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
+
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            $("#button-a").click(function () {
+
+                Swal.fire({
+                    title: 'Desea exportar los datos?',
+                    text: "Verifique los datos de la tabla!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#36876a',
+                    cancelButtonColor: '#409ec1',
+                    confirmButtonText: 'Si deseo exportar!'
+                }).then((result) => {
+                    if (result.value) {
+                        saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
+                        Swal.fire(
+                            'Exportado!',
+                            'Su reporte esta listo',
+                            'success'
+                        )
+                    }
+                })
+
+
+            });
+
+
+        </script>
+    {% endblock %}
+
+
+
+{% endblock %}
+

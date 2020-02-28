@@ -1,13 +1,14 @@
 """Formularios de Usuario."""
 
 # Django
+
 from django import forms
 from django.urls import reverse
+
 #  Models
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
-
 from usuario.models import Perfil, Conectado
+
 
 
 class SignupForm(forms.Form):
@@ -88,7 +89,11 @@ class SignupForm(forms.Form):
             'aria - describedby': 'validationTooltipUsernamePrepend'
         })
     )
-    is_staff = forms.ChoiceField(label='Cargo', choices=CARGOS, widget=forms.RadioSelect)
+    is_staff = forms.ChoiceField(label='Cargo', choices=CARGOS, widget=forms.RadioSelect(attrs={
+        'class': 'form-group',
+        'required': True,
+
+    }))
 
     def clean_email(self):
         """Username sea unico"""
@@ -116,7 +121,7 @@ class SignupForm(forms.Form):
         password_confirmation = data['password_confirmation']
 
         if password != password_confirmation:
-            raise forms.ValidationError('Contraseñas diferentes')
+            raise forms.ValidationError('Las Contraseñas no coinciden')
 
         return data
 
@@ -136,7 +141,7 @@ class PerfilForm(forms.ModelForm):
 
     class Meta:
         model = Perfil
-        exclude = ['usuario','conexion']
+        exclude = ['usuario', 'conexion']
 
     def clean(self):
         """Verificar cedula unica"""

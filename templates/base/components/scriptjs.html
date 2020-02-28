@@ -1,4 +1,28 @@
 <script type="text/javascript">
+    function conectado() {
+        return `<div id="conectado" class="sub-dropdown-menu show-on-hover">
+                        <a href="#" class="dropdown-toggle dropdown-item no-caret"><i
+                                class="zmdi zmdi-check text-success"></i>Conectado</a>
+                        <div class="dropdown-menu open-left-side">
+                            <a id="btn-conexion" class="dropdown-item" href="#">
+                                <i class="dropdown-icon zmdi zmdi-minus-circle-outline text-danger"></i>
+                                <span>No Conectado</span></a>
+                            <input id="estado-a-cambiar" type="hidden" value="False">
+                        </div>
+                    </div>`
+    }
+
+    function no_conectado() {
+        return `<div id="no-conectado" class="sub-dropdown-menu show-on-hover">
+                            <a href="#" class="dropdown-toggle dropdown-item no-caret"><i
+                                    class="zmdi zmdi-check text-danger"></i>No Conectado</a>
+                            <div class="dropdown-menu open-left-side">
+                                <a id="btn-conexion" class="dropdown-item" href="#"><i
+                                        class="dropdown-icon zmdi zmdi-check text-success"></i><span>Conectado</span></a>
+                                <input id="estado-a-cambiar" type="hidden" value="True">
+                            </div>
+                        </div>`
+    }
 
     $('#no-conectado').on('click', '#btn-conexion', function () {
         //var name = $('#name-student').val();
@@ -6,27 +30,18 @@
         $.get('{% url "usuario:conexion" %}', function (data) {
             console.log(1)
             document.getElementById("punt").className = "badge badge-success badge-indicator";
+            document.getElementById("conexionsita").innerHTML = conectado();
             document.getElementById("no-conectado").id = "conectado";
         });
     });
 
 
     $('#conectado').on('click', '#btn-conexion', function () {
-        //var name = $('#name-student').val();
-
         $.get('{% url "usuario:desconexion" %}', function (data) {
             console.log(1)
             document.getElementById("punt").className = "badge badge-danger badge-indicator";
+            document.getElementById("conexionsita").innerHTML = no_conectado();
             document.getElementById("conectado").id = "no-conectado";
-            document.getElementById("no-conectado").innerHTML = `<a href="#" class="dropdown-toggle dropdown-item no-caret"><i class="zmdi zmdi-check text-success"></i>Conectado</a>
-<div class="dropdown-menu open-left-side"><a id="btn-conexion" class="dropdown-item" href="#">
-    <i class="dropdown-icon zmdi zmdi-minus-circle-outline text-danger"></i>
-    <span>No Conectado</span>
-</a>
-    <input id="estado-a-cambiar" type="hidden" value="False">
-</div>`;
-
-
         });
     });
 
