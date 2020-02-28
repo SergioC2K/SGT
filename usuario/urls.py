@@ -25,13 +25,8 @@ urlpatterns = [
     ),
 
     path(
-        route='nuevo/',
-        view=views.UserCreateView.as_view(),
-        name='nuevo'
-    ),
-    path(
         route='registro/',
-        view=views.UserCreateView.as_view(),
+        view=views.UserCreateView,
         name='signup'
     ),
     path(

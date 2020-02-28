@@ -21,8 +21,9 @@ body {
     position: absolute;
     width: 40%;
     margin-top: 19%;
-    border-radius: 4.5rem;
+    border-radius: 3.5rem;
     padding: 7%;
+    float: left;
 }
 
 .login-form-1 {

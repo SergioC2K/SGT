@@ -1,6 +1,8 @@
 import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.http import JsonResponse
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -8,7 +10,7 @@ from django.shortcuts import render
 from tablib import Dataset
 from file.models import LlamadasEntrantes
 import pandas as pd
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.db.models import Q, Count
 from django.db import IntegrityError
 from file.models import RegistroLlamada
@@ -18,6 +20,7 @@ from file.models import LlamadasEntrantes, Archivo
 
 # Create your views here.
 from usuario.models import Perfil
+import time
 
 
 @login_required
@@ -30,7 +33,7 @@ def upload_excel(request):
             crear = Archivo.objects.create(nombre=nombre)
             crear.save()
         except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', {"message": e.message})
+            return render(request, 'archivo/fileimport.html', context={'errors': e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(
@@ -135,7 +138,7 @@ def repartir(request):
     archivo = Archivo.objects.last()
 
     #  Se consultan las ultimas llamadas ingresadas de acuerdo a el archivo
-    llamadas = LlamadasEntrantes.objects.filter(id_archivo=archivo).exclude(estado=True)
+    llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)).exclude(estado=True)
     if operadores and llamadas:
         contexto = {'operadores': operadores, 'llamadas': llamadas}
         return render(request, 'archivo/repartir.html', contexto)
@@ -179,11 +182,10 @@ def enviarLlamadas(request):
 
 
 def ver_Llamadas(request):
-    registro = RegistroLlamada.objects.filter(realizado=False)
+    usuario = request.user.pk
+    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario).exclude(realizado=True)
 
-    diccionario = {'array': registro}
-
-    return render(request, 'llamada/llegadas.html', diccionario)
+    return render(request, 'llamada/Buzon.html', context={'registro': registro})
 
 
 class archivoLlamadas(ListView):
@@ -210,3 +212,26 @@ def eliminarArchivo(request):
         }
 
     return JsonResponse(data)
+
+
+def traer(request):
+    persona = request.GET.get('id', None)
+    consulta = RegistroLlamada.objects.get(id=persona)
+
+    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
+            'telefono': consulta.id_llamada.telefono,
+            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
+            'alm_soli': consulta.id_llamada.nombre_solicitante,
+            'localidad': consulta.id_llamada.localidad}
+
+    return JsonResponse(data)
+
+
+class ListFile(ListView):
+    model = Perfil
+    template_name = 'llamada/exportar.html'
+
+
+
+
+

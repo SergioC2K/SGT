@@ -189,11 +189,6 @@ var pinkman = function(){
 		$(window).trigger( "resize" );
 		return false;
 	});
-		
-	/*Slimscroll*/
-	$('.nicescroll-bar').slimscroll({height:'100%',color: '#d6d9da', disableFadeOut : true,borderRadius:0,size:'6px',enableKeyNavigation: true,opacity:.8});
-	$('.notifications-nicescroll-bar').slimscroll({height:'330px',size: '6px',color: '#d6d9da',disableFadeOut : true,borderRadius:0,enableKeyNavigation: true,opacity:.8});
-	
 	
 	/*Slimscroll Key Control*/
 	$(".slimScrollDiv").hover(function() {
