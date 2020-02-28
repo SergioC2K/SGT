@@ -49,8 +49,8 @@ class LlamadasEntrantes(BaseModel, models.Model):
 
 class Grabacion(BaseModel, models.Model):
     # Url de donde va quedar almacenada la grabacion
-    url = models.URLField()
-
+    nombre = models.CharField(max_length=45)
+    url = models.FileField(upload_to='audio/mp3')
 
 class Estado(BaseModel, models.Model):
     nombre = models.CharField(max_length=30)

@@ -51,12 +51,22 @@ def perfil(request):
     return render(request, 'users/perfil.html')
 
 
+
 def UserCreateView(request):
     if request.is_ajax():
         formula = SignupForm(request.POST)
+        userna = request.POST.get('username')
         if formula.is_valid():
             guardar = formula.save()
-            data = {'estado': True}
+            persona = User.objects.get(username=userna)
+            usuario = Perfil.objects.get(usuario_id=persona.pk)
+            d = {'id': usuario.id, 'name': usuario.usuario.first_name,
+                 'cedula': usuario.cedula,
+                 'estado': usuario.usuario.is_active,
+                 'apellido': usuario.usuario.last_name,
+                 'telefono_fijo': usuario.telefono_fijo,
+                 'celular': usuario.celular}
+            data = {'estado': True, 'person': d}
         else:
             data = {'estado': False}
 
@@ -115,6 +125,7 @@ def form_valid(self, form):
     form.save()
 
     return super().form_valid(form)
+
 
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))

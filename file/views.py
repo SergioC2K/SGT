@@ -1,24 +1,21 @@
+# Date
 import datetime
-
+# Excel
+from django.views.generic.edit import BaseUpdateView
+from tablib import Dataset
+import pandas as pd
+# Django
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.http import JsonResponse
-from django.core import serializers
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
-from tablib import Dataset
-from file.models import LlamadasEntrantes
-import pandas as pd
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, UpdateView, FormView
 from django.db.models import Q, Count
 from django.db import IntegrityError
+# Modelos
+from file.forms import RealizarLlamada, LlamadaModelo
 from file.models import RegistroLlamada
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
 from file.models import LlamadasEntrantes, Archivo
-
-# Create your views here.
 from usuario.models import Perfil
 import time
 
@@ -33,7 +30,7 @@ def upload_excel(request):
             crear = Archivo.objects.create(nombre=nombre)
             crear.save()
         except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', {"message": e.message})
+            return render(request, 'archivo/fileimport.html', {"message": e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(
@@ -116,8 +113,8 @@ def registro_llamada(request):
         operador = request.GET['operador']
         llamadas = request.GET.getlist('llamadas[]')
         for i in range(len(llamadas)):
-            registro_llamada = RegistroLlamada(id_llamada_id=llamadas[i], id_usuario_id=operador)
-            registro_llamada.save()
+            registro_llamadas = RegistroLlamada(id_llamada_id=llamadas[i], id_usuario_id=operador)
+            registro_llamadas.save()
             llamada_repartida = LlamadasEntrantes.objects.get(id=llamadas[i])
             llamada_repartida.estado = True
             llamada_repartida.save()
@@ -214,7 +211,7 @@ def eliminarArchivo(request):
 
 def traer(request):
     persona = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id=persona)
+    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
 
     data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
             'telefono': consulta.id_llamada.telefono,
@@ -233,3 +230,30 @@ class ListFile(ListView):
 
 
 
+
+
+def realizar_llamada(request, number):
+    global llamadas
+    if request.method == 'POST':
+        form = RealizarLlamada(request.POST, request.FILES, request.user)
+        if form.is_valid():
+            form.save()
+        else:
+            return render(request=request, template_name='prueba.html', context={'form': form,
+                                                                                 })
+    else:
+        form = RealizarLlamada()
+        llamadas = get_object_or_404(RegistroLlamada, pk=number)
+
+    return render(
+        request=request,
+        template_name='prueba.html',
+        context={'form': form,
+                 'llamadas': llamadas}
+    )
+
+
+class RealizarLlamadass(UpdateView):
+    template_name = 'users/perfil.html'
+    model = LlamadasEntrantes
+    form_class = RealizarLlamada

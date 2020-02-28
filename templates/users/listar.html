@@ -148,7 +148,7 @@
 
                     <div class="container">
 
-                         <form id="insert" class="needs-validation"
+                        <form id="insert" class="needs-validation"
                               novalidate
                               autocomplete="off" method="POST">
                             {% csrf_token %}
@@ -314,6 +314,7 @@
                             data: $datos,
                             success: function (data) {
                                 if (data.estado) {
+                                    Agregar(data.person);
                                     Exito();
                                 } else
                                     Error();
@@ -335,6 +336,18 @@
                                 'Peligro',
                                 'error'
                             );
+                        }
+
+                        function Agregar(user) {
+                            $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
+                                <td name="name">${user.name}</td>
+                                <td name="cedula">${user.cedula}</td>
+<td name="last">${user.apellido}</td>
+<td name="telefono_fijo">${user.telefono_fijo}</td>
+<td name="celular">${user.celular}</td>
+<td name="estado">${user.estado}</td>
+
+                                <td align="center"></tr>`);
                         }
                     });
                 });
