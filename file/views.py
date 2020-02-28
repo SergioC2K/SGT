@@ -162,6 +162,7 @@ def enviarLlamadas(request):
 
 
 def ver_Llamadas(request):
+
     usuario = request.user.pk
     registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
     return render(request, 'llamada/Buzon.html', context={'diccionario': registro})
