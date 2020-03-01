@@ -22,7 +22,8 @@
                         <div class="col-xl-12">
                             <section class="hk-sec-wrapper">
                                 <h5 class="hk-sec-title">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    <button type="button" class="btn btn"
+                                            style="background-color: #36876a" data-toggle="modal"
                                             data-target=".bd-example-modal-lg"><i
                                             class="fas fa-user-plus"></i></button>
                                     Operadores
@@ -269,10 +270,10 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.desactive) {
-                                $("#colum-" + id).html(`<button" type="submit" class="btn btn-success " onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
+                                $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a " style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
                                 Swal.fire(
                                     'Bien !',
-                                    'Exitoso',
+                                    'Usuario inhabilitado',
                                     'success'
                                 );
                             }
@@ -281,7 +282,7 @@
                                                         <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`)
                                 Swal.fire(
                                     'Bien !',
-                                    'Deshabilitado',
+                                    'Usuario habilitado',
                                     'success'
                                 );
                             }
@@ -334,7 +335,7 @@
                         function Agregar(user) {
                             $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
                                <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
-                                <td name="name">${user.name}</td>
+
                                 <td name="name">${user.name}</td>
                                 <td name="last">${user.apellido}</td>
                                 <td name="cedula">0</td>
