@@ -7,7 +7,7 @@ from django.urls import path
 import file.views as ImporteControl
 from file import views
 
-from .filtros import filtro
+from .filters import RegistroLlamadaFilter
 
 # Filtros
 from django_filters.views import FilterView

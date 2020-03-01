@@ -15,10 +15,9 @@ from file.forms import RealizarLlamada
 from file.models import RegistroLlamada
 from file.models import LlamadasEntrantes, Archivo, Estado
 from usuario.models import Perfil
-from .filters import RegistroLlamadaFilter
 
 # Filtros
-from .filtros import filtro
+from .filters import RegistroLlamadaFilter
 
 hoy = datetime.date.today()
 manana = hoy + datetime.timedelta(days=1)
@@ -261,5 +260,5 @@ def traer(request):
 
 def search(request):
     user_list = RegistroLlamada.objects.all()
-    user_filter = filtro(request.GET, queryset=user_list)
+    user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'llamada/exportar.html', {'filter': user_filter})
