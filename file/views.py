@@ -36,7 +36,7 @@ def upload_excel(request):
             crear = Archivo.objects.create(nombre=nombre)
             crear.save()
         except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', {"message": e})
+            return render(request, 'archivo/fileimport.html', context={'errors': e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(
@@ -224,7 +224,7 @@ def realizar_llamada(request, number):
             form.save()
         else:
             return render(request=request, template_name='llamada/Buzon.html', context={'form': form,
-                                                                                 })
+                                                                                        })
     else:
         form = RealizarLlamada()
         llamadas = get_object_or_404(RegistroLlamada, pk=number)
@@ -235,6 +235,7 @@ def realizar_llamada(request, number):
         context={'form': form,
                  'llamadas': llamadas}
     )
+
 
 class RealizarLlamadass(UpdateView):
     template_name = 'users/perfil.html'
@@ -247,8 +248,8 @@ def pruebas_llamadas(request):
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'prueba.html', {'filter': user_filter})
 
-def traer(request):
 
+def traer(request):
     persona = request.GET.get('id', None)
     consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
     data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,

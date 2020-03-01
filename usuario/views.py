@@ -74,7 +74,6 @@ def UserCreateView(request):
         return redirect('users/listar.html')
 
 
-
 @login_required
 def cambio_contrasena(request):
     if request.method == 'POST':
@@ -103,6 +102,7 @@ def logout_view(request):
 superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
 
+@method_decorator(superuser_required, name='dispatch')
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
@@ -123,7 +123,6 @@ def form_valid(self, form):
     form.save()
 
     return super().form_valid(form)
-
 
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))

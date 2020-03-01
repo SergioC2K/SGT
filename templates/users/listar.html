@@ -23,10 +23,10 @@
                             <section class="hk-sec-wrapper">
                                 <h5 class="hk-sec-title">
                                     <button type="button" class="btn btn"
-                                            style="background-color: #36876a" data-toggle="modal"
+                                            style="background-color: #36876a;color: #FFFFFF" data-toggle="modal"
                                             data-target=".bd-example-modal-lg"><i
                                             class="fas fa-user-plus"></i></button>
-                                    Operadores
+                                    Registrar usuario
                                 </h5>
                             </section>
                             <div class="row">
@@ -94,8 +94,7 @@
                                                                                 class="btn btn"
                                                                                 style="background-color: #36876a"
                                                                                 onclick="Inhabilitar({{ foo.pk }})">
-                                                                            <i
-                                                                                    style="color: #fff1f1"
+                                                                            <i style="color: #fff1f1"
                                                                                     class="fas fa-power-off"></i>
                                                                         </button>
                                                                     {% endif %}
@@ -278,7 +277,7 @@
                                 );
                             }
                             if (!data.desactive) {
-                                $("#colum-" + id).html(`<button" type="submit" class="btn btn-danger " onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
+                                $("#colum-" + id).html(`<button type="submit" class="btn btn-danger" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
                                                         <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`)
                                 Swal.fire(
                                     'Bien !',
@@ -338,18 +337,20 @@
 
                                 <td name="name">${user.name}</td>
                                 <td name="last">${user.apellido}</td>
-                                <td name="cedula">0</td>
+                                <td name="cedula"></td>
                                 <td name="telefono_fijo">${user.telefono_fijo}</td>
                                 <td name="celular">${user.celular}</td>
-                                <td><button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
-                                <td><button" type="submit" class="btn btn-danger " onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button></td>
+                                <td></td>
+
+                               <td><button type="submit" class="btn btn-danger " onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button>
+                               <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
                                 </tr>`);
                         }
 
                         function Exito() {
                             Swal.fire(
-                                'Bien !',
-                                'Exitoso',
+                                'Muy bien !',
+                                'Registro Exitoso',
                                 'success'
                             );
                             $('#mymodal').modal('hide');
@@ -364,18 +365,6 @@
                             }
 
                         })();
-
-                        function Malo() {
-
-
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error...',
-                                text: 'Las contraseñas no coinciden!',
-
-                            })
-
-                        }
 
 
                         function Error() {

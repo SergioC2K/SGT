@@ -32,53 +32,20 @@
                             <a id="close_emailapp_sidebar" href="javascript:void(0)" class="close-emailapp-sidebar">
                                 <span class="feather-icon"><i data-feather="chevron-left"></i></span>
                             </a>
-                            <ul class="nav flex-column mail-category">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Inbox<span
-                                            class="badge badge-primary">50</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Sent mail</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Important</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Draft<span
-                                            class="badge badge-secondary">5</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Trash</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Chat</a>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-pink btn-block mt-20 mb-20" data-toggle="modal"
-                                    data-target="#exampleModalEmail">
-                                Compose email
-                            </button>
-                            <ul class="nav flex-column mail-labels">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);"><span
-                                            class="badge badge-primary badge-indicator"></span>clients</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);"><span
-                                            class="badge badge-danger badge-indicator"></span>personal</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);"><span
-                                            class="badge badge-warning badge-indicator"></span>office</a>
-                                </li>
-                            </ul>
-                            <hr>
-                            <ul class="nav flex-column mail-settings">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);"><i
-                                            class="zmdi zmdi-settings"></i>settings</a>
-                                </li>
-                            </ul>
+                            <form method="get">
+
+
+                                <ul class="nav flex-column mail-category">
+                                    <li class="nav-item">
+
+                                        {{ filter.form.nombre }}
+                                    </li>
+                                </ul>
+
+
+                                <button type="submit" class="btn btn-success">Buscar</button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -89,10 +56,6 @@
 
             <div class="container">
 
-                <form method="get">
-                    {{ filter.form.as_p }}
-                    <button type="submit">Buscar</button>
-                </form>
 
                 <table id="table_id">
                     <thead>
@@ -107,13 +70,16 @@
                         {% for user in filter.qs %}
                             <tr>
                                 <td>{% for n in user.nombre_contesta %}
-                                    {{n}}
+                                    {{ n }}
                                 {% empty %}
                                     <em class="text-muted">No hay datos</em>
                                 {% endfor %}
                                 </td>
                                 <td>{{ user.fecha_entrega }} </td>
+
                                 <td>{{ user.observaciones }} </td>
+
+
                             </tr>
                         {% endfor %}
                     {% else %}
