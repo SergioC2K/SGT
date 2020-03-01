@@ -88,8 +88,4 @@ urlpatterns = [
         view=views.realizar_llamada,
         name='prueba'
     ),
-
-
-
-
 ]
