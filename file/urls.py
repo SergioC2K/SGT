@@ -7,6 +7,11 @@ from django.urls import path
 import file.views as ImporteControl
 from file import views
 
+from .filtros import filtro
+
+# Filtros
+from django_filters.views import FilterView
+
 urlpatterns = [
     path(
         route='importe/',
@@ -61,7 +66,7 @@ urlpatterns = [
     path(
         route='borrar',
         view=views.eliminarArchivo,
-        name='borrar'
+        name='delete'
     ),
     path(
         route='traer',
@@ -70,7 +75,7 @@ urlpatterns = [
     ),
     path(
         route='ListFile',
-        view=views.ListFile.as_view(),
+        view=views.search,
         name='ListFile'
     ),
     path(
@@ -88,5 +93,8 @@ urlpatterns = [
         view=views.realizar_llamada,
         name='prueba'
     ),
+
+
+
 
 ]

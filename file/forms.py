@@ -15,7 +15,6 @@ from SGT import settings
 from file.models import Estado, RegistroLlamada, Grabacion
 
 
-
 class RealizarLlamada(forms.Form):
 
     NOCON = 1

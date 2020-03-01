@@ -30,26 +30,19 @@
 
                                     <div class="media-body">
 
-                                        {% for foo in registro %}
+                                        {% for foo in diccionario %}
 
                                             <a onclick="recuperar({{ foo.id_llamada_id }})"
                                                class="media read-email">
-
-                                                <div class="email-subject">
-                                                    <div>
-                                                        <div class="email-head">{{ foo.id_llamada_id }}
-                                                        </div>
-
-                                                    </div>
+                                                <div class="email-head">
+                                                    {{ foo.id_llamada.nombre_destinatario }}
+                                                </div>
+                                                <div class="email-hr-wrap">
+                                                    <hr>
                                                 </div>
 
                                             </a>
-                                            <div class="email-head">
-                                                {{ foo.id_llamada.nombre_destinatario }}
-                                            </div>
-                                            <div class="email-hr-wrap">
-                                                <hr>
-                                            </div>
+
                                         {% endfor %}
                                     </div>
                                     </a>
@@ -114,7 +107,7 @@
                                             </div>
                                         </div>
 
-                                        <form>
+                                        <form method="post">
                                             <hr>
 
                                             <h5><i class="fas fa-phone-alt"></i> Llamada</h5>
@@ -133,10 +126,9 @@
                                                         <select id="resultado_llamada" name="resultado_llamada"
                                                                 class="form-control">
                                                             <option selected value="">Seleccionar</option>
-                                                            <option value="IE">Informacion de entrega</option>
-                                                            <option value="NC">No contesta</option>
-                                                            <option value="CA">Cliente aplaza</option>
-                                                            <option value="FR">Fuera de ruta</option>
+                                                            {% for i in estados %}
+                                                                <option value="{{ i.pk }}">{{ i.nombre }}</option>
+                                                            {% endfor %}
                                                         </select>
                                                     </div>&nbsp;&nbsp;&nbsp;
                                                     <div class="form-group">

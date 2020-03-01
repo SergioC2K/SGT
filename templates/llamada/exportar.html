@@ -87,63 +87,38 @@
             </div>
             <hr>
 
-
             <div class="container">
 
+                <form method="get">
+                    {{ filter.form.as_p }}
+                    <button type="submit">Buscar</button>
+                </form>
 
-                <table id="table_id" class="table table-striped " style="width: 800px;margin: 0 auto;">
-
+                <table id="table_id">
                     <thead>
                     <tr>
-                        <th>Estado</th>
-                        <th>Usuario</th>
-                        <th>Solicitante</th>
-                        <th>Identidad fiscal</th>
-                        <th>Destinatario</th>
-                        <th>Direccion</th>
-                        <th>Telefono</th>
-                        <th>Telebox</th>
-                        <th>Material</th>
-                        <th>Texto breve material</th>
-                        <th>Documento de ventas</th>
-                        <th>Entrega</th>
-                        <th>Pedidio de cliente</th>
-                        <th>Cantidad del pedido</th>
-                        <th>Observacion inicial</th>
-                        <th>Denomiancion de articulos</th>
-                        <th>Localidad</th>
-                        <th>Barrio</th>
-                        <th>Ruta</th>
-                        <th>Hora Inicio</th>
-                        <th>Hora Final</th>
+                        <th>Nombre contesta</th>
+                        <th>Fecha entrega</th>
+                        <th>Observacion</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for foo in object_list %}
-                        <tr>
-                            <td>{{ foo.estado }}</td>
-                            <td>{{ foo.id_usuario }}</td>
-                            <td>{{ foo.nombre_solicitante }}</td>
-                            <td>{{ foo.ident_fiscal }}</td>
-                            <td>{{ foo.nombre_destinatario }}</td>
-                            <td>{{ foo.direccion_des_mcia }}</td>
-                            <td>{{ foo.telefono }}</td>
-                            <td>{{ foo.telebox }}</td>
-                            <td>{{ foo.material }}</td>
-                            <td>{{ foo.texto_breve_material }}</td>
-                            <td>{{ foo.documento_ventas }}</td>
-                            <td>{{ foo.entrega }}</td>
-                            <td>{{ foo.num_pedido_cliente }}</td>
-                            <td>{{ foo.cantidad_pedido }}</td>
-                            <td>{{ foo.observaciones_inicial }}</td>
-                            <td>{{ foo.denom_articulos }}</td>
-                            <td>{{ foo.localidad }}</td>
-                            <td>{{ foo.barrio }}</td>
-                            <td>{{ foo.ruta }}</td>
-                            <td>{{ foo.hora_inicio }}</td>
-                            <td>{{ foo.hora_final }}</td>
-                        </tr>
-                    {% endfor %}
+                    {% if filter.qs %}
+                        {% for user in filter.qs %}
+                            <tr>
+                                <td>{% for n in user.nombre_contesta %}
+                                    {{n}}
+                                {% empty %}
+                                    <em class="text-muted">No hay datos</em>
+                                {% endfor %}
+                                </td>
+                                <td>{{ user.fecha_entrega }} </td>
+                                <td>{{ user.observaciones }} </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <h1>No hay datos</h1>
+                    {% endif %}
                     </tbody>
                 </table>
 

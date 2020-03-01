@@ -13,9 +13,12 @@ from django.db import IntegrityError
 # Modelos
 from file.forms import RealizarLlamada
 from file.models import RegistroLlamada
-from file.models import LlamadasEntrantes, Archivo
+from file.models import LlamadasEntrantes, Archivo, Estado
 from usuario.models import Perfil
 from .filters import RegistroLlamadaFilter
+
+# Filtros
+from .filtros import filtro
 
 hoy = datetime.date.today()
 manana = hoy + datetime.timedelta(days=1)
@@ -162,10 +165,11 @@ def enviarLlamadas(request):
 
 
 def ver_Llamadas(request):
-
     usuario = request.user.pk
+    estados = Estado.objects.all()
     registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
-    return render(request, 'llamada/Buzon.html', context={'diccionario': registro})
+    data = {'diccionario': registro, 'estados': estados}
+    return render(request, 'llamada/Buzon.html', context=data)
 
 
 class archivoLlamadas(ListView):
@@ -175,7 +179,7 @@ class archivoLlamadas(ListView):
 
 def eliminarArchivo(request):
     archivo = request.GET.get('id', None)
-    consulta = LlamadasEntrantes.objects.filter(id_archivo=archivo)
+    consulta = LlamadasEntrantes.objects.filter(id_archivo_id=archivo)
     auxiliar = 0
     for i in consulta:
         if i.estado:
@@ -237,6 +241,8 @@ def traer(request):
             'localidad': consulta.id_llamada.localidad}
     return JsonResponse(data)
 
-class ListFile(ListView):
-    model = LlamadasEntrantes
-    template_name = 'llamada/exportar.html'
+
+def search(request):
+    user_list = RegistroLlamada.objects.all()
+    user_filter = filtro(request.GET, queryset=user_list)
+    return render(request, 'llamada/exportar.html', {'filter': user_filter})

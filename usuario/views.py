@@ -51,7 +51,6 @@ def perfil(request):
     return render(request, 'users/perfil.html')
 
 
-
 def UserCreateView(request):
     if request.is_ajax():
         formula = SignupForm(request.POST)
@@ -104,7 +103,6 @@ def logout_view(request):
 superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
 
-@method_decorator(superuser_required, name='dispatch')
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm

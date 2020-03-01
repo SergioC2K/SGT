@@ -49,8 +49,8 @@
                                             <tbody>
                                             {% if object_list %}
                                                 {% for foo in object_list %}
-                                                    <tr>
-                                                        <td>
+                                                    <tr id="fila-{{ foo.pk }}">
+                                                        <td id="estado">
                                                             {% if foo.usuario.is_active %}
 
                                                                 <span class="badge badge-pill badge-success">Activo</span>
@@ -68,44 +68,40 @@
                                                         <td>{{ foo.telefono_fijo }}</td>
                                                         <td>{{ foo.celular_telemercadeo }}</td>
                                                         <td>
-                                                            {% if foo.usuario == request.user %}
-                                                                <p><i class="fas fa-users-cog"></i>Coordinador</p>
+                                                            <div id="colum-{{ foo.pk }}">
 
-                                                            {% else %}
-                                                                <form action="{% url 'usuario:desactivar' %}"
-                                                                      method="POST">
-                                                                    {% csrf_token %}
+                                                                {% if foo.usuario == request.user %}
+                                                                    <p><i class="fas fa-users-cog"></i>Coordinador
+                                                                    </p>
 
-                                                                    <input id="user" name="user" type="hidden"
-                                                                           value="{{ foo.usuario.pk }}">
-
-
+                                                                {% else %}
+                                                                    <div id="fila-{{ foo.pk }}">
                                                                     {% if foo.usuario.is_active %}
+
                                                                         <button type="submit"
-                                                                                class="btn btn-danger "><i
-                                                                                class="fas fa-power-off"></i>
+                                                                                class="btn btn-danger "
+                                                                                onclick="Inhabilitar({{ foo.pk }})">
+                                                                            <i class="fas fa-power-off"></i>
                                                                         </button>
 
-                                                                        </button>
                                                                         <button type="submit"
-                                                                                class="btn btn-dark"><i
-                                                                                class="fa fa-pencil"></i>
+                                                                                class="btn btn-dark">
+                                                                            <i class="fa fa-pencil"></i>
                                                                         </button>
-
                                                                     {% else %}
-                                                                        <button type="submit"
+                                                                        <button id="btn-{{ foor.pk }}" type="submit"
                                                                                 class="btn btn"
-                                                                                style="background-color: #36876a">
+                                                                                style="background-color: #36876a"
+                                                                                onclick="Inhabilitar({{ foo.pk }})">
                                                                             <i
                                                                                     style="color: #fff1f1"
                                                                                     class="fas fa-power-off"></i>
                                                                         </button>
-
                                                                     {% endif %}
-                                                                </form>
-                                                            {% endif %}
+                                                                {% endif %}
+                                                                </div>
+                                                            </div>
                                                         </td>
-
                                                     </tr>
                                                 {% endfor %}
                                             {% endif %}
@@ -273,10 +269,21 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.desactive) {
-                                console.log("Exitoso");
+                                $("#colum-" + id).html(`<button" type="submit" class="btn btn-success " onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
+                                Swal.fire(
+                                    'Bien !',
+                                    'Exitoso',
+                                    'success'
+                                );
                             }
                             if (!data.desactive) {
-                                console.log("Denegado");
+                                $("#colum-" + id).html(`<button" type="submit" class="btn btn-danger " onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
+                                                        <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`)
+                                Swal.fire(
+                                    'Bien !',
+                                    'Deshabilitado',
+                                    'success'
+                                );
                             }
                         }
                     });
@@ -317,11 +324,26 @@
                             data: $datos,
                             success: function (data) {
                                 if (data.estado) {
+                                    Agregar(data.person);
                                     Exito();
                                 } else
                                     Error();
                             },
                         });
+
+                        function Agregar(user) {
+                            $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
+                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
+                                <td name="name">${user.name}</td>
+                                <td name="name">${user.name}</td>
+                                <td name="last">${user.apellido}</td>
+                                <td name="cedula">0</td>
+                                <td name="telefono_fijo">${user.telefono_fijo}</td>
+                                <td name="celular">${user.celular}</td>
+                                <td><button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
+                                <td><button" type="submit" class="btn btn-danger " onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button></td>
+                                </tr>`);
+                        }
 
                         function Exito() {
                             Swal.fire(
@@ -341,6 +363,18 @@
                             }
 
                         })();
+
+                        function Malo() {
+
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error...',
+                                text: 'Las contraseñas no coinciden!',
+
+                            })
+
+                        }
 
 
                         function Error() {

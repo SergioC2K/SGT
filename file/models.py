@@ -12,7 +12,6 @@ class Archivo(BaseModel, models.Model):
 class LlamadasEntrantes(BaseModel, models.Model):
     id_archivo = models.ForeignKey(Archivo, on_delete=models.CASCADE)
     estado = models.BooleanField(default=False)
-    id_usuario = models.ForeignKey(User, null=True, on_delete=models.PROTECT)
 
     nombre_solicitante = models.CharField(max_length=50)
     ident_fiscal = models.CharField(max_length=50)
