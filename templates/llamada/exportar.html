@@ -7,21 +7,21 @@
         <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
         <title>Exportar</title>
         <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
-        <script src="{% static 'dist/js/FileSaver.min.js' %}"></script>
-        <script src="{% static 'dist/js/xlsx.full.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/FileSaver.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/xlsx.full.min.js' %}"></script>
         <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
 
     </head>
 {% endblock %}
 
 {% block main %}
-    <div class="container">
+    <div class="container mt-4">
 
         <div class="card">
             <h4 class="hk-pg-title mt-2">
-                &nbsp; <i class="fas fa-poll"></i>  Resultados</i><a id="emailapp_sidebar_move"
-                 class="fas fa-bars mb-3 mb-md-0 emailapp-sidebar-move email-box float-right">&nbsp;&nbsp;
-               </a>
+                &nbsp; <i class="fas fa-poll"></i> Resultados</i><a id="emailapp_sidebar_move"
+                                                                    class="fas fa-bars mb-3 mb-md-0 emailapp-sidebar-move email-box float-right">&nbsp;&nbsp;
+            </a>
 
 
             </h4>
@@ -87,63 +87,38 @@
             </div>
             <hr>
 
-
             <div class="container">
 
+                <form method="get">
+                    {{ filter.form.as_p }}
+                    <button type="submit">Buscar</button>
+                </form>
 
-                <table id="table_id" class="table table-striped " style="width: 800px;margin: 0 auto;">
-
+                <table id="table_id">
                     <thead>
                     <tr>
-                        <th>Estado</th>
-                        <th>Usuario</th>
-                        <th>Solicitante</th>
-                        <th>Identidad fiscal</th>
-                        <th>Destinatario</th>
-                        <th>Direccion</th>
-                        <th>Telefono</th>
-                        <th>Telebox</th>
-                        <th>Material</th>
-                        <th>Texto breve material</th>
-                        <th>Documento de ventas</th>
-                        <th>Entrega</th>
-                        <th>Pedidio de cliente</th>
-                        <th>Cantidad del pedido</th>
-                        <th>Observacion inicial</th>
-                        <th>Denomiancion de articulos</th>
-                        <th>Localidad</th>
-                        <th>Barrio</th>
-                        <th>Ruta</th>
-                        <th>Hora Inicio</th>
-                        <th>Hora Final</th>
+                        <th>Nombre contesta</th>
+                        <th>Fecha entrega</th>
+                        <th>Observacion</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for foo in object_list %}
-                        <tr>
-                            <td>{{ foo.usuario.first_name }}</td>
-                            <td>{{ foo.usuario.last_name }}</td>
-                            <td>{{ foo.cedula }}</td>
-                            <td>{{ foo.telefono_fijo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
-                            <td>{{ foo.usuario.first_name }}</td>
-                            <td>{{ foo.usuario.last_name }}</td>
-                            <td>{{ foo.cedula }}</td>
-                            <td>{{ foo.telefono_fijo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
-                            <td>{{ foo.usuario.first_name }}</td>
-                            <td>{{ foo.usuario.last_name }}</td>
-                            <td>{{ foo.cedula }}</td>
-                            <td>{{ foo.telefono_fijo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
-                            <td>{{ foo.usuario.first_name }}</td>
-                            <td>{{ foo.usuario.last_name }}</td>
-                            <td>{{ foo.cedula }}</td>
-                            <td>{{ foo.telefono_fijo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
-                            <td>{{ foo.celular_telemercadeo }}</td>
-                        </tr>
-                    {% endfor %}
+                    {% if filter.qs %}
+                        {% for user in filter.qs %}
+                            <tr>
+                                <td>{% for n in user.nombre_contesta %}
+                                    {{n}}
+                                {% empty %}
+                                    <em class="text-muted">No hay datos</em>
+                                {% endfor %}
+                                </td>
+                                <td>{{ user.fecha_entrega }} </td>
+                                <td>{{ user.observaciones }} </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <h1>No hay datos</h1>
+                    {% endif %}
                     </tbody>
                 </table>
 

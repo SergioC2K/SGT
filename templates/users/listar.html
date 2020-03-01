@@ -1,6 +1,5 @@
 {% extends 'base/base.html' %}
 {% load static %}
-
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>Lista de usuarios</title>
@@ -8,48 +7,41 @@
     <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
 {% endblock %}
 {% block main %}
-
-
     <!-- Container -->
-    <div class="container">
-
+    <div class="container mt-3">
         <!-- Title -->
         <div class="hk-pg-header">
             <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="user"></i></span></span>Usuarios</h4>
-        </div>
+                    data-feather="user"></i></span></span>Usuarios</h4></div>
         <!-- /Title -->
-
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
                     <h5 class="hk-sec-title"></h5>
-
                     <div class="row">
                         <div class="col-xl-12">
-
                             <section class="hk-sec-wrapper">
                                 <h5 class="hk-sec-title">
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                             data-target=".bd-example-modal-lg"><i
                                             class="fas fa-user-plus"></i></button>
                                     Operadores
-
                                 </h5>
                             </section>
                             <div class="row">
                                 <div class="col-sm">
-                                    <div class="table-wrap">
-                                        <table id="table_id" class="table table-striped"
+
+                                    {% if object_list %}
+                                        <table id="table_id" class="table table-hover"
                                                style="width:100%">
-                                            <thead>
+                                            <thead class="thead-dark">
                                             <tr>
                                                 <th>Estado</th>
                                                 <th>Usuario</th>
                                                 <th>Nombres</th>
                                                 <th>Apellidos</th>
                                                 <th>Cedula</th>
-                                                <th>Telefono fijo</th>
+                                                <th>Fijo</th>
                                                 <th>Celular</th>
                                                 <th>Acciones</th>
                                             </tr>
@@ -57,8 +49,8 @@
                                             <tbody>
                                             {% if object_list %}
                                                 {% for foo in object_list %}
-                                                    <tr>
-                                                        <td>
+                                                    <tr id="fila-{{ foo.pk }}">
+                                                        <td id="estado">
                                                             {% if foo.usuario.is_active %}
 
                                                                 <span class="badge badge-pill badge-success">Activo</span>
@@ -76,51 +68,49 @@
                                                         <td>{{ foo.telefono_fijo }}</td>
                                                         <td>{{ foo.celular_telemercadeo }}</td>
                                                         <td>
-                                                            {% if foo.usuario == request.user %}
-                                                                <p><i class="fas fa-users-cog"></i>Coordinador</p>
+                                                            <div id="colum-{{ foo.pk }}">
 
-                                                            {% else %}
-                                                                <form action="{% url 'usuario:desactivar' %}"
-                                                                      method="POST">
-                                                                    {% csrf_token %}
+                                                                {% if foo.usuario == request.user %}
+                                                                    <p><i class="fas fa-users-cog"></i>Coordinador
+                                                                    </p>
 
-                                                                    <input id="user" name="user" type="hidden"
-                                                                           value="{{ foo.usuario.pk }}">
-
-
+                                                                {% else %}
+                                                                    <div id="fila-{{ foo.pk }}">
                                                                     {% if foo.usuario.is_active %}
+
                                                                         <button type="submit"
-                                                                                class="btn btn-danger "><i
-                                                                                class="fas fa-power-off"></i>
+                                                                                class="btn btn-danger "
+                                                                                onclick="Inhabilitar({{ foo.pk }})">
+                                                                            <i class="fas fa-power-off"></i>
                                                                         </button>
 
-                                                                        </button>
                                                                         <button type="submit"
-                                                                                class="btn btn-dark"><i
-                                                                                class="fa fa-pencil"></i>
+                                                                                class="btn btn-dark">
+                                                                            <i class="fa fa-pencil"></i>
                                                                         </button>
-
                                                                     {% else %}
-                                                                        <button type="submit"
+                                                                        <button id="btn-{{ foor.pk }}" type="submit"
                                                                                 class="btn btn"
-                                                                                style="background-color: #36876a">
+                                                                                style="background-color: #36876a"
+                                                                                onclick="Inhabilitar({{ foo.pk }})">
                                                                             <i
                                                                                     style="color: #fff1f1"
                                                                                     class="fas fa-power-off"></i>
                                                                         </button>
-
                                                                     {% endif %}
-                                                                </form>
-                                                            {% endif %}
+                                                                {% endif %}
+                                                                </div>
+                                                            </div>
                                                         </td>
-
                                                     </tr>
                                                 {% endfor %}
                                             {% endif %}
                                             </tbody>
                                         </table>
+                                    {% else %}
+                                        <h1>NO HAY DATOS PARA MOSTRAR</h1>
+                                    {% endif %}
 
-                                    </div>
                                 </div>
                             </div>
 
@@ -204,16 +194,14 @@
                                     <label for="validationTooltip04">Contraseña</label>
                                     {# INPUT #}
                                     {{ form.password }}
-                                    <div class="invalid-tooltip">
-                                        Contraseña minima de 8 caracteres
+                                    <div id="Prism2" class="invalid-tooltip">
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="validationTooltip05">Confirmar
                                         contraseña</label>
                                     {{ form.password_confirmation }}
-                                    <div class="invalid-tooltip">
-                                        Las contraseñas no coinciden
+                                    <div id="Prism" class="invalid-tooltip">
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-2 mt-4 ">
@@ -222,10 +210,9 @@
                                         {{ form.is_staff }}
                                     </div>
                                 </div>
-
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-primary" type="submit">Enviar
+                                <button class="btn btn-primary" id="submit" type="submit">Enviar
                                 </button>
                                 <button type="button" class="btn btn-secondary"
                                         data-dismiss="modal">Cancelar
@@ -256,8 +243,20 @@
 
             <script>
 
+                let password = document.getElementById('validationTooltip04');
+                let password_confirmation = document.getElementById('validationTooltip05');
+
+
                 $(document).ready(function () {
-                    $('#table_id').DataTable();
+                    $('#table_id').DataTable({
+
+                        bfilter: false,
+                        ordering: true,
+                        searching: true,
+                        info: false
+
+                    });
+
                 });
 
                 function Inhabilitar(id) {
@@ -270,10 +269,21 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.desactive) {
-                                console.log("Exitoso");
+                                $("#colum-" + id).html(`<button" type="submit" class="btn btn-success " onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
+                                Swal.fire(
+                                    'Bien !',
+                                    'Exitoso',
+                                    'success'
+                                );
                             }
                             if (!data.desactive) {
-                                console.log("Denegado");
+                                $("#colum-" + id).html(`<button" type="submit" class="btn btn-danger " onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
+                                                        <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`)
+                                Swal.fire(
+                                    'Bien !',
+                                    'Deshabilitado',
+                                    'success'
+                                );
                             }
                         }
                     });
@@ -321,6 +331,20 @@
                             },
                         });
 
+                        function Agregar(user) {
+                            $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
+                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
+                                <td name="name">${user.name}</td>
+                                <td name="name">${user.name}</td>
+                                <td name="last">${user.apellido}</td>
+                                <td name="cedula">0</td>
+                                <td name="telefono_fijo">${user.telefono_fijo}</td>
+                                <td name="celular">${user.celular}</td>
+                                <td><button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
+                                <td><button" type="submit" class="btn btn-danger " onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button></td>
+                                </tr>`);
+                        }
+
                         function Exito() {
                             Swal.fire(
                                 'Bien !',
@@ -330,28 +354,48 @@
                             $('#mymodal').modal('hide');
                         }
 
+                        (function () {
+
+                            if (password_confirmation != "" && password != "") {
+
+                                document.getElementById('Prism').innerHTML = "ingrese la contraseña";
+                                document.getElementById('Prism2').innerHTML = "ingrese la contraseña";
+                            }
+
+                        })();
+
+                        function Malo() {
+
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error...',
+                                text: 'Las contraseñas no coinciden!',
+
+                            })
+
+                        }
+
+
                         function Error() {
-                            Swal.fire(
-                                'Mal !',
-                                'Peligro',
-                                'error'
-                            );
+
+                            if (password != password_confirmation) {
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error...',
+                                    text: 'Las contraseñas no coinciden!',
+
+                                })
+                                return false;
+                            } else {
+                                return true;
+                            }
                         }
 
-                        function Agregar(user) {
-                            $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
-                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
-                                <td name="name">${user.name}</td>
-                                <td name="last">${user.apellido}</td>
-                                <td name="cedula">0</td>
-                                <td name="telefono_fijo">${user.telefono_fijo}</td>
-                                <td name="celular">${user.celular}</td>
-                                <td name="estado">${user.estado}</td>
-
-                                <td align="center"></tr>`);
-                        }
                     });
-                });
+                })
+                ;
             </script>
         {% endblock %}
     </div>
@@ -359,3 +403,12 @@
     </div>
 
 {% endblock %}
+<style>
+    div.dataTables_wrapper
+    .dataTables_length select {
+        width: 100%;
+        float: none;
+        text-align: center;
+        margin-top: 1.5rem !important;
+    }
+</style>

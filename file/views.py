@@ -1,23 +1,29 @@
 # Date
 import datetime
 # Excel
-from django.views.generic.edit import BaseUpdateView
-from tablib import Dataset
 import pandas as pd
 # Django
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, UpdateView, FormView
+from django.views.generic import ListView, UpdateView
 from django.db.models import Q, Count
 from django.db import IntegrityError
 # Modelos
-from file.forms import RealizarLlamada, LlamadaModelo
+from file.forms import RealizarLlamada
 from file.models import RegistroLlamada
-from file.models import LlamadasEntrantes, Archivo
+from file.models import LlamadasEntrantes, Archivo, Estado
 from usuario.models import Perfil
-import time
+from .filters import RegistroLlamadaFilter
+
+# Filtros
+from .filtros import filtro
+
+hoy = datetime.date.today()
+manana = hoy + datetime.timedelta(days=1)
+dias_antes = hoy - datetime.timedelta(days=9)
+horas_antes = hoy - datetime.timedelta(hours=12)
 
 
 @login_required
@@ -62,23 +68,6 @@ def upload_excel(request):
     return render(request, 'archivo/fileimport.html')
 
 
-def preview_excel(request):
-    if request.method == 'POST':
-        dataset = Dataset()
-        new_persons = request.FILES['myfile']
-
-        imported_data = dataset.load(new_persons.read())
-        data_final = imported_data.export('json')
-
-    return render(request, 'archivo/fileimport.html')
-
-
-hoy = datetime.date.today()
-manana = hoy + datetime.timedelta(days=1)
-dias_antes = hoy - datetime.timedelta(days=9)
-horas_antes = hoy - datetime.timedelta(hours=12)
-
-
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
@@ -118,7 +107,6 @@ def registro_llamada(request):
             llamada_repartida = LlamadasEntrantes.objects.get(id=llamadas[i])
             llamada_repartida.estado = True
             llamada_repartida.save()
-
         devolver_llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)) \
             .exclude(estado=True)
         qsssss = serializers.serialize('json', devolver_llamadas, fields=('pk', 'entrega'))
@@ -133,7 +121,7 @@ def repartir(request):
     archivo = Archivo.objects.last()
 
     #  Se consultan las ultimas llamadas ingresadas de acuerdo a el archivo
-    llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)).exclude(estado=True)
+    llamadas = LlamadasEntrantes.objects.filter(id_archivo=archivo).exclude(estado=True)
     if operadores and llamadas:
         contexto = {'operadores': operadores, 'llamadas': llamadas}
         return render(request, 'archivo/repartir.html', contexto)
@@ -178,9 +166,10 @@ def enviarLlamadas(request):
 
 def ver_Llamadas(request):
     usuario = request.user.pk
-    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario).exclude(realizado=True)
-
-    return render(request, 'llamada/Buzon.html', context={'registro': registro})
+    estados = Estado.objects.all()
+    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
+    data = {'diccionario': registro, 'estados': estados}
+    return render(request, 'llamada/Buzon.html', context=data)
 
 
 class archivoLlamadas(ListView):
@@ -190,7 +179,7 @@ class archivoLlamadas(ListView):
 
 def eliminarArchivo(request):
     archivo = request.GET.get('id', None)
-    consulta = LlamadasEntrantes.objects.filter(id_archivo=archivo)
+    consulta = LlamadasEntrantes.objects.filter(id_archivo_id=archivo)
     auxiliar = 0
     for i in consulta:
         if i.estado:
@@ -251,3 +240,26 @@ class RealizarLlamadass(UpdateView):
     template_name = 'users/perfil.html'
     model = LlamadasEntrantes
     form_class = RealizarLlamada
+
+
+def pruebas_llamadas(request):
+    user_list = RegistroLlamada.objects.all()
+    user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
+    return render(request, 'prueba.html', {'filter': user_filter})
+
+def traer(request):
+
+    persona = request.GET.get('id', None)
+    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
+    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
+            'telefono': consulta.id_llamada.telefono,
+            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
+            'alm_soli': consulta.id_llamada.nombre_solicitante,
+            'localidad': consulta.id_llamada.localidad}
+    return JsonResponse(data)
+
+
+def search(request):
+    user_list = RegistroLlamada.objects.all()
+    user_filter = filtro(request.GET, queryset=user_list)
+    return render(request, 'llamada/exportar.html', {'filter': user_filter})

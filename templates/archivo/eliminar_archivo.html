@@ -20,34 +20,30 @@
             </tr>
             </thead>
             <tbody>
+            {% if object_list %}
+                {% for i in object_list %}
+                    <tr id="archivo-{{ i.pk }}">
+                        <td>{{ i.nombre }}</td>
+                        <td>{{ i.fecha_ingreso }}</td>
+                        <td>
+                            <button class="btn btn-danger " onclick="eliminar({{ i.pk }}) ">
+                                <i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
 
-            {% for i in object_list %}
-                <tr id="archivo-{{ i.pk }}">
-                    <td>{{ i.nombre }}</td>
-                    <td>{{ i.fecha_ingreso }}</td>
-                    <td>
-                        <button class="btn btn-danger " onclick="eliminar({{ i.pk }}) ">
-                            <i class="fas fa-trash-alt"></i></button>
-                    </td>
-                </tr>
-                </tbody>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <h1 align="center">No hay archivos</h1>
+            {% endif %}
+            </tbody>
         </table>
 
         <script>
             function eliminar(id) {
-
-                var action = Swal.fire({
-                    title: 'Estas a punto de eliminar un archivo',
-                    text: "Esta seguro de eliminarlo?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Si eliminar!'
-                }).then((result) => {
+                var action = confirm("Are you sure you want to delete this user?");
+                if (action !== false) {
                     $.ajax({
-                        url: '{% url "archivo:borrar" %}',
+                        url: '{% url "archivo:delete" %}',
                         data: {
                             'id': id,
                         },
@@ -55,22 +51,31 @@
                         success: function (data) {
                             if (data.deleted) {
                                 $("#Tablet #archivo-" + id).remove();
-                            } else mensaje()
+                                bueni();
+                            }
+                            if (!data.deleted) {
+                                mensaje();
+                            }
                         }
                     });
-                    if (result.value) {
-                        Swal.fire(
-                            'Borrado!',
-                            'Tu archivo se ha borrado',
-                            'success'
-                        )
-                    }
-                })
-
+                }
             }
 
             function mensaje() {
-                alert('No se puede eliminar este archivo');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No se elimino el archivo!',
+
+                })
+            }
+            function bueni() {
+                Swal.fire(
+                    'Muy bien!',
+                    'Eliminado correctamente',
+                    'success'
+                )
+
             }
         </script>
     </div>
