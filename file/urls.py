@@ -74,11 +74,6 @@ urlpatterns = [
         name='traer'
     ),
     path(
-        route='ListFile',
-        view=views.search,
-        name='ListFile'
-    ),
-    path(
         route='verllamadas',
         view=views.ver_Llamadas,
         name='borrar'

@@ -89,10 +89,9 @@ class RealizarLlamada(forms.Form):
 
     def save(self):
         """Crear la llamada realizada por el operador."""
+
         data = self.files['id_grabacion']
         nombre = self.files['id_grabacion'].name
-        usuario = self.auto_id.pk
-        estado = self.cleaned_data['id_estado']
         llamada = Grabacion(nombre=nombre, url=data)
         llamada.save()
 
