@@ -25,7 +25,7 @@
                         <div class="emailapp-left">
                             <header>
 
-                                <span class="">Llamadas</span>
+                                <span class=""><i class="fas fa-phone-square-alt"></i> Llamadas</span>
 
                             </header>
 
@@ -37,7 +37,6 @@
                                     <div class="media-body">
 
                                         {% for foo in registro %}
-
                                             <a onclick="recuperar({{ foo.id_llamada_id }})"
                                                class="media read-email">
 
@@ -120,7 +119,8 @@
                                             </div>
                                         </div>
 
-                                        <form>
+                                        <form method="post" >
+                                            {{ form.as_p }}
                                             <hr>
 
                                             <h5><i class="fas fa-phone-alt"></i> Llamada</h5>

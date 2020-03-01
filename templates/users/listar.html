@@ -340,12 +340,13 @@
 
                         function Agregar(user) {
                             $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
+                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
                                 <td name="name">${user.name}</td>
-                                <td name="cedula">${user.cedula}</td>
-<td name="last">${user.apellido}</td>
-<td name="telefono_fijo">${user.telefono_fijo}</td>
-<td name="celular">${user.celular}</td>
-<td name="estado">${user.estado}</td>
+                                <td name="last">${user.apellido}</td>
+                                <td name="cedula">0</td>
+                                <td name="telefono_fijo">${user.telefono_fijo}</td>
+                                <td name="celular">${user.celular}</td>
+                                <td name="estado">${user.estado}</td>
 
                                 <td align="center"></tr>`);
                         }

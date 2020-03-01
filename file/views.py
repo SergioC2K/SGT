@@ -227,11 +227,6 @@ class ListFile(ListView):
     template_name = 'llamada/exportar.html'
 
 
-
-
-
-
-
 def realizar_llamada(request, number):
     global llamadas
     if request.method == 'POST':
@@ -239,7 +234,7 @@ def realizar_llamada(request, number):
         if form.is_valid():
             form.save()
         else:
-            return render(request=request, template_name='prueba.html', context={'form': form,
+            return render(request=request, template_name='llamada/Buzon.html', context={'form': form,
                                                                                  })
     else:
         form = RealizarLlamada()
@@ -247,11 +242,10 @@ def realizar_llamada(request, number):
 
     return render(
         request=request,
-        template_name='prueba.html',
+        template_name='llamada/buzon.html',
         context={'form': form,
                  'llamadas': llamadas}
     )
-
 
 class RealizarLlamadass(UpdateView):
     template_name = 'users/perfil.html'
