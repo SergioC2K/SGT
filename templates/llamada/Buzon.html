@@ -9,7 +9,10 @@
         <script src="{% static 'dist/gijgo/js/gijgo.min.js' %}"></script>
     </head>
 {% endblock %}
+
 {% block main %}
+
+
     <!-- Container -->
     <div class="container-fluid">
         <!-- Row -->
@@ -21,36 +24,47 @@
 
                         <div class="emailapp-left">
                             <header>
-                                <span class="">Llamadas</span>
+                                <span class=""><i class="fas fa-mobile"></i> Llamadas</span>
+
                             </header>
+
                             <div class="emailapp-emails-list">
 
                                 <div class="nicescroll-bar">
 
 
                                     <div class="media-body">
+                                        {% if object_list %}
 
-                                        {% for foo in registro %}
 
-                                            <a onclick="recuperar({{ foo.id_llamada_id }})"
-                                               class="media read-email">
-
-                                                <div class="email-subject">
-                                                    <div>
-                                                        <div class="email-head">{{ foo.id_llamada_id }}
-                                                        </div>
-
-                                                    </div>
+                                            {% for foo in registro %}
+                                                <div class="email-head">
+                                                    {{ foo.id_llamada.nombre_destinatario }}
                                                 </div>
+                                                <a onclick="recuperar({{ foo.id_llamada_id }})"
+                                                   class="media read-email btn btn-block" data-toggle="tooltip"
+                                                   data-placement="right"
+                                                   title="{{ foo.id_llamada.texto_breve_material }}">
 
-                                            </a>
-                                            <div class="email-head">
-                                                {{ foo.id_llamada.nombre_destinatario }}
-                                            </div>
-                                            <div class="email-hr-wrap">
+                                                    <div class="email-subject">
+                                                        <div>
+                                                            <div class="email-head">{{ foo.id_llamada_id }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
                                                 <hr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="row justify-content-center">
+                                                <div class="alert alert-info mt-3" role="alert">
+                                                    No tienes Llamadas pendientes!
+                                                </div>
                                             </div>
-                                        {% endfor %}
+
+
+
+                                        {% endif %}
                                     </div>
                                     </a>
                                 </div>
@@ -65,7 +79,7 @@
                             </header>
                             <div class="email-body">
                                 <div class="nicescroll-bar">
-                                    <div class="modal-body">
+                                    <div class="card-body">
 
 
                                         <div class="card-body ">
@@ -143,7 +157,8 @@
 
 
                                                         <strong>Fecha de entrega</strong>
-                                                        <input id="fecha_entrega" name="fecha_entrega" width="250"/>
+                                                        <input id="fecha_entrega" name="fecha_entrega" width="250"
+                                                               readonly/>
 
 
                                                     </div>
@@ -183,6 +198,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Compose email -->
                 <div class="modal fade" id="exampleModalEmail" tabindex="-1" role="dialog"
                      aria-labelledby="exampleModalEmail" aria-hidden="true"
