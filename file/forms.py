@@ -16,7 +16,6 @@ from file.models import Estado, RegistroLlamada, Grabacion
 
 
 class RealizarLlamada(forms.Form):
-
     NOCON = 1
     INFO_EN = 2
     DATERR = 3
@@ -42,8 +41,8 @@ class RealizarLlamada(forms.Form):
         max_length=45,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'id': 'alm_soli',
-            'name': 'alm_soli',
+            'id': 'nombre_contesta',
+            'name': 'nombre_contesta',
             'placeholder': 'Nombre Contesta'
         })
     )
@@ -52,11 +51,17 @@ class RealizarLlamada(forms.Form):
         min_length=10,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'id': 'datepicker',
+            'id': 'fecha_entrega',
+            'name': 'fecha_entrega',
+            'width': '250',
             'placeholder': 'Fecha de Entrega'
         })
     )
-    observaciones = forms.CharField(widget=forms.Textarea)
+    observaciones = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
+                                                                 'id': 'observaciones',
+                                                                 'rows': '2'
+                                                                 })
+                                    )
     realizado = forms.BooleanField(initial=True, widget=forms.HiddenInput())
     id_estado = forms.ChoiceField(
         choices=ESTADOS,
@@ -68,7 +73,9 @@ class RealizarLlamada(forms.Form):
         })
 
     )
-    id_grabacion = forms.FileField()
+    id_grabacion = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'custom-file-input',
+                                                                          'id': 'customFile'})
+                                   )
     id_llamada = forms.IntegerField()
 
     def clean_fecha_entrega(self):
@@ -80,7 +87,7 @@ class RealizarLlamada(forms.Form):
             if fechita > ya:
                 return fecha
         except ValidationError as e:
-            raise forms.ValidationError('Ingrese una fecha correcta!'%e)
+            raise forms.ValidationError('Ingrese una fecha correcta!' % e)
 
     def clean(self):
         """Clean."""
@@ -90,11 +97,10 @@ class RealizarLlamada(forms.Form):
     def save(self):
         """Crear la llamada realizada por el operador."""
         data = self.files['id_grabacion']
+        cual = self.cleaned_data
         nombre = self.files['id_grabacion'].name
-        usuario = self.auto_id.pk
-        estado = self.cleaned_data['id_estado']
-        llamada = Grabacion(nombre=nombre, url=data)
-        llamada.save()
+        audio = Grabacion(nombre=nombre, url=data)
+        audio.save()
 
 
 class LlamadaModelo(forms.ModelForm):

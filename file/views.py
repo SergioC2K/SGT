@@ -183,7 +183,6 @@ def eliminarArchivo(request):
     for i in consulta:
         if i.estado:
             auxiliar = auxiliar + 1
-
     if auxiliar == 0:
         Archivo.objects.get(id=archivo).delete()
         data = {
@@ -193,7 +192,6 @@ def eliminarArchivo(request):
         data = {
             'deleted': False
         }
-
     return JsonResponse(data)
 
 
@@ -216,24 +214,31 @@ class ListFile(ListView):
 
 
 def realizar_llamada(request, number):
-    global llamadas
+    global llamadas, data
     if request.method == 'POST':
-        form = RealizarLlamada(request.POST, request.FILES, request.user)
+        form = RealizarLlamada(request.POST, request.FILES, request.user, number)
         if form.is_valid():
             form.save()
+            data = {
+                'form': form,
+                'aprobado': 'ok'
+            }
+            return JsonResponse(data, safe=False)
         else:
-            return render(request=request, template_name='llamada/Buzon.html', context={'form': form,
-                                                                                 })
+            data = {
+                'form': form.errors,
+                'No_Aprobado': 'NO'
+            }
+            return JsonResponse(data, safe=False)
     else:
         form = RealizarLlamada()
         llamadas = get_object_or_404(RegistroLlamada, pk=number)
+        data = {
+            'form': form,
+            'llamada': llamadas
+        }
+    return JsonResponse(data, safe=False)
 
-    return render(
-        request=request,
-        template_name='llamada/buzon.html',
-        context={'form': form,
-                 'llamadas': llamadas}
-    )
 
 class RealizarLlamadass(UpdateView):
     template_name = 'users/perfil.html'
@@ -246,8 +251,8 @@ def pruebas_llamadas(request):
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'prueba.html', {'filter': user_filter})
 
-def traer(request):
 
+def traer(request):
     persona = request.GET.get('id', None)
     consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
     data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
@@ -262,3 +267,12 @@ def search(request):
     user_list = RegistroLlamada.objects.all()
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'llamada/exportar.html', {'filter': user_filter})
+
+
+def llamada_realizada(request):
+    return render(request, 'llamada/llamadas_realizadas.html')
+
+
+def prueba(request):
+    form = RealizarLlamada
+    return render(request, template_name='llamada/prueba.html', context={'form': form})

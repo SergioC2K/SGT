@@ -107,9 +107,9 @@
                                             </div>
                                         </div>
 
-                                        <form method="post">
+                                        <form method="post" id="registro-llamada" action="/archivo/pruebita/">
+                                            {% csrf_token %}
                                             <hr>
-
                                             <h5><i class="fas fa-phone-alt"></i> Llamada</h5>
                                             <div class="card-body">
 
@@ -132,16 +132,10 @@
                                                         </select>
                                                     </div>&nbsp;&nbsp;&nbsp;
                                                     <div class="form-group">
-
-
                                                         <strong>Fecha de entrega</strong>
                                                         <input id="fecha_entrega" name="fecha_entrega" width="250"/>
-
-
                                                     </div>
-
                                                     <div class="container">
-
                                                         <div class="form-group">
                                                             <label for="exampleFormControlTextarea1">
                                                                 Observaciones</label>
@@ -151,7 +145,7 @@
 
                                                         </div>
                                                         <div class="col-6 col-md-4  ">
-                                                            <input type="file" class="custom-file-input "
+                                                            <input type="file" class="custom-file-input"
                                                                    id="customFile">
                                                             <label class="custom-file-label" for="customFile"><i
                                                                     class="fas fa-microphone-alt"></i>
@@ -212,21 +206,24 @@
                     datatype: 'json',
                     success: function (data) {
                         if (data) {
-                            traiga(data);
+                            traiga(data, id);
                         } else
                             alert('asdasdasd');
                     }
                 })
             }
 
-            function traiga(user) {
+            var dire = document.getElementById("registro-llamada").action;
+
+            function traiga(user, id) {
                 $("#nombre_solicitante").val(user.nombre);
                 $("#ruta").val(user.ruta);
                 $("#telefono").val(user.telefono);
                 $("#direccion_des_mcia").val(user.direccion_des_mcia);
                 $("#alm_soli").val(user.alm_soli);
                 $("#localidad").val(user.localidad);
-
+                var direccion = dire + id + "/";
+                document.getElementById("registro-llamada").action = direccion;
             }
         </script>
     {% endblock %}
