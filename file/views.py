@@ -236,12 +236,6 @@ def realizar_llamada(request, number):
     )
 
 
-class RealizarLlamadass(UpdateView):
-    template_name = 'users/perfil.html'
-    model = LlamadasEntrantes
-    form_class = RealizarLlamada
-
-
 def pruebas_llamadas(request):
     user_list = RegistroLlamada.objects.all()
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)

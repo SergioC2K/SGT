@@ -94,9 +94,3 @@ class RealizarLlamada(forms.Form):
         nombre = self.files['id_grabacion'].name
         llamada = Grabacion(nombre=nombre, url=data)
         llamada.save()
-
-
-class LlamadaModelo(forms.ModelForm):
-    class Meta:
-        model = RegistroLlamada
-        fields = '__all__'

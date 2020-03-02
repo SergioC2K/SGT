@@ -88,4 +88,9 @@ urlpatterns = [
         view=views.realizar_llamada,
         name='prueba'
     ),
+    path(
+        route='listfile',
+        view=views.ListFile,
+        name='ListFile'
+    ),
 ]
