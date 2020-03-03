@@ -110,10 +110,9 @@ class SignupForm(forms.Form):
     def clean_email(self):
         """Username sea unico"""
         email = self.cleaned_data['email']
-        email_taken = User.objects.filter(username=email).exists()
+        email_taken = User.objects.filter(email=email).exists()
         if email_taken:
             raise forms.ValidationError('Email ya se encuentra registrado.')
-
         return email
 
     def clean_username(self):
