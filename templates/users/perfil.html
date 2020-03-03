@@ -131,16 +131,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer justify-content-center">
+                            <div class="card-footer justify-content-center">
                                 <br>
                                 <img src="{% static 'dist/img/LogoSGT.png' %}" height="80" class="fixed-bottom">
                                 <button type="submit" class="btn btn-success">Guardar cambios</button>
                                 <a class="btn btn-dark" href="{% url 'usuario:cambio' %}">Cambiar contraseña</a>
+                                <span style="color: gray;font-size: 13">Ultima modificacion {{ perfil.modified }}</span>
                             </div>
+
                         </div>
+
                     </div>
                 </form>
             </div>
+
         </div>
     </div>
 {% endblock %}

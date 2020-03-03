@@ -10,7 +10,7 @@ class Archivo(BaseModel, models.Model):
 
 
 class LlamadasEntrantes(BaseModel, models.Model):
-    id_archivo = models.ForeignKey(Archivo, on_delete=models.CASCADE)
+    id_archivo = models.ForeignKey('Archivo', on_delete=models.CASCADE)
     estado = models.BooleanField(default=False)
 
     nombre_solicitante = models.CharField(max_length=50)

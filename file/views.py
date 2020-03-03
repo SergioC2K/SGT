@@ -3,10 +3,11 @@ import datetime
 # Excel
 import pandas as pd
 # Django
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView
 from django.db.models import Q, Count
 from django.db import IntegrityError
@@ -68,6 +69,10 @@ def upload_excel(request):
     return render(request, 'archivo/fileimport.html')
 
 
+superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
+
+
+@method_decorator(superuser_required, name='dispatch')
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
@@ -133,6 +138,7 @@ def buzon(request):
     return render(request, 'llamada/Buzon.html')
 
 
+@method_decorator(superuser_required, name='dispatch')
 class entregar(ListView):
     template_name = 'llamada/entregar.html'
     model = Perfil
@@ -172,6 +178,7 @@ def ver_Llamadas(request):
     return render(request, 'llamada/Buzon.html', context=data)
 
 
+@method_decorator(superuser_required, name='dispatch')
 class archivoLlamadas(ListView):
     model = Archivo
     template_name = 'archivo/eliminar_archivo.html'

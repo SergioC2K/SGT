@@ -12,23 +12,16 @@
                         </a>
 
                     </li>
-
-
-                    <li class="nav-item">
-
-                    </li>
-
-
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
                             <i class="fas fa-headset"></i>
-                            <span class="nav-link-text">Bandeja de llamadas</span>
+                            <span class="nav-link-text">Bandeja Entrada</span>
                         </a>
                         <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
                             <li class="nav-item">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'file:buzon' %}">Llamar</a>
+                                        <a class="nav-link" href="{% url 'file:buzon' %}">Realizar llamada</a>
                                     </li>
 
                                 </ul>
@@ -41,31 +34,40 @@
                     <span>Opciones</span>
                     <span>SGT</span>
                 </div>
+
+
                 <ul class="navbar-nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                           data-target="#Components_drp">
-                            <i class="far fa-file-archive"></i>
-                            <span class="nav-link-text">Archivo</span>
-                        </a>
-                        <ul id="Components_drp" class="nav flex-column collapse collapse-level-1">
-                            <li class="nav-item">
-                                <ul class="nav flex-column">
 
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'file:import' %}">Importa archivo</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'file:listar_llamada' %}">Entregar llamadas</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'file:eliminar' %}">Administrar archivo</a>
-                                    </li>
+                    {% if user.is_staff %}
 
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                               data-target="#Components_drp">
+                                <i class="far fa-file-archive"></i>
+                                <span class="nav-link-text">Archivo</span>
+                            </a>
+                            <ul id="Components_drp" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'file:import' %}">Importa archivo</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'file:listar_llamada' %}">Entregar
+                                                llamadas</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'file:eliminar' %}">Administrar archivo</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                    {% endif %}
+
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                            data-target="#content_drp">
@@ -99,23 +101,24 @@
                         </ul>
                     </li>
                     {% if user.is_staff %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#forms_drp">
-                            <i class="fa fa-user-alt"></i>
-                            <span class="nav-link-text">Usuarios</span>
-                        </a>
-                        <ul id="forms_drp" class="nav flex-column collapse collapse-level-1">
-                            <li class="nav-item">
-                                <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                               data-target="#forms_drp">
+                                <i class="fa fa-user-alt"></i>
+                                <span class="nav-link-text">Usuarios</span>
+                            </a>
+                            <ul id="forms_drp" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
 
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'usuario:listar_usuario' %}">Operadores</a>
-                                    </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'usuario:listar_usuario' %}">Operadores</a>
+                                        </li>
 
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                     {% endif %}
                 </ul>
             </div>

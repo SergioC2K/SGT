@@ -6,8 +6,10 @@ import django_filters
 
 
 class filtro(django_filters.FilterSet):
-    id_estado = django_filters.ModelMultipleChoiceFilter(queryset=Estado.objects.all(), widget=forms.CheckboxSelectMultiple)
+    id_estado__nombre = django_filters.ModelMultipleChoiceFilter(queryset=Estado.objects.all(),
+                                                                 widget=forms.Select(attrs={'class': 'form-control'}))
+    id_usuario__telefono_fijo = django_filters.CharFilter()
 
     class Meta:
-        model = RegistroLlamada
-        fields = ['id_estado']
+        model = Estado
+        fields = ['nombre']

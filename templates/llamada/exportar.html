@@ -19,9 +19,12 @@
 
         <div class="card">
             <h4 class="hk-pg-title mt-2">
-                &nbsp; <i class="fas fa-poll"></i> Resultados</i><a id="emailapp_sidebar_move"
-                                                                    class="fas fa-bars mb-3 mb-md-0 emailapp-sidebar-move email-box float-right">&nbsp;&nbsp;
-            </a>
+                &nbsp; <i class="fas fa-poll"></i> Resultados</i>
+                <a id="emailapp_sidebar_move"
+                   class="fas fa-bars mb-3 mb-md-0
+                   emailapp-sidebar-move email-box
+                    float-right">&nbsp;&nbsp;
+                </a>
 
 
             </h4>
@@ -29,34 +32,34 @@
                 <div class="emailapp-sidebar">
                     <div class="nicescroll-bar">
                         <div class="emailapp-nav-wrap">
-                            <a id="close_emailapp_sidebar" href="javascript:void(0)" class="close-emailapp-sidebar">
-                                <span class="feather-icon"><i data-feather="chevron-left"></i></span>
+                            <a id="close_emailapp_sidebar" href="javascript:void(0)" class="close-emailapp-sidebar SS">
+
+                                <i data-feather="chevron-left"></i>Estados
                             </a>
                             <form method="get">
-
-
                                 <ul class="nav flex-column mail-category">
                                     <li class="nav-item">
+                                        {{ filter.form.as_p }}
+                                        <button type="submit" class="btn btn-success jus">Buscar</button>
 
-                                        {{ filter.form.nombre }}
                                     </li>
+
+
                                 </ul>
 
 
-                                <button type="submit" class="btn btn-success">Buscar</button>
                             </form>
+
 
                         </div>
                     </div>
-                </div>
 
+                </div>
 
             </div>
             <hr>
 
             <div class="container">
-
-
                 <table id="table_id">
                     <thead>
                     <tr>
@@ -83,7 +86,7 @@
                             </tr>
                         {% endfor %}
                     {% else %}
-                        <h1>No hay datos</h1>
+                        <td>No hay datos</td>
                     {% endif %}
                     </tbody>
                 </table>
