@@ -270,7 +270,7 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.desactive) {
-                                $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a " style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
+                                $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a" style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
                                 Swal.fire(
                                     'Bien !',
                                     'Usuario inhabilitado',
@@ -278,7 +278,7 @@
                                 );
                             }
                             if (!data.desactive) {
-                                $("#colum-" + id).html(`<button" type="submit" class="btn btn-danger " onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
+                                $("#colum-" + id).html(`<button type="submit" class="btn btn-danger"  onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
                                                         <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`)
                                 Swal.fire(
                                     'Bien !',
@@ -342,7 +342,7 @@
                                 <td name="telefono_fijo">${user.telefono_fijo}</td>
                                 <td name="celular">${user.celular}</td>
                                 <td><button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
-                                <td><button" type="submit" class="btn btn-danger " onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button></td>
+                                <td><button type="submit" class="btn btn-danger" onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button></td>
                                 </tr>`);
                         }
 

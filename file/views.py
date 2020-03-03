@@ -28,19 +28,17 @@ horas_antes = hoy - datetime.timedelta(hours=12)
 @login_required
 def upload_excel(request):
     if request.method == 'POST':
-        nombre = request.FILES['myfile']
-        leido = pd.read_excel(nombre)
+        leido = pd.read_excel(request.FILES['myfile'])
         llamadas = []
-        try:
-            crear = Archivo.objects.create(nombre=nombre)
-            crear.save()
-        except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', {"message": e})
+        nombre = request.POST['nombre']
+        crear = Archivo.objects.create(nombre=nombre)
+        crear.save()
+
 
         for data in leido.T.to_dict().values():
             llamadas.append(
                 LlamadasEntrantes(
-                    id_archivo=Archivo.objects.last(),
+                    archivo=crear,
                     nombre_solicitante=data['Nombre solicitante'],
                     ident_fiscal=data['Ident.Fiscal Dest Mcia'],
                     nombre_destinatario=data['Nombre destinatario'],
@@ -178,7 +176,7 @@ class archivoLlamadas(ListView):
 
 def eliminarArchivo(request):
     archivo = request.GET.get('id', None)
-    consulta = LlamadasEntrantes.objects.filter(id_archivo_id=archivo)
+    consulta = LlamadasEntrantes.objects.filter(archivo=archivo)
     auxiliar = 0
     for i in consulta:
         if i.estado:
@@ -250,17 +248,6 @@ def pruebas_llamadas(request):
     user_list = RegistroLlamada.objects.all()
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'prueba.html', {'filter': user_filter})
-
-
-def traer(request):
-    persona = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
-    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
-            'telefono': consulta.id_llamada.telefono,
-            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
-            'alm_soli': consulta.id_llamada.nombre_solicitante,
-            'localidad': consulta.id_llamada.localidad}
-    return JsonResponse(data)
 
 
 def search(request):

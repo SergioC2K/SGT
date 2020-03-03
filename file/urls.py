@@ -64,9 +64,9 @@ urlpatterns = [
         name='eliminar'
     ),
     path(
-        route='borrar',
-        view=views.eliminarArchivo,
-        name='delete'
+      route='borrar',
+      view=views.eliminarArchivo,
+      name='exterminar'
     ),
     path(
         route='traer',

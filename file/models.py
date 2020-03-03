@@ -7,10 +7,11 @@ from django.contrib.auth.models import User
 
 class Archivo(BaseModel, models.Model):
     nombre = models.CharField(max_length=50, unique=True)
+    fecha_ingreso = models.DateTimeField(auto_now_add=True)
 
 
 class LlamadasEntrantes(BaseModel, models.Model):
-    id_archivo = models.ForeignKey(Archivo, on_delete=models.CASCADE)
+    archivo = models.ForeignKey(Archivo, on_delete=models.CASCADE)
     estado = models.BooleanField(default=False)
 
     nombre_solicitante = models.CharField(max_length=50)
