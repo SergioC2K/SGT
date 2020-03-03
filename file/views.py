@@ -28,12 +28,14 @@ horas_antes = hoy - datetime.timedelta(hours=12)
 @login_required
 def upload_excel(request):
     if request.method == 'POST':
-        leido = pd.read_excel(request.FILES['myfile'])
+        nombre = request.FILES['myfile']
+        leido = pd.read_excel(nombre)
         llamadas = []
-        nombre = request.POST['nombre']
-        crear = Archivo.objects.create(nombre=nombre)
-        crear.save()
-
+        try:
+            crear = Archivo.objects.create(nombre=nombre)
+            crear.save()
+        except IntegrityError as e:
+            return render(request, 'archivo/fileimport.html', context={'errors': e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(
@@ -63,7 +65,6 @@ def upload_excel(request):
             )
         LlamadasEntrantes.objects.bulk_create(llamadas)
     return render(request, 'archivo/fileimport.html')
-
 
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
