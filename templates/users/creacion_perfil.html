@@ -1,42 +1,18 @@
-{% extends 'base/base.html' %}
-
-
-{% load crispy_forms_tags %}
-
-{% block main %}
-    <br>
-    <br>
-    <br>
-
-    <div class="container text-center mx-auto">
-        <form method="post">
-            {% csrf_token %}
-
-            <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.usuario|as_crispy_field }}
-                </div>
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.cedula|as_crispy_field }}
-                </div>
-            </div>
-            {{ form.telefono_fijo|as_crispy_field }}
-            {{ form.celular|as_crispy_field }}
-            <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.foto|as_crispy_field }}
-                </div>
-            </div>
-            {{ form.celular_telemercadeo|as_crispy_field }}
-            <button type="submit" class="btn btn-primary">Sign in</button>
-
-
-        </form>
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalScrollableTitle">Modificar: {{ foo.pk }} </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-{% endblock %}
+    <div class="modal-body">
 
 
-
-
-
-
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">x</button>
+        <button type="button" class="btn btn-" style="background-color: #36876a;color: #fff1f1">
+            <span class="glyphicon glyphicon-ok"></span>
+        </button>
+    </div>
+</div>

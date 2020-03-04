@@ -7,9 +7,10 @@ import django_filters
 
 class filtro(django_filters.FilterSet):
     id_estado__nombre = django_filters.ModelMultipleChoiceFilter(
-        queryset=Estado.objects.values_list('nombre', flat=True),
+        queryset=Estado.objects.values_list('id', flat=True),
         widget=forms.Select(attrs={'class': 'form-control search-slt',
-                                   'id': 'exampleFormControlSelect1'}))
+                                   'id': 'exampleFormControlSelect1'
+                                   }))
 
     id_usuario__telefono_fijo = django_filters.ModelMultipleChoiceFilter(
         queryset=User.objects.values_list('username', flat=True),

@@ -81,19 +81,21 @@
 
                                                                         <button type="submit"
                                                                                 class="btn btn-danger "
-                                                                                onclick="Inhabilitar({{ foo.pk }})">
+                                                                                onclick="Inhabilitar({{ foo.usuario.pk }})">
                                                                             <i class="fas fa-power-off"></i>
                                                                         </button>
 
-                                                                        <button type="submit"
-                                                                                class="btn btn-dark">
+                                                                        <button type="button" class="btn btn-dark"
+                                                                                data-toggle="modal"
+                                                                                data-target="#exampleModalScrollable">
+
                                                                             <i class="fa fa-pencil"></i>
                                                                         </button>
                                                                     {% else %}
-                                                                        <button id="btn-{{ foor.pk }}" type="submit"
+                                                                        <button id="btn-{{ foo.pk }}" type="submit"
                                                                                 class="btn btn"
                                                                                 style="background-color: #36876a"
-                                                                                onclick="Inhabilitar({{ foo.pk }})">
+                                                                                onclick="Inhabilitar({{ foo.usuario.pk }})">
                                                                             <i style="color: #fff1f1"
                                                                                class="fas fa-power-off"></i>
                                                                         </button>
@@ -110,7 +112,8 @@
                                     {% else %}
 
                                         <div class="alert alert-info" role="alert">
-                                            <strong><span class="glyphicon glyphicon-info-sign"></span> No hay usuarios registrados!</strong>
+                                            <strong><span class="glyphicon glyphicon-info-sign"></span> No hay usuarios
+                                                registrados!</strong>
                                         </div>
 
                                     {% endif %}
@@ -228,6 +231,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+    {% include 'users/creacion_perfil.html' %}
         </div>
     </div>
     <!-- Footer -->
