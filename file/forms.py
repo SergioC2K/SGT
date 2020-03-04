@@ -16,7 +16,6 @@ from file.models import Estado, RegistroLlamada, Grabacion
 
 
 class RealizarLlamada(forms.Form):
-
     NOCON = 1
     INFO_EN = 2
     DATERR = 3
@@ -80,7 +79,7 @@ class RealizarLlamada(forms.Form):
             if fechita > ya:
                 return fecha
         except ValidationError as e:
-            raise forms.ValidationError('Ingrese una fecha correcta!'%e)
+            raise forms.ValidationError('Ingrese una fecha correcta!' % e)
 
     def clean(self):
         """Clean."""
@@ -94,23 +93,19 @@ class RealizarLlamada(forms.Form):
             nombre = self.files['id_grabacion'].name
             grabacion = Grabacion(nombre=nombre, audio=audio)
             grabacion.save()
-            llamada = RegistroLlamada(
-                nombre_contesta=self.cleaned_data['nombre_contesta'],
-                fecha_entrega=self.cleaned_data['fecha_entrega'],
-                observaciones=self.cleaned_data['observaciones'],
-                realizado=self.cleaned_data['realizado'],
-                id_llamada=self.cleaned_data['id_llamada'],
-                id_usuario=self.cleaned_data['id_estado'],
-                id_grabacion=grabacion
-            )
+            llamada = RegistroLlamada.objects.get(id=self.cleaned_data['id_llamada'])
+            llamada.fecha_entrega = self.cleaned_data['fecha_entrega']
+            llamada.observaciones = self.cleaned_data['observaciones']
+            llamada.realizado = self.cleaned_data['realizado']
+            llamada.id_llamada = self.cleaned_data['id_llamada']
+            llamada.id_estado = self.cleaned_data['id_estado']
+            llamada.id_grabacion = grabacion
             llamada.save()
         else:
-            llamada = RegistroLlamada(
-                nombre_contesta=self.cleaned_data['nombre_contesta'],
-                fecha_entrega=self.cleaned_data['fecha_entrega'],
-                observaciones=self.cleaned_data['observaciones'],
-                realizado=self.cleaned_data['realizado'],
-                id_llamada=self.cleaned_data['id_llamada'],
-                id_usuario=self.cleaned_data['id_estado']
-            )
+            llamada = RegistroLlamada.objects.get(id=self.cleaned_data['id_llamada'])
+            llamada.fecha_entrega = self.cleaned_data['fecha_entrega']
+            llamada.observaciones = self.cleaned_data['observaciones']
+            llamada.realizado = self.cleaned_data['realizado']
+            llamada.id_llamada = self.cleaned_data['id_llamada']
+            llamada.id_estado = self.cleaned_data['id_estado']
             llamada.save()
