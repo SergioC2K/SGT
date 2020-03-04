@@ -96,11 +96,27 @@ class RealizarLlamada(forms.Form):
 
     def save(self):
         """Crear la llamada realizada por el operador."""
-        data = self.files['id_grabacion']
-        cual = self.cleaned_data
-        nombre = self.files['id_grabacion'].name
-        audio = Grabacion(nombre=nombre, url=data)
-        audio.save()
+        if self.files:
+            audio = self.files['id_grabacion']
+            nombre = self.files['id_grabacion'].name
+            grabacion = Grabacion(nombre=nombre, audio=audio)
+            grabacion.save()
+            llamada = RegistroLlamada.objects.get(id=self.cleaned_data['id_llamada'])
+            llamada.fecha_entrega = self.cleaned_data['fecha_entrega']
+            llamada.observaciones = self.cleaned_data['observaciones']
+            llamada.realizado = self.cleaned_data['realizado']
+            llamada.id_llamada = self.cleaned_data['id_llamada']
+            llamada.id_estado = self.cleaned_data['id_estado']
+            llamada.id_grabacion = grabacion
+            llamada.save()
+        else:
+            llamada = RegistroLlamada.objects.get(id=self.cleaned_data['id_llamada'])
+            llamada.fecha_entrega = self.cleaned_data['fecha_entrega']
+            llamada.observaciones = self.cleaned_data['observaciones']
+            llamada.realizado = self.cleaned_data['realizado']
+            llamada.id_llamada = self.cleaned_data['id_llamada']
+            llamada.id_estado = self.cleaned_data['id_estado']
+            llamada.save()
 
 
 class LlamadaModelo(forms.ModelForm):

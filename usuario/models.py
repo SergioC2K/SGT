@@ -25,7 +25,7 @@ class Perfil(BaseModel, models.Model):
     )
 
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
-    cedula = models.IntegerField(default='0')
+    cedula = models.PositiveIntegerField(default='0')
     telefono_fijo = models.CharField(validators=[telefono_regex], max_length=15)
     celular = models.CharField(validators=[telefono_regex],max_length=15)
 

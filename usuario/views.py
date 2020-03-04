@@ -1,31 +1,19 @@
-from django.contrib.auth import authenticate, login, logout
+# Django
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.core import serializers
-from django.utils.decorators import method_decorator
 
-from django.views.generic import ListView, FormView
-
-# Vistas = Listar y crear
-from django.views.generic import ListView, CreateView, UpdateView, FormView
-
-# Exception
-from django.db.utils import IntegrityError
+# CB Views
+from django.views.generic import ListView, UpdateView, FormView
 
 # Models
 from django.contrib.auth.models import User
 
-from django.contrib import messages
-
 # Forms
-from django.views.generic.edit import FormMixin
-
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil
 from django.contrib.auth.forms import PasswordChangeForm
@@ -56,10 +44,11 @@ def UserCreateView(request):
         formula = SignupForm(request.POST)
         userna = request.POST.get('username')
         if formula.is_valid():
-            guardar = formula.save()
+            formula.save()
             persona = User.objects.get(username=userna)
             usuario = Perfil.objects.get(usuario_id=persona.pk)
-            d = {'id': usuario.id, 'name': usuario.usuario.first_name,
+            d = {'id': usuario.id,
+                 'name': usuario.usuario.first_name,
                  'cedula': usuario.cedula,
                  'estado': usuario.usuario.is_active,
                  'apellido': usuario.usuario.last_name,
@@ -72,7 +61,6 @@ def UserCreateView(request):
         return JsonResponse(data=data)
     else:
         return redirect('users/listar.html')
-
 
 
 @login_required
@@ -100,7 +88,7 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
+superuser_required = user_passes_test(lambda u: u.is_staff, login_url='usuario:perfil')
 
 
 class ListarUsuario(ListView, FormView):
@@ -110,20 +98,16 @@ class ListarUsuario(ListView, FormView):
     queryset = Perfil.objects.filter(usuario__is_superuser=False)
     success_url = reverse_lazy('usuario:listar_usuario')
 
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Perfil.objects.all()
+        else:
+            return Perfil.objects.filter(usuario__is_superuser=False)
 
-def get_queryset(self):
-    if self.request.user.is_superuser:
-        return Perfil.objects.all()
-    else:
-        return Perfil.objects.filter(usuario__is_superuser=False)
-
-
-def form_valid(self, form):
-    """Guardar datos."""
-    form.save()
-
-    return super().form_valid(form)
-
+    def form_valid(self, form):
+        """Guardar datos."""
+        form.save()
+        return super().form_valid(form)
 
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))

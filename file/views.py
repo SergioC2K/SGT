@@ -127,10 +127,6 @@ def repartir(request):
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
 
 
-def buzon(request):
-    return render(request, 'llamada/Buzon.html')
-
-
 class entregar(ListView):
     template_name = 'llamada/entregar.html'
     model = Perfil
@@ -166,7 +162,10 @@ def ver_Llamadas(request):
     usuario = request.user.pk
     estados = Estado.objects.all()
     registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
-    data = {'diccionario': registro, 'estados': estados}
+    data = {
+        'diccionario': registro,
+        'estados': estados
+    }
     return render(request, 'llamada/Buzon.html', context=data)
 
 
@@ -198,7 +197,8 @@ def traer(request):
     persona = request.GET.get('id', None)
     consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
 
-    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
+    data = {'nombre': consulta.id_llamada.nombre_destinatario,
+            'ruta': consulta.id_llamada.ruta,
             'telefono': consulta.id_llamada.telefono,
             'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
             'alm_soli': consulta.id_llamada.nombre_solicitante,
@@ -238,11 +238,6 @@ def realizar_llamada(request, number):
         }
     return JsonResponse(data, safe=False)
 
-
-class RealizarLlamadass(UpdateView):
-    template_name = 'users/perfil.html'
-    model = LlamadasEntrantes
-    form_class = RealizarLlamada
 
 
 def pruebas_llamadas(request):
