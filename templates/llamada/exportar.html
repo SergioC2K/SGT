@@ -9,6 +9,7 @@
         <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
         <script src="{% static 'dist/Datatables/FileSaver.min.js' %}"></script>
         <script src="{% static 'dist/Datatables/xlsx.full.min.js' %}"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json">
         <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
 
     </head>
@@ -20,48 +21,48 @@
         <div class="card">
             <h4 class="hk-pg-title mt-2">
                 &nbsp; <i class="fas fa-poll"></i> Resultados</i>
-                <a id="emailapp_sidebar_move"
-                   class="fas fa-bars mb-3 mb-md-0
-                   emailapp-sidebar-move email-box
-                    float-right">&nbsp;&nbsp;
-                </a>
+
+                <div class="row mb-4 mb-md-0 float-right"> &nbsp;<button
+                        class="btn btn-success" id="button-a">
+                    Exportar
+                    datos
+                </button>&nbsp;&nbsp;&nbsp;
 
 
             </h4>
-            <div class="emailapp-wrap">
-                <div class="emailapp-sidebar">
-                    <div class="nicescroll-bar">
-                        <div class="emailapp-nav-wrap">
-                            <a id="close_emailapp_sidebar" href="javascript:void(0)" class="close-emailapp-sidebar SS">
 
-                                <i data-feather="chevron-left"></i>Estados
-                            </a>
-                            <form method="get">
-                                <ul class="nav flex-column mail-category">
-                                    <li class="nav-item">
-                                        {{ filter.form.as_p }}
-                                        <button type="submit" class="btn btn-success jus">Buscar</button>
-
-                                    </li>
-
-
-                                </ul>
-
-
-                            </form>
-
-
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
             <hr>
 
             <div class="container">
+
+
                 <table id="table_id">
                     <thead>
+                    <div class="container mt-4">
+                        <form action="#" method="GET" novalidate="novalidate">
+                            <div class="row mt-3">
+                                <div class="col-lg-12 mt-2">
+                                    <div class="row">
+                                        <form action="">
+                                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                                {{ filter.form.id_usuario__fechaEntrega }}
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                                {{ filter.form.id_usuario__telefono_fijo }}
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                                {{ filter.form.id_estado__nombre }}
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                                <button type="submit" style="background-color: #36876a;color: #FFFFFF"  class="btn btn- wrn-btn">Buscar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
                     <tr>
                         <th>Nombre contesta</th>
                         <th>Fecha entrega</th>
@@ -90,16 +91,55 @@
                     {% endif %}
                     </tbody>
                 </table>
-
             </div>
-            <hr>
-            <div class="row justify-content-center h-100"> &nbsp;<button class="btn btn-success" id="button-a">Exportar
-                datos
-            </button>
-            </div>
-
-
         </div>
+
+
+    </div>
+
+    <style>
+        .search-sec {
+            padding: 1rem;
+        }
+
+        .search-slt {
+            display: block;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #55595c;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        .wrn-btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: capitalize;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        @media (min-width: 992px) {
+            .search-sec {
+                position: relative;
+                top: -114px;
+                background: rgba(54, 135, 106, 0.51);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .search-sec {
+                background: #1A4668;
+            }
+        }
+    </style>
+
+
 
     </div>
 
@@ -108,10 +148,11 @@
         <script>
             $(document).ready(function () {
                 $('#table_id').DataTable({
+
                     "scrollX": true,
                     "scrollY": "200px",
                     "scrollCollapse": true,
-                    "paging": false
+                    "paging": false,
                 });
 
 

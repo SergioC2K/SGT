@@ -27,7 +27,7 @@ dias_antes = hoy - datetime.timedelta(days=9)
 horas_antes = hoy - datetime.timedelta(hours=12)
 
 
-@login_required
+
 def upload_excel(request):
     if request.method == 'POST':
         nombre = request.FILES['myfile']
@@ -73,6 +73,7 @@ superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:
 
 
 @method_decorator(superuser_required, name='dispatch')
+
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
@@ -133,7 +134,7 @@ def repartir(request):
 
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
 
-
+@login_required
 def buzon(request):
     return render(request, 'llamada/Buzon.html')
 
