@@ -24,14 +24,9 @@
                                 <span class="">Llamadas</span>
                             </header>
                             <div class="emailapp-emails-list">
-
                                 <div class="nicescroll-bar">
-
-
                                     <div class="media-body">
-
                                         {% for foo in diccionario %}
-
                                             <a onclick="recuperar({{ foo.id_llamada_id }})"
                                                class="media read-email">
                                                 <div class="email-head">
@@ -40,9 +35,7 @@
                                                 <div class="email-hr-wrap">
                                                     <hr>
                                                 </div>
-
                                             </a>
-
                                         {% endfor %}
                                     </div>
                                     </a>
@@ -107,7 +100,7 @@
                                             </div>
                                         </div>
 
-                                        <form method="post" id="registro-llamada" action="/archivo/pruebita/">
+                                        <form method="post" id="registro-llamada" action="{% url 'archivo:buzon' %}">
                                             {% csrf_token %}
                                             <hr>
                                             <h5><i class="fas fa-phone-alt"></i> Llamada</h5>

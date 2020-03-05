@@ -146,7 +146,14 @@
                             <div class="form-row">
                                 <div class="col-md-4 mb-3">
                                     <label for="validationTooltip01">Nombres</label>
-                                    {{ form.first_name }}
+
+
+                                    <input type="text" name="first_name" class="form-control" id="validationTooltip01"
+                                           placeholder="Nombres" required="" onkeypress="return soloLetras(event)" maxlength="50"
+                                           minlength="2">
+                                    <div id="respuesta">
+
+                                    </div>
                                     <div class="valid-tooltip">
                                         Bien hecho!
                                     </div>
@@ -214,6 +221,7 @@
                                 <div class="col-md-3 mb-2 mt-4 ">
                                     <div class="form-group">
                                         <label for="Cargo">Cedula</label>
+
                                         {{ form.cedula }}
                                     </div>
                                 </div>
@@ -249,25 +257,19 @@
 
 
             <script>
-
                 let password = document.getElementById('validationTooltip04');
                 let password_confirmation = document.getElementById('validationTooltip05');
 
-
                 $(document).ready(function () {
                     $('#table_id').DataTable({
-
                         bfilter: false,
                         ordering: true,
                         searching: true,
                         info: false
-
                     });
-
                 });
 
                 function Inhabilitar(id) {
-
                     $.ajax({
                         url: '{% url "usuario:desactivar" %}',
                         data: {
@@ -320,12 +322,14 @@
                 })();
 
                 $(document).ready(function () {
+
                     var $formulario = $('#insert');
                     $formulario.submit(function (event) {
                         event.preventDefault();
                         var $datos = $formulario.serialize();
 
                         $.ajax({
+
                             url: '{% url "usuario:signup"%}',
                             method: "POST",
                             data: $datos,
@@ -403,6 +407,34 @@
                     });
                 })
                 ;
+
+
+                function soloLetras(e) {
+                    key = e.keyCode || e.which;
+                    tecla = String.fromCharCode(key).toLowerCase();
+                    letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
+                    especiales = "8-37-39-46";
+
+                    tecla_especial = false
+                    for (var i in especiales) {
+                        if (key == especiales[i]) {
+                            tecla_especial = true;
+                            break;
+                        }
+                    }
+
+                    if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+                        document.getElementById('respuesta').innerHTML = "Solo se permiten letras";
+                        return false;
+                    } else {
+                        document.getElementById('respuesta').innerHTML = "";
+                    }
+                }
+function cualquiera() {
+    alert("si entra");
+
+}
+
             </script>
         {% endblock %}
     </div>

@@ -1,0 +1,7 @@
+
+{{ form.errors }}
+<form method="post" action="{% url 'archivo:prueba' number=llamada.id_llamada.pk %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">enviar</button>
+</form>

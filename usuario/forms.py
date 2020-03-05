@@ -13,6 +13,7 @@ ASUNTO = 'Usuario Creado'
 MENSAJE = 'Usuario creado correctamente por favor ingrese en el siguiente link'
 EMAIL = settings.EMAIL_HOST_USER
 
+
 class SignupForm(forms.Form):
     """Formulario de Registro de Usuario"""
     CARGOS = (
@@ -23,6 +24,7 @@ class SignupForm(forms.Form):
         label='Usuario',
         min_length=4,
         max_length=50,
+
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'id': 'validationTooltip03',
@@ -47,6 +49,8 @@ class SignupForm(forms.Form):
     password_confirmation = forms.CharField(
         label='Confirmacion de Contraseña',
         max_length=70,
+        min_length=2,
+
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
             'id': 'validationTooltip05',
@@ -59,11 +63,15 @@ class SignupForm(forms.Form):
     first_name = forms.CharField(
         min_length=2,
         max_length=50,
+
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'id': 'validationTooltip01',
+            'name': 'validationTooltip01',
             'placeholder': 'Nombres',
-            'required': True
+            'required': True,
+
+
         }
         )
     )

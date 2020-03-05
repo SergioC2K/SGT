@@ -54,7 +54,7 @@ class RealizarLlamada(forms.Form):
             'id': 'fecha_entrega',
             'name': 'fecha_entrega',
             'width': '250',
-            'placeholder': 'Fecha de Entrega'
+
         })
     )
     observaciones = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
@@ -74,9 +74,9 @@ class RealizarLlamada(forms.Form):
 
     )
     id_grabacion = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'custom-file-input',
-                                                                          'id': 'customFile'})
+                                                                          'id': 'customFile',
+                                                                          'required': False})
                                    )
-    id_llamada = forms.IntegerField()
 
     def clean_fecha_entrega(self):
         """Verificar que la fecha de entrega ingresada sea mayor a la actual"""
@@ -96,26 +96,26 @@ class RealizarLlamada(forms.Form):
 
     def save(self):
         """Crear la llamada realizada por el operador."""
+        data = self.cleaned_data
         if self.files:
-            audio = self.files['id_grabacion']
-            nombre = self.files['id_grabacion'].name
+            audio = data['id_grabacion']
+            nombre = data['id_grabacion'].name
             grabacion = Grabacion(nombre=nombre, audio=audio)
             grabacion.save()
-            llamada = RegistroLlamada.objects.get(id=self.cleaned_data['id_llamada'])
-            llamada.fecha_entrega = self.cleaned_data['fecha_entrega']
-            llamada.observaciones = self.cleaned_data['observaciones']
-            llamada.realizado = self.cleaned_data['realizado']
-            llamada.id_llamada = self.cleaned_data['id_llamada']
-            llamada.id_estado = self.cleaned_data['id_estado']
+            llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
+            llamada.fecha_entrega = data['fecha_entrega']
+            llamada.observaciones = data['observaciones']
+            llamada.realizado = data['realizado']
+            llamada.id_estado = data['id_estado']
             llamada.id_grabacion = grabacion
             llamada.save()
         else:
-            llamada = RegistroLlamada.objects.get(id=self.cleaned_data['id_llamada'])
-            llamada.fecha_entrega = self.cleaned_data['fecha_entrega']
-            llamada.observaciones = self.cleaned_data['observaciones']
-            llamada.realizado = self.cleaned_data['realizado']
-            llamada.id_llamada = self.cleaned_data['id_llamada']
-            llamada.id_estado = self.cleaned_data['id_estado']
+            llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
+            llamada.fecha_entrega = data['fecha_entrega']
+            llamada.observaciones = data['observaciones']
+            llamada.realizado = data['realizado']
+            llamada.id_llamada = data['id_llamada']
+            llamada.id_estado = data['id_estado']
             llamada.save()
 
 

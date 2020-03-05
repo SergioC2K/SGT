@@ -215,28 +215,33 @@ class ListFile(ListView):
 def realizar_llamada(request, number):
     global llamadas, data
     if request.method == 'POST':
-        form = RealizarLlamada(request.POST, request.FILES, request.user, number)
+        llamada = RegistroLlamada.objects.get(id=number)
+        var = request.FILES
+        form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()
             data = {
                 'form': form,
-                'aprobado': 'ok'
+                'aprobado': 'ok',
+                'llamada': llamada,
+                'errores': form.errors
             }
-            return JsonResponse(data, safe=False)
+            return render(request, template_name='oe.html', context=data)
         else:
             data = {
                 'form': form.errors,
-                'No_Aprobado': 'NO'
+                'No_Aprobado': 'NO',
+                'llamada': llamada
             }
-            return JsonResponse(data, safe=False)
+            return render(request, template_name='oe.html', context=data)
     else:
         form = RealizarLlamada()
-        llamadas = get_object_or_404(RegistroLlamada, pk=number)
+        llamada = RegistroLlamada.objects.get(id=number)
         data = {
             'form': form,
-            'llamada': llamadas
+            'llamada': llamada
         }
-    return JsonResponse(data, safe=False)
+    return render(request, template_name='oe.html', context=data)
 
 
 
