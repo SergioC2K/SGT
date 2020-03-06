@@ -149,7 +149,8 @@
 
 
                                     <input type="text" name="first_name" class="form-control" id="validationTooltip01"
-                                           placeholder="Nombres" required="" onkeypress="return soloLetras(event)" maxlength="50"
+                                           placeholder="Nombres" required="" onkeypress="return soloLetras(event)"
+                                           maxlength="50"
                                            minlength="2">
                                     <div id="respuesta">
 
@@ -164,7 +165,13 @@
                                 <div class="col-md-4 mb-3">
                                     <label for="validationTooltip02">Apellidos</label>
                                     {# INPUT #}
-                                    {{ form.last_name }}
+                                    <input type="text" name="last_name" class="form-control" id="validationTooltip02"
+                                           placeholder="Apellidos" required="" onkeypress="return soloLetras(event)"
+                                           maxlength="50"
+                                           minlength="2">
+                                    <div id="respuesta">
+
+                                    </div>
                                     <div class="valid-tooltip">
                                         Bien hecho!
                                     </div>
@@ -424,16 +431,22 @@
                     }
 
                     if (letras.indexOf(tecla) == -1 && !tecla_especial) {
-                        document.getElementById('respuesta').innerHTML = "Solo se permiten letras";
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Solo se permiten letras!',
+
+                        })
                         return false;
                     } else {
                         document.getElementById('respuesta').innerHTML = "";
                     }
                 }
-function cualquiera() {
-    alert("si entra");
 
-}
+                function cualquiera() {
+                    alert("si entra");
+
+                }
 
             </script>
         {% endblock %}
