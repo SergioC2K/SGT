@@ -59,4 +59,9 @@ urlpatterns = [
         view=views.desconectado,
         name='desconexion'
     ),
+    path(
+        route='prueba/<perfil>/',
+        view=views.UpdateProfileView.as_view(),
+        name='desconexion'
+    ),
 ]

@@ -4,6 +4,7 @@
 from django.core.mail import send_mail
 from django import forms
 from SGT import settings
+from django.forms.models import inlineformset_factory
 
 #  Models
 from django.contrib.auth.models import User
@@ -12,6 +13,7 @@ from usuario.models import Perfil, Conectado
 ASUNTO = 'Usuario Creado'
 MENSAJE = 'Usuario creado correctamente por favor ingrese en el siguiente link'
 EMAIL = settings.EMAIL_HOST_USER
+
 
 class SignupForm(forms.Form):
     """Formulario de Registro de Usuario"""
@@ -155,4 +157,10 @@ class PerfilForm(forms.ModelForm):
 
     class Meta:
         model = Perfil
-        exclude = ['usuario', 'conexion', 'cedula']
+        exclude = ('id_usuario',)
+
+
+CollectionTitleFormSet = inlineformset_factory(
+    User, Perfil, form=PerfilForm,
+    fields='__all__', extra=1, can_delete=True
+)

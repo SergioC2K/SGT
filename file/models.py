@@ -52,6 +52,9 @@ class Grabacion(BaseModel, models.Model):
 class Estado(BaseModel, models.Model):
     nombre = models.CharField(max_length=35)
 
+    def __str__(self):
+        return self.nombre
+
 
 class RegistroLlamada(BaseModel, models.Model):
     nombre_contesta = models.CharField(max_length=45, blank=False, null=True)

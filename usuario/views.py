@@ -157,14 +157,19 @@ class ListEstado(ListView):
 
 class UpdateProfileView(UpdateView):
     """Update profile view."""
-    template_name = 'users/perfil.html'
+    template_name = 'prueba2.html'
     model = Perfil
-    form_class = PerfilForm
+    slug_field = 'perfil'
+    query_pk_and_slug = True
+    pk_url_kwarg = 'perfil'
+    slug_url_kwarg = 'perfil'
     success_url = reverse_lazy('usuario:listar_usuario')
+    fields = '__all__'
 
     def get_object(self, **kwargs):
         """Return user's profile."""
-        return self.request.user.perfil
+        consulta = self.queryset
+        return consulta
 
     def get_success_url(self):
         """Return to user's profile."""

@@ -21,10 +21,10 @@ class Perfil(BaseModel, models.Model):
     telefono_regex = RegexValidator(
         regex=r'^[1-9]\d{6,9}$',
         message="El numero de telefono debe tener el siguiente formato 1234567890, "
-                "sin comas ni signos de puntuacion. maximo hasta 10 caracteres. mimnimo 7 caracteres"
+                "sin comas ni signos de puntuacion. maximo hasta 10 caracteres. minimo 7 caracteres"
     )
 
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, related_name='usuario')
     cedula = models.PositiveIntegerField(default='0')
     telefono_fijo = models.CharField(validators=[telefono_regex], max_length=15)
     celular = models.CharField(validators=[telefono_regex],max_length=15)
@@ -41,4 +41,3 @@ class Perfil(BaseModel, models.Model):
     def str(self):
         """Return username"""
         return self.usuario.username
-
