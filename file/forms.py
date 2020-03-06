@@ -97,7 +97,6 @@ class RealizarLlamada(forms.Form):
             llamada.fecha_entrega = self.cleaned_data['fecha_entrega']
             llamada.observaciones = self.cleaned_data['observaciones']
             llamada.realizado = self.cleaned_data['realizado']
-            llamada.id_llamada = self.cleaned_data['id_llamada']
             llamada.id_estado = self.cleaned_data['id_estado']
             llamada.id_grabacion = grabacion
             llamada.save()
