@@ -3,10 +3,11 @@ import datetime
 # Excel
 import pandas as pd
 # Django
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView
 from django.db.models import Q, Count
 from django.db import IntegrityError
@@ -35,41 +36,42 @@ def upload_excel(request):
             crear = Archivo.objects.create(nombre=nombre)
             crear.save()
         except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', context={'errors': e})
-        try:
+            return render(request, 'archivo/fileimport.html', {"message": e})
 
-            for data in leido.T.to_dict().values():
-                llamadas.append(
-                    LlamadasEntrantes(
-                        archivo=crear,
-                        nombre_solicitante=data['Nombre solicitante'],
-                        ident_fiscal=data['Ident.Fiscal Dest Mcia'],
-                        nombre_destinatario=data['Nombre destinatario'],
-                        direccion_des_mcia=data['Dirección Dest Mcia'],
-                        telefono=data['Teléfono 1'],
-                        telebox=data['Telebox'],
-                        zona_transporte=data['Zona de transporte'],
-                        material=data['Material'],
-                        texto_breve_material=data['Texto breve material'],
-                        documento_ventas=data['Documento de ventas'],
-                        entrega=data['Entrega'],
-                        num_pedido_cliente=data['Nº pedido cliente'],
-                        cantidad_pedido=data['Cantidad de pedido'],
-                        observaciones_inicial=data['Observaciones'],
-                        denom_articulos=data['Denom.gr-artículos'],
-                        localidad=data['localidad'],
-                        barrio=data['barrio'],
-                        ruta=data['ruta'],
-                        hora_inicio=data['hora inicial'],
-                        hora_final=data['hora final']
-                    )
+        for data in leido.T.to_dict().values():
+            llamadas.append(
+                LlamadasEntrantes(
+                    id_archivo=Archivo.objects.last(),
+                    nombre_solicitante=data['Nombre solicitante'],
+                    ident_fiscal=data['Ident.Fiscal Dest Mcia'],
+                    nombre_destinatario=data['Nombre destinatario'],
+                    direccion_des_mcia=data['Dirección Dest Mcia'],
+                    telefono=data['Teléfono 1'],
+                    telebox=data['Telebox'],
+                    zona_transporte=data['Zona de transporte'],
+                    material=data['Material'],
+                    texto_breve_material=data['Texto breve material'],
+                    documento_ventas=data['Documento de ventas'],
+                    entrega=data['Entrega'],
+                    num_pedido_cliente=data['Nº pedido cliente'],
+                    cantidad_pedido=data['Cantidad de pedido'],
+                    observaciones_inicial=data['Observaciones'],
+                    denom_articulos=data['Denom.gr-artículos'],
+                    localidad=data['localidad'],
+                    barrio=data['barrio'],
+                    ruta=data['ruta'],
+                    hora_inicio=data['hora inicial'],
+                    hora_final=data['hora final']
                 )
+            )
+        LlamadasEntrantes.objects.bulk_create(llamadas)
+    return render(request, 'archivo/fileimport.html')
 
-            LlamadasEntrantes.objects.bulk_create(llamadas)
-        except FileNotFoundError as e:
-            return render(request, 'archivo/fileimport.html', context={'Error': e})
-        return render(request, 'archivo/fileimport.html')
 
+superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
+
+
+@method_decorator(superuser_required, name='dispatch')
 
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
@@ -131,7 +133,7 @@ def repartir(request):
 
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
 
-
+@method_decorator(superuser_required, name='dispatch')
 class entregar(ListView):
     template_name = 'llamada/entregar.html'
     model = Perfil
@@ -174,6 +176,7 @@ def ver_Llamadas(request):
     return render(request, 'llamada/Buzon.html', context=data)
 
 
+@method_decorator(superuser_required, name='dispatch')
 class archivoLlamadas(ListView):
     model = Archivo
     template_name = 'archivo/eliminar_archivo.html'
@@ -221,7 +224,6 @@ def realizar_llamada(request, number):
     global llamadas, data
     if request.method == 'POST':
         llamada = RegistroLlamada.objects.get(id=number)
-        var = request.FILES
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()
@@ -255,16 +257,18 @@ def pruebas_llamadas(request):
     return render(request, 'prueba.html', {'filter': user_filter})
 
 
+def traer(request):
+    persona = request.GET.get('id', None)
+    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
+    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
+            'telefono': consulta.id_llamada.telefono,
+            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
+            'alm_soli': consulta.id_llamada.nombre_solicitante,
+            'localidad': consulta.id_llamada.localidad}
+    return JsonResponse(data)
+
+
 def search(request):
     user_list = RegistroLlamada.objects.all()
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'llamada/exportar.html', {'filter': user_filter})
-
-
-def llamada_realizada(request):
-    return render(request, 'llamada/llamadas_realizadas.html')
-
-
-def prueba(request):
-    form = RealizarLlamada
-    return render(request, template_name='llamada/prueba.html', context={'form': form})

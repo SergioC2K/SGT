@@ -1,4 +1,4 @@
-"""Formulario Modulo de Llamadas"""
+"""Formulario Modulo de Lmadas"""
 
 # Django
 
@@ -35,9 +35,9 @@ class RealizarLlamada(forms.Form):
         (CLAPLE, 'Cliente aplaza entrega'),
         (CLINOSOL, 'Cliente no sabe de la solicitud'),
         (ALCOMPE, 'Almacen se compromete con entrega'),
-        (CLDES, 'Cliente Desiste de la compra'),
+            (CLDES, 'Cliente Desiste de la compra'),
     ]
-
+# TODO
     nombre_contesta = forms.CharField(
         max_length=45,
         widget=forms.TextInput(attrs={

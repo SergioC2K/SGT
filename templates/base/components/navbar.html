@@ -136,7 +136,7 @@
                             {% if user.perfil.foto %}
 
 
-                                <img src="{{ user.perfil.foto }}" alt="user"
+                                <img src="{{ user.perfil.foto.url }}" alt="user"
                                      class="avatar-img rounded-circle">
                             {% else %}
                                 <img src="{% static 'dist/img/avatar1.jpg' %}" alt="user"
