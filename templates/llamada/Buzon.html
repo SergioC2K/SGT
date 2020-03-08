@@ -9,7 +9,9 @@
         <script src="{% static 'dist/gijgo/js/gijgo.min.js' %}"></script>
     </head>
 {% endblock %}
+
 {% block main %}
+
     <!-- Container -->
     <div class="container-fluid">
         <!-- Row -->
@@ -21,29 +23,39 @@
 
                         <div class="emailapp-left">
                             <header>
-                                <span class="">Llamadas</span>
+                                <span class=""><i class="fas fa-mobile"></i> Llamadas</span>
+
                             </header>
-                            <div class="emailapp-emails-list">
 
+                            <div class="emailapp-emails-list" id="scroll">
                                 <div class="nicescroll-bar">
-
-
                                     <div class="media-body">
-
-                                        {% for foo in diccionario %}
-
-                                            <a onclick="recuperar({{ foo.id_llamada_id }})"
-                                               class="media read-email">
+                                        {% if diccionario %}
+                                            {% for foo in diccionario %}
                                                 <div class="email-head">
-                                                    {{ foo.id_llamada.nombre_destinatario }}
+                                                    <a onclick="recuperar({{ foo.id_llamada_id }})"
+                                                       class="media read-email btn btn-block" data-toggle="tooltip"
+                                                       data-placement="top"
+                                                       title="{{ foo.id_llamada.texto_breve_material }}">
+                                                        <div class="email-subject">
+                                                            <div data-offset="0">
+                                                                <div class="email-head">{{ foo.id_llamada.nombre_destinatario }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
                                                 </div>
-                                                <div class="email-hr-wrap">
-                                                    <hr>
+                                                <hr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="row justify-content-center">
+                                                <div class="alert alert-info mt-3" role="alert">
+                                                    <span class="glyphicon glyphicon-info-sign"></span> No tienes
+                                                    Llamadas pendientes!
                                                 </div>
 
-                                            </a>
-
-                                        {% endfor %}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     </a>
                                 </div>
@@ -51,156 +63,187 @@
                         </div>
                         <div class="emailapp-right">
                             <header>
-
-                                <div class="email-options-wrap">
-
+                                <div class="email-options">
+                                    <i class="fas fa-clipboard-list"></i> Datos de llamada
+                                </div>
+                                <div class="row justify-content-around">
+                                    <button type="submit" class="btn"
+                                            style="background-color:#36876a;color: white">
+                                        Terminar llamada
+                                    </button>&nbsp;
                                 </div>
                             </header>
-                            <div class="email-body">
-                                <div class="nicescroll-bar">
-                                    <div class="modal-body">
+                            <div class="emailapp-emails-list">
 
-
-                                        <div class="card-body ">
-                                            <div class="form-row">
-                                                <div class="form-group ">
-                                                    <strong>Nombre almacen</strong>
-                                                    <input type="text" class="form-control" readonly
-                                                           onmousedown="return false" id="alm_soli"
-                                                           name="alm_soli">
-                                                </div>&nbsp;&nbsp;&nbsp;
-                                                <div class="form-group">
-                                                    <strong>Nombre cliente</strong>
-                                                    <input type="text" class="form-control" readonly
-                                                           onmousedown="return false" id="nombre_solicitante"
-                                                           name="nombre_solicitante"
-                                                    >
-                                                </div>
-                                                &nbsp;&nbsp;&nbsp;
-                                                <div class="form-group">
-                                                    <strong>Telefono</strong>
-                                                    <input type="text" class="form-control" id="telefono"
-                                                           readonly onmousedown="return false" name="telefono">
-                                                </div>
-
-                                                &nbsp;&nbsp;&nbsp;
-                                                <div class="form-group">
-                                                    <strong>Direccion</strong>
-                                                    <input type="text" class="form-control" id="direccion_des_mcia"
-                                                           readonly onmousedown="return false"
-                                                           name="direccion_des_mcia">
-                                                </div>
-                                                &nbsp;&nbsp;&nbsp;
-                                                <div class="form-group">
-                                                    <strong>Ruta</strong>
-                                                    <input type="text" class="form-control" id="ruta" name="ruta"
-                                                           readonly onmousedown="return false"
-                                                    >
-                                                </div>
-                                                &nbsp;&nbsp;&nbsp;
-                                                <div class="form-group">
-                                                    <strong>localidad</strong>
-                                                    <input type="text" class="form-control" id="localidad"
-                                                           readonly onmousedown="return false" name="localidad"
-                                                           value="{{ call.localidad }}">
-                                                </div>
+                                <div class="container mt-3">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <div class="form-group ">
+                                                <strong>Nombre almacen</strong>
+                                                <input type="text" class="form-control" readonly
+                                                       onmousedown="return false" id="alm_soli"
+                                                       name="alm_soli">
+                                            </div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="form-group">
+                                                <strong>Telefono</strong>
+                                                <input type="text" class="form-control" id="telefono"
+                                                       readonly onmousedown="return false" name="telefono">
                                             </div>
                                         </div>
 
-                                        <form method="post">
-                                            <hr>
 
-                                            <h5><i class="fas fa-phone-alt"></i> Llamada</h5>
-                                            <div class="card-body">
+                                        <div class="col-7">
+                                            <div class="form-group">
+                                                <strong>Nombre cliente</strong>
+                                                <input type="text" class="form-control" readonly
+                                                       onmousedown="return false" id="nombre_solicitante"
+                                                       name="nombre_solicitante">
+                                            </div>
+                                        </div>
 
-                                                <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <strong>Localidad</strong>
+                                                <input type="text" class="form-control" id="localidad"
+                                                       readonly onmousedown="return false" name="localidad"
+                                                       value="{{ call.localidad }}">
+                                            </div>
+                                        </div>
 
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <div class="form-group">
+                                                <strong>Direccion</strong>
+                                                <input type="text" class="form-control" id="direccion_des_mcia"
+                                                       readonly onmousedown="return false"
+                                                       name="direccion_des_mcia">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <strong>Ruta</strong>
+                                                <input type="text" class="form-control" id="ruta" name="ruta"
+                                                       readonly onmousedown="return false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form>
+                                    <header>
+                                        <div class="email-options">
+                                            <i class="fas fa-phone-alt"></i> Llamada
+                                        </div>
+                                    </header>
+                                    <div class="card-body">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-sm-8">
                                                     <div class="form-group ">
                                                         <strong>Nombre contesta</strong>
                                                         <input type="text" class="form-control" id="nombre_contesta"
                                                                name="nombre_contesta">
-                                                    </div>&nbsp;&nbsp;&nbsp;
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 mt-4">
+                                                    <label class="custom-file-label pointer-event" for="customFile"><i
+                                                            class="fas fa-microphone-alt"></i>
+                                                        MP3
+                                                    </label>
+                                                    <input type="file" class="custom-file-input "
+                                                           id="customFile">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm">
                                                     <div class="form-group">
-                                                        <strong>Resultado de llamada</strong>
+                                                        <strong>Resultado</strong>
 
                                                         <select id="resultado_llamada" name="resultado_llamada"
                                                                 class="form-control">
-                                                            <option selected value="">Seleccionar</option>
-                                                            {% for i in estados %}
-                                                                <option value="{{ i.pk }}">{{ i.nombre }}</option>
-                                                            {% endfor %}
+                                                            <option selected value="">---</option>
+                                                            <option value="IE">Informacion de entrega</option>
+                                                            <option value="NC">No contesta</option>
+                                                            <option value="CA">Cliente aplaza</option>
+                                                            <option value="FR">Fuera de ruta</option>
                                                         </select>
-                                                    </div>&nbsp;&nbsp;&nbsp;
-                                                    <div class="form-group">
-
-
-                                                        <strong>Fecha de entrega</strong>
-                                                        <input id="fecha_entrega" name="fecha_entrega" width="250"/>
-
-
                                                     </div>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <strong>Fecha de entrega</strong>
+                                                    <input id="fecha_entrega" name="fecha_entrega" width="250"
+                                                           readonly/>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-primary mt-4"
+                                                            data-toggle="modal"
+                                                            data-target="#exampleModal">
+                                                        Observaciones
+                                                    </button>
 
-                                                    <div class="container">
-
-                                                        <div class="form-group">
-                                                            <label for="exampleFormControlTextarea1">
-                                                                Observaciones</label>
-                                                            <textarea class="form-control"
-                                                                      id="observaciones"
-                                                                      rows="2"></textarea>
-
-                                                        </div>
-                                                        <div class="col-6 col-md-4  ">
-                                                            <input type="file" class="custom-file-input "
-                                                                   id="customFile">
-                                                            <label class="custom-file-label" for="customFile"><i
-                                                                    class="fas fa-microphone-alt"></i>
-                                                                Seleccionar</label>
-
-                                                        </div>
-                                                        <div class="row justify-content-around">
-                                                            <button type="submit" class="btn"
-                                                                    style="background-color:#36876a;color: white">
-                                                                Terminar llamada
-                                                            </button>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                         role="dialog" aria-labelledby="exampleModalLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">
+                                                                        <strong>Observaciones</strong></h5>
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                  <textarea class="form-control"
+                                                                            id="observaciones"
+                                                                            rows="5"></textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">x
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-"
+                                                                            style="background-color: #36876a;color: #fff1f1"><span
+                                                                            class="glyphicon glyphicon-ok"></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <br>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Compose email -->
-                <div class="modal fade" id="exampleModalEmail" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalEmail" aria-hidden="true"
-                     style="box-shadow: inset 0 0 20px #36876a">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header bg-dark">
-                                <h6 class="modal-title text-white" id="exampleModalPopoversLabel"><i
-                                        class="far fa-address-book"></i> Informacion del
-                                    cliente</h6>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+    <!--Scroll-->
+    <style>
+        #scroll {
+            border: 1px solid;
+            height: 600px;
+
+            overflow-y: scroll;
+            overflow-x: hidden;
+    </style>
+
     {% block Javascript %}
         <script>
             $('#fecha_entrega').datepicker({
-                uiLibrary: 'bootstrap4'
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-dd-mm',
             });
 
             function recuperar(id) {
@@ -212,21 +255,24 @@
                     datatype: 'json',
                     success: function (data) {
                         if (data) {
-                            traiga(data);
+                            traiga(data, id);
                         } else
                             alert('asdasdasd');
                     }
                 })
             }
 
-            function traiga(user) {
+            var dire = document.getElementById("registro-llamada").action;
+
+            function traiga(user, id) {
                 $("#nombre_solicitante").val(user.nombre);
                 $("#ruta").val(user.ruta);
                 $("#telefono").val(user.telefono);
                 $("#direccion_des_mcia").val(user.direccion_des_mcia);
                 $("#alm_soli").val(user.alm_soli);
                 $("#localidad").val(user.localidad);
-
+                var direccion = dire + id + "/";
+                document.getElementById("registro-llamada").action = direccion;
             }
         </script>
     {% endblock %}

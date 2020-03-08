@@ -6,9 +6,10 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.core import serializers
+from django.utils.decorators import method_decorator
 
 # CB Views
-from django.views.generic import ListView, UpdateView, FormView
+from django.views.generic import ListView, UpdateView, FormView, View
 
 # Models
 from django.contrib.auth.models import User
@@ -88,7 +89,7 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-superuser_required = user_passes_test(lambda u: u.is_staff, login_url='usuario:perfil')
+superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
 
 class ListarUsuario(ListView, FormView):
@@ -175,3 +176,36 @@ class UpdateProfileView(UpdateView):
         """Return to user's profile."""
         username = self.object.usuario.username
         return reverse('usuario:listar_usuario')
+
+
+class actualizarUsu(View):
+    def get(self, request):
+        id1 = request.GET.get('id', None)
+        nombre1 = request.GET.get('nombre', None)
+        apellido1 = request.GET.get('apellido', None)
+        cedula1 = request.GET.get('cedula', None)
+        telemercadeo = request.GET.get('tele', None)
+        telefono1 = request.GET.get('telefono', None)
+
+        obj = User.objects.get(id=id1)
+        obj.first_name = nombre1
+        obj.last_name = apellido1
+        obj.save()
+
+        perfil = Perfil.objects.get(pk=id1)
+        perfil.cedula = cedula1
+        perfil.celular_telemercadeo = telemercadeo
+        perfil.telefono_fijo = telefono1
+        perfil.save()
+
+        user = {
+            'id': obj.id, 'nombre': obj.first_name, 'apellido': obj.last_name,
+            'cedula': perfil.cedula, 'telefono': perfil.telefono_fijo,
+            'tele': perfil.celular_telemercadeo
+        }
+
+        data = {
+            'user': user
+        }
+
+        return JsonResponse(data=data)

@@ -64,14 +64,19 @@ urlpatterns = [
         name='eliminar'
     ),
     path(
-        route='borrar',
-        view=views.eliminarArchivo,
-        name='delete'
+      route='borrar',
+      view=views.eliminarArchivo,
+      name='exterminar'
     ),
     path(
         route='traer',
         view=views.traer,
         name='traer'
+    ),
+    path(
+        route='ListFile',
+        view=views.search,
+        name='ListFile'
     ),
     path(
         route='verllamadas',

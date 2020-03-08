@@ -28,24 +28,29 @@
                                     <form name="formulario" id="formulario" method="post"
                                           action="{% url 'archivo:enviarLlamada' %}">
 
-                                        <div class="">
+                                        <div class="col-md-9 mt-2">
                                             {% csrf_token %}
                                             {% for operador in operadores %}
 
                                                 <div class="form-group">
+                                                    <label class="form-group">{{ operador.usuario }}</label>
                                                     <input value="{{ operador.pk }}" name="usuario[]"
                                                            id="usuario" class="form-control col-xl-9">
+
                                                 </div>
                                                 <div class="form-group">
                                                     <input name="valor[]" class="form-control col-xl-3" id="valor">
                                                 </div>
                                             {% endfor %}
+
                                             {{ operadores|length }}
 
 
-                                            <button type="submit" class="btn" style="background-color:#36876a">
+                                            <button type="submit" class="btn"
+                                                    style="background-color:#36876a;color: #fff1f1">
                                                 enviar
                                             </button>
+
                                         </div>
                                     </form>
                                     </div>

@@ -19,101 +19,66 @@
 
         <div class="card">
             <h4 class="hk-pg-title mt-2">
-                &nbsp; <i class="fas fa-poll"></i> Resultados</i><a id="emailapp_sidebar_move"
-                                                                    class="fas fa-bars mb-3 mb-md-0 emailapp-sidebar-move email-box float-right">&nbsp;&nbsp;
-            </a>
+                &nbsp; <i class="fas fa-poll"></i> Resultados</i>
+
+                <div class="row mb-4 mb-md-0 float-right"> &nbsp;<button
+                        class="btn btn-success" id="button-a">
+                    Exportar
+                    datos
+                </button>&nbsp;&nbsp;&nbsp;
 
 
             </h4>
-            <div class="emailapp-wrap">
-                <div class="emailapp-sidebar">
-                    <div class="nicescroll-bar">
-                        <div class="emailapp-nav-wrap">
-                            <a id="close_emailapp_sidebar" href="javascript:void(0)" class="close-emailapp-sidebar">
-                                <span class="feather-icon"><i data-feather="chevron-left"></i></span>
-                            </a>
-                            <ul class="nav flex-column mail-category">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Inbox<span
-                                            class="badge badge-primary">50</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Sent mail</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Important</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Draft<span
-                                            class="badge badge-secondary">5</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Trash</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);">Chat</a>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-pink btn-block mt-20 mb-20" data-toggle="modal"
-                                    data-target="#exampleModalEmail">
-                                Compose email
-                            </button>
-                            <ul class="nav flex-column mail-labels">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);"><span
-                                            class="badge badge-primary badge-indicator"></span>clients</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);"><span
-                                            class="badge badge-danger badge-indicator"></span>personal</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);"><span
-                                            class="badge badge-warning badge-indicator"></span>office</a>
-                                </li>
-                            </ul>
-                            <hr>
-                            <ul class="nav flex-column mail-settings">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:void(0);"><i
-                                            class="zmdi zmdi-settings"></i>settings</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
 
-
-            </div>
-            <hr>
 
             <div class="container">
-
-                <form method="get">
-                    {{ filter.form.as_p }}
-                    <button type="submit">Buscar</button>
-                </form>
-
                 <table id="table_id">
                     <thead>
-                    <tr>
-                        <th>Nombre contesta</th>
-                        <th>Fecha entrega</th>
-                        <th>Observacion</th>
-                    </tr>
+                    <div class="container mt-4">
+                        <div class="container mt-4">
+
+                            <div class="row mt-3">
+                                <div class="col-lg-12 mt-2">
+                                    <div class="row">
+                                        <form method="get">
+                                            <div class="col-lg-3 col-md-1 col-sm-12 p-0">
+                                                {{ filter.form.as_p }}
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                                <button type="submit"
+                                                        style="background-color: #36876a;color: #FFFFFF"
+                                                        class="btn btn- wrn-btn">Buscar
+                                                </button>
+                                            </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+
+                        <tr>
+                            <th>Nombre contesta</th>
+                            <th>Fecha entrega</th>
+                            <th>Observacion</th>
+                            <th>Usuario</th>
+                            <th>Estado</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {% if filter.qs %}
                         {% for user in filter.qs %}
                             <tr>
                                 <td>{% for n in user.nombre_contesta %}
-                                    {{n}}
+                                    {{ n }}
                                 {% empty %}
                                     <em class="text-muted">No hay datos</em>
                                 {% endfor %}
                                 </td>
                                 <td>{{ user.fecha_entrega }} </td>
                                 <td>{{ user.observaciones }} </td>
+                                <td>{{ user.id_usuario.usuario.first_name }} </td>
+                                <td>{{ user.id_estado.nombre }} </td>
                             </tr>
                         {% endfor %}
                     {% else %}
@@ -123,17 +88,56 @@
                 </table>
 
             </div>
-            <hr>
-            <div class="row justify-content-center h-100"> &nbsp;<button class="btn btn-success" id="button-a">Exportar
-                datos
-            </button>
-            </div>
-
-
         </div>
+
 
     </div>
 
+    <style>
+        .search-sec {
+            padding: 1rem;
+        }
+
+        .search-slt {
+            display: block;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #55595c;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        .wrn-btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: capitalize;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        @media (min-width: 992px) {
+            .search-sec {
+                position: relative;
+                top: -114px;
+                background: rgba(54, 135, 106, 0.51);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .search-sec {
+                background: #1A4668;
+            }
+        }
+    </style>
+
+
+
+    </div>
 
     {% block javascript %}
         <script>

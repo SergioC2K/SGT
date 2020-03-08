@@ -4,7 +4,7 @@
                         <a href="#" class="dropdown-toggle dropdown-item no-caret"><i
                                 class="zmdi zmdi-check text-success"></i>Conectado</a>
                         <div class="dropdown-menu open-left-side">
-                            <a id="btn-conexion" class="dropdown-item" href="#">
+                            <a id="btn-conexion" class="dropdown-item" onclick="no_conexionsoski()">
                                 <i class="dropdown-icon zmdi zmdi-minus-circle-outline text-danger"></i>
                                 <span>No Conectado</span></a>
                             <input id="estado-a-cambiar" type="hidden" value="False">
@@ -17,33 +17,28 @@
                             <a href="#" class="dropdown-toggle dropdown-item no-caret"><i
                                     class="zmdi zmdi-check text-danger"></i>No Conectado</a>
                             <div class="dropdown-menu open-left-side">
-                                <a id="btn-conexion" class="dropdown-item" href="#"><i
+                                <a id="btn-conexion" class="dropdown-item" onclick="conexionsoski()"><i
                                         class="dropdown-icon zmdi zmdi-check text-success"></i><span>Conectado</span></a>
                                 <input id="estado-a-cambiar" type="hidden" value="True">
                             </div>
                         </div>`
     }
 
-    $('#no-conectado').on('click', '#btn-conexion', function () {
-        //var name = $('#name-student').val();
-
+    function conexionsoski() {
+        console.log("oelo");
         $.get('{% url "usuario:conexion" %}', function (data) {
-            console.log(1)
             document.getElementById("punt").className = "badge badge-success badge-indicator";
             document.getElementById("conexionsita").innerHTML = conectado();
-            document.getElementById("no-conectado").id = "conectado";
         });
-    });
+    }
 
-
-    $('#conectado').on('click', '#btn-conexion', function () {
+    function no_conexionsoski() {
+        console.log("oelo");
         $.get('{% url "usuario:desconexion" %}', function (data) {
-            console.log(1)
             document.getElementById("punt").className = "badge badge-danger badge-indicator";
             document.getElementById("conexionsita").innerHTML = no_conectado();
-            document.getElementById("conectado").id = "no-conectado";
         });
-    });
+    }
 
 
 </script>

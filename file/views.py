@@ -3,10 +3,11 @@ import datetime
 # Excel
 import pandas as pd
 # Django
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView
 from django.db.models import Q, Count
 from django.db import IntegrityError
@@ -67,6 +68,11 @@ def upload_excel(request):
     return render(request, 'archivo/fileimport.html')
 
 
+superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
+
+
+@method_decorator(superuser_required, name='dispatch')
+
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
@@ -120,14 +126,14 @@ def repartir(request):
     archivo = Archivo.objects.last()
 
     #  Se consultan las ultimas llamadas ingresadas de acuerdo a el archivo
-    llamadas = LlamadasEntrantes.objects.filter(id_archivo=archivo).exclude(estado=True)
+    llamadas = LlamadasEntrantes.objects.filter(archivo=archivo).exclude(estado=True)
     if operadores and llamadas:
         contexto = {'operadores': operadores, 'llamadas': llamadas}
         return render(request, 'archivo/repartir.html', contexto)
 
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
 
-
+@method_decorator(superuser_required, name='dispatch')
 class entregar(ListView):
     template_name = 'llamada/entregar.html'
     model = Perfil
@@ -170,6 +176,7 @@ def ver_Llamadas(request):
     return render(request, 'llamada/Buzon.html', context=data)
 
 
+@method_decorator(superuser_required, name='dispatch')
 class archivoLlamadas(ListView):
     model = Archivo
     template_name = 'archivo/eliminar_archivo.html'
@@ -177,12 +184,11 @@ class archivoLlamadas(ListView):
 
 def eliminarArchivo(request):
     archivo = request.GET.get('id', None)
-    consulta = LlamadasEntrantes.objects.filter(id_archivo_id=archivo)
+    consulta = LlamadasEntrantes.objects.filter(archivo=archivo)
     auxiliar = 0
     for i in consulta:
         if i.estado:
             auxiliar = auxiliar + 1
-
     if auxiliar == 0:
         Archivo.objects.get(id=archivo).delete()
         data = {
@@ -192,7 +198,6 @@ def eliminarArchivo(request):
         data = {
             'deleted': False
         }
-
     return JsonResponse(data)
 
 
@@ -216,27 +221,54 @@ class ListFile(ListView):
 
 
 def realizar_llamada(request, number):
-    global llamadas
+    global llamadas, data
     if request.method == 'POST':
+        llamada = RegistroLlamada.objects.get(id=number)
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()
+            data = {
+                'form': form,
+                'aprobado': 'ok',
+                'llamada': llamada,
+                'errores': form.errors
+            }
+            return render(request, template_name='oe.html', context=data)
         else:
-            return render(request=request, template_name='llamada/Buzon.html', context={'form': form,
-                                                                                 })
+            data = {
+                'form': form.errors,
+                'No_Aprobado': 'NO',
+                'llamada': llamada
+            }
+            return render(request, template_name='oe.html', context=data)
     else:
         form = RealizarLlamada()
-        llamadas = get_object_or_404(RegistroLlamada, pk=number)
-
-    return render(
-        request=request,
-        template_name='llamada/buzon.html',
-        context={'form': form,
-                 'llamadas': llamadas}
-    )
+        llamada = RegistroLlamada.objects.get(id=number)
+        data = {
+            'form': form,
+            'llamada': llamada
+        }
+    return render(request, template_name='oe.html', context=data)
 
 
 def pruebas_llamadas(request):
     user_list = RegistroLlamada.objects.all()
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'prueba.html', {'filter': user_filter})
+
+
+def traer(request):
+    persona = request.GET.get('id', None)
+    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
+    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
+            'telefono': consulta.id_llamada.telefono,
+            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
+            'alm_soli': consulta.id_llamada.nombre_solicitante,
+            'localidad': consulta.id_llamada.localidad}
+    return JsonResponse(data)
+
+
+def search(request):
+    user_list = RegistroLlamada.objects.all()
+    user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
+    return render(request, 'llamada/exportar.html', {'filter': user_filter})

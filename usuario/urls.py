@@ -12,8 +12,10 @@ urlpatterns = [
     ),
     path(
         route='cambio-contrasena/',
-        view=auth_views.PasswordChangeView.as_view(
-            template_name='users/nuevaContrasena.html'),
+        view=auth_views.
+            PasswordChangeView.as_view(
+            template_name='users/nuevaContrasena.html'
+        ),
         name='cambio'
     ),
     path(
@@ -58,8 +60,8 @@ urlpatterns = [
         name='desconexion'
     ),
     path(
-        route='prueba/<perfil>/',
-        view=views.UpdateProfileView.as_view(),
-        name='desconexion'
+        route='actualizar',
+        view=views.actualizarUsu.as_view(),
+        name='actualizar'
     ),
 ]

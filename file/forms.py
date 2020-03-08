@@ -1,10 +1,11 @@
-"""Formulario Modulo de Llamadas"""
+"""Formulario Modulo de Lmadas"""
 
 # Django
 
 from django import forms
 # Date
-import datetime
+from datetime import datetime
+import datetime as fechas
 
 # Django
 
@@ -34,15 +35,15 @@ class RealizarLlamada(forms.Form):
         (CLAPLE, 'Cliente aplaza entrega'),
         (CLINOSOL, 'Cliente no sabe de la solicitud'),
         (ALCOMPE, 'Almacen se compromete con entrega'),
-        (CLDES, 'Cliente Desiste de la compra'),
+            (CLDES, 'Cliente Desiste de la compra'),
     ]
-
+# TODO
     nombre_contesta = forms.CharField(
         max_length=45,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'id': 'alm_soli',
-            'name': 'alm_soli',
+            'id': 'nombre_contesta',
+            'name': 'nombre_contesta',
             'placeholder': 'Nombre Contesta'
         })
     )
@@ -51,11 +52,16 @@ class RealizarLlamada(forms.Form):
         min_length=10,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'id': 'datepicker',
-            'placeholder': 'Fecha de Entrega'
+            'id': 'fecha_entrega',
+            'name': 'fecha_entrega',
+            'width': '250',
         })
     )
-    observaciones = forms.CharField(widget=forms.Textarea)
+    observaciones = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
+                                                                 'id': 'observaciones',
+                                                                 'rows': '2'
+                                                                 })
+                                    )
     realizado = forms.BooleanField(initial=True, widget=forms.HiddenInput())
     id_estado = forms.ChoiceField(
         choices=ESTADOS,
@@ -67,16 +73,24 @@ class RealizarLlamada(forms.Form):
         })
 
     )
-    id_grabacion = forms.FileField()
-    id_llamada = forms.IntegerField()
+    id_grabacion = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'custom-file-input',
+                                                                          'id': 'customFile',
+                                                                          'required': False})
+                                   )
+    id_llamada = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'id_llamada',
+        'name': 'id_llamada',
+
+    }))
 
     def clean_fecha_entrega(self):
         """Verificar que la fecha de entrega ingresada sea mayor a la actual"""
         try:
             fecha = self.cleaned_data['fecha_entrega']
-            fechita = datetime.datetime.strptime(fecha, "%m/%d/%Y").date()
-            ya = datetime.date.today()
-            if fechita > ya:
+            ya = fechas.date.today()
+            oelo = datetime.strptime(fecha, '%Y-%m-%d').date()
+            if oelo > ya:
                 return fecha
         except ValidationError as e:
             raise forms.ValidationError('Ingrese una fecha correcta!' % e)
@@ -88,22 +102,32 @@ class RealizarLlamada(forms.Form):
 
     def save(self):
         """Crear la llamada realizada por el operador."""
+        data = self.cleaned_data
         if self.files:
-            audio = self.files['id_grabacion']
-            nombre = self.files['id_grabacion'].name
+            audio = data['id_grabacion']
+            nombre = data['id_grabacion'].name
             grabacion = Grabacion(nombre=nombre, audio=audio)
             grabacion.save()
-            llamada = RegistroLlamada.objects.get(id=self.cleaned_data['id_llamada'])
-            llamada.fecha_entrega = self.cleaned_data['fecha_entrega']
-            llamada.observaciones = self.cleaned_data['observaciones']
-            llamada.realizado = self.cleaned_data['realizado']
-            llamada.id_estado = self.cleaned_data['id_estado']
+            llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
+            alomama = llamada.fecha_entrega
+            llamada.fecha_entrega = data['fecha_entrega']
+            llamada.observaciones = data['observaciones']
+            llamada.realizado = data['realizado']
+            estado = Estado.objects.get(id=data['id_estado'])
+            llamada.id_estado = estado
             llamada.id_grabacion = grabacion
             llamada.save()
+            oelo = 1
         else:
-            llamada = RegistroLlamada.objects.get(id=self.cleaned_data['id_llamada'])
-            llamada.fecha_entrega = self.cleaned_data['fecha_entrega']
-            llamada.observaciones = self.cleaned_data['observaciones']
-            llamada.realizado = self.cleaned_data['realizado']
-            llamada.id_estado = self.cleaned_data['id_estado']
+            llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
+            llamada.fecha_entrega = data['fecha_entrega']
+            llamada.observaciones = data['observaciones']
+            llamada.realizado = data['realizado']
+            llamada.id_estado = data['id_estado']
             llamada.save()
+
+
+class LlamadaModelo(forms.ModelForm):
+    class Meta:
+        model = RegistroLlamada
+        fields = '__all__'

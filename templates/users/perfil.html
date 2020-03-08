@@ -6,7 +6,7 @@
     <title>{{ user }}</title>
     <link rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}">
 </head>
-
+<body>
 {% block form %}
     {% if request.user.is_anonymous %}
         <a class="btn btn-success mt-2" href="{% url 'usuario:login' %}"><i class="fas fa-arrow-left"></i></a>
@@ -20,7 +20,8 @@
                 <h5 class="card-title"><i class="fa fa-user"></i> Complete los siguientes campos para continuar
                 </h5>
                 <hr>
-                <form method="POST" action="{% url 'usuario:perfil' %}" name="perfilform" id="perfilform">
+                <form method="POST" action="{% url 'usuario:perfil' %}" name="perfilform" id="perfilform"
+                      enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="media">
                         <div class="media-body">
@@ -28,9 +29,16 @@
                                 <div class="form-group" id="const">
 
 
-                                    <img src="{% static 'dist/img/avatar1.jpg' %}"
-                                         class="rounded-circle" width="130px" height="130px"/>
-                                    <input type="file" name="picture" id="picture">
+                                    {% if perfil.foto %}
+                                        <img src="{{ perfil.foto.url }}"
+                                             class="rounded-circle" width="130px" height="130px"/>
+                                    {% else %}
+                                        <img src="{% static 'dist/img/avatar1.jpg' %}"
+                                             class="rounded-circle" width="130px" height="130px"/>
+                                    {% endif %}
+
+
+                                    <input type="file" value="{{ perfil.foto }}" name="foto" id="foto">
                                 </div>
 
                                 <div class="row">
@@ -131,20 +139,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer justify-content-center">
+                            <div class="card-footer justify-content-center">
                                 <br>
                                 <img src="{% static 'dist/img/LogoSGT.png' %}" height="80" class="fixed-bottom">
                                 <button type="submit" class="btn btn-success">Guardar cambios</button>
                                 <a class="btn btn-dark" href="{% url 'usuario:cambio' %}">Cambiar contraseña</a>
+                                <span style="color: gray;font-size: 13px">Ultima modificacion {{ perfil.modified }}</span>
                             </div>
+
                         </div>
+
                     </div>
                 </form>
             </div>
+
         </div>
     </div>
-{% endblock %}
 
+{% endblock %}
+</body>
 {% block javascript %}
 
     <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
@@ -186,7 +199,7 @@
 
 
         setInputFilter(document.getElementById("telefono_fijo"), function (value) {
-            return /^-?\d*$/.test(value);
+            return /^-?\d*[.,]?\d*$/.test(value);
         });
         setInputFilter(document.getElementById("cedula"), function (value) {
             return /^-?\d*[.,]?\d*$/.test(value);

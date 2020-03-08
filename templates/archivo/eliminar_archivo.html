@@ -40,32 +40,41 @@
 
         <script>
             function eliminar(id) {
-                var action = confirm("Are you sure you want to delete this user?");
-                if (action !== false) {
-                    $.ajax({
-                        url: '{% url "archivo:delete" %}',
-                        data: {
-                            'id': id,
-                        },
-                        dataType: 'json',
-                        success: function (data) {
-                            if (data.deleted) {
-                                $("#Tablet #archivo-" + id).remove();
-                                bueni();
+                Swal.fire({
+                    title: 'Desea eliminar el archivo?',
+                    text: "Verifique las llamadas realizadas!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#36876a',
+                    cancelButtonColor: '#409ec1',
+                    confirmButtonText: ' Eliminar!'
+                }).then(function (result) {
+                    if (result != false) {
+                        $.ajax({
+                            url: '{% url "archivo:delete" %}',
+                            data: {
+                                'id': id,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.deleted) {
+                                    $("#Tablet #archivo-" + id).remove();
+                                    bueni();
+                                }
+                                if (!data.deleted) {
+                                    mensaje();
+                                }
                             }
-                            if (!data.deleted) {
-                                mensaje();
-                            }
-                        }
-                    });
-                }
+                        });
+                    }
+                })
             }
 
             function mensaje() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'No se elimino el archivo!',
+                    text: '{{ errors }}!',
 
                 })
             }

@@ -4,8 +4,7 @@
 from django.core.mail import send_mail
 from django import forms
 from SGT import settings
-from django.forms.models import inlineformset_factory
-
+from django.urls import reverse
 #  Models
 from django.contrib.auth.models import User
 from usuario.models import Perfil, Conectado
@@ -49,6 +48,7 @@ class SignupForm(forms.Form):
     password_confirmation = forms.CharField(
         label='Confirmacion de Contraseña',
         max_length=70,
+        min_length=2,
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
             'id': 'validationTooltip05',
@@ -64,6 +64,7 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'id': 'validationTooltip01',
+            'name': 'validationTooltip01',
             'placeholder': 'Nombres',
             'required': True
         }
@@ -152,15 +153,15 @@ class SignupForm(forms.Form):
         send_mail(ASUNTO, MENSAJE, EMAIL, [self.cleaned_data['email']], fail_silently=False)
 
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'username']
+
+
 class PerfilForm(forms.ModelForm):
     """Formulario de Perfil"""
 
     class Meta:
         model = Perfil
-        exclude = ('id_usuario',)
-
-
-CollectionTitleFormSet = inlineformset_factory(
-    User, Perfil, form=PerfilForm,
-    fields='__all__', extra=1, can_delete=True
-)
+        exclude = ['usuario', 'conexion']

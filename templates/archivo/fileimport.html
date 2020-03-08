@@ -8,8 +8,6 @@
 
 
 {% block main %}
-
-
     <div class="container mt-4">
         <div class="hk-pg-header">
             <h4 class="hk-pg-title">
@@ -31,7 +29,7 @@
                                            accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
                                 </div>
                                 <button class="btn btn"
-                                        style="background-color: #36876a; color: #fff1f1"  id="btn" type="submit">Enviar
+                                        style="background-color: #36876a; color: #fff1f1" id="btn" type="submit">Enviar
                                 </button>
                             </form>
                         </div>
@@ -45,7 +43,7 @@
                 </div>
             {% endif %}
         </div>
-
+<p>oe</p>
 
         {% block scripts %}
             {{ block.super }}
@@ -70,7 +68,17 @@
 
                 })
 
+            } else {
+
+                Swal.fire(
+                    'Good job!',
+                    'You clicked the button!',
+                    'success'
+                )
+                event.preventDefault()
             }
+
+
         })
     </script>
     </body>
