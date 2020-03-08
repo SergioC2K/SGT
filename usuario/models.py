@@ -38,7 +38,7 @@ class Perfil(BaseModel, models.Model):
         null=True
     )
 
-    def str(self):
+    def __str__(self):
         """Return username"""
         return self.usuario.username
 

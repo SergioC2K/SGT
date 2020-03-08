@@ -90,7 +90,7 @@
             <div class="container">
 
                 <form method="get">
-                    {{ filter.form.as_p }}
+                    {{ filter.form.as_p}}
                     <button type="submit">Buscar</button>
                 </form>
 
@@ -100,6 +100,8 @@
                         <th>Nombre contesta</th>
                         <th>Fecha entrega</th>
                         <th>Observacion</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -107,13 +109,15 @@
                         {% for user in filter.qs %}
                             <tr>
                                 <td>{% for n in user.nombre_contesta %}
-                                    {{n}}
+                                    {{ n }}
                                 {% empty %}
                                     <em class="text-muted">No hay datos</em>
                                 {% endfor %}
                                 </td>
                                 <td>{{ user.fecha_entrega }} </td>
                                 <td>{{ user.observaciones }} </td>
+                                <td>{{ user.id_usuario.usuario.first_name}} </td>
+                                <td>{{ user.id_estado.nombre }} </td>
                             </tr>
                         {% endfor %}
                     {% else %}
@@ -128,12 +132,8 @@
                 datos
             </button>
             </div>
-
-
         </div>
-
     </div>
-
 
     {% block javascript %}
         <script>

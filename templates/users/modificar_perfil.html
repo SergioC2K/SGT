@@ -1,0 +1,48 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content" style="border-color:  #36876a">
+        <div class="modal-header">
+            <h5 class="modal-title"><i class="fa fa-user"></i>Modificar usuario</h5>
+            <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="container-fluid">
+
+            <div class="container">
+
+                <form id="update"
+                      autocomplete="off">
+                    {% csrf_token %}
+
+                    <input class="form-control" id="form-id" type="hidden" name="formId"/>
+
+
+                    <input class="form-control" id="form-nombre" required type="text" name="formNombre" min="8"
+                           max="8"/>
+
+                    {# INPUT #}
+                    <input class="form-control" id="form-apellido" required type="text" name="formApellido" min="8"
+                           max="30"/>
+
+                    {# INPUT #}
+                    <input class="form-control" id="form-telefono" type="text" name="formTelefono" min="8"
+                           max="15"/>
+
+                    <input class="form-control" id="form-tele" type="text" name="formTele" min="8"
+                           max="15"/>
+
+                    <input class="form-control" id="form-cedula" type="text" readonly name="formCedula"
+                           min="8" max="15"/>
+
+                    <button class="btn btn-primary" stype="submit">Enviar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>

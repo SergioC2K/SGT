@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, FormView
 
 # Vistas = Listar y crear
-from django.views.generic import ListView, CreateView, UpdateView, FormView
+from django.views.generic import ListView, CreateView, UpdateView, FormView, View
 
 # Exception
 from django.db.utils import IntegrityError
@@ -74,7 +74,6 @@ def UserCreateView(request):
         return redirect('users/listar.html')
 
 
-
 @login_required
 def cambio_contrasena(request):
     if request.method == 'POST':
@@ -116,15 +115,6 @@ def get_queryset(self):
         return Perfil.objects.all()
     else:
         return Perfil.objects.filter(usuario__is_superuser=False)
-
-
-def form_valid(self, form):
-    """Guardar datos."""
-    form.save()
-
-    return super().form_valid(form)
-
-
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
@@ -186,3 +176,36 @@ class UpdateProfileView(UpdateView):
         """Return to user's profile."""
         username = self.object.usuario.username
         return reverse('usuario:listar_usuario')
+
+
+class actualizarUsu(View):
+    def get(self, request):
+        id1 = request.GET.get('id', None)
+        nombre1 = request.GET.get('nombre', None)
+        apellido1 = request.GET.get('apellido', None)
+        cedula1 = request.GET.get('cedula', None)
+        telemercadeo = request.GET.get('tele', None)
+        telefono1 = request.GET.get('telefono', None)
+
+        obj = User.objects.get(id=id1)
+        obj.first_name = nombre1
+        obj.last_name = apellido1
+        obj.save()
+
+        perfil = Perfil.objects.get(pk=id1)
+        perfil.cedula = cedula1
+        perfil.celular_telemercadeo = telemercadeo
+        perfil.telefono_fijo = telefono1
+        perfil.save()
+
+        user = {
+            'id': obj.id, 'nombre': obj.first_name, 'apellido': obj.last_name,
+            'cedula': perfil.cedula, 'telefono': perfil.telefono_fijo,
+            'tele': perfil.celular_telemercadeo
+        }
+
+        data = {
+            'user': user
+        }
+
+        return JsonResponse(data=data)

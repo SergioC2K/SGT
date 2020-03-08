@@ -59,4 +59,9 @@ urlpatterns = [
         view=views.desconectado,
         name='desconexion'
     ),
+    path(
+        route='actualizar',
+        view=views.actualizarUsu.as_view(),
+        name='actualizar'
+    ),
 ]

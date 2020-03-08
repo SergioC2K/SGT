@@ -10,13 +10,12 @@ urlpatterns = [
 
                   path('archivo/', include(('file.urls', 'file'), namespace='archivo')),
                   path('usuario/', include(('usuario.urls', 'usuario'), namespace='usuario')),
-                  path(
-                      'prueba',
+                  path('prueba',
                       TemplateView.as_view(template_name='prueba.html')
                   ),
-                  path('reset/password_reset',
-                       PasswordResetView.as_view(template_name='registration/password_reset_form.html',
-                                                 email_template_name="registration/password_reset_email.html"),
+                  path('reset/password_reset', PasswordResetView.as_view(
+                      template_name='registration/password_reset_form.html',
+                      email_template_name="registration/password_reset_email.html"),
                        name='password_reset'),
                   path('reset/password_reset_done',
                        PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'),

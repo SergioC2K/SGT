@@ -22,10 +22,11 @@
                         <div class="col-xl-12">
                             <section class="hk-sec-wrapper">
                                 <h5 class="hk-sec-title">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    <button type="button" class="btn btn"
+                                            style="background-color: #36876a; color: #fff4f0" data-toggle="modal"
                                             data-target=".bd-example-modal-lg"><i
                                             class="fas fa-user-plus"></i></button>
-                                    Operadores
+                                    Registro
                                 </h5>
                             </section>
                             <div class="row">
@@ -62,11 +63,16 @@
                                                             {% endif %}
                                                         </td>
                                                         <td>{{ foo.usuario }}</td>
-                                                        <td>{{ foo.usuario.first_name }}</td>
-                                                        <td>{{ foo.usuario.last_name }}</td>
-                                                        <td>{{ foo.cedula }}</td>
-                                                        <td>{{ foo.telefono_fijo }}</td>
-                                                        <td>{{ foo.celular_telemercadeo }}</td>
+                                                        <td class="userNombre userData"
+                                                            name="nombre">{{ foo.usuario.first_name }}</td>
+                                                        <td class="userApellido userData"
+                                                            name="apellido">{{ foo.usuario.last_name }}</td>
+                                                        <td class="userCedula userData"
+                                                            name="cedula">{{ foo.cedula }}</td>
+                                                        <td class="userTelefono userData"
+                                                            name="telefono">{{ foo.telefono_fijo }}</td>
+                                                        <td class="userTele userData"
+                                                            name="tele">{{ foo.celular_telemercadeo }}</td>
                                                         <td>
                                                             <div id="colum-{{ foo.pk }}">
 
@@ -84,8 +90,9 @@
                                                                             <i class="fas fa-power-off"></i>
                                                                         </button>
 
-                                                                        <button type="submit"
-                                                                                class="btn btn-dark">
+                                                                        <button
+                                                                                class="btn btn-dark"
+                                                                                onclick="Editar({{ foo.pk }}),open_modal()">
                                                                             <i class="fa fa-pencil"></i>
                                                                         </button>
                                                                     {% else %}
@@ -212,7 +219,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-primary" id="submit" type="submit">Enviar
+                                <button class="btn btn" style="background-color:  #36876a; color: #fff4f0" id="submit"
+                                        type="submit">Enviar
                                 </button>
                                 <button type="button" class="btn btn-secondary"
                                         data-dismiss="modal">Cancelar
@@ -226,6 +234,10 @@
             </div>
         </div>
     </div>
+
+    <!--Aca empieza el modal del modificar -->
+    <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
+
     <!-- Footer -->
     <div class="hk-footer-wrap container">
         <footer class="footer">
@@ -240,12 +252,10 @@
 
         {% block javascript %}
 
-
             <script>
 
                 let password = document.getElementById('validationTooltip04');
                 let password_confirmation = document.getElementById('validationTooltip05');
-
 
                 $(document).ready(function () {
                     $('#table_id').DataTable({
@@ -289,28 +299,6 @@
                     });
                 }
 
-                (function () {
-                    'use strict';
-                    window.addEventListener('load', function () {
-                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                        var forms = document.getElementsByClassName('needs-validation');
-                        // Loop over them and prevent submission
-                        var validation = Array.prototype.filter.call(forms, function (form) {
-                            form.addEventListener('submit', function (event) {
-                                if (form.checkValidity() === false) {
-                                    event.preventDefault();
-                                    Swal.fire(
-                                        'Error',
-                                        'Por favor complete los campos',
-                                        'error'
-                                    );
-                                    event.stopPropagation();
-                                }
-                                form.classList.add('was-validated');
-                            }, false);
-                        });
-                    }, false);
-                })();
 
                 $(document).ready(function () {
                     var $formulario = $('#insert');
@@ -394,8 +382,93 @@
                         }
 
                     });
-                })
-                ;
+                });
+
+                function open_modal() {
+                    $("#modal_modificar").modal('show');
+                }
+
+                $("form#update").submit(function () {
+                    event.preventDefault();
+                    var id = $('input[name="formId"]').val().trim();
+                    var nombre = $('input[name="formNombre"]').val().trim();
+                    var apellido = $('input[name="formApellido"]').val().trim();
+                    var cedula = $('input[name="formCedula"]').val().trim();
+                    var telemercadeo = $('input[name="formTele"]').val().trim();
+                    var telefono = $('input[name="formTelefono"]').val().trim();
+
+                    if (nombre && apellido && cedula && telefono && telemercadeo) {
+                        $.ajax({
+                            url: '{% url "usuario:actualizar" %}',
+                            method: 'get',
+                            data: {
+                                'id': id,
+                                'nombre': nombre,
+                                'apellido': apellido,
+                                'cedula': cedula,
+                                'tele': telemercadeo,
+                                'telefono': telefono
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.user) {
+                                    tableUpdate(data.user);
+                                } else {
+                                    alert("Todos los campos son requeridos");
+                                }
+                                $('#modal_modificar').modal('hide');
+                                return false;
+                            }
+                        });
+                    } else {
+                        Correcto();
+                    }
+                });
+
+                function Correcto() {
+                    Swal.fire(
+                        'Mal !',
+                        'Llenar los campos',
+                        'error'
+                    );
+                }
+
+                function Editar(id) {
+                    if (id) {
+                        tr_id = "#fila-" + id;
+                        nombres = $(tr_id).find(".userNombre").text();
+                        apellidos = $(tr_id).find(".userApellido").text();
+                        cedulas = $(tr_id).find(".userCedula").text();
+                        telefonos = $(tr_id).find(".userTelefono").text();
+                        teles = $(tr_id).find(".userTele").text();
+                        $('#form-id').val(id);
+                        $('#form-apellido').val(apellidos);
+                        $('#form-nombre').val(nombres);
+                        $('#form-cedula').val(cedulas);
+                        $('#form-telefono').val(telefonos);
+                        $('#form-tele').val(teles);
+                    }
+                }
+
+                function tableUpdate(user) {
+                    $("#table_id #fila-" + user.id).children(".userData").each(function () {
+                        var atributos = $(this).attr("name");
+
+                        if (atributos === "nombre") {
+                            $(this).text(user.nombre);
+                        } else if (atributos === "apellido") {
+                            $(this).text(user.apellido);
+                        } else if (atributos === "telefono") {
+                            $(this).text(user.telefono);
+                        } else if (atributos === "cedula") {
+                            $(this).text(user.cedula);
+                        } else {
+                            $(this).text(user.tele);
+                        }
+
+                    });
+                }
+
             </script>
         {% endblock %}
     </div>
