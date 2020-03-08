@@ -1,12 +1,11 @@
-import django_filters
+# Models
 from .models import RegistroLlamada
-from usuario.models import Perfil
+# Filtros
+import django_filters
 
 
 class RegistroLlamadaFilter(django_filters.FilterSet):
-    id_usuario__telefono_fijo = django_filters.CharFilter()
-    id_estado__nombre = django_filters.CharFilter()
 
     class Meta:
         model = RegistroLlamada
-        fields = ['nombre_contesta', 'fecha_entrega']
+        fields = ('nombre_contesta', 'id_estado__nombre')

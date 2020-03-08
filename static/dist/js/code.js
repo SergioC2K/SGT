@@ -1,11 +1,14 @@
 var cajas = [];
 const notaEntrega = [];
-var llamadasRest = document.getElementById("cant_ll").innerHTML;
+var llamadasRest = parseInt(document.getElementById("cant_ll").innerHTML);
+var cantUsuarios = parseInt(document.getElementById("cant_usu").innerHTML);
 document.getElementById("llam_res").innerHTML = llamadasRest;
 var usuarioPK;
 var primary = [];
 var daticos;
-
+var resultado = Math.trunc(llamadasRest/cantUsuarios);
+var otroResultado = resultado * cantUsuarios;
+var otroResultadoMas = llamadasRest - otroResultado;
 
 function llamadasSelecionadas() {
     cajas = selectable.getSelectedNodes();

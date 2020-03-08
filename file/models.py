@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-
 from usuario.models import Perfil
 from utils.models import BaseModel
 from utils.models import BaseModel
@@ -66,7 +65,7 @@ class RegistroLlamada(BaseModel, models.Model):
     realizado = models.BooleanField(default=False, null=True)
     id_llamada = models.ForeignKey(LlamadasEntrantes, on_delete=models.PROTECT)
     id_usuario = models.ForeignKey(Perfil, null=True, on_delete=models.PROTECT)
-    id_estado = models.ForeignKey('Estado', null=True, blank=False, on_delete=models.PROTECT, related_name='estado')
+    id_estado = models.ForeignKey('Estado', null=True, blank=False, on_delete=models.PROTECT)
     id_grabacion = models.ForeignKey('Grabacion', null=True, on_delete=models.PROTECT)
 
     def __str__(self):

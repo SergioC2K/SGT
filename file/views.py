@@ -16,10 +16,9 @@ from file.forms import RealizarLlamada
 from file.models import RegistroLlamada
 from file.models import LlamadasEntrantes, Archivo, Estado
 from usuario.models import Perfil
-from .filters import RegistroLlamadaFilter
 
 # Filtros
-from .filtros import filtro
+from .filters import RegistroLlamadaFilter
 
 hoy = datetime.date.today()
 manana = hoy + datetime.timedelta(days=1)
@@ -27,22 +26,22 @@ dias_antes = hoy - datetime.timedelta(days=9)
 horas_antes = hoy - datetime.timedelta(hours=12)
 
 
-
+@login_required
 def upload_excel(request):
     if request.method == 'POST':
         nombre = request.FILES['myfile']
         leido = pd.read_excel(nombre)
         llamadas = []
         try:
-            crear = Archivo.objects.create(nombre=nombre)
-            crear.save()
+            archivo = Archivo.objects.create(nombre=nombre)
+            archivo.save()
         except IntegrityError as e:
             return render(request, 'archivo/fileimport.html', context={'errors': e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(
                 LlamadasEntrantes(
-                    id_archivo=Archivo.objects.last(),
+                    archivo=archivo,
                     nombre_solicitante=data['Nombre solicitante'],
                     ident_fiscal=data['Ident.Fiscal Dest Mcia'],
                     nombre_destinatario=data['Nombre destinatario'],
@@ -71,8 +70,6 @@ def upload_excel(request):
 
 superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
-
-@method_decorator(superuser_required, name='dispatch')
 
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
@@ -127,17 +124,12 @@ def repartir(request):
     archivo = Archivo.objects.last()
 
     #  Se consultan las ultimas llamadas ingresadas de acuerdo a el archivo
-    llamadas = LlamadasEntrantes.objects.filter(id_archivo=archivo).exclude(estado=True)
+    llamadas = LlamadasEntrantes.objects.filter(archivo=archivo).exclude(estado=True)
     if operadores and llamadas:
         contexto = {'operadores': operadores, 'llamadas': llamadas}
         return render(request, 'archivo/repartir.html', contexto)
 
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
-
-@login_required
-def buzon(request):
-    return render(request, 'llamada/Buzon.html')
-
 
 @method_decorator(superuser_required, name='dispatch')
 class entregar(ListView):
@@ -175,7 +167,10 @@ def ver_Llamadas(request):
     usuario = request.user.pk
     estados = Estado.objects.all()
     registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
-    data = {'diccionario': registro, 'estados': estados}
+    data = {
+        'diccionario': registro,
+        'estados': estados
+    }
     return render(request, 'llamada/Buzon.html', context=data)
 
 
@@ -187,12 +182,11 @@ class archivoLlamadas(ListView):
 
 def eliminarArchivo(request):
     archivo = request.GET.get('id', None)
-    consulta = LlamadasEntrantes.objects.filter(id_archivo_id=archivo)
+    consulta = LlamadasEntrantes.objects.filter(archivo=archivo)
     auxiliar = 0
     for i in consulta:
         if i.estado:
             auxiliar = auxiliar + 1
-
     if auxiliar == 0:
         Archivo.objects.get(id=archivo).delete()
         data = {
@@ -202,7 +196,6 @@ def eliminarArchivo(request):
         data = {
             'deleted': False
         }
-
     return JsonResponse(data)
 
 
@@ -210,7 +203,8 @@ def traer(request):
     persona = request.GET.get('id', None)
     consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
 
-    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
+    data = {'nombre': consulta.id_llamada.nombre_destinatario,
+            'ruta': consulta.id_llamada.ruta,
             'telefono': consulta.id_llamada.telefono,
             'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
             'alm_soli': consulta.id_llamada.nombre_solicitante,
@@ -225,30 +219,36 @@ class ListFile(ListView):
 
 
 def realizar_llamada(request, number):
-    global llamadas
+    global llamadas, data
     if request.method == 'POST':
+        llamada = RegistroLlamada.objects.get(id=number)
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()
+            data = {
+                'form': form,
+                'aprobado': 'ok',
+                'llamada': llamada,
+                'errores': form.errors
+            }
+            return render(request, template_name='llamada/Buzon.html', context=data)
         else:
-            return render(request=request, template_name='llamada/Buzon.html', context={'form': form,
-                                                                                        })
+            data = {
+                'form': form.errors,
+                'No_Aprobado': 'NO',
+                'llamada': llamada
+            }
+            return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
-        llamadas = get_object_or_404(RegistroLlamada, pk=number)
-
-    return render(
-        request=request,
-        template_name='llamada/buzon.html',
-        context={'form': form,
-                 'llamadas': llamadas}
-    )
-
-
-class RealizarLlamadass(UpdateView):
-    template_name = 'users/perfil.html'
-    model = LlamadasEntrantes
-    form_class = RealizarLlamada
+        oe = request
+        o3e = request
+        llamadas = RegistroLlamada.objects.filter(id_usuario=request.user.perfil)
+        data = {
+            'form': form,
+            'llamadas': llamadas
+        }
+    return render(request, template_name='llamada/Buzon.html', context=data)
 
 
 def pruebas_llamadas(request):
@@ -258,8 +258,8 @@ def pruebas_llamadas(request):
 
 
 def traer(request):
-    persona = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
+    llamada = request.GET.get('id', None)
+    consulta = RegistroLlamada.objects.get(id_llamada_id=llamada)
     data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
             'telefono': consulta.id_llamada.telefono,
             'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
@@ -270,5 +270,5 @@ def traer(request):
 
 def search(request):
     user_list = RegistroLlamada.objects.all()
-    user_filter = filtro(request.GET, queryset=user_list)
+    user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'llamada/exportar.html', {'filter': user_filter})

@@ -24,7 +24,7 @@
                 {% for i in object_list %}
                     <tr id="archivo-{{ i.pk }}">
                         <td>{{ i.nombre }}</td>
-                        <td>{{ i.fecha_ingreso }}</td>
+                        <td>{{ i.created }}</td>
                         <td>
                             <button class="btn btn-danger " onclick="eliminar({{ i.pk }}) ">
                                 <i class="fas fa-trash-alt"></i></button>
@@ -40,8 +40,6 @@
 
         <script>
             function eliminar(id) {
-
-
                 Swal.fire({
                     title: 'Desea eliminar el archivo?',
                     text: "Verifique las llamadas realizadas!",
@@ -53,7 +51,7 @@
                 }).then(function (result) {
                     if (result != false) {
                         $.ajax({
-                            url: '{% url "archivo:delete" %}',
+                            url: '{% url "archivo:exterminar" %}',
                             data: {
                                 'id': id,
                             },
@@ -80,7 +78,6 @@
 
                 })
             }
-
             function bueni() {
                 Swal.fire(
                     'Muy bien!',

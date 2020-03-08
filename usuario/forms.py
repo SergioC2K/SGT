@@ -1,12 +1,17 @@
 """Formularios de Usuario."""
 
 # Django
-
+from django.core.mail import send_mail
 from django import forms
+from SGT import settings
+from django.urls import reverse
 #  Models
 from django.contrib.auth.models import User
-
 from usuario.models import Perfil, Conectado
+
+ASUNTO = 'Usuario Creado'
+MENSAJE = 'Usuario creado correctamente por favor ingrese en el siguiente link'
+EMAIL = settings.EMAIL_HOST_USER
 
 
 class SignupForm(forms.Form):
@@ -43,6 +48,7 @@ class SignupForm(forms.Form):
     password_confirmation = forms.CharField(
         label='Confirmacion de Contraseña',
         max_length=70,
+        min_length=2,
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
             'id': 'validationTooltip05',
@@ -58,6 +64,7 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'id': 'validationTooltip01',
+            'name': 'validationTooltip01',
             'placeholder': 'Nombres',
             'required': True
         }
@@ -92,14 +99,23 @@ class SignupForm(forms.Form):
         'required': True,
 
     }))
+    cedula = forms.IntegerField()
+
+    def clean_cedula(self):
+        """Verificar cedula unica"""
+        cedula = self.cleaned_data['cedula']
+        cedula_query = Perfil.objects.filter(cedula=cedula).exists()
+        if cedula_query:
+            raise forms.ValidationError('Cedula ya se encuentra registrada.')
+        else:
+            return cedula
 
     def clean_email(self):
         """Username sea unico"""
         email = self.cleaned_data['email']
-        email_taken = User.objects.filter(username=email).exists()
+        email_taken = User.objects.filter(email=email).exists()
         if email_taken:
             raise forms.ValidationError('Email ya se encuentra registrado.')
-
         return email
 
     def clean_username(self):
@@ -126,12 +142,15 @@ class SignupForm(forms.Form):
     def save(self):
         """Creando usuario y pefil"""
         data = self.cleaned_data
+        cedula = self.cleaned_data['cedula']
         data.pop('password_confirmation')
+        data.pop('cedula')
         user = User.objects.create_user(**data)  # Aqui estamos desplegando el objeto completo
         conexion = Conectado()
         conexion.save()
-        profile = Perfil(usuario=user, conexion=conexion)
+        profile = Perfil(usuario=user, conexion=conexion, cedula=cedula)
         profile.save()
+        send_mail(ASUNTO, MENSAJE, EMAIL, [self.cleaned_data['email']], fail_silently=False)
 
 
 class UserForm(forms.ModelForm):
