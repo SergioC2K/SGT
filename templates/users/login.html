@@ -29,19 +29,8 @@
         </div>
     </form>
 
-    {% if messages %}
-        {% for message in messages %}
-            <script>
-                Swal.fire(
-                    'Bien!',
-                    '{{ message }}',
-                    'success'
-                );
-            </script>
-        {% endfor %}
 
 
-    {% endif %}
 
     {% if form.errors %}
         <script>

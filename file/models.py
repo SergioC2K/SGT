@@ -1,8 +1,9 @@
+from django.contrib.auth.models import User
 from django.db import models
+
 from usuario.models import Perfil
 from utils.models import BaseModel
 from utils.models import BaseModel
-from django.contrib.auth.models import User
 
 
 class Archivo(BaseModel, models.Model):
@@ -54,6 +55,9 @@ class Grabacion(BaseModel, models.Model):
 class Estado(BaseModel, models.Model):
     nombre = models.CharField(max_length=35)
 
+    def __str__(self):
+        return self.nombre
+
 
 class RegistroLlamada(BaseModel, models.Model):
     nombre_contesta = models.CharField(max_length=45, blank=False, null=True)
@@ -64,3 +68,6 @@ class RegistroLlamada(BaseModel, models.Model):
     id_usuario = models.ForeignKey(Perfil, null=True, on_delete=models.PROTECT)
     id_estado = models.ForeignKey('Estado', null=True, blank=False, on_delete=models.PROTECT, related_name='estado')
     id_grabacion = models.ForeignKey('Grabacion', null=True, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.fecha_entrega)

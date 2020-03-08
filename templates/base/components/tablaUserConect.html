@@ -1,7 +1,6 @@
-
-    <div class="col-10 offset-3">
-        <div class="caja">
-            <div style="font-size: 20px;
+<div class="col-10 offset-3">
+    <div class="caja">
+        <div style="font-size: 20px;
     height: auto;
     width: auto;
     padding: 1px 5px ;
@@ -9,25 +8,26 @@
     padding-left: 20% ;
     color: #006709;
     font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;">
-                Usuarios Conectados
-            </div>
-            <div class="row">
-                <div class="col-10 offset-1">
-                    <div class="otra-caja">
-                        {% for usuario in usuario_conectado %}
-                            <div id="hablalo" class="chat_people" style="cursor:pointer;">
-                                <p hidden>{{ usuario.pk }}</p>
-                                <div class="chat_img"><img src="https://ptetutorials.com/images/user-profile.png"
-                                                           alt="sunil"></div>
-                                <div class="chat_ib">
-                                    <h5>{{ usuario.usuario.get_username }} <span class="green led"></span></h5>
-                                </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div class="otra-caja">
+                    {% for usuario in usuario_conectado %}
+
+                        <div id="hablalo" class="chat_people" style="cursor:pointer;">
+                            <p hidden>{{ usuario.pk }}</p>
+                            <div class="chat_img"><img src="" alt=""></div>
+                            <div class="chat_ib">
+                                <h5>{{ usuario.usuario.get_username }} <span class="green led"></span></h5>
                             </div>
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 

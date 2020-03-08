@@ -82,14 +82,14 @@
                                                                         <button type="submit"
                                                                                 class="btn btn-danger "
                                                                                 onclick="Inhabilitar({{ foo.usuario.pk }})">
-                                                                            <i class="fas fa-power-off"></i>
+                                                                            <span class="glyphicon glyphicon-off"></span>
                                                                         </button>
 
-                                                                        <button type="button" class="btn btn-dark"
-                                                                                data-toggle="modal"
-                                                                                data-target="#exampleModalScrollable">
-
-                                                                            <i class="fa fa-pencil"></i>
+                                                                        <button id="editar"
+                                                                                onclick="open_modal('{% url 'usuario:actualizar' foo.usuario.pk %}')"
+                                                                                class="
+                                                                                btn btn-dark">
+                                                                            <span class="glyphicon glyphicon-pencil"></span>
                                                                         </button>
                                                                     {% else %}
                                                                         <button id="btn-{{ foo.pk }}" type="submit"
@@ -127,119 +127,20 @@
             </div>
         </div>
     </div>
-    <!-- /Container -->
-    <div style="box-shadow: inset 0 0 20px #36876a" id="mymodal" class="modal fade bd-example-modal-lg" tabindex="-1"
+    <div style="box-shadow: inset 0 0 20px #36876a" class="modal fade bd-example-modal-lg" tabindex="-1"
          role="dialog"
          aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-color:  #36876a">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="fa fa-user"></i> Registro de usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="container-fluid">
-
-                    <div class="container">
-
-                        <form id="insert" class="needs-validation"
-                              novalidate
-                              autocomplete="off" method="POST">
-                            {% csrf_token %}
-                            <div class="form-row">
-                                <div class="col-md-4 mb-3">
-                                    <label for="validationTooltip01">Nombres</label>
-                                    {{ form.first_name }}
-                                    <div class="valid-tooltip">
-                                        Bien hecho!
-                                    </div>
-                                    <div class="invalid-tooltip">
-                                        Ingrese el nombre
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="validationTooltip02">Apellidos</label>
-                                    {# INPUT #}
-                                    {{ form.last_name }}
-                                    <div class="valid-tooltip">
-                                        Bien hecho!
-                                    </div>
-                                    <div class="invalid-tooltip">
-                                        Ingrese el apellido
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="validationTooltipUsername">Email</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                                <span class="input-group-text"
-                                                      id="validationTooltipUsernamePrepend">@</span>
-                                        </div>
-                                        {# INPUT #}
-                                        {{ form.email }}
-                                        <div class="invalid-tooltip">
-                                            Ingrese el email
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row mt-3">
-                                <div class="col-md-4 mb-3">
-                                    <label for="validationTooltip03">Nombre de
-                                        usuario</label>
-                                    {# INPUT #}
-                                    {{ form.username }}
-                                    <div class="invalid-tooltip">
-                                        Ingrese el nombre de usuario
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 mb-3">
-                                    <label for="validationTooltip04">Contraseña</label>
-                                    {# INPUT #}
-                                    {{ form.password }}
-                                    <div id="Prism2" class="invalid-tooltip">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="validationTooltip05">Confirmar
-                                        contraseña</label>
-                                    {{ form.password_confirmation }}
-                                    <div id="Prism" class="invalid-tooltip">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-2 mt-4 ">
-                                    <div class="form-group">
-                                        <label for="Cargo">Tipo de usuario</label>
-                                        {{ form.is_staff }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-primary" id="submit" type="submit">Enviar
-                                </button>
-                                <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">Cancelar
-                                </button>
-                            </div>
-
-                        </form>
-
-                    </div>
-                </div>
-            </div>
+            {% include 'users/creacion_perfil.html' %}
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-    {% include 'users/creacion_perfil.html' %}
-        </div>
+    <div class="modal fade" id="mymodal">
+
     </div>
+
+
     <!-- Footer -->
     <div class="hk-footer-wrap container">
         <footer class="footer">
@@ -259,6 +160,14 @@
 
                 let password = document.getElementById('validationTooltip04');
                 let password_confirmation = document.getElementById('validationTooltip05');
+
+
+                function open_modal(number) {
+                    $('#mymodal').load(number, function () {
+                        $(this).modal('show');
+
+                    });
+                }
 
 
                 $(document).ready(function () {
