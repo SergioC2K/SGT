@@ -33,15 +33,15 @@ def upload_excel(request):
         leido = pd.read_excel(nombre)
         llamadas = []
         try:
-            crear = Archivo.objects.create(nombre=nombre)
-            crear.save()
+            archivo = Archivo.objects.create(nombre=nombre)
+            archivo.save()
         except IntegrityError as e:
             return render(request, 'archivo/fileimport.html', {"message": e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(
                 LlamadasEntrantes(
-                    id_archivo=Archivo.objects.last(),
+                    archivo=archivo,
                     nombre_solicitante=data['Nombre solicitante'],
                     ident_fiscal=data['Ident.Fiscal Dest Mcia'],
                     nombre_destinatario=data['Nombre destinatario'],
@@ -233,14 +233,14 @@ def realizar_llamada(request, number):
                 'llamada': llamada,
                 'errores': form.errors
             }
-            return render(request, template_name='oe.html', context=data)
+            return render(request, template_name='llamada/Buzon.html', context=data)
         else:
             data = {
                 'form': form.errors,
                 'No_Aprobado': 'NO',
                 'llamada': llamada
             }
-            return render(request, template_name='oe.html', context=data)
+            return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
         llamada = RegistroLlamada.objects.get(id=number)
@@ -248,7 +248,7 @@ def realizar_llamada(request, number):
             'form': form,
             'llamada': llamada
         }
-    return render(request, template_name='oe.html', context=data)
+    return render(request, template_name='llamada/Buzon.html', context=data)
 
 
 def pruebas_llamadas(request):

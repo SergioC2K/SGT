@@ -51,7 +51,7 @@
                 }).then(function (result) {
                     if (result != false) {
                         $.ajax({
-                            url: '{% url "archivo:delete" %}',
+                            url: '{% url "archivo:exterminar" %}',
                             data: {
                                 'id': id,
                             },
