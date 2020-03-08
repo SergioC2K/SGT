@@ -109,7 +109,6 @@ class RealizarLlamada(forms.Form):
             grabacion = Grabacion(nombre=nombre, audio=audio)
             grabacion.save()
             llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
-            alomama = llamada.fecha_entrega
             llamada.fecha_entrega = data['fecha_entrega']
             llamada.observaciones = data['observaciones']
             llamada.realizado = data['realizado']
@@ -117,7 +116,6 @@ class RealizarLlamada(forms.Form):
             llamada.id_estado = estado
             llamada.id_grabacion = grabacion
             llamada.save()
-            oelo = 1
         else:
             llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
             llamada.fecha_entrega = data['fecha_entrega']
