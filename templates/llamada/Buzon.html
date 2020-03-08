@@ -167,8 +167,8 @@
                                                             <select id="resultado_llamada" name="resultado_llamada"
                                                                     class="form-control">
                                                                 <option selected value="">---</option>
-                                                                {% for i in estados %}
-                                                                    <option value="{{ i.pk }}">{{ i.nombre }}</option>
+                                                                {% for estado in estados %}
+                                                                    <option value="{{ estado.pk }}">{{ estado }}</option>
                                                                 {% endfor %}
                                                             </select>
                                                         </div>
