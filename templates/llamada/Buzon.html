@@ -62,7 +62,10 @@
                             </div>
                         </div>
                         <div class="emailapp-right">
+                            <form action="{% url 'archivo:buzon' %}" method="post" >
+                                {% csrf_token %}
                             <header>
+
                                 <div class="email-options">
                                     <i class="fas fa-clipboard-list"></i> Datos de llamada
                                 </div>
@@ -73,6 +76,7 @@
                                     </button>&nbsp;
                                 </div>
                             </header>
+
                             <div class="emailapp-emails-list">
 
                                 <div class="container mt-3">
@@ -166,10 +170,9 @@
                                                         <select id="resultado_llamada" name="resultado_llamada"
                                                                 class="form-control">
                                                             <option selected value="">---</option>
-                                                            <option value="IE">Informacion de entrega</option>
-                                                            <option value="NC">No contesta</option>
-                                                            <option value="CA">Cliente aplaza</option>
-                                                            <option value="FR">Fuera de ruta</option>
+                                                           {% for i in estados %}
+                                                                <option value="{{ i.pk }}">{{ i.nombre }}</option>
+                                                            {% endfor %}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -223,7 +226,9 @@
                                     </div>
                                 </form>
                             </div>
+                                </form>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -237,6 +242,7 @@
 
             overflow-y: scroll;
             overflow-x: hidden;
+        }
     </style>
 
     {% block Javascript %}
