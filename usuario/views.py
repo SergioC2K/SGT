@@ -1,36 +1,26 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
-
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-
-from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
-from django.core import serializers
-from django.utils.decorators import method_decorator
-
-from django.views.generic import ListView, FormView
-
-# Vistas = Listar y crear
-from django.views.generic import ListView, CreateView, UpdateView, FormView
-
-# Exception
-from django.db.utils import IntegrityError
-
+from django.contrib.auth.forms import PasswordChangeForm
 # Models
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+from django.core import serializers
+from django.forms import formset_factory
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
+# Vistas = Listar y crear
+from django.views.generic import ListView, UpdateView, FormView
 
-from django.contrib import messages
-
-# Forms
-from django.views.generic.edit import FormMixin
-
-from usuario.forms import SignupForm, PerfilForm
+from usuario.forms import SignupForm, PerfilForm, UserForm
 from usuario.models import Perfil
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
+
+
+# Exception
+# Forms
 
 
 class LoginViewUsuario(LoginView):
@@ -42,12 +32,12 @@ class LoginViewUsuario(LoginView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            messages.success(request, f"Bienvenido: {Perfil.usuario}")
             return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
 
 def perfil(request):
+    messages.success(request, f"Bienvenido: {Perfil.usuario}")
     return render(request, 'users/perfil.html')
 
 
@@ -185,3 +175,21 @@ class UpdateProfileView(UpdateView):
         """Return to user's profile."""
         username = self.object.usuario.username
         return reverse('usuario:listar_usuario')
+
+
+def ActualizarUsuario(request, number):
+    UserFormSet = formset_factory(UserForm)
+    PerfilFormSet = formset_factory(PerfilForm)
+
+    user = User.objects.get(id=number)
+    date = Perfil.objects.all()
+
+    if request.method == 'POST':
+        UserFormSet = UserForm(request.POST, prefix='UserForm')
+        PerfilFormSet = PerfilForm(request.POST, prefix='PerfilForm')
+    else:
+        userFormSet = UserFormSet(prefix='articles')
+        perfilFormSet = PerfilFormSet(prefix='books')
+
+    return render(request=request, template_name='users/prueba.html',
+                  context={'UserFormSet': userFormSet, 'PerfilFormSet': perfilFormSet, 'user': user or date})

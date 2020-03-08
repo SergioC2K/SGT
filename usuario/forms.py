@@ -3,12 +3,10 @@
 # Django
 
 from django import forms
-from django.urls import reverse
-
 #  Models
 from django.contrib.auth.models import User
-from usuario.models import Perfil, Conectado
 
+from usuario.models import Perfil, Conectado
 
 
 class SignupForm(forms.Form):
@@ -136,17 +134,15 @@ class SignupForm(forms.Form):
         profile.save()
 
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'username']
+
+
 class PerfilForm(forms.ModelForm):
     """Formulario de Perfil"""
 
     class Meta:
         model = Perfil
         exclude = ['usuario', 'conexion']
-
-    def clean(self):
-        """Verificar cedula unica"""
-        data = super().clean()
-        cedula = self.cleaned_data['cedula']
-        cedula_query = Perfil.objects.filter(cedula=cedula).exists()
-        if cedula_query:
-            raise forms.ValidationError('Cedula ya se encuentra registrada.')
