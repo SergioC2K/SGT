@@ -243,10 +243,12 @@ def realizar_llamada(request, number):
             return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
-        llamada = RegistroLlamada.objects.get(id=number)
+        oe = request
+        o3e = request
+        llamadas = RegistroLlamada.objects.filter(id_usuario=request.user.perfil)
         data = {
             'form': form,
-            'llamada': llamada
+            'llamadas': llamadas
         }
     return render(request, template_name='llamada/Buzon.html', context=data)
 
@@ -258,8 +260,8 @@ def pruebas_llamadas(request):
 
 
 def traer(request):
-    persona = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
+    llamada = request.GET.get('id', None)
+    consulta = RegistroLlamada.objects.get(id_llamada_id=llamada)
     data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
             'telefono': consulta.id_llamada.telefono,
             'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,

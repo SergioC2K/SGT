@@ -26,7 +26,7 @@ class Perfil(BaseModel, models.Model):
                 "sin comas ni signos de puntuacion. maximo hasta 10 caracteres. mimnimo 7 caracteres"
     )
 
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, related_name='perfil')
     cedula = models.PositiveIntegerField(default='0')
     telefono_fijo = models.CharField(validators=[telefono_regex], max_length=15)
     celular = models.CharField(validators=[telefono_regex], max_length=15)
