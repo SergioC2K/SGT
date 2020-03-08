@@ -62,7 +62,10 @@
                             </div>
                         </div>
                         <div class="emailapp-right">
+                            <form action="{% url 'archivo:buzon' %}" method="post" >
+                                {% csrf_token %}
                             <header>
+
                                 <div class="email-options">
                                     <i class="fas fa-clipboard-list"></i> Datos de llamada
                                 </div>
@@ -73,7 +76,7 @@
                                     </button>&nbsp;
                                 </div>
                             </header>
-                            <form action="">
+
                             <div class="emailapp-emails-list">
 
                                 <div class="container mt-3">
@@ -224,7 +227,9 @@
                                     </div>
                                 </form>
                             </div>
+                                </form>
                         </div>
+
                     </div>
                 </div>
             </div>
