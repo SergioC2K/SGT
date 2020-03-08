@@ -39,7 +39,9 @@
             {% if errors %}
                 <div class="alert alert-danger alert-dismissible fade show ">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>¡Error este archivo ya existe!</strong>
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error: </span>
+                    <strong>Este archivo ya existe!</strong>
                 </div>
             {% endif %}
         </div>
@@ -72,19 +74,5 @@
         })
     </script>
     </body>
-    <style>
-        #sampleContainer ol {
-            padding: 0px 0px 0px 15px;
-            margin: 0;
-        }
 
-        #sampleContainer input {
-            margin: 10px 0;
-        }
-
-        #result {
-            display: none;
-            color: red;
-        }
-    </style>
 {% endblock %}
