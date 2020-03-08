@@ -96,6 +96,6 @@ urlpatterns = [
     path(
         route='listfile',
         view=views.ListFile,
-        name='ListFile'
+        name='listFile'
     ),
 ]
