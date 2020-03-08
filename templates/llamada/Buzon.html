@@ -9,7 +9,10 @@
         <script src="{% static 'dist/gijgo/js/gijgo.min.js' %}"></script>
     </head>
 {% endblock %}
+
 {% block main %}
+
+
     <!-- Container -->
     <div class="container-fluid">
         <!-- Row -->
@@ -21,8 +24,10 @@
 
                         <div class="emailapp-left">
                             <header>
-                                <span class="">Llamadas</span>
+                                <span class=""><i class="fas fa-mobile"></i> Llamadas</span>
+
                             </header>
+
                             <div class="emailapp-emails-list">
                                 <div class="nicescroll-bar">
                                     <div class="media-body">
@@ -51,7 +56,7 @@
                             </header>
                             <div class="email-body">
                                 <div class="nicescroll-bar">
-                                    <div class="modal-body">
+                                    <div class="card-body">
 
 
                                         <div class="card-body ">
@@ -162,6 +167,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Compose email -->
                 <div class="modal fade" id="exampleModalEmail" tabindex="-1" role="dialog"
                      aria-labelledby="exampleModalEmail" aria-hidden="true"
