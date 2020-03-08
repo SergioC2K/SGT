@@ -12,10 +12,8 @@ urlpatterns = [
     ),
     path(
         route='cambio-contrasena/',
-        view=auth_views.
-            PasswordChangeView.as_view(
-            template_name='users/nuevaContrasena.html'
-        ),
+        view=auth_views.PasswordChangeView.as_view(
+            template_name='users/nuevaContrasena.html'),
         name='cambio'
     ),
     path(

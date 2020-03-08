@@ -157,7 +157,7 @@ class ListEstado(ListView):
 
 class UpdateProfileView(UpdateView):
     """Update profile view."""
-    template_name = 'prueba2.html'
+    template_name = 'users/perfil.html'
     model = Perfil
     slug_field = 'perfil'
     query_pk_and_slug = True
