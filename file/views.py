@@ -241,12 +241,12 @@ def realizar_llamada(request, number):
             return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
-        oe = request
-        o3e = request
+        estados = Estado.objects.all()
         llamadas = RegistroLlamada.objects.filter(id_usuario=request.user.perfil)
         data = {
             'form': form,
-            'llamadas': llamadas
+            'llamadas': llamadas,
+            'estados': estados
         }
     return render(request, template_name='llamada/Buzon.html', context=data)
 
