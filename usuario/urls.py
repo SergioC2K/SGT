@@ -1,7 +1,7 @@
-from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, include
 
 from usuario import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 
@@ -60,8 +60,8 @@ urlpatterns = [
         name='desconexion'
     ),
     path(
-        route='actualizar/<int:number>/',
-        view=views.ActualizarUsuario,
+        route='actualizar',
+        view=views.actualizarUsu.as_view(),
         name='actualizar'
-    )
+    ),
 ]

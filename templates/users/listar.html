@@ -23,17 +23,17 @@
                             <section class="hk-sec-wrapper">
                                 <h5 class="hk-sec-title">
                                     <button type="button" class="btn btn"
-                                            style="background-color: #36876a;color: #FFFFFF" data-toggle="modal"
+                                            style="background-color: #36876a; color: #fff4f0" data-toggle="modal"
                                             data-target=".bd-example-modal-lg"><i
                                             class="fas fa-user-plus"></i></button>
-                                    Registrar usuario
+                                    Registro
                                 </h5>
                             </section>
                             <div class="row">
                                 <div class="col-sm">
 
                                     {% if object_list %}
-                                        <table id="table_id" class="table table-hover table-responsive-lg"
+                                        <table id="table_id" class="table table-hover"
                                                style="width:100%">
                                             <thead class="thead-dark">
                                             <tr>
@@ -63,11 +63,16 @@
                                                             {% endif %}
                                                         </td>
                                                         <td>{{ foo.usuario }}</td>
-                                                        <td>{{ foo.usuario.first_name }}</td>
-                                                        <td>{{ foo.usuario.last_name }}</td>
-                                                        <td>{{ foo.cedula }}</td>
-                                                        <td>{{ foo.telefono_fijo }}</td>
-                                                        <td>{{ foo.celular_telemercadeo }}</td>
+                                                        <td class="userNombre userData"
+                                                            name="nombre">{{ foo.usuario.first_name }}</td>
+                                                        <td class="userApellido userData"
+                                                            name="apellido">{{ foo.usuario.last_name }}</td>
+                                                        <td class="userCedula userData"
+                                                            name="cedula">{{ foo.cedula }}</td>
+                                                        <td class="userTelefono userData"
+                                                            name="telefono">{{ foo.telefono_fijo }}</td>
+                                                        <td class="userTele userData"
+                                                            name="tele">{{ foo.celular_telemercadeo }}</td>
                                                         <td>
                                                             <div id="colum-{{ foo.pk }}">
 
@@ -81,23 +86,23 @@
 
                                                                         <button type="submit"
                                                                                 class="btn btn-danger "
-                                                                                onclick="Inhabilitar({{ foo.usuario.pk }})">
-                                                                            <span class="glyphicon glyphicon-off"></span>
+                                                                                onclick="Inhabilitar({{ foo.pk }})">
+                                                                            <i class="fas fa-power-off"></i>
                                                                         </button>
 
-                                                                        <button id="editar"
-                                                                                onclick="open_modal('{% url 'usuario:actualizar' foo.usuario.pk %}')"
-                                                                                class="
-                                                                                btn btn-dark">
-                                                                            <span class="glyphicon glyphicon-pencil"></span>
+                                                                        <button
+                                                                                class="btn btn-dark"
+                                                                                onclick="Editar({{ foo.pk }}),open_modal()">
+                                                                            <i class="fa fa-pencil"></i>
                                                                         </button>
                                                                     {% else %}
-                                                                        <button id="btn-{{ foo.pk }}" type="submit"
+                                                                        <button id="btn-{{ foor.pk }}" type="submit"
                                                                                 class="btn btn"
                                                                                 style="background-color: #36876a"
-                                                                                onclick="Inhabilitar({{ foo.usuario.pk }})">
-                                                                            <i style="color: #fff1f1"
-                                                                               class="fas fa-power-off"></i>
+                                                                                onclick="Inhabilitar({{ foo.pk }})">
+                                                                            <i
+                                                                                    style="color: #fff1f1"
+                                                                                    class="fas fa-power-off"></i>
                                                                         </button>
                                                                     {% endif %}
                                                                 {% endif %}
@@ -110,12 +115,7 @@
                                             </tbody>
                                         </table>
                                     {% else %}
-
-                                        <div class="alert alert-info" role="alert">
-                                            <strong><span class="glyphicon glyphicon-info-sign"></span> No hay usuarios
-                                                registrados!</strong>
-                                        </div>
-
+                                        <h1>NO HAY DATOS PARA MOSTRAR</h1>
                                     {% endif %}
 
                                 </div>
@@ -127,19 +127,116 @@
             </div>
         </div>
     </div>
-    <div style="box-shadow: inset 0 0 20px #36876a" class="modal fade bd-example-modal-lg" tabindex="-1"
+    <!-- /Container -->
+    <div style="box-shadow: inset 0 0 20px #36876a" id="mymodal" class="modal fade bd-example-modal-lg" tabindex="-1"
          role="dialog"
          aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            {% include 'users/creacion_perfil.html' %}
+            <div class="modal-content" style="border-color:  #36876a">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa fa-user"></i> Registro de usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="container-fluid">
+
+                    <div class="container">
+
+                        <form id="insert" class="needs-validation"
+                              novalidate
+                              autocomplete="off" method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="validationTooltip01">Nombres</label>
+                                    {{ form.first_name }}
+                                    <div class="valid-tooltip">
+                                        Bien hecho!
+                                    </div>
+                                    <div class="invalid-tooltip">
+                                        Ingrese el nombre
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="validationTooltip02">Apellidos</label>
+                                    {# INPUT #}
+                                    {{ form.last_name }}
+                                    <div class="valid-tooltip">
+                                        Bien hecho!
+                                    </div>
+                                    <div class="invalid-tooltip">
+                                        Ingrese el apellido
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="validationTooltipUsername">Email</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                                <span class="input-group-text"
+                                                      id="validationTooltipUsernamePrepend">@</span>
+                                        </div>
+                                        {# INPUT #}
+                                        {{ form.email }}
+                                        <div class="invalid-tooltip">
+                                            Ingrese el email
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row mt-3">
+                                <div class="col-md-4 mb-3">
+                                    <label for="validationTooltip03">Nombre de
+                                        usuario</label>
+                                    {# INPUT #}
+                                    {{ form.username }}
+                                    <div class="invalid-tooltip">
+                                        Ingrese el nombre de usuario
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 mb-3">
+                                    <label for="validationTooltip04">Contraseña</label>
+                                    {# INPUT #}
+                                    {{ form.password }}
+                                    <div id="Prism2" class="invalid-tooltip">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="validationTooltip05">Confirmar
+                                        contraseña</label>
+                                    {{ form.password_confirmation }}
+                                    <div id="Prism" class="invalid-tooltip">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-2 mt-4 ">
+                                    <div class="form-group">
+                                        <label for="Cargo">Tipo de usuario</label>
+                                        {{ form.is_staff }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn" style="background-color:  #36876a; color: #fff4f0" id="submit"
+                                        type="submit">Enviar
+                                </button>
+                                <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Cancelar
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="modal fade" id="mymodal">
-
-    </div>
-
+    <!--Aca empieza el modal del modificar -->
+    <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
 
     <!-- Footer -->
     <div class="hk-footer-wrap container">
@@ -155,20 +252,10 @@
 
         {% block javascript %}
 
-
             <script>
 
                 let password = document.getElementById('validationTooltip04');
                 let password_confirmation = document.getElementById('validationTooltip05');
-
-
-                function open_modal(number) {
-                    $('#mymodal').load(number, function () {
-                        $(this).modal('show');
-
-                    });
-                }
-
 
                 $(document).ready(function () {
                     $('#table_id').DataTable({
@@ -192,19 +279,19 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.desactive) {
-                                $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a " style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
+                                $("#colum-" + id).html(`<button" type="submit" class="btn btn-success " onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
                                 Swal.fire(
                                     'Bien !',
-                                    'Usuario inhabilitado',
+                                    'Exitoso',
                                     'success'
                                 );
                             }
                             if (!data.desactive) {
-                                $("#colum-" + id).html(`<button type="submit" class="btn btn-danger" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
+                                $("#colum-" + id).html(`<button" type="submit" class="btn btn-danger " onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
                                                         <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`)
                                 Swal.fire(
                                     'Bien !',
-                                    'Usuario habilitado',
+                                    'Deshabilitado',
                                     'success'
                                 );
                             }
@@ -212,28 +299,6 @@
                     });
                 }
 
-                (function () {
-                    'use strict';
-                    window.addEventListener('load', function () {
-                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                        var forms = document.getElementsByClassName('needs-validation');
-                        // Loop over them and prevent submission
-                        var validation = Array.prototype.filter.call(forms, function (form) {
-                            form.addEventListener('submit', function (event) {
-                                if (form.checkValidity() === false) {
-                                    event.preventDefault();
-                                    Swal.fire(
-                                        'Error',
-                                        'Por favor complete los campos',
-                                        'error'
-                                    );
-                                    event.stopPropagation();
-                                }
-                                form.classList.add('was-validated');
-                            }, false);
-                        });
-                    }, false);
-                })();
 
                 $(document).ready(function () {
                     var $formulario = $('#insert');
@@ -257,23 +322,21 @@
                         function Agregar(user) {
                             $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
                                <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
-
+                                <td name="name">${user.name}</td>
                                 <td name="name">${user.name}</td>
                                 <td name="last">${user.apellido}</td>
-                                <td name="cedula"></td>
+                                <td name="cedula">0</td>
                                 <td name="telefono_fijo">${user.telefono_fijo}</td>
                                 <td name="celular">${user.celular}</td>
-                                <td></td>
-
-                               <td><button type="submit" class="btn btn-danger " onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button>
-                               <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
+                                <td><button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
+                                <td><button" type="submit" class="btn btn-danger " onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button></td>
                                 </tr>`);
                         }
 
                         function Exito() {
                             Swal.fire(
-                                'Muy bien !',
-                                'Registro Exitoso',
+                                'Bien !',
+                                'Exitoso',
                                 'success'
                             );
                             $('#mymodal').modal('hide');
@@ -288,6 +351,18 @@
                             }
 
                         })();
+
+                        function Malo() {
+
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error...',
+                                text: 'Las contraseñas no coinciden!',
+
+                            })
+
+                        }
 
 
                         function Error() {
@@ -307,8 +382,93 @@
                         }
 
                     });
-                })
-                ;
+                });
+
+                function open_modal() {
+                    $("#modal_modificar").modal('show');
+                }
+
+                $("form#update").submit(function () {
+                    event.preventDefault();
+                    var id = $('input[name="formId"]').val().trim();
+                    var nombre = $('input[name="formNombre"]').val().trim();
+                    var apellido = $('input[name="formApellido"]').val().trim();
+                    var cedula = $('input[name="formCedula"]').val().trim();
+                    var telemercadeo = $('input[name="formTele"]').val().trim();
+                    var telefono = $('input[name="formTelefono"]').val().trim();
+
+                    if (nombre && apellido && cedula && telefono && telemercadeo) {
+                        $.ajax({
+                            url: '{% url "usuario:actualizar" %}',
+                            method: 'get',
+                            data: {
+                                'id': id,
+                                'nombre': nombre,
+                                'apellido': apellido,
+                                'cedula': cedula,
+                                'tele': telemercadeo,
+                                'telefono': telefono
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.user) {
+                                    tableUpdate(data.user);
+                                } else {
+                                    alert("Todos los campos son requeridos");
+                                }
+                                $('#modal_modificar').modal('hide');
+                                return false;
+                            }
+                        });
+                    } else {
+                        Correcto();
+                    }
+                });
+
+                function Correcto() {
+                    Swal.fire(
+                        'Mal !',
+                        'Llenar los campos',
+                        'error'
+                    );
+                }
+
+                function Editar(id) {
+                    if (id) {
+                        tr_id = "#fila-" + id;
+                        nombres = $(tr_id).find(".userNombre").text();
+                        apellidos = $(tr_id).find(".userApellido").text();
+                        cedulas = $(tr_id).find(".userCedula").text();
+                        telefonos = $(tr_id).find(".userTelefono").text();
+                        teles = $(tr_id).find(".userTele").text();
+                        $('#form-id').val(id);
+                        $('#form-apellido').val(apellidos);
+                        $('#form-nombre').val(nombres);
+                        $('#form-cedula').val(cedulas);
+                        $('#form-telefono').val(telefonos);
+                        $('#form-tele').val(teles);
+                    }
+                }
+
+                function tableUpdate(user) {
+                    $("#table_id #fila-" + user.id).children(".userData").each(function () {
+                        var atributos = $(this).attr("name");
+
+                        if (atributos === "nombre") {
+                            $(this).text(user.nombre);
+                        } else if (atributos === "apellido") {
+                            $(this).text(user.apellido);
+                        } else if (atributos === "telefono") {
+                            $(this).text(user.telefono);
+                        } else if (atributos === "cedula") {
+                            $(this).text(user.cedula);
+                        } else {
+                            $(this).text(user.tele);
+                        }
+
+                    });
+                }
+
             </script>
         {% endblock %}
     </div>

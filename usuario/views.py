@@ -1,26 +1,36 @@
-from django.contrib import messages
-from django.contrib.auth import logout
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.forms import PasswordChangeForm
-# Models
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.core import serializers
-from django.forms import formset_factory
+
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
+from django.core import serializers
 from django.utils.decorators import method_decorator
+
+from django.views.generic import ListView, FormView
+
 # Vistas = Listar y crear
-from django.views.generic import ListView, UpdateView, FormView
-
-from usuario.forms import SignupForm, PerfilForm, UserForm
-from usuario.models import Perfil
-
+from django.views.generic import ListView, CreateView, UpdateView, FormView, View
 
 # Exception
+from django.db.utils import IntegrityError
+
+# Models
+from django.contrib.auth.models import User
+
+from django.contrib import messages
+
 # Forms
+from django.views.generic.edit import FormMixin
+
+from usuario.forms import SignupForm, PerfilForm
+from usuario.models import Perfil
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 
 
 class LoginViewUsuario(LoginView):
@@ -32,12 +42,12 @@ class LoginViewUsuario(LoginView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
+            messages.success(request, f"Bienvenido: {Perfil.usuario}")
             return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
 
 def perfil(request):
-    messages.success(request, f"Bienvenido: {Perfil.usuario}")
     return render(request, 'users/perfil.html')
 
 
@@ -62,6 +72,7 @@ def UserCreateView(request):
         return JsonResponse(data=data)
     else:
         return redirect('users/listar.html')
+
 
 
 @login_required
@@ -92,7 +103,6 @@ def logout_view(request):
 superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
 
-@method_decorator(superuser_required, name='dispatch')
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
@@ -113,6 +123,7 @@ def form_valid(self, form):
     form.save()
 
     return super().form_valid(form)
+
 
 
 # @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
@@ -177,19 +188,34 @@ class UpdateProfileView(UpdateView):
         return reverse('usuario:listar_usuario')
 
 
-def ActualizarUsuario(request, number):
-    UserFormSet = formset_factory(UserForm)
-    PerfilFormSet = formset_factory(PerfilForm)
+class actualizarUsu(View):
+    def get(self, request):
+        id1 = request.GET.get('id', None)
+        nombre1 = request.GET.get('nombre', None)
+        apellido1 = request.GET.get('apellido', None)
+        cedula1 = request.GET.get('cedula', None)
+        telemercadeo = request.GET.get('tele', None)
+        telefono1 = request.GET.get('telefono', None)
 
-    user = User.objects.get(id=number)
-    date = Perfil.objects.all()
+        obj = User.objects.get(id=id1)
+        obj.first_name = nombre1
+        obj.last_name = apellido1
+        obj.save()
 
-    if request.method == 'POST':
-        UserFormSet = UserForm(request.POST, prefix='UserForm')
-        PerfilFormSet = PerfilForm(request.POST, prefix='PerfilForm')
-    else:
-        userFormSet = UserFormSet(prefix='articles')
-        perfilFormSet = PerfilFormSet(prefix='books')
+        perfil = Perfil.objects.get(pk=id1)
+        perfil.cedula = cedula1
+        perfil.celular_telemercadeo = telemercadeo
+        perfil.telefono_fijo = telefono1
+        perfil.save()
 
-    return render(request=request, template_name='users/prueba.html',
-                  context={'UserFormSet': userFormSet, 'PerfilFormSet': perfilFormSet, 'user': user or date})
+        user = {
+            'id': obj.id, 'nombre': obj.first_name, 'apellido': obj.last_name,
+            'cedula': perfil.cedula, 'telefono': perfil.telefono_fijo,
+            'tele': perfil.celular_telemercadeo
+        }
+
+        data = {
+            'user': user
+        }
+
+        return JsonResponse(data=data)

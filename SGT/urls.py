@@ -1,20 +1,21 @@
 # Django
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
-from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
-    PasswordResetCompleteView
 from django.urls import path, include
+from django.views.generic import TemplateView
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import re_path
-
+from django.urls import reverse_lazy
 urlpatterns = [
 
-                  path('admin/', admin.site.urls),
                   path('archivo/', include(('file.urls', 'file'), namespace='archivo')),
                   path('usuario/', include(('usuario.urls', 'usuario'), namespace='usuario')),
-                  path('reset/password_reset',
-                       PasswordResetView.as_view(template_name='registration/password_reset_form.html',
-                                                 email_template_name="registration/password_reset_email.html"),
+                  path('prueba',
+                      TemplateView.as_view(template_name='prueba.html')
+                  ),
+                  path('reset/password_reset', PasswordResetView.as_view(
+                      template_name='registration/password_reset_form.html',
+                      email_template_name="registration/password_reset_email.html"),
                        name='password_reset'),
                   path('reset/password_reset_done',
                        PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'),
