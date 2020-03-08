@@ -412,6 +412,12 @@
                             dataType: 'json',
                             success: function (data) {
                                 if (data.user) {
+                                    Swal.fire(
+                                        'Bien !',
+                                        'Modificacion exitosa¡',
+                                        'success'
+                                    );
+
                                     tableUpdate(data.user);
                                 } else {
                                     alert("Todos los campos son requeridos");
