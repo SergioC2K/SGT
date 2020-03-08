@@ -52,6 +52,7 @@
                                                 {% for foo in object_list %}
                                                     <tr id="fila-{{ foo.pk }}">
                                                         <td id="estado">
+                                                        <div id="activado">
                                                             {% if foo.usuario.is_active %}
 
                                                                 <span class="badge badge-pill badge-success">Activo</span>
@@ -61,6 +62,7 @@
                                                                 <span class="badge badge-pill badge-danger">Inactivo</span>
 
                                                             {% endif %}
+                                                        </div>
                                                         </td>
                                                         <td>{{ foo.usuario }}</td>
                                                         <td>{{ foo.usuario.first_name }}</td>
@@ -286,6 +288,7 @@
                         success: function (data) {
                             if (data.desactive) {
                                 $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a" style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
+                                $("#activado").html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
                                 Swal.fire(
                                     'Bien !',
                                     'Usuario inhabilitado',
@@ -294,7 +297,8 @@
                             }
                             if (!data.desactive) {
                                 $("#colum-" + id).html(`<button type="submit" class="btn btn-danger"  onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
-                                                        <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`)
+                                                        <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
+                                $("#activado").html(`<span class="badge badge-pill badge-success">Activo</span>`);
                                 Swal.fire(
                                     'Bien !',
                                     'Usuario habilitado',

@@ -187,7 +187,8 @@
     {% block Javascript %}
         <script>
             $('#fecha_entrega').datepicker({
-                uiLibrary: 'bootstrap4'
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-dd-mm',
             });
 
             function recuperar(id) {

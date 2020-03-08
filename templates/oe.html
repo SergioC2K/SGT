@@ -1,5 +1,7 @@
-
 {{ form.errors }}
+{% load static %}
+<script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'dist/gijgo/js/gijgo.min.js' %}"></script>
 <form method="post" action="{% url 'archivo:prueba' number=llamada.id_llamada.pk %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}

@@ -36,35 +36,40 @@ def upload_excel(request):
             crear.save()
         except IntegrityError as e:
             return render(request, 'archivo/fileimport.html', context={'errors': e})
+        try:
 
-        for data in leido.T.to_dict().values():
-            llamadas.append(
-                LlamadasEntrantes(
-                    archivo=crear,
-                    nombre_solicitante=data['Nombre solicitante'],
-                    ident_fiscal=data['Ident.Fiscal Dest Mcia'],
-                    nombre_destinatario=data['Nombre destinatario'],
-                    direccion_des_mcia=data['Dirección Dest Mcia'],
-                    telefono=data['Teléfono 1'],
-                    telebox=data['Telebox'],
-                    zona_transporte=data['Zona de transporte'],
-                    material=data['Material'],
-                    texto_breve_material=data['Texto breve material'],
-                    documento_ventas=data['Documento de ventas'],
-                    entrega=data['Entrega'],
-                    num_pedido_cliente=data['Nº pedido cliente'],
-                    cantidad_pedido=data['Cantidad de pedido'],
-                    observaciones_inicial=data['Observaciones'],
-                    denom_articulos=data['Denom.gr-artículos'],
-                    localidad=data['localidad'],
-                    barrio=data['barrio'],
-                    ruta=data['ruta'],
-                    hora_inicio=data['hora inicial'],
-                    hora_final=data['hora final']
+            for data in leido.T.to_dict().values():
+                llamadas.append(
+                    LlamadasEntrantes(
+                        archivo=crear,
+                        nombre_solicitante=data['Nombre solicitante'],
+                        ident_fiscal=data['Ident.Fiscal Dest Mcia'],
+                        nombre_destinatario=data['Nombre destinatario'],
+                        direccion_des_mcia=data['Dirección Dest Mcia'],
+                        telefono=data['Teléfono 1'],
+                        telebox=data['Telebox'],
+                        zona_transporte=data['Zona de transporte'],
+                        material=data['Material'],
+                        texto_breve_material=data['Texto breve material'],
+                        documento_ventas=data['Documento de ventas'],
+                        entrega=data['Entrega'],
+                        num_pedido_cliente=data['Nº pedido cliente'],
+                        cantidad_pedido=data['Cantidad de pedido'],
+                        observaciones_inicial=data['Observaciones'],
+                        denom_articulos=data['Denom.gr-artículos'],
+                        localidad=data['localidad'],
+                        barrio=data['barrio'],
+                        ruta=data['ruta'],
+                        hora_inicio=data['hora inicial'],
+                        hora_final=data['hora final']
+                    )
                 )
-            )
-        LlamadasEntrantes.objects.bulk_create(llamadas)
-    return render(request, 'archivo/fileimport.html')
+
+            LlamadasEntrantes.objects.bulk_create(llamadas)
+        except FileNotFoundError as e:
+            return render(request, 'archivo/fileimport.html', context={'Error': e})
+        return render(request, 'archivo/fileimport.html')
+
 
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
@@ -242,7 +247,6 @@ def realizar_llamada(request, number):
             'llamada': llamada
         }
     return render(request, template_name='oe.html', context=data)
-
 
 
 def pruebas_llamadas(request):

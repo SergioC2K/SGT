@@ -4,7 +4,8 @@
 
 from django import forms
 # Date
-import datetime
+from datetime import datetime
+import datetime as fechas
 
 # Django
 
@@ -54,7 +55,6 @@ class RealizarLlamada(forms.Form):
             'id': 'fecha_entrega',
             'name': 'fecha_entrega',
             'width': '250',
-
         })
     )
     observaciones = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
@@ -77,14 +77,20 @@ class RealizarLlamada(forms.Form):
                                                                           'id': 'customFile',
                                                                           'required': False})
                                    )
+    id_llamada = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'id_llamada',
+        'name': 'id_llamada',
+
+    }))
 
     def clean_fecha_entrega(self):
         """Verificar que la fecha de entrega ingresada sea mayor a la actual"""
         try:
             fecha = self.cleaned_data['fecha_entrega']
-            fechita = datetime.datetime.strptime(fecha, "%m/%d/%Y").date()
-            ya = datetime.date.today()
-            if fechita > ya:
+            ya = fechas.date.today()
+            oelo = datetime.strptime(fecha, '%Y-%m-%d').date()
+            if oelo > ya:
                 return fecha
         except ValidationError as e:
             raise forms.ValidationError('Ingrese una fecha correcta!' % e)
@@ -103,18 +109,20 @@ class RealizarLlamada(forms.Form):
             grabacion = Grabacion(nombre=nombre, audio=audio)
             grabacion.save()
             llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
+            alomama = llamada.fecha_entrega
             llamada.fecha_entrega = data['fecha_entrega']
             llamada.observaciones = data['observaciones']
             llamada.realizado = data['realizado']
-            llamada.id_estado = data['id_estado']
+            estado = Estado.objects.get(id=data['id_estado'])
+            llamada.id_estado = estado
             llamada.id_grabacion = grabacion
             llamada.save()
+            oelo = 1
         else:
             llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
             llamada.fecha_entrega = data['fecha_entrega']
             llamada.observaciones = data['observaciones']
             llamada.realizado = data['realizado']
-            llamada.id_llamada = data['id_llamada']
             llamada.id_estado = data['id_estado']
             llamada.save()
 
