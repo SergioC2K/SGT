@@ -71,8 +71,6 @@ def upload_excel(request):
 superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
 
-@method_decorator(superuser_required, name='dispatch')
-
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
