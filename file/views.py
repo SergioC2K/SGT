@@ -145,16 +145,12 @@ class entregar(ListView):
 
 def enviarLlamadas(request):
     if request.method == 'POST':
-        #  Capturamos los valores ingresados en la reparticion de las llamadas con un array
         valor = request.POST.getlist('valor[]')
         operador = request.POST.getlist('usuario[]')
 
-        #  Segun la cantidad del array hacemos un for que recorra esa cantidad de datos
         for i in range(len(valor)):
-            #  Hacemos una consulta que nos traiga la cantidad de llamadas indicada en el array "valor"
             llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)).exclude(estado=True) \
                 [:int(valor[i])]
-            #  Recorremos la consulta anterior y la actualizamos segun el operador que indica el array "operador"
             for llam in llamadas:
                 registro = RegistroLlamada(id_llamada=llam, id_usuario_id=operador[i])
                 registro.save()
@@ -196,20 +192,6 @@ def eliminarArchivo(request):
         data = {
             'deleted': False
         }
-    return JsonResponse(data)
-
-
-def traer(request):
-    persona = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
-
-    data = {'nombre': consulta.id_llamada.nombre_destinatario,
-            'ruta': consulta.id_llamada.ruta,
-            'telefono': consulta.id_llamada.telefono,
-            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
-            'alm_soli': consulta.id_llamada.nombre_solicitante,
-            'localidad': consulta.id_llamada.localidad}
-
     return JsonResponse(data)
 
 

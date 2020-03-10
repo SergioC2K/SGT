@@ -346,7 +346,6 @@
                     $formulario.submit(function (event) {
                         event.preventDefault();
                         var $datos = $formulario.serialize();
-
                         $.ajax({
                             url: '{% url "usuario:signup"%}',
                             method: "POST",
@@ -355,9 +354,21 @@
                                 if (data.estado) {
                                     Agregar(data.person);
                                     Exito();
-                                } else
-                                    Error();
-                            },
+                                }
+                                if (data.errores){
+                                    var errores = Object.keys(data.form);
+                                    for (let i = 0; i < errores.length; i++) {
+                                        var error = data.form[errores[i]][0];
+                                        console.log(error)
+                                    }
+
+                                    debugger
+                                    Error(data.form);
+                                }
+                                else {
+                                    Error('alo mamam');
+                                }
+                                },
                         });
 
                         function Agregar(user) {
@@ -384,7 +395,7 @@
 
                         (function () {
 
-                            if (password_confirmation != "" && password != "") {
+                            if (password_confirmation !== "" && password !== "") {
 
                                 document.getElementById('Prism').innerHTML = "ingrese la contraseña";
                                 document.getElementById('Prism2').innerHTML = "ingrese la contraseña";
@@ -392,29 +403,19 @@
 
                         })();
 
-                        function Malo() {
+                        /**
+                         * @return {boolean}
+                         */
+                        function Error(num) {
 
-
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error...',
-                                text: 'Las contraseñas no coinciden!',
-
-                            })
-
-                        }
-
-
-                        function Error() {
-
-                            if (password != password_confirmation) {
+                            if (password !== password_confirmation) {
 
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Error...',
-                                    text: 'Las contraseñas no coinciden!',
+                                    text: 'No se pudo completar la tarea! ' + num,
 
-                                })
+                                });
                                 return false;
                             } else {
                                 return true;

@@ -1,22 +1,47 @@
-"""Formulario Modulo de Lmadas"""
-
-# Django
-
-from django import forms
+"""Formulario Modulo de Llamadas"""
 # Date
 from datetime import datetime
 import datetime as fechas
+# Excel
+import pandas as pd
 
 # Django
-
 from django import forms
 from django.core.exceptions import ValidationError
 
-from SGT import settings
-from file.models import Estado, RegistroLlamada, Grabacion
+# Modelos
+from file.models import Estado, RegistroLlamada, Grabacion, Archivo
+
+
+class SubirArchivo(forms.Form):
+    """Formulario Subida de Llamadas"""
+
+    archivo = forms.FileField()
+
+    def clean_archivo(self):
+        archivo = self.cleaned_data['archivo']
+        nombre_existe = Archivo.objects.filter(nombre=archivo.name).exists()
+
+        if len(archivo.name) >= 4 and archivo.name[-4:] == '.xlsx':
+            raise forms.ValidationError('Ese tipo de archivo no se puede subir al sistema')
+
+        if nombre_existe:
+            raise forms.ValidationError('Este archivo ya fue cargado al sistema')
+
+        return archivo
+
+    def clean(self):
+        data = super().clean()
+        try:
+            pd.read_excel(data['archivo'])
+        except ImportError as I:
+            raise forms.ValidationError('Ha ocurrido un problema con el archivo'%I)
+
 
 
 class RealizarLlamada(forms.Form):
+    """Formulario Validación y Realización de Llamada"""
+
     NOCON = 1
     INFO_EN = 2
     DATERR = 3
@@ -121,7 +146,8 @@ class RealizarLlamada(forms.Form):
             llamada.fecha_entrega = data['fecha_entrega']
             llamada.observaciones = data['observaciones']
             llamada.realizado = data['realizado']
-            llamada.id_estado = data['id_estado']
+            estado = Estado.objects.get(id=data['id_estado'])
+            llamada.id_estado = estado
             llamada.save()
 
 

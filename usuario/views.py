@@ -42,22 +42,23 @@ def perfil(request):
 
 def UserCreateView(request):
     if request.is_ajax():
-        formula = SignupForm(request.POST)
+        form = SignupForm(request.POST)
         userna = request.POST.get('username')
-        if formula.is_valid():
-            formula.save()
-            persona = User.objects.get(username=userna)
-            usuario = Perfil.objects.get(usuario_id=persona.pk)
-            d = {'id': usuario.id,
-                 'name': usuario.usuario.first_name,
-                 'cedula': usuario.cedula,
-                 'estado': usuario.usuario.is_active,
-                 'apellido': usuario.usuario.last_name,
-                 'telefono_fijo': usuario.telefono_fijo,
-                 'celular': usuario.celular}
-            data = {'estado': True, 'person': d}
+        if form.is_valid():
+            form.save()
+            perfil = Perfil.objects.get(usuario__username=form.username)
+            persona = {
+                'id': perfil.id,
+                'name': perfil.usuario.first_name,
+                'cedula': perfil.cedula,
+                'estado': perfil.usuario.is_active,
+                'apellido': perfil.usuario.last_name,
+                'telefono_fijo': perfil.telefono_fijo,
+                'celular': perfil.celular
+            }
+            data = {'estado': True, 'person': persona, 'form': form}
         else:
-            data = {'estado': False}
+            data = {'errores': True, 'form': form.errors}
 
         return JsonResponse(data=data)
     else:
