@@ -43,7 +43,6 @@ def perfil(request):
 def UserCreateView(request):
     if request.is_ajax():
         form = SignupForm(request.POST)
-        userna = request.POST.get('username')
         if form.is_valid():
             form.save()
             perfil = Perfil.objects.get(usuario__username=form.username)
@@ -71,16 +70,14 @@ def cambio_contrasena(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Important!
+            update_session_auth_hash(request, user)
             messages.success(request, 'Tu contrasena ha sido cambiada!')
             return redirect('usuario:logout')
         else:
             messages.error(request, 'Por favor corrija el error a continuación.')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'users/nuevaContrasena.html', {
-        'form': form
-    })
+    return render(request, 'users/nuevaContrasena.html', context={'form': form})
 
 
 @login_required

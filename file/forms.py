@@ -36,6 +36,11 @@ class SubirArchivo(forms.Form):
             pd.read_excel(data['archivo'])
         except ImportError as I:
             raise forms.ValidationError('Ha ocurrido un problema con el archivo'%I)
+        return data
+
+    def save(self):
+
+        pass
 
 
 
