@@ -10,38 +10,67 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 # Modelos
-from file.models import Estado, RegistroLlamada, Grabacion, Archivo
+from django.core.validators import FileExtensionValidator
+
+from file.models import Estado, RegistroLlamada, Grabacion, Archivo, LlamadasEntrantes
 
 
-class SubirArchivo(forms.Form):
+class SubirArchivoForm(forms.Form):
     """Formulario Subida de Llamadas"""
 
-    archivo = forms.FileField()
-
-    def clean_archivo(self):
-        archivo = self.cleaned_data['archivo']
-        nombre_existe = Archivo.objects.filter(nombre=archivo.name).exists()
-
-        if len(archivo.name) >= 4 and archivo.name[-4:] == '.xlsx':
-            raise forms.ValidationError('Ese tipo de archivo no se puede subir al sistema')
-
-        if nombre_existe:
-            raise forms.ValidationError('Este archivo ya fue cargado al sistema')
-
-        return archivo
+    archivo = forms.FileField(
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class': 'form-control',
+                'accept': 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }),
+        validators=[FileExtensionValidator(allowed_extensions=['xlsx'])]
+    )
 
     def clean(self):
         data = super().clean()
-        try:
-            pd.read_excel(data['archivo'])
-        except ImportError as I:
-            raise forms.ValidationError('Ha ocurrido un problema con el archivo'%I)
+        archivo = data['archivo']
+        nombre_existe = Archivo.objects.filter(nombre=archivo.name).exists()
+
+        if len(archivo.name) <= 5 and archivo.name[-5:] != '.xlsx':
+            raise forms.ValidationError('Ese tipo de archivo no se puede subir al sistema')
+        if nombre_existe:
+            raise forms.ValidationError('Este archivo ya fue cargado al sistema')
         return data
 
     def save(self):
-
-        pass
-
+        excel = self.cleaned_data['archivo']
+        archivo = Archivo.objects.create(nombre=excel.name)
+        archivo.save()
+        llamadas = []
+        leido = pd.read_excel(excel)
+        for data in leido.T.to_dict().values():
+            llamadas.append(
+                LlamadasEntrantes(
+                    archivo=archivo,
+                    nombre_solicitante=data['Nombre solicitante'],
+                    ident_fiscal=data['Ident.Fiscal Dest Mcia'],
+                    nombre_destinatario=data['Nombre destinatario'],
+                    direccion_des_mcia=data['Dirección Dest Mcia'],
+                    telefono=data['Teléfono 1'],
+                    telebox=data['Telebox'],
+                    zona_transporte=data['Zona de transporte'],
+                    material=data['Material'],
+                    texto_breve_material=data['Texto breve material'],
+                    documento_ventas=data['Documento de ventas'],
+                    entrega=data['Entrega'],
+                    num_pedido_cliente=data['Nº pedido cliente'],
+                    cantidad_pedido=data['Cantidad de pedido'],
+                    observaciones_inicial=data['Observaciones'],
+                    denom_articulos=data['Denom.gr-artículos'],
+                    localidad=data['localidad'],
+                    barrio=data['barrio'],
+                    ruta=data['ruta'],
+                    hora_inicio=data['hora inicial'],
+                    hora_final=data['hora final']
+                )
+            )
+        LlamadasEntrantes.objects.bulk_create(llamadas)
 
 
 class RealizarLlamada(forms.Form):
@@ -65,9 +94,9 @@ class RealizarLlamada(forms.Form):
         (CLAPLE, 'Cliente aplaza entrega'),
         (CLINOSOL, 'Cliente no sabe de la solicitud'),
         (ALCOMPE, 'Almacen se compromete con entrega'),
-            (CLDES, 'Cliente Desiste de la compra'),
+        (CLDES, 'Cliente Desiste de la compra'),
     ]
-# TODO
+    # TODO
     nombre_contesta = forms.CharField(
         max_length=45,
         widget=forms.TextInput(attrs={

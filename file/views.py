@@ -3,6 +3,7 @@ import datetime
 # Excel
 import pandas as pd
 # Django
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
@@ -16,6 +17,7 @@ from file.forms import RealizarLlamada
 from file.models import RegistroLlamada
 from file.models import LlamadasEntrantes, Archivo, Estado
 from usuario.models import Perfil
+from file.forms import SubirArchivoForm
 
 # Filtros
 from .filters import RegistroLlamadaFilter
@@ -29,43 +31,16 @@ horas_antes = hoy - datetime.timedelta(hours=12)
 @login_required
 def upload_excel(request):
     if request.method == 'POST':
-        nombre = request.FILES['myfile']
-        leido = pd.read_excel(nombre)
-        llamadas = []
-        try:
-            archivo = Archivo.objects.create(nombre=nombre)
-            archivo.save()
-        except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', context={'errors': e})
+        form = SubirArchivoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Las llamadas han sido cargadas al sistema')
+        else:
+            return render(request, 'archivo/fileimport.html', context={'form': form})
+    else:
+        form = SubirArchivoForm()
 
-        for data in leido.T.to_dict().values():
-            llamadas.append(
-                LlamadasEntrantes(
-                    archivo=archivo,
-                    nombre_solicitante=data['Nombre solicitante'],
-                    ident_fiscal=data['Ident.Fiscal Dest Mcia'],
-                    nombre_destinatario=data['Nombre destinatario'],
-                    direccion_des_mcia=data['Dirección Dest Mcia'],
-                    telefono=data['Teléfono 1'],
-                    telebox=data['Telebox'],
-                    zona_transporte=data['Zona de transporte'],
-                    material=data['Material'],
-                    texto_breve_material=data['Texto breve material'],
-                    documento_ventas=data['Documento de ventas'],
-                    entrega=data['Entrega'],
-                    num_pedido_cliente=data['Nº pedido cliente'],
-                    cantidad_pedido=data['Cantidad de pedido'],
-                    observaciones_inicial=data['Observaciones'],
-                    denom_articulos=data['Denom.gr-artículos'],
-                    localidad=data['localidad'],
-                    barrio=data['barrio'],
-                    ruta=data['ruta'],
-                    hora_inicio=data['hora inicial'],
-                    hora_final=data['hora final']
-                )
-            )
-        LlamadasEntrantes.objects.bulk_create(llamadas)
-    return render(request, 'archivo/fileimport.html')
+    return render(request, 'archivo/fileimport.html', context={'form': form})
 
 
 superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
@@ -130,6 +105,7 @@ def repartir(request):
         return render(request, 'archivo/repartir.html', contexto)
 
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
+
 
 @method_decorator(superuser_required, name='dispatch')
 class entregar(ListView):
@@ -242,11 +218,14 @@ def pruebas_llamadas(request):
 def traer(request):
     llamada = request.GET.get('id', None)
     consulta = RegistroLlamada.objects.get(id_llamada_id=llamada)
-    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
-            'telefono': consulta.id_llamada.telefono,
-            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
-            'alm_soli': consulta.id_llamada.nombre_solicitante,
-            'localidad': consulta.id_llamada.localidad}
+    data = {
+        'nombre': consulta.id_llamada.nombre_destinatario,
+        'ruta': consulta.id_llamada.ruta,
+        'telefono': consulta.id_llamada.telefono,
+        'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
+        'alm_soli': consulta.id_llamada.nombre_solicitante,
+        'localidad': consulta.id_llamada.localidad
+    }
     return JsonResponse(data)
 
 
