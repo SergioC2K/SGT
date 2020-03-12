@@ -30,8 +30,8 @@
                             <div class="emailapp-emails-list" id="scroll">
                                 <div class="nicescroll-bar">
                                     <div class="media-body">
-                                        {% if llamadas %}
-                                            {% for foo in llamadas %}
+                                        {% if diccionario %}
+                                            {% for foo in diccionario %}
                                                 <div class="email-head">
                                                     <a onclick="recuperar({{ foo.id_llamada_id }})"
                                                        class="media read-email btn btn-block" data-toggle="tooltip"
@@ -228,7 +228,6 @@
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>

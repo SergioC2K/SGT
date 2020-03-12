@@ -165,3 +165,6 @@ class PerfilForm(forms.ModelForm):
     class Meta:
         model = Perfil
         exclude = ['usuario', 'conexion']
+
+
+

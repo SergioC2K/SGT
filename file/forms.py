@@ -35,9 +35,9 @@ class RealizarLlamada(forms.Form):
         (CLAPLE, 'Cliente aplaza entrega'),
         (CLINOSOL, 'Cliente no sabe de la solicitud'),
         (ALCOMPE, 'Almacen se compromete con entrega'),
-            (CLDES, 'Cliente Desiste de la compra'),
+        (CLDES, 'Cliente Desiste de la compra'),
     ]
-# TODO
+    # TODO
     nombre_contesta = forms.CharField(
         max_length=45,
         widget=forms.TextInput(attrs={
@@ -117,7 +117,7 @@ class RealizarLlamada(forms.Form):
             llamada.id_estado = estado
             llamada.id_grabacion = grabacion
             llamada.save()
-            oelo = 1
+
         else:
             llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
             llamada.fecha_entrega = data['fecha_entrega']
@@ -131,3 +131,18 @@ class LlamadaModelo(forms.ModelForm):
     class Meta:
         model = RegistroLlamada
         fields = '__all__'
+
+
+class EstadoForm(forms.ModelForm):
+    model = Estado
+    fields = ('nombre')
+    fields = '__all__'
+    widgets = {
+        'nombre': forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'estado1',
+            'name': 'estado1'
+        }
+
+        )
+    }

@@ -53,7 +53,11 @@ urlpatterns = [
         view=views.entregar.as_view(),
         name='entregar_l'
     ),
-
+    path(
+        route='entrega',
+        view=views.ver_Llamadas,
+        name='entrega'
+    ),
     path(
         route='eliminar',
         view=views.archivoLlamadas.as_view(),
@@ -85,13 +89,18 @@ urlpatterns = [
         name='prueballamada'
     ),
     path(
-        route='buzon/<int:number>/',
+        route='prueba/<int:number>/',
         view=views.realizar_llamada,
-        name='registro'
+        name='prueba'
     ),
     path(
         route='listfile',
         view=views.ListFile,
         name='listFile'
     ),
+    path(
+        route='estadito',
+        view=views.estadito,
+        name='estado'
+    )
 ]

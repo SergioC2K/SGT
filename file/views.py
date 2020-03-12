@@ -8,11 +8,11 @@ from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, FormView
 from django.db.models import Q, Count
 from django.db import IntegrityError
 # Modelos
-from file.forms import RealizarLlamada
+from file.forms import RealizarLlamada, EstadoForm
 from file.models import RegistroLlamada
 from file.models import LlamadasEntrantes, Archivo, Estado
 from usuario.models import Perfil
@@ -36,7 +36,7 @@ def upload_excel(request):
             archivo = Archivo.objects.create(nombre=nombre)
             archivo.save()
         except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', {"message": e})
+            return render(request, 'archivo/fileimport.html', context={"errors": e})
 
         for data in leido.T.to_dict().values():
             llamadas.append(
@@ -72,7 +72,6 @@ superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:
 
 
 @method_decorator(superuser_required, name='dispatch')
-
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
@@ -132,6 +131,7 @@ def repartir(request):
         return render(request, 'archivo/repartir.html', contexto)
 
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
+
 
 @method_decorator(superuser_required, name='dispatch')
 class entregar(ListView):
@@ -233,24 +233,22 @@ def realizar_llamada(request, number):
                 'llamada': llamada,
                 'errores': form.errors
             }
-            return render(request, template_name='llamada/Buzon.html', context=data)
+            return render(request, template_name='oe.html', context=data)
         else:
             data = {
                 'form': form.errors,
                 'No_Aprobado': 'NO',
                 'llamada': llamada
             }
-            return render(request, template_name='llamada/Buzon.html', context=data)
+            return render(request, template_name='oe.html', context=data)
     else:
         form = RealizarLlamada()
-        oe = request
-        o3e = request
-        llamadas = RegistroLlamada.objects.filter(id_usuario=request.user.perfil)
+        llamada = RegistroLlamada.objects.get(id=number)
         data = {
             'form': form,
-            'llamadas': llamadas
+            'llamada': llamada
         }
-    return render(request, template_name='llamada/Buzon.html', context=data)
+    return render(request, template_name='oe.html', context=data)
 
 
 def pruebas_llamadas(request):
@@ -260,8 +258,8 @@ def pruebas_llamadas(request):
 
 
 def traer(request):
-    llamada = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id_llamada_id=llamada)
+    persona = request.GET.get('id', None)
+    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
     data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
             'telefono': consulta.id_llamada.telefono,
             'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
@@ -274,3 +272,14 @@ def search(request):
     user_list = RegistroLlamada.objects.all()
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'llamada/exportar.html', {'filter': user_filter})
+
+
+class CrearEstado(ListView, FormView):
+    model = Estado
+    form_class = EstadoForm
+    template_name = 'llamada/estados.html'
+
+def estadito (request):
+    return redirect('llamada/estados.html')
+
+
