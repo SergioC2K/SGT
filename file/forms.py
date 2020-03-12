@@ -137,9 +137,10 @@ class RealizarLlamada(forms.Form):
     )
     id_grabacion = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'custom-file-input',
                                                                           'id': 'customFile',
-                                                                          'required': False})
+                                                                          'required': False
+                                                                          })
                                    )
-    id_llamada = forms.CharField(widget=forms.TextInput(attrs={
+    id_llamada = forms.CharField(widget=forms.HiddenInput(attrs={
         'class': 'form-control',
         'id': 'id_llamada',
         'name': 'id_llamada',

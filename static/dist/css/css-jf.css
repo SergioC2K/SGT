@@ -409,7 +409,6 @@ h1 {
     padding: 1px;
 }
 
-/* ** Alert styles ** also we can use @each or some one else for generating this alert, but this solution looks simpler :) */
 .alerto {
     padding: 15px 30px;
     margin-bottom: 15px;
@@ -484,16 +483,16 @@ label {
     text-align: center;
 }
 
-.btn:hover {
+.btno:hover {
     cursor: pointer !important;
 }
 
-.btn:active {
+.btno:active {
     box-shadow: 0 1px #666 !important;
     transform: translateY(2px) !important;
 }
 
-.btn {
+.btno {
 
     font-size: 15px;
     font-weight: bold;
@@ -503,7 +502,7 @@ label {
     text-align: center;
 }
 
-.btn-sık {
+.btno-sik {
     transition: all 0.2s ease;
     background-color: white;
     border: 2px solid #158510 !important;
@@ -513,7 +512,7 @@ label {
 }
 
 
-.btn-sık::selection {
+.btno-sik::selection {
     background: green;
 }
 
@@ -538,40 +537,7 @@ input[type="radio"] + div > span {
     position: relative;
     top: 25%;
 }
-
-input[type="checkbox"] {
-    position: absolute;
-    visibility: hidden;
-}
-
-input[type="checkbox"] + div {
-    position: relative;
-}
-
-input[type="checkbox"]:checked + div {
-    background-color: rgba(37, 119, 6, 0.94);
-}
-
-input[type="checkbox"]:checked + div > span {
-    color: white;
-}
-
-input[type="checkbox"] + div > span {
-    position: relative;
-    top: 25%;
-}
-
-input[type="checkbox"]:checked + div::before {
-    content: "✔";
-    position: absolute;
-    bottom: 18px;
-    right: 0px;
-    font-size: 21px;
-    color: white;
-}
-
 input[type="radio"]:checked + div::before {
-    font-family: FontAwesome;
     content: "\f08d";
     position: absolute;
     bottom: 31px;

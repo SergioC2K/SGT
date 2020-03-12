@@ -238,13 +238,13 @@
                                     <label for="id_is_staff_0">
                                         <input type="radio" checked name="is_staff" value="True" class="form-group"
                                                required="" id="id_is_staff_0">
-                                        <div class="btn btn-sık"><span>Coordinador</span></div>
+                                        <div class="btno btno-sik"><span>Coordinador</span></div>
                                     </label>
 
                                     <label for="id_is_staff_1">
                                         <input type="radio" name="is_staff" value="True" class="form-group"
                                                required="" id="id_is_staff_1">
-                                        <div class="btn btn-sık"><span>Operador</span></div>
+                                        <div class="btno btno-sik"><span>Operador</span></div>
                                     </label>
                                 </div>
                             </div>
@@ -359,7 +359,6 @@
                             data: $datos,
                             success: function (data) {
                                 if (data.estado) {
-                                    debugger
                                     Agregar(data.person);
                                     Exito();
                                 }
