@@ -54,7 +54,6 @@
                                             </div>
                                         {% endif %}
                                     </div>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +133,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <form>
+                                    <form method="POST" action="{% url 'archivo:buzon' %}">
                                         <header>
                                             <div class="email-options">
                                                 <i class="fas fa-phone-alt"></i> Llamada

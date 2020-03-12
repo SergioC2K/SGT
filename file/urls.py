@@ -35,7 +35,7 @@ urlpatterns = [
     ),
     path(
         route='buzon/',
-        view=views.ver_Llamadas,
+        view=views.realizar_llamada,
         name='buzon'
     ),
     path(

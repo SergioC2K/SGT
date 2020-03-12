@@ -176,10 +176,10 @@ class ListFile(ListView):
     template_name = 'llamada/exportar.html'
 
 
-def realizar_llamada(request, number):
+def realizar_llamada(request):
     global llamadas, data
     if request.method == 'POST':
-        llamada = RegistroLlamada.objects.get(id=number)
+        llamada = RegistroLlamada.objects.get(id=1)
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()

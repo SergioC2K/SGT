@@ -29,6 +29,9 @@ class SubirArchivoForm(forms.Form):
 
     def clean(self):
         data = super().clean()
+        data = super().clean()
+        if not data:
+            raise forms.ValidationError('El archivo no se puede subir al sistema')
         archivo = data['archivo']
         nombre_existe = Archivo.objects.filter(nombre=archivo.name).exists()
 
