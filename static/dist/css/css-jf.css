@@ -388,3 +388,230 @@ img {
         transform: rotate(360deg);
     }
 }
+
+* {
+    box-sizing: border-box;
+}
+
+/* ** just for example */
+h1 {
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    color: #34495e;
+}
+
+.wrapperow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 10vh;
+    padding: 1px;
+}
+
+/* ** Alert styles ** also we can use @each or some one else for generating this alert, but this solution looks simpler :) */
+.alerto {
+    padding: 15px 30px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    border-bottom: 3px solid #22303d;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, .8);
+    background-image: linear-gradient(#4f6f8f, #34495e);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+}
+
+.alerto--primary {
+    padding: 15px 30px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    border-bottom: 3px solid #217dbb;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, .8);
+    background-image: linear-gradient(#75b9e7, #3498db);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+}
+
+.alerto--warning {
+    padding: 15px 30px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    border-bottom: 3px solid #bf6516;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, .8);
+    background-image: linear-gradient(#eea667, #e67e22);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+}
+
+.alerto--danger {
+    padding: 15px 30px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    border-bottom: 3px solid #d62c1a;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, .8);
+    background-image: linear-gradient(#ef8b80, #e74c3c);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+}
+
+.alerto--success {
+    padding: 15px 30px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    border-bottom: 3px solid #25a25a;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, .8);
+    background-image: linear-gradient(#69dd9a, #2ecc71);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+}
+
+body {
+    -webkit-animation: bugfix infinite 1s;
+}
+
+@-webkit-keyframes bugfix {
+    from {
+        padding: 0;
+    }
+    to {
+        padding: 0;
+    }
+}
+
+label {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn:hover {
+    cursor: pointer !important;
+}
+
+.btn:active {
+    box-shadow: 0 1px #666 !important;
+    transform: translateY(2px) !important;
+}
+
+.btn {
+
+    font-size: 15px;
+    font-weight: bold;
+    height: 35px;
+    width: 100px;
+    box-shadow: 0 3px #999;
+    text-align: center;
+}
+
+.btn-sık {
+    transition: all 0.2s ease;
+    background-color: white;
+    border: 2px solid #158510 !important;
+    box-shadow: 0 3px #114b0d !important;
+    min-width: 150px;
+    border-radius: 20px;
+}
+
+
+.btn-sık::selection {
+    background: green;
+}
+
+input[type="radio"] {
+    position: absolute;
+    visibility: hidden;
+}
+
+input[type="radio"] + div {
+    position: relative;
+}
+
+input[type="radio"]:checked + div {
+    background-color: #257706;
+}
+
+input[type="radio"]:checked + div > span {
+    color: white;
+}
+
+input[type="radio"] + div > span {
+    position: relative;
+    top: 25%;
+}
+
+input[type="checkbox"] {
+    position: absolute;
+    visibility: hidden;
+}
+
+input[type="checkbox"] + div {
+    position: relative;
+}
+
+input[type="checkbox"]:checked + div {
+    background-color: rgba(37, 119, 6, 0.94);
+}
+
+input[type="checkbox"]:checked + div > span {
+    color: white;
+}
+
+input[type="checkbox"] + div > span {
+    position: relative;
+    top: 25%;
+}
+
+input[type="checkbox"]:checked + div::before {
+    content: "✔";
+    position: absolute;
+    bottom: 18px;
+    right: 0px;
+    font-size: 21px;
+    color: white;
+}
+
+input[type="radio"]:checked + div::before {
+    font-family: FontAwesome;
+    content: "\f08d";
+    position: absolute;
+    bottom: 31px;
+    font-size: 21px;
+    color: white;
+    right: -5px;
+    -webkit-transform: rotate(30deg);
+    -moz-transform: rotate(30deg);
+    -o-transform: rotate(30deg);
+    -ms-transform: rotate(30deg);
+    transform: rotate(30deg);
+    animation: fall 0.5s forwards;
+}
+
+@keyframes fall {
+    100% {
+        -webkit-transform: translate(-5px, 5px) rotate(30deg);
+        -moz-transform: translate(-5px, 5px) rotate(30deg);
+        -o-transform: translate(-5px, 5px) rotate(30deg);
+        -ms-transform: translate(-5px, 5px) rotate(30deg);
+        transform: translate(-5px, 5px) rotate(30deg);
+    }
+}
+
+@-moz-keyframes fall {
+    100% {
+        -webkit-transform: translate(-5px, 5px) rotate(30deg);
+        -moz-transform: translate(-5px, 5px) rotate(30deg);
+        -o-transform: translate(-5px, 5px) rotate(30deg);
+        -ms-transform: translate(-5px, 5px) rotate(30deg);
+        transform: translate(-5px, 5px) rotate(30deg);
+    }
+}
+
+@-webkit-keyframes fall {
+    100% {
+        -webkit-transform: translate(-5px, 5px) rotate(30deg);
+        -moz-transform: translate(-5px, 5px) rotate(30deg);
+        -o-transform: translate(-5px, 5px) rotate(30deg);
+        -ms-transform: translate(-5px, 5px) rotate(30deg);
+        transform: translate(-5px, 5px) rotate(30deg);
+    }
+}
