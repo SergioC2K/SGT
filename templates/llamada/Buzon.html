@@ -31,7 +31,7 @@
                                         {% if llamadas %}
                                             {% for foo in llamadas %}
                                                 <div class="email-head">
-                                                    <a onclick="recuperar({{ foo.id_llamada_id }})"
+                                                    <a onclick="recuperar({{ foo.id_llamada }})"
                                                        class="media read-email btn btn-block" data-toggle="tooltip"
                                                        data-placement="top"
                                                        title="{{ foo.id_llamada.texto_breve_material }}">
@@ -263,6 +263,9 @@
                             traiga(data, id);
                         } else
                             alert('asdasdasd');
+                    },
+                    error: function () {
+                        alert('asdasdasd');
                     }
                 })
             }
@@ -270,6 +273,7 @@
             var dire = document.getElementById("registro-llamada").action;
 
             function traiga(user, id) {
+                debugger
                 $("#nombre_solicitante").val(user.nombre);
                 $("#ruta").val(user.ruta);
                 $("#telefono").val(user.telefono);

@@ -8,6 +8,9 @@ from utils.models import BaseModel
 class Archivo(BaseModel, models.Model):
     nombre = models.CharField(max_length=50, unique=True)
 
+    def __str__(self):
+        return self.nombre
+
 
 class LlamadasEntrantes(BaseModel, models.Model):
     archivo = models.ForeignKey('Archivo', on_delete=models.CASCADE)
@@ -43,12 +46,18 @@ class LlamadasEntrantes(BaseModel, models.Model):
     hora_inicio = models.CharField(max_length=50)
     hora_final = models.CharField(max_length=50)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class Grabacion(BaseModel, models.Model):
     # Url de donde va quedar almacenada la grabacion
 
     nombre = models.CharField(max_length=45)
     url = models.FileField(upload_to='audio/mp3')
+
+    def __str__(self):
+        return self.nombre
 
 
 class Estado(BaseModel, models.Model):

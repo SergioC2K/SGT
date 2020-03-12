@@ -219,6 +219,7 @@ def traer(request):
     llamada = request.GET.get('id', None)
     consulta = RegistroLlamada.objects.get(id_llamada_id=llamada)
     data = {
+        'id_llamada': consulta.id_llamada,
         'nombre': consulta.id_llamada.nombre_destinatario,
         'ruta': consulta.id_llamada.ruta,
         'telefono': consulta.id_llamada.telefono,
@@ -233,3 +234,8 @@ def search(request):
     user_list = RegistroLlamada.objects.all()
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'llamada/exportar.html', {'filter': user_filter})
+
+def prueba(request):
+    user_list = RegistroLlamada.objects.all()
+    user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
+    return render(request, 'prueba2.html', {'filter': user_filter})

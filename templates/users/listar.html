@@ -406,6 +406,9 @@
                             }
                         })();
 
+                        /**
+                         * @return {boolean}
+                         */
                         function Error(num) {
                             if (password !== password_confirmation) {
                                 Swal.fire({
@@ -431,15 +434,15 @@
                     letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
                     especiales = "8-37-39-46";
 
-                    tecla_especial = false
+                    tecla_especial = false;
                     for (var i in especiales) {
-                        if (key == especiales[i]) {
+                        if (key === especiales[i]) {
                             tecla_especial = true;
                             break;
                         }
                     }
 
-                    if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+                    if (letras.indexOf(tecla) === -1 && !tecla_especial) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -546,8 +549,6 @@
 
             </script>
         {% endblock %}
-    </div>
-
     </div>
 
 {% endblock %}
