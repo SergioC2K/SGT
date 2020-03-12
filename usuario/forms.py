@@ -97,7 +97,6 @@ class SignupForm(forms.Form):
     is_staff = forms.ChoiceField(label='Cargo', choices=CARGOS, widget=forms.RadioSelect(attrs={
         'class': 'form-group',
         'required': True,
-        'name': 'radio',
     }))
     cedula = forms.IntegerField()
 
