@@ -496,8 +496,8 @@ label {
 
     font-size: 15px;
     font-weight: bold;
-    height: 35px;
-    width: 100px;
+    height: 26px;
+    width: 50px;
     box-shadow: 0 3px #999;
     text-align: center;
 }
@@ -507,7 +507,7 @@ label {
     background-color: white;
     border: 2px solid #158510 !important;
     box-shadow: 0 3px #114b0d !important;
-    min-width: 150px;
+    min-width: 132px;
     border-radius: 20px;
 }
 
