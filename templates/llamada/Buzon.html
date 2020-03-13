@@ -217,9 +217,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <div>
-                                                    {{ form.id_llamada }}
-                                                </div>
+                                                    <div>
+                                                        {{ form.id_llamada }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -242,47 +242,46 @@
             overflow-x: hidden;
         }
     </style>
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        $('#fecha_entrega').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'yyyy-dd-mm',
+        });
 
-    {% block Javascript %}
-        <script>
-            $('#fecha_entrega').datepicker({
-                uiLibrary: 'bootstrap4',
-                format: 'yyyy-dd-mm',
-            });
-
-            function recuperar(id) {
-                $.ajax({
-                    url: '{% url "archivo:traer" %}',
-                    data: {
-                        'id': id,
-                    },
-                    datatype: 'json',
-                    success: function (data) {
-                        if (data) {
-                            traiga(data, id);
-                        } else
-                            alert('asdasdasd');
-                    },
-                    error: function () {
+        function recuperar(id) {
+            $.ajax({
+                url: '{% url "archivo:traer" %}',
+                data: {
+                    'id': id,
+                },
+                datatype: 'json',
+                success: function (data) {
+                    if (data) {
+                        traiga(data, id);
+                    } else
                         alert('asdasdasd');
-                    }
-                })
-            }
+                },
+                error: function () {
+                    alert('asdasdasd');
+                }
+            })
+        }
 
-            var dire = document.getElementById("registro-llamada").action;
+        var dire = document.getElementById("registro-llamada").action;
 
-            function traiga(user, id) {
-                debugger
-                $("#nombre_solicitante").val(user.nombre);
-                $("#ruta").val(user.ruta);
-                $("#telefono").val(user.telefono);
-                $("#direccion_des_mcia").val(user.direccion_des_mcia);
-                $("#alm_soli").val(user.alm_soli);
-                $("#localidad").val(user.localidad);
-                var direccion = dire + id + "/";
-                document.getElementById("id_llamada").value = id;
-            }
-        </script>
-    {% endblock %}
-
+        function traiga(user, id) {
+            debugger
+            $("#nombre_solicitante").val(user.nombre);
+            $("#ruta").val(user.ruta);
+            $("#telefono").val(user.telefono);
+            $("#direccion_des_mcia").val(user.direccion_des_mcia);
+            $("#alm_soli").val(user.alm_soli);
+            $("#localidad").val(user.localidad);
+            var direccion = dire + id + "/";
+            document.getElementById("id_llamada").value = id;
+        }
+    </script>
 {% endblock %}
