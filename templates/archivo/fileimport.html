@@ -17,20 +17,26 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-
                     <div class="container">
                         <div class="custom-file col-md-6 ">
-                            <form action="" method="post" enctype="multipart/form-data">
+                            <form action="{% url 'archivo:importe' %}" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <input type="text" id="nombre" name="nombre" hidden>
                                 <div class="form-group">
-                                    <input class="form-control" type="file" id="input" name="myfile"
-                                           onchange="papa()"
-                                           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                                    {{ form.archivo }}
                                 </div>
                                 <button class="btn btn"
                                         style="background-color: #36876a; color: #fff1f1" id="btn" type="submit">Enviar
                                 </button>
+                                {% if form.errors %}
+                                    {% for errores in form.non_field_errors %}
+                                        {{ errores }}
+                                    {% endfor %}
+                                {% endif %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                {% endif %}
                             </form>
                         </div>
                     </div>
@@ -39,7 +45,9 @@
             {% if errors %}
                 <div class="alert alert-danger alert-dismissible fade show ">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>¡Error este archivo ya existe!</strong>
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error: </span>
+                    <strong>Este archivo ya existe!</strong>
                 </div>
             {% endif %}
         </div>
@@ -47,32 +55,30 @@
 
         {% block scripts %}
             {{ block.super }}
+            <script>
+                document.getElementById('btn').addEventListener("click", function (event) {
+                    let file = document.getElementById('input');
+                    if (file.files.length === 0) {
+                        event.preventDefault();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Por favor seleccione un archivo!',
+
+                        })
+                    } else {
+                        Swal.fire(
+                            'Good job!',
+                            'You clicked the button!',
+                            'success'
+                        )
+                    }
+                })
+            </script>
         {% endblock %}
 
     </div>
 
-    <script>
-        function papa() {
-            nombre = document.getElementById('input').files[0].name;
-            document.getElementById('nombre').value = nombre;
-        }
 
-        document.getElementById('btn').addEventListener("click", function () {
-            let file = document.getElementById('input');
-            if (file.files.length == 0) {
-                event.preventDefault()
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Por favor seleccione un archivo!',
-
-                })
-
-            }
-
-
-        })
-    </script>
-    </body>
 
 {% endblock %}

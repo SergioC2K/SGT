@@ -24,16 +24,14 @@
                         <div class="emailapp-left">
                             <header>
                                 <span class=""><i class="fas fa-mobile"></i> Llamadas</span>
-
                             </header>
-
                             <div class="emailapp-emails-list" id="scroll">
                                 <div class="nicescroll-bar">
                                     <div class="media-body">
                                         {% if diccionario %}
                                             {% for foo in diccionario %}
                                                 <div class="email-head">
-                                                    <a onclick="recuperar({{ foo.id_llamada_id }})"
+                                                    <a onclick="recuperar({{ foo.pk }})"
                                                        class="media read-email btn btn-block" data-toggle="tooltip"
                                                        data-placement="top"
                                                        title="{{ foo.id_llamada.texto_breve_material }}">
@@ -53,11 +51,9 @@
                                                     <span class="glyphicon glyphicon-info-sign"></span> No tienes
                                                     Llamadas pendientes!
                                                 </div>
-
                                             </div>
                                         {% endif %}
                                     </div>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +133,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <form>
+                                    <form method="POST" action="{% url 'archivo:buzon' %}">
                                         <header>
                                             <div class="email-options">
                                                 <i class="fas fa-phone-alt"></i> Llamada
@@ -170,8 +166,8 @@
                                                             <select id="resultado_llamada" name="resultado_llamada"
                                                                     class="form-control">
                                                                 <option selected value="">---</option>
-                                                                {% for i in estados %}
-                                                                    <option value="{{ i.pk }}">{{ i.nombre }}</option>
+                                                                {% for estado in estados %}
+                                                                    <option value="{{ estado.pk }}">{{ estado }}</option>
                                                                 {% endfor %}
                                                             </select>
                                                         </div>
@@ -221,6 +217,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                <div>
+                                                    {{ form.id_llamada }}
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -263,6 +262,9 @@
                             traiga(data, id);
                         } else
                             alert('asdasdasd');
+                    },
+                    error: function () {
+                        alert('asdasdasd');
                     }
                 })
             }
@@ -270,6 +272,7 @@
             var dire = document.getElementById("registro-llamada").action;
 
             function traiga(user, id) {
+                debugger
                 $("#nombre_solicitante").val(user.nombre);
                 $("#ruta").val(user.ruta);
                 $("#telefono").val(user.telefono);
@@ -277,7 +280,7 @@
                 $("#alm_soli").val(user.alm_soli);
                 $("#localidad").val(user.localidad);
                 var direccion = dire + id + "/";
-                document.getElementById("registro-llamada").action = direccion;
+                document.getElementById("id_llamada").value = id;
             }
         </script>
     {% endblock %}

@@ -8,14 +8,12 @@
     padding-left: 20% ;
     color: #006709;
     font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;">
-
-
         </div>
         <div class="row">
             <div class="col-10 offset-1">
                 <div class="otra-caja">
-                    {% for usuario in usuario_conectado %}
 
+                    {% for usuario in usuario_conectado %}
                         <div id="hablalo" class="chat_people" style="cursor:pointer;">
                             <p hidden>{{ usuario.pk }}</p>
                             <div class="chat_img"><img src="" alt=""></div>
@@ -24,6 +22,7 @@
                             </div>
                         </div>
                     {% endfor %}
+
                 </div>
             </div>
         </div>

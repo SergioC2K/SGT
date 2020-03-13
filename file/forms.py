@@ -1,22 +1,84 @@
-"""Formulario Modulo de Lmadas"""
-
-# Django
-
-from django import forms
+"""Formulario Modulo de Llamadas"""
 # Date
 from datetime import datetime
 import datetime as fechas
+# Excel
+import pandas as pd
 
 # Django
-
 from django import forms
 from django.core.exceptions import ValidationError
 
-from SGT import settings
-from file.models import Estado, RegistroLlamada, Grabacion
+# Modelos
+from django.core.validators import FileExtensionValidator
+
+from file.models import Estado, RegistroLlamada, Grabacion, Archivo, LlamadasEntrantes
+
+
+class SubirArchivoForm(forms.Form):
+    """Formulario Subida de Llamadas"""
+
+    archivo = forms.FileField(
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class': 'form-control',
+                'accept': 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }),
+        validators=[FileExtensionValidator(allowed_extensions=['xlsx'])]
+    )
+
+    def clean(self):
+        data = super().clean()
+        data = super().clean()
+        if not data:
+            raise forms.ValidationError('El archivo no se puede subir al sistema')
+        archivo = data['archivo']
+        nombre_existe = Archivo.objects.filter(nombre=archivo.name).exists()
+
+        if len(archivo.name) <= 5 and archivo.name[-5:] != '.xlsx':
+            raise forms.ValidationError('Ese tipo de archivo no se puede subir al sistema')
+        if nombre_existe:
+            raise forms.ValidationError('Este archivo ya fue cargado al sistema')
+        return data
+
+    def save(self):
+        excel = self.cleaned_data['archivo']
+        archivo = Archivo.objects.create(nombre=excel.name)
+        archivo.save()
+        llamadas = []
+        leido = pd.read_excel(excel)
+        for data in leido.T.to_dict().values():
+            llamadas.append(
+                LlamadasEntrantes(
+                    archivo=archivo,
+                    nombre_solicitante=data['Nombre solicitante'],
+                    ident_fiscal=data['Ident.Fiscal Dest Mcia'],
+                    nombre_destinatario=data['Nombre destinatario'],
+                    direccion_des_mcia=data['Dirección Dest Mcia'],
+                    telefono=data['Teléfono 1'],
+                    telebox=data['Telebox'],
+                    zona_transporte=data['Zona de transporte'],
+                    material=data['Material'],
+                    texto_breve_material=data['Texto breve material'],
+                    documento_ventas=data['Documento de ventas'],
+                    entrega=data['Entrega'],
+                    num_pedido_cliente=data['Nº pedido cliente'],
+                    cantidad_pedido=data['Cantidad de pedido'],
+                    observaciones_inicial=data['Observaciones'],
+                    denom_articulos=data['Denom.gr-artículos'],
+                    localidad=data['localidad'],
+                    barrio=data['barrio'],
+                    ruta=data['ruta'],
+                    hora_inicio=data['hora inicial'],
+                    hora_final=data['hora final']
+                )
+            )
+        LlamadasEntrantes.objects.bulk_create(llamadas)
 
 
 class RealizarLlamada(forms.Form):
+    """Formulario Validación y Realización de Llamada"""
+
     NOCON = 1
     INFO_EN = 2
     DATERR = 3
@@ -75,9 +137,10 @@ class RealizarLlamada(forms.Form):
     )
     id_grabacion = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'custom-file-input',
                                                                           'id': 'customFile',
-                                                                          'required': False})
+                                                                          'required': False
+                                                                          })
                                    )
-    id_llamada = forms.CharField(widget=forms.TextInput(attrs={
+    id_llamada = forms.CharField(widget=forms.HiddenInput(attrs={
         'class': 'form-control',
         'id': 'id_llamada',
         'name': 'id_llamada',
@@ -109,7 +172,6 @@ class RealizarLlamada(forms.Form):
             grabacion = Grabacion(nombre=nombre, audio=audio)
             grabacion.save()
             llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
-            alomama = llamada.fecha_entrega
             llamada.fecha_entrega = data['fecha_entrega']
             llamada.observaciones = data['observaciones']
             llamada.realizado = data['realizado']
@@ -117,13 +179,13 @@ class RealizarLlamada(forms.Form):
             llamada.id_estado = estado
             llamada.id_grabacion = grabacion
             llamada.save()
-
         else:
             llamada = RegistroLlamada.objects.get(id=data['id_llamada'])
             llamada.fecha_entrega = data['fecha_entrega']
             llamada.observaciones = data['observaciones']
             llamada.realizado = data['realizado']
-            llamada.id_estado = data['id_estado']
+            estado = Estado.objects.get(id=data['id_estado'])
+            llamada.id_estado = estado
             llamada.save()
 
 

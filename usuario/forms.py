@@ -97,7 +97,6 @@ class SignupForm(forms.Form):
     is_staff = forms.ChoiceField(label='Cargo', choices=CARGOS, widget=forms.RadioSelect(attrs={
         'class': 'form-group',
         'required': True,
-
     }))
     cedula = forms.IntegerField()
 
@@ -107,11 +106,10 @@ class SignupForm(forms.Form):
         cedula_query = Perfil.objects.filter(cedula=cedula).exists()
         if cedula_query:
             raise forms.ValidationError('Cedula ya se encuentra registrada.')
-        else:
-            return cedula
+        return cedula
 
     def clean_email(self):
-        """Username sea unico"""
+        """Email sea unico"""
         email = self.cleaned_data['email']
         email_taken = User.objects.filter(email=email).exists()
         if email_taken:
@@ -124,7 +122,6 @@ class SignupForm(forms.Form):
         username_taken = User.objects.filter(username=username).exists()
         if username_taken:
             raise forms.ValidationError('Usuario ya se encuentra registrado.')
-
         return username
 
     def clean(self):
@@ -135,8 +132,7 @@ class SignupForm(forms.Form):
         password_confirmation = data['password_confirmation']
 
         if password != password_confirmation:
-            raise forms.ValidationError('Las Contraseñas no coinciden')
-
+            raise forms.ValidationError('Las contraseñas no coinciden')
         return data
 
     def save(self):

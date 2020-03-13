@@ -17,8 +17,15 @@
     <div class="container">
         <div class="card" style="border-radius: 20px">
             <div class="card-body">
-                <h5 class="card-title"><i class="fa fa-user"></i> Complete los siguientes campos para continuar
-                </h5>
+
+                {% if request.log %}
+                    <h5 class="card-title"><i class="fa fa-user"></i> Complete los siguientes campos para continuar
+                    </h5>
+                {% else %}
+                    <h5 class="card-title"><i class="fa fa-user"></i> Configuración
+                    </h5>
+                {% endif %}
+
                 <hr>
                 <form method="POST" action="{% url 'usuario:perfil' %}" name="perfilform" id="perfilform"
                       enctype="multipart/form-data">
@@ -41,11 +48,24 @@
                                     <input type="file" value="{{ perfil.foto }}" name="foto" id="foto">
                                 </div>
 
+                                <div class="col mt-4">
+                                    <div class="form-group">
+                                        <label>Cedula </label>
+                                        <div class="form-group" id="document-form">
+                                            <input class="form-control"
+                                                   id="cedula" name="cedula"
+                                                   maxlength="10"
+                                                   value="{{ perfil.cedula }}"
+                                                   placeholder="Documento de identidad"
+                                                   type="text"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="row">
                                     <div class="col">
-
                                         <label>Nombres</label>
-
                                         <input class="form-control"
                                                readonly onmousedown="return false"
                                                name="firts_name" id="firts_name"
@@ -53,10 +73,8 @@
                                                required
                                                value="{{ user.first_name }}"
                                                type="text"/>
-
                                     </div>
                                     <div class="col">
-
                                         <label>Apellido</label>
                                         <input
                                                 class="form-control"
@@ -66,7 +84,6 @@
                                                 required
                                                 readonly
                                                 value="{{ user.last_name }}"/>
-
                                     </div>
                                 </div>
                                 <div class="row">
@@ -92,23 +109,8 @@
                                                    type="text"/>
                                         </div>
                                     </div>
-                                    <div class="col mt-4">
-                                        <div class="form-group">
-                                            <label>Cedula </label>
-                                            <div class="form-group" id="document-form">
-                                                <input class="form-control"
-                                                       id="cedula" name="cedula"
-                                                       maxlength="10"
-                                                       value="{{ perfil.cedula }}"
-                                                       placeholder="Documento de identidad"
-                                                       type="text"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-
                             <div class="container">
                                 <div class="row">
                                     <div class="col-sm">
@@ -177,7 +179,7 @@
 
                 }
             })
-        })
+        });
 
 
         function setInputFilter(textbox, inputFilter) {

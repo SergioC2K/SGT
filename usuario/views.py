@@ -42,22 +42,22 @@ def perfil(request):
 
 def UserCreateView(request):
     if request.is_ajax():
-        formula = SignupForm(request.POST)
-        userna = request.POST.get('username')
-        if formula.is_valid():
-            formula.save()
-            persona = User.objects.get(username=userna)
-            usuario = Perfil.objects.get(usuario_id=persona.pk)
-            d = {'id': usuario.id,
-                 'name': usuario.usuario.first_name,
-                 'cedula': usuario.cedula,
-                 'estado': usuario.usuario.is_active,
-                 'apellido': usuario.usuario.last_name,
-                 'telefono_fijo': usuario.telefono_fijo,
-                 'celular': usuario.celular}
-            data = {'estado': True, 'person': d}
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            perfil = Perfil.objects.get(usuario__username=form.username)
+            persona = {
+                'id': perfil.id,
+                'name': perfil.usuario.first_name,
+                'cedula': perfil.cedula,
+                'estado': perfil.usuario.is_active,
+                'apellido': perfil.usuario.last_name,
+                'telefono_fijo': perfil.telefono_fijo,
+                'celular': perfil.celular
+            }
+            data = {'estado': True, 'person': persona, 'form': form}
         else:
-            data = {'estado': False}
+            data = {'errores': True, 'form': form.errors}
 
         return JsonResponse(data=data)
     else:
@@ -70,16 +70,14 @@ def cambio_contrasena(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Important!
+            update_session_auth_hash(request, user)
             messages.success(request, 'Tu contrasena ha sido cambiada!')
             return redirect('usuario:logout')
         else:
             messages.error(request, 'Por favor corrija el error a continuación.')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'users/nuevaContrasena.html', {
-        'form': form
-    })
+    return render(request, 'users/nuevaContrasena.html', context={'form': form})
 
 
 @login_required
@@ -161,12 +159,17 @@ class UpdateProfileView(UpdateView):
     """Update profile view."""
     template_name = 'users/perfil.html'
     model = Perfil
-    form_class = PerfilForm
+    slug_field = 'perfil'
+    query_pk_and_slug = True
+    pk_url_kwarg = 'perfil'
+    slug_url_kwarg = 'perfil'
     success_url = reverse_lazy('usuario:listar_usuario')
+    fields = '__all__'
 
     def get_object(self, **kwargs):
         """Return user's profile."""
-        return self.request.user.perfil
+        consulta = self.queryset
+        return consulta
 
     def get_success_url(self):
         """Return to user's profile."""
