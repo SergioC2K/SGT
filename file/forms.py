@@ -134,15 +134,15 @@ class LlamadaModelo(forms.ModelForm):
 
 
 class EstadoForm(forms.ModelForm):
-    model = Estado
-    fields = ('nombre')
-    fields = '__all__'
-    widgets = {
-        'nombre': forms.TextInput(attrs={
-            'class': 'form-control',
-            'id': 'estado1',
-            'name': 'estado1'
-        }
+    class Meta:
+        model = Estado
+        fields = '__all__'
+        widgets = {
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control',
+                'id': 'estado1',
+                'name': 'estado1'
+            }
 
-        )
-    }
+            )
+        }

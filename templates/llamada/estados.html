@@ -1,1 +1,47 @@
-{{ forms.as_p }}
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block main %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-xl-12">
+                <section class="hk-sec-wrapper">
+                    <h5 class="hk-sec-title"></h5>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <section class="hk-sec-wrapper">
+                                <table id="table_id" class="table table-hover"
+                                       style="width:60%">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for object in object_list %}
+
+
+                                        <td> {{ object.id }}</td>
+                                        <td class="userNombre userData"
+                                            name="nombre">{{ object.nombre }}</td>
+                                        <td>
+                                        </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </section>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

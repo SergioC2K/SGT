@@ -279,7 +279,5 @@ class CrearEstado(ListView, FormView):
     form_class = EstadoForm
     template_name = 'llamada/estados.html'
 
-def estadito (request):
-    return redirect('llamada/estados.html')
 
 
