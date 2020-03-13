@@ -47,7 +47,7 @@ class LlamadasEntrantes(BaseModel, models.Model):
     hora_final = models.CharField(max_length=50)
 
     def __str__(self):
-        return str(self.id)
+        return self.pk
 
 
 class Grabacion(BaseModel, models.Model):
@@ -78,4 +78,4 @@ class RegistroLlamada(BaseModel, models.Model):
     id_grabacion = models.ForeignKey('Grabacion', null=True, on_delete=models.PROTECT)
 
     def __str__(self):
-        return str(self.fecha_entrega)
+        return str(self.id)

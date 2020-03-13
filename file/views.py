@@ -177,20 +177,21 @@ class ListFile(ListView):
 
 
 def realizar_llamada(request):
-    global llamadas, data
+    global data
+    usuario = request.user
     if request.method == 'POST':
-        llamada = RegistroLlamada.objects.get(id=1)
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()
             data = {
                 'form': form,
                 'aprobado': 'ok',
-                'llamada': llamada,
                 'errores': form.errors
             }
             return render(request, template_name='llamada/Buzon.html', context=data)
         else:
+
+            llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
             data = {
                 'form': form.errors,
                 'No_Aprobado': 'NO',
@@ -200,10 +201,10 @@ def realizar_llamada(request):
     else:
         form = RealizarLlamada()
         estados = Estado.objects.all()
-        llamadas = RegistroLlamada.objects.filter(id_usuario=request.user.perfil)
+        llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
         data = {
             'form': form,
-            'llamadas': llamadas,
+            'llamadas': llamada,
             'estados': estados
         }
     return render(request, template_name='llamada/Buzon.html', context=data)
@@ -216,10 +217,11 @@ def pruebas_llamadas(request):
 
 
 def traer(request):
-    llamada = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id_llamada_id=llamada)
-    data = {
-        'id_llamada': consulta.id_llamada,
+    llamada = int(request.GET.get('id', None))
+    consulta = RegistroLlamada.objects.get(pk=llamada)
+    oelooo = consulta.pk
+    datos = {
+        'id_llamada': consulta.pk,
         'nombre': consulta.id_llamada.nombre_destinatario,
         'ruta': consulta.id_llamada.ruta,
         'telefono': consulta.id_llamada.telefono,
@@ -227,13 +229,14 @@ def traer(request):
         'alm_soli': consulta.id_llamada.nombre_solicitante,
         'localidad': consulta.id_llamada.localidad
     }
-    return JsonResponse(data)
+    return JsonResponse(datos)
 
 
 def search(request):
     user_list = RegistroLlamada.objects.all()
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'llamada/exportar.html', {'filter': user_filter})
+
 
 def prueba(request):
     user_list = RegistroLlamada.objects.all()

@@ -31,7 +31,7 @@
                                         {% if llamadas %}
                                             {% for foo in llamadas %}
                                                 <div class="email-head">
-                                                    <a onclick="recuperar({{ foo.id_llamada }})"
+                                                    <a onclick="recuperar({{ foo.pk }})"
                                                        class="media read-email btn btn-block" data-toggle="tooltip"
                                                        data-placement="top"
                                                        title="{{ foo.id_llamada.texto_breve_material }}">
@@ -281,7 +281,7 @@
                 $("#alm_soli").val(user.alm_soli);
                 $("#localidad").val(user.localidad);
                 var direccion = dire + id + "/";
-                document.getElementById("registro-llamada").action = direccion;
+                document.getElementById("id_llamada").value = id;
             }
         </script>
     {% endblock %}
