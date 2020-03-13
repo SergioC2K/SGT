@@ -28,8 +28,8 @@
                             <div class="emailapp-emails-list" id="scroll">
                                 <div class="nicescroll-bar">
                                     <div class="media-body">
-                                        {% if diccionario %}
-                                            {% for foo in diccionario %}
+                                        {% if llamadas %}
+                                            {% for foo in llamadas %}
                                                 <div class="email-head">
                                                     <a onclick="recuperar({{ foo.pk }})"
                                                        class="media read-email btn btn-block" data-toggle="tooltip"
@@ -242,46 +242,45 @@
             overflow-x: hidden;
         }
     </style>
+
+    {% block Javascript %}
+        <script>
+            $('#fecha_entrega').datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-dd-mm',
+            });
+
+            function recuperar(id) {
+                $.ajax({
+                    url: '{% url "archivo:traer" %}',
+                    data: {
+                        'id': id,
+                    },
+                    datatype: 'json',
+                    success: function (data) {
+                        if (data) {
+                            traiga(data, id);
+                            alert('La tarea ha sido terminada con exito');
+                        } else
+                            alert('Ha ocurrido un problema y no se cumplió con la tarea');
+                    },
+                    error: function () {
+                        alert('Ha ocurrido un problema y no se cumplió con la tarea');
+                    }
+                })
+            }
+
+            function traiga(user, id) {
+                debugger
+                $("#nombre_solicitante").val(user.nombre);
+                $("#ruta").val(user.ruta);
+                $("#telefono").val(user.telefono);
+                $("#direccion_des_mcia").val(user.direccion_des_mcia);
+                $("#alm_soli").val(user.alm_soli);
+                $("#localidad").val(user.localidad);
+                document.getElementById("id_llamada").value = id;
+            }
+        </script>
+    {% endblock %}
 {% endblock %}
-{% block scripts %}
-    {{ block.super }}
-    <script>
-        $('#fecha_entrega').datepicker({
-            uiLibrary: 'bootstrap4',
-            format: 'yyyy-dd-mm',
-        });
 
-        function recuperar(id) {
-            $.ajax({
-                url: '{% url "archivo:traer" %}',
-                data: {
-                    'id': id,
-                },
-                datatype: 'json',
-                success: function (data) {
-                    if (data) {
-                        traiga(data, id);
-                    } else
-                        alert('asdasdasd');
-                },
-                error: function () {
-                    alert('asdasdasd');
-                }
-            })
-        }
-
-        var dire = document.getElementById("registro-llamada").action;
-
-        function traiga(user, id) {
-            debugger
-            $("#nombre_solicitante").val(user.nombre);
-            $("#ruta").val(user.ruta);
-            $("#telefono").val(user.telefono);
-            $("#direccion_des_mcia").val(user.direccion_des_mcia);
-            $("#alm_soli").val(user.alm_soli);
-            $("#localidad").val(user.localidad);
-            var direccion = dire + id + "/";
-            document.getElementById("id_llamada").value = id;
-        }
-    </script>
-{% endblock %}
