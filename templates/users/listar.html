@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load notifications_tags %}
 {% load static %}
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
@@ -272,7 +273,10 @@
         <footer class="footer">
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <p>Creado por<a href="" class="text-dark" target="_blank">La Gerencia</a>
+                    <p>Creado por<a href="" class="text-dark" target="_blank">La Gerencia
+                    {% notifications_unread %}
+
+                    </a>
                         © 2019</p>
                 </div>
 

@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.core import serializers
 from django.utils.decorators import method_decorator
+from notifications.signals import notify
 
 # CB Views
 from django.views.generic import ListView, UpdateView, FormView, View
@@ -45,7 +46,7 @@ def UserCreateView(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
-            perfil = Perfil.objects.get(usuario__username=form.username)
+            perfil = Perfil.objects.get(usuario__username=form.cleaned_data['username'])
             persona = {
                 'id': perfil.id,
                 'name': perfil.usuario.first_name,
@@ -115,10 +116,14 @@ class ListarUsuario(ListView, FormView):
 def deshabilitar(request):
     id = request.GET.get('id', None)
     user = User.objects.get(pk=id)
-
+    admin = User.objects.get(pk=request.user.id)
     if user.is_active:
         user.is_active = False
         user.save()
+        notify.send(admin, recipient=admin, verb='perrras', action_object=admin)
+        alo = admin.notifications.mark_all_as_read()
+        oelo = alo
+        nea = oelo
         data = {'desactive': True}
     else:
         user.is_active = True
