@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 from usuario import views
 from django.contrib.auth import views as auth_views
@@ -63,5 +64,10 @@ urlpatterns = [
         route='actualizar',
         view=views.actualizarUsu.as_view(),
         name='actualizar'
+    ),
+    path(
+        route='mirar',
+        view=TemplateView.as_view(template_name='prueba2.html'),
+        name='mirar'
     ),
 ]

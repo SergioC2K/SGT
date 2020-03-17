@@ -240,6 +240,9 @@
                 format: 'yyyy-dd-mm',
             });
 
+            function noCumplio() {
+                alert('Ha ocurrido un problema y no se cumplió con la tarea');
+            }
             function recuperar(id) {
                 $.ajax({
                     url: '{% url "archivo:traer" %}',
@@ -251,12 +254,11 @@
                         if (data) {
                             traiga(data, id);
                             alert('La tarea ha sido terminada con exito');
-                        } else
-                            alert('Ha ocurrido un problema y no se cumplió con la tarea');
+                        } else {
+                            noCumplio();
+                        }
                     },
-                    error: function () {
-                        alert('Ha ocurrido un problema y no se cumplió con la tarea');
-                    }
+                    error: noCumplio()
                 })
             }
 
@@ -272,5 +274,9 @@
             }
         </script>
     {% endblock %}
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'dist/js/division.js' %}"></script>
 {% endblock %}
 

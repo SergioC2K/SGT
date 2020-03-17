@@ -16,6 +16,8 @@ class Conectado(BaseModel, models.Model):
         default=False
     )
 
+    def __str__(self):
+        return str(self.estado)
 
 class Perfil(BaseModel, models.Model):
     """Modelo de Perfil de Usuario"""
@@ -43,3 +45,16 @@ class Perfil(BaseModel, models.Model):
     def __str__(self):
         """Return username"""
         return self.usuario.username
+
+
+from django.db.models.signals import post_save
+from notifications.signals import notify
+
+
+def my_handler(sender, instance, created, **kwargs):
+    alo = 1
+    alo = 1
+    notify.send(Perfil, recipient=User.objects.filter(is_staff=True), verb='you re level 10')
+
+
+post_save.connect(my_handler, sender=Perfil)
