@@ -12,6 +12,8 @@ from notifications.signals import notify
 # CB Views
 from django.views.generic import ListView, UpdateView, FormView, View
 
+# Exception
+from django.db.utils import IntegrityError
 # Models
 from django.contrib.auth.models import User
 
@@ -116,14 +118,12 @@ class ListarUsuario(ListView, FormView):
 def deshabilitar(request):
     id = request.GET.get('id', None)
     user = User.objects.get(pk=id)
-    admin = User.objects.get(pk=request.user.id)
+    admin = User.objects.filter(is_staff=True)
     if user.is_active:
         user.is_active = False
         user.save()
-        notify.send(admin, recipient=admin, verb='perrras', action_object=admin)
+        notify.send(user, recipient=admin, verb='perrras', action_object=admin)
         alo = admin.notifications.mark_all_as_read()
-        oelo = alo
-        nea = oelo
         data = {'desactive': True}
     else:
         user.is_active = True
