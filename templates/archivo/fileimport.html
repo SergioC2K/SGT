@@ -54,7 +54,17 @@
     <script>
         function papa() {
             nombre = document.getElementById('input').files[0].name;
-            document.getElementById('nombre').value = nombre;
+            otra = document.getElementById('nombre').value = nombre;
+            var extension = /(.xls|xlsx)$/i;
+            if (!extension.exec(otra)) {
+                document.getElementById('input').value = '';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Solo se pueden extensiones de tipo .xlsx/.xls',
+                });
+                return false;
+            }
         }
 
         document.getElementById('btn').addEventListener("click", function () {
@@ -65,20 +75,8 @@
                     icon: 'error',
                     title: 'Error',
                     text: 'Por favor seleccione un archivo!',
-
-                })
-
-            } else {
-
-                Swal.fire(
-                    'Good job!',
-                    'You clicked the button!',
-                    'success'
-                )
-
+                });
             }
-
-
         })
     </script>
     </body>

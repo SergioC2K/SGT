@@ -98,4 +98,21 @@ urlpatterns = [
         view=views.ListFile,
         name='listFile'
     ),
+    # esta ruta me retorna solo un template "reporte llamadas"
+    path(
+        route='reporte_llamada/',
+        view=views.reporte_llamada,
+        name='reporte_llamada'
+    ),
+    # esta ruta solo es para llevarle lo solicitado a el template"reporte llamadas"
+    path(
+        route='llevar_reporte_llamada',
+        view=views.traer_reporte_llamada,
+        name='llevar_reporte_llamada'
+    ),
+    path(
+        route='completo',
+        view=views.reporte_general,
+        name='completo'
+    )
 ]

@@ -247,9 +247,11 @@
 
     {% block Javascript %}
         <script>
+            var today = new Date();
             $('#fecha_entrega').datepicker({
                 uiLibrary: 'bootstrap4',
                 format: 'yyyy-dd-mm',
+                minDate: today
             });
 
             function recuperar(id) {
