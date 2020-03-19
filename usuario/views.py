@@ -157,20 +157,20 @@ class ListEstado(ListView):
 
 
 class UpdateProfileView(UpdateView):
-    """Update profile view."""
-    template_name = 'users/perfil.html'
-    model = Perfil
-    form_class = PerfilForm
-    success_url = reverse_lazy('usuario:listar_usuario')
+        """Update profile view."""
+        template_name = 'users/perfil.html'
+        model = Perfil
+        form_class = PerfilForm
+        success_url = reverse_lazy('usuario:listar_usuario')
 
-    def get_object(self, **kwargs):
-        """Return user's profile."""
-        return self.request.user.perfil
+        def get_object(self, **kwargs):
+            """Return user's profile."""
+            return self.request.user.perfil
 
-    def get_success_url(self):
-        """Return to user's profile."""
-        username = self.object.usuario.username
-        return reverse('usuario:listar_usuario')
+        def get_success_url(self):
+            """Return to user's profile."""
+            username = self.object.usuario.username
+            return reverse('usuario:listar_usuario')
 
 
 class actualizarUsu(View):

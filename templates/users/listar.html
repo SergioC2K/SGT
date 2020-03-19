@@ -51,8 +51,8 @@
                                             {% if object_list %}
                                                 {% for foo in object_list %}
                                                     <tr id="fila-{{ foo.pk }}">
-                                                        <td id="estado">
-                                                            <div id="activado">
+                                                        <td id="activado-{{ foo.pk }}">
+                                                            <div>
                                                                 {% if foo.usuario.is_active %}
 
                                                                     <span class="badge badge-pill badge-success">Activo</span>
@@ -83,7 +83,7 @@
                                                                     </p>
 
                                                                 {% else %}
-                                                                    <div id="fila-{{ foo.pk }}">
+                                                                    <div>
                                                                     {% if foo.usuario.is_active %}
 
                                                                         <button type="submit"
@@ -98,13 +98,12 @@
                                                                             <i class="fa fa-pencil"></i>
                                                                         </button>
                                                                     {% else %}
-                                                                        <button id="btn-{{ foor.pk }}" type="submit"
+                                                                        <button id="btn-{{ foo.pk }}" type="submit"
                                                                                 class="btn btn"
                                                                                 style="background-color: #36876a"
                                                                                 onclick="Inhabilitar({{ foo.pk }})">
-                                                                            <i
-                                                                                    style="color: #fff1f1"
-                                                                                    class="fas fa-power-off"></i>
+                                                                            <i style="color: #fff1f1"
+                                                                               class="fas fa-power-off"></i>
                                                                         </button>
                                                                     {% endif %}
                                                                 {% endif %}
@@ -171,13 +170,42 @@
 
             $(document).ready(function () {
                 $('#table_id').DataTable({
-
+                    bfilter: false,
                     ordering: true,
                     searching: true,
                     info: false,
-
+                    "language": español
                 });
             });
+
+            var español = {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ Registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla =(",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "buttons": {
+                    "copy": "Copiar",
+                    "colvis": "Visibilidad"
+                }
+            };
 
             function Inhabilitar(id) {
                 $.ajax({
@@ -189,7 +217,7 @@
                     success: function (data) {
                         if (data.desactive) {
                             $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a" style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
-                            $("#activado").html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
+                            $("#activado-" + id).html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
                             Swal.fire(
                                 'Bien !',
                                 'Usuario inhabilitado',
@@ -198,8 +226,8 @@
                         }
                         if (!data.desactive) {
                             $("#colum-" + id).html(`<button type="submit" class="btn btn-danger"  onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
-                                                        <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
-                            $("#activado").html(`<span class="badge badge-pill badge-success">Activo</span>`);
+                                                        <button type="submit" onclick="Editar(${id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
+                            $("#activado-" + id).html(`<span class="badge badge-pill badge-success">Activo</span>`);
                             Swal.fire(
                                 'Bien !',
                                 'Usuario habilitado',
@@ -252,15 +280,18 @@
                     });
 
                     function Agregar(user) {
-                        $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
+                        $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
                                <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
-                                <td name="name">${user.name}</td>
-                                <td name="last">${user.apellido}</td>
-                                <td name="cedula">0</td>
-                                <td name="telefono_fijo">${user.telefono_fijo}</td>
+                                <td name="nombre" class="userNombre userData">${user.name}</td>
+                                <td name="apellido" class="userApellido userData">${user.apellido}</td>
+                                <td name="cedula" class="userCedula userData">0</td>
+                                <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
                                 <td name="celular">${user.celular}</td>
-                                <td><button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
-                                <td><button type="submit" class="btn btn-danger" onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button></td>
+                                <td name="tele" class="userTele userData">tele</td>
+                                <td><div id="colum-${user.id}">
+                                <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
+                                <button type="submit" onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
+                                </div></td>
                                 </tr>`);
                     }
 

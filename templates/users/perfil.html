@@ -1,6 +1,4 @@
 {% load static %}
-
-
 <head>
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>Configuracion</title>
@@ -9,7 +7,6 @@
 </head>
 <body>
 {% block form %}
-
     <form method="POST" action="{% url 'usuario:perfil' %}" name="perfilform" id="perfilform"
           enctype="multipart/form-data">
         {% csrf_token %}

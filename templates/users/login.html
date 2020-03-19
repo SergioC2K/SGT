@@ -11,11 +11,7 @@
         <div class="login-logo">
             <img src="{% static 'dist/img/LogoSGT.png' %}" alt="" srcset="">
         </div>
-        {% if form.errors %}
-            <div class="wrapperow">
-                <div class="alerto alerto--danger">{{ form.non_field_errors }}</div>
-            </div>
-        {% endif %}
+
         <h3>
             <i class="fas fa-users"></i>INGRESAR
         </h3>
@@ -36,18 +32,33 @@
     </form>
 {% endblock %}
 {% block scriptsjs %}
-    {{ block.super }}
 
-        {% if form.errors %}
-            {{ form.non_field_errors }}
-              <script>
-                    Swal.fire(
-                        '<h2>{{ form.non_field_errors }}</h2>',
-                        '<h3>oelo</h3>',
-                        'error'
-                    );{{ form.non_field_errors }}
-             </script>
-        {% endif %}
+
+    {% if form.errors %}
+        <script>
+        const ErrorNotification = window.createNotification({
+            theme: 'error',
+            showDuration: 5000
+        });
+        {% for field in form %}
+            {% if field.errors %}
+                ErrorNotification({
+                    message: '{{ field.label }}: {{ field.errors|striptags }},{{ form.non_field_errors }}'
+                });
+            {% endif %}
+        {% endfor %}
+
+    {% endif %}
+{% if form.errors %}
+
+
+    ErrorNotification({
+        message: '{{ form.non_field_errors|striptags }}'
+    });
+
+
+    </script>
+{% endif %}
 
 {% endblock %}
 
