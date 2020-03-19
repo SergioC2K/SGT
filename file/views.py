@@ -410,9 +410,11 @@ def traer_reporte_usuario(request):
 
 #  Esta es el metodo donde el coordinador va exportar para enviar aceb
 def reporte_general(request):
-    archivo = Archivo.objects.last()
-    registradas = RegistroLlamada.objects.filter(id_llamada__archivo_id=archivo)
+    hoy = datetime.datetime.utcnow()
+    hora = hoy - datetime.timedelta(hours=24)
+    registradas = RegistroLlamada.objects.filter(modified__range=[hora, hoy])
     data = {
+        'dia': 'Llamadas del dia de hoy',
         'registro': registradas
     }
     return render(request, 'reportes/reporte_general.html', data)
@@ -422,15 +424,49 @@ def trer_reporte_general(request):
     diccionario = {}
     respuesta = request.POST['respuesta']
     valor = int(respuesta)
-    hoy = date.today()
 
-    if valor == 3:
-        hoy = datetime.datetime.utcnow()
-        mes = hoy - datetime.timedelta(days=30)
-        consulta = RegistroLlamada.objects.filter(modified__range=[mes, hoy])
+    if valor == 0:
+        consulta = RegistroLlamada.objects.all()
         if consulta:
             diccionario = {'registro': consulta}
         else:
             diccionario = {'error': 'error'}
+
+    elif valor == 1:
+        hoy = datetime.datetime.utcnow()
+        horas = hoy - datetime.timedelta(hours=36)
+        consulta = RegistroLlamada.objects.filter(modified__range=[hoy, horas])
+
+        if consulta:
+            diccionario = {'registro': consulta}
+        else:
+            diccionario = {'error': 'error'}
+
+    elif valor == 2:
+        hoy = datetime.datetime.utcnow()
+        semana = hoy - datetime.timedelta(days=7)
+        consulta = RegistroLlamada.objects.filter(modified__range=[semana, hoy])
+
+        if consulta:
+            diccionario = {'registro': consulta}
+        else:
+            diccionario = {'error': 'error'}
+
+    elif valor == 3:
+        hoy = datetime.datetime.utcnow()
+        mes = hoy - datetime.timedelta(days=30)
+        consulta = RegistroLlamada.objects.filter(modified__range=[mes, hoy])
+
+        if consulta:
+            diccionario = {'registro': consulta}
+        else:
+            diccionario = {'error': 'error'}
+
+    elif valor == 4:
+        archivo = Archivo.objects.last()
+        registradas = RegistroLlamada.objects.filter(id_llamada__archivo_id=archivo)
+        diccionario = {
+            'registro': registradas
+        }
 
     return render(request, template_name='reportes/reporte_general.html', context=diccionario)
