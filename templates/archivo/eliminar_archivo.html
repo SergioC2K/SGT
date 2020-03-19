@@ -40,16 +40,27 @@
 
         <script>
             function eliminar(id) {
-                Swal.fire({
-                    title: 'Desea eliminar el archivo?',
-                    text: "Verifique las llamadas realizadas!",
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        cancelButton: 'btn btn-danger',
+                        confirmButton: 'btn btn-success'
+
+                    },
+                    buttonsStyling: true
+
+                });
+
+                swalWithBootstrapButtons.fire({
+                    title: 'Estas seguro?',
+                    text: "Desea eliminar el archivo?",
                     icon: 'info',
                     showCancelButton: true,
-                    confirmButtonColor: '#36876a',
-                    cancelButtonColor: '#409ec1',
-                    confirmButtonText: ' Eliminar!'
-                }).then(function (result) {
-                    if (result != false) {
+
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Continuar',
+                    reverseButtons: false
+                }).then((result) => {
+                    if (result.value) {
                         $.ajax({
                             url: '{% url "archivo:exterminar" %}',
                             data: {
@@ -66,6 +77,15 @@
                                 }
                             }
                         });
+                    } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                            'Cancelado',
+                            'Tu archivo esta seguro',
+                            'info'
+                        )
                     }
                 })
             }
@@ -73,17 +93,19 @@
             function mensaje() {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: '{{ errors }}!',
+                    title: 'Error',
+                    text: 'Termine de repartir las llamadas!',
 
                 })
             }
+
             function bueni() {
                 Swal.fire(
-                    'Muy bien!',
+                    'Operacion Realizada    !',
                     'Eliminado correctamente',
                     'success'
                 )
+
             }
         </script>
     </div>

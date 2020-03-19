@@ -50,13 +50,9 @@
 
     {% endif %}
 {% if form.errors %}
-
-
     ErrorNotification({
         message: '{{ form.non_field_errors|striptags }}'
     });
-
-
     </script>
 {% endif %}
 
