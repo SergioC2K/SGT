@@ -134,7 +134,7 @@ def enviarLlamadas(request):
                 registro.save()
                 llam.estado = True
                 llam.save()
-        return redirect('archivo:import')
+        return redirect('archivo:importe')
 
 
 def ver_Llamadas(request):

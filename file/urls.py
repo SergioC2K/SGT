@@ -16,7 +16,7 @@ urlpatterns = [
     path(
         route='importe/',
         view=ImporteControl.upload_excel,
-        name='import'
+        name='importe'
     ),
     path(
         route='entregar/',
