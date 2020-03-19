@@ -6,6 +6,8 @@
     <title>Lista de usuarios</title>
     <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/notifications.css' %}">
+    <script src="{% static 'dist/notifications.js' %}"></script>
 {% endblock %}
 {% block main %}
     <!-- Container -->
@@ -16,7 +18,7 @@
                 <section class="hk-sec-wrapper">
                     <h3 class="hk-pg-title">
                         <span class="glyphicon glyphicon-user"></span>Usuarios
-                            <button type="button" class="btn btn"
+                        <button type="button" class="btn btn"
                                 style="background-color: #36876a; color: #fff4f0;margin-left: 85%"
                                 data-toggle="modal"
                                 data-target=".bd-example-modal-lg"><i
@@ -425,5 +427,5 @@
 {% endblock %}
 </div>
 
-</div>
+
 

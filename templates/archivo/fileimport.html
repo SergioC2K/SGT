@@ -9,35 +9,36 @@
 
 {% block main %}
     <div class="container mt-4">
-    <div class="container-fluid">
+        <div class="container-fluid">
 
-        <div class="card">
-            <div class="card-body">
-                <h4 class="hk-pg-title card-title">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="hk-pg-title card-title">
                     <span class="pg-title-icon">
                     </span><i class="fas fa-file-excel"></i>&nbsp;Importe de archivo
-                </h4>
-                <hr>
-                <div class="container">
-                    <div class="custom-file col-md-6 ">
-                        <form action="{% url 'archivo:importe' %}" method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="text" id="nombre" name="nombre" hidden>
-                            <div class="form-group">
-                                {{ form.archivo }}
-                            </div>
-                            <button class="btn btn"
-                                    style="background-color: #36876a; color: #fff1f1" id="btn" type="submit">
-                                Importar
-                            </button>
+                    </h4>
+                    <hr>
+                    <div class="container">
+                        <div class="custom-file col-md-6 ">
+                            <form action="{% url 'archivo:importe' %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="text" id="nombre" name="nombre" hidden>
+                                <div class="form-group">
+                                    {{ form.archivo }}
+                                </div>
+                                <button class="btn btn"
+                                        style="background-color: #36876a; color: #fff1f1" id="btn" type="submit">
+                                    Importar
+                                </button>
 
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
-
-
     </div>
     <script src="{% static 'dist/notifications.js' %}"></script>
     <script>

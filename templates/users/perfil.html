@@ -193,6 +193,15 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                succcesNotification({
+                    message: '{{ message }}'
+
+                })
+
+            {% endfor %}
+        {% endif %}
 
         window.addEventListener('load', function () {
             document.querySelector('input[type="file"]').addEventListener('change', function () {

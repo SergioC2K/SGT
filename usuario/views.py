@@ -1,27 +1,24 @@
 # Django
+from django.contrib import messages
 from django.contrib.auth import logout
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.forms import PasswordChangeForm
+# Models
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.core import serializers
 from django.utils.decorators import method_decorator
-
 # CB Views
 from django.views.generic import ListView, UpdateView, FormView, View
-
-# Models
-from django.contrib.auth.models import User
-
 # Forms
 from notifications.signals import notify
 
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
 
 
 class LoginViewUsuario(LoginView):
@@ -33,13 +30,11 @@ class LoginViewUsuario(LoginView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            messages.success(request, f"Bienvenido: {Perfil.usuario}")
             return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
 
 def perfil(request):
-
     return render(request, 'users/perfil.html')
 
 
@@ -95,6 +90,7 @@ def logout_view(request):
 superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
 
+@method_decorator(superuser_required, name='dispatch')
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
@@ -114,7 +110,6 @@ class ListarUsuario(ListView, FormView):
         return super().form_valid(form)
 
 
-# @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
     id = request.GET.get('id', None)
@@ -167,7 +162,6 @@ class UpdateProfileView(UpdateView):
     model = Perfil
     form_class = PerfilForm
     success_url = reverse_lazy('usuario:listar_usuario')
-
 
     def get_object(self, **kwargs):
         """Return user's profile."""
