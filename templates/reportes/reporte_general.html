@@ -15,10 +15,19 @@
 {% endblock %}
 
 {% block main %}
-
+    <form method="post" action="{% url 'archivo:envio_general' %}">
+        {% csrf_token %}
+        <select name="respuesta">
+            <option value="0">Desde siempre</option>
+            <option value="1">ultimo dia</option>
+            <option value="2">ultima semana</option>
+            <option value="3">ultima mes</option>
+        </select>
+        <button type="submit">Buscar</button>
+    </form>
     <button class="btn btn-success" id="button-a">
         Exportar datos
-    </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <table class="table" id="table">
         <thead class="thead-dark">
         <tr>
@@ -37,7 +46,6 @@
         </tr>
         </thead>
         <tbody>
-        {% if objeto %}
             {% if registro %}
                 {% for i in registro %}
                     <tr>
@@ -55,12 +63,10 @@
                         <td>{{ i.id_estado.nombre }}</td>
                     </tr>
                 {% endfor %}
-            {% else %}
-                <h1>No hay llamadas registradas</h1>
             {% endif %}
-        {% else %}
-            <h1>No hay datos</h1>
-        {% endif %}
+            {% if error %}
+                <h1>No hay llamadas</h1>
+            {% endif %}
         </tbody>
     </table>
 
@@ -68,6 +74,9 @@
         <script>
             $(document).ready(function () {
                 $('#table').DataTable({
+                    "scrollX": true,
+                    "scrollY": "200px",
+                    "scrollCollapse": true,
                     bfilter: false,
                     ordering: true,
                     searching: true,
@@ -112,7 +121,7 @@
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ Registros",
                 "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla =(",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
                 "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
                 "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
                 "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
