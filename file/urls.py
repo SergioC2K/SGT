@@ -102,7 +102,7 @@ urlpatterns = [
         route='estadito',
         view=views.CrearEstado.as_view(),
         name='estado'
-    )
+    ),
     # esta ruta me retorna solo un template "reporte llamadas"
     path(
         route='reporte_llamada/',
