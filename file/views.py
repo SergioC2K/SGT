@@ -1,5 +1,6 @@
 # Date
 import datetime
+from datetime import date
 # Excel
 import pandas as pd
 # Django
@@ -106,6 +107,7 @@ def repartir(request):
         return render(request, 'archivo/repartir.html', contexto)
 
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
+
 
 @method_decorator(superuser_required, name='dispatch')
 class entregar(ListView):
@@ -244,3 +246,65 @@ class CrearEstado(ListView, FormView):
 
 
 
+
+
+
+#  Este metodo solo es para que me retorne al template
+def reporte_llamada(request):
+    return render(request, 'reportes/reporte_llamada.html')
+
+
+def traer_reporte_llamada(request):
+    # La variable dia me trae el valor de la fecha a consultar
+    dia = request.GET.get('valor', None)
+    fecha = date.today()
+    valor = int(dia)
+
+    if valor == 0:
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta').count()
+        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso').count()
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito
+        }
+
+    elif valor == 1:
+        ayer = fecha.day - 1
+        exito = RegistroLlamada.objects.filter(modified__day=ayer, id_estado__nombre='Exitoso').count()
+        no_contesta = RegistroLlamada.objects.filter(modified__day=ayer, id_estado__nombre='No contesta').count()
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito
+        }
+
+    elif valor == 2:
+        hoy = datetime.datetime.utcnow()
+        semana = hoy - datetime.timedelta(days=7)
+        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', modified__range=[semana, hoy]).count()
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta', modified__range=[semana, hoy]).count()
+
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito
+        }
+
+    elif valor == 3:
+        hoy = datetime.datetime.utcnow()
+        mes = hoy - datetime.timedelta(days=30)
+        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', modified__range=[mes, hoy]).count()
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta', modified__range=[mes, hoy]).count()
+
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito
+        }
+
+    return JsonResponse(data=data)
+
+
+def reporte_general(request):
+    entrantes = LlamadasEntrantes.objects.all()
+    registradas = RegistroLlamada.objects.all()
+    data = {'objeto': entrantes,
+            'registro': registradas}
+    return render(request,'reportes/reporte_general.html',data)

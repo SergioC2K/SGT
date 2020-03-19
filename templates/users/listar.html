@@ -50,8 +50,8 @@
                                             {% if object_list %}
                                                 {% for foo in object_list %}
                                                     <tr id="fila-{{ foo.pk }}">
-                                                        <td id="estado">
-                                                            <div id="activado">
+                                                        <td id="activado-{{ foo.pk }}">
+                                                            <div>
                                                                 {% if foo.usuario.is_active %}
 
                                                                     <span class="badge badge-pill badge-success">Activo</span>
@@ -82,7 +82,7 @@
                                                                     </p>
 
                                                                 {% else %}
-                                                                    <div id="fila-{{ foo.pk }}">
+                                                                    <div>
                                                                     {% if foo.usuario.is_active %}
 
                                                                         <button type="submit"
@@ -143,289 +143,326 @@
 
     <!-- Footer -->
     <div class="hk-footer-wrap container">
-    <footer class="footer">
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <p>Creado por<a href="" class="text-dark" target="_blank">La Gerencia</a>
-                    © 2019</p>
+        <footer class="footer">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <p>Creado por<a href="" class="text-dark" target="_blank">La Gerencia</a>
+                        © 2019</p>
+                </div>
+
             </div>
+        </footer>
 
-        </div>
-    </footer>
-
-    {% block javascript %}
-        <script>
-            const successNotification = window.createNotification({
-                theme: 'success',
-                showDuration: 5000
-            });
-
-            const ErrorNotification = window.createNotification({
-                theme: 'error',
-                showDuration: 5000
-            });
-            let password = document.getElementById('validationTooltip04');
-            let password_confirmation = document.getElementById('validationTooltip05');
-
-            $(document).ready(function () {
-                $('#table_id').DataTable({
-
-                    ordering: true,
-                    searching: true,
-                    info: false,
-
+        {% block javascript %}
+            <script>
+                const successNotification = window.createNotification({
+                    theme: 'success',
+                    showDuration: 5000
                 });
-            });
 
-            function Inhabilitar(id) {
-                $.ajax({
-                    url: '{% url "usuario:desactivar" %}',
-                    data: {
-                        'id': id,
+                const ErrorNotification = window.createNotification({
+                    theme: 'error',
+                    showDuration: 5000
+                });
+                let password = document.getElementById('validationTooltip04');
+                let password_confirmation = document.getElementById('validationTooltip05');
+
+                $(document).ready(function () {
+                    $('#table_id').DataTable({
+                        bfilter: false,
+                        ordering: true,
+                        searching: true,
+                        info: false,
+                        "language": español
+                    });
+                });
+
+                var español = {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla =(",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
                     },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.desactive) {
-                            $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a" style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
-                            $("#activado").html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
-                            Swal.fire(
-                                'Bien !',
-                                'Usuario inhabilitado',
-                                'success'
-                            );
-                        }
-                        if (!data.desactive) {
-                            $("#colum-" + id).html(`<button type="submit" class="btn btn-danger"  onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
-                                                        <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
-                            $("#activado").html(`<span class="badge badge-pill badge-success">Activo</span>`);
-                            Swal.fire(
-                                'Bien !',
-                                'Usuario habilitado',
-                                'success'
-                            );
-                        }
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
                     }
+                };
+                $(document).ready(function () {
+                    $('#table_id').DataTable({
+
+                        ordering: true,
+                        searching: true,
+                        info: false,
+
+                    });
                 });
-            }
 
-            (function () {
-                'use strict';
-                window.addEventListener('load', function () {
-                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                    var forms = document.getElementsByClassName('needs-validation');
-                    // Loop over them and prevent submission
-                    var validation = Array.prototype.filter.call(forms, function (form) {
-                        form.addEventListener('submit', function (event) {
-                            if (form.checkValidity() === false) {
-                                event.preventDefault();
-                                ErrorNotification({
-                                    message: 'Las contraseñas no coinciden!'
-
-                                })
-                                event.stopPropagation();
-                            }
-                            form.classList.add('was-validated');
-                        }, false);
-                    });
-                }, false);
-            })();
-
-            $(document).ready(function () {
-                var $formulario = $('#insert');
-                $formulario.submit(function (event) {
-                    event.preventDefault();
-                    var $datos = $formulario.serialize();
-
+                function Inhabilitar(id) {
                     $.ajax({
-                        url: '{% url "usuario:signup"%}',
-                        method: "POST",
-                        data: $datos,
-                        success: function (data) {
-                            if (data.estado) {
-                                Agregar(data.person);
-                                Exito();
-                            } else
-                                Error();
-                        },
-                    });
-
-                    function Agregar(user) {
-                        $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
-                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
-                                <td name="name">${user.name}</td>
-                                <td name="last">${user.apellido}</td>
-                                <td name="cedula">0</td>
-                                <td name="telefono_fijo">${user.telefono_fijo}</td>
-                                <td name="celular">${user.celular}</td>
-                                <td><button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
-                                <td><button type="submit" class="btn btn-danger" onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button></td>
-                                </tr>`);
-                    }
-
-                    function Exito() {
-                        Swal.fire(
-                            'Bien !',
-                            'Exitoso',
-                            'success'
-                        );
-                        $('#mymodal').modal('hide');
-                    }
-
-                    (function () {
-
-                        if (password_confirmation !== "" && password !== "") {
-
-                            document.getElementById('Prism').innerHTML = "ingrese la contraseña";
-                            document.getElementById('Prism2').innerHTML = "ingrese la contraseña";
-                        }
-                    })();
-
-
-                    function Error() {
-
-                        if (password != password_confirmation) {
-
-                            ErrorNotification({
-                                message: 'Las contraseñas no coinciden!'
-                            });
-
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-
-                });
-            })
-            ;
-
-
-            function soloLetras(e) {
-                key = e.keyCode || e.which;
-                tecla = String.fromCharCode(key).toLowerCase();
-                letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
-                especiales = "8-37-39-46";
-
-                tecla_especial = false
-                for (var i in especiales) {
-                    if (key == especiales[i]) {
-                        tecla_especial = true;
-                        break;
-                    }
-                }
-
-                if (letras.indexOf(tecla) == -1 && !tecla_especial) {
-                    ErrorNotification({
-                        message: 'Solo se permiten letras!'
-                    });
-
-                    return false;
-                } else {
-                    document.getElementById('respuesta').innerHTML = "";
-                }
-            }
-
-
-            function open_modal() {
-                $("#modal_modificar").modal('show');
-            }
-
-            $("form#update").submit(function () {
-                event.preventDefault();
-                var id = $('input[name="formId"]').val().trim();
-                var nombre = $('input[name="formNombre"]').val().trim();
-                var apellido = $('input[name="formApellido"]').val().trim();
-                var cedula = $('input[name="formCedula"]').val().trim();
-                var telemercadeo = $('input[name="formTele"]').val().trim();
-                var telefono = $('input[name="formTelefono"]').val().trim();
-
-                if (nombre && apellido && cedula && telefono && telemercadeo) {
-                    $.ajax({
-                        url: '{% url "usuario:actualizar" %}',
-                        method: 'get',
+                        url: '{% url "usuario:desactivar" %}',
                         data: {
                             'id': id,
-                            'nombre': nombre,
-                            'apellido': apellido,
-                            'cedula': cedula,
-                            'tele': telemercadeo,
-                            'telefono': telefono
                         },
                         dataType: 'json',
                         success: function (data) {
-                            if (data.user) {
+                            if (data.desactive) {
+                                $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a" style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
+                                $("#activado-" + id).html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
                                 Swal.fire(
                                     'Bien !',
-                                    'Modificacion exitosa¡',
+                                    'Usuario inhabilitado',
                                     'success'
                                 );
-
-                                tableUpdate(data.user);
-                            } else {
-                                ErrorNotification({
-                                    message: 'Todos los campos son obligatorios!'
-                                });
                             }
-                            $('#modal_modificar').modal('hide');
-                            return false;
+                            if (!data.desactive) {
+                                $("#colum-" + id).html(`<button type="submit" class="btn btn-danger"  onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
+                                                        <button type="submit" onclick="Editar(${id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
+                                $("#activado-" + id).html(`<span class="badge badge-pill badge-success">Activo</span>`);
+                                Swal.fire(
+                                    'Bien !',
+                                    'Usuario habilitado',
+                                    'success'
+                                );
+                            }
                         }
                     });
-                } else {
-                    Correcto();
                 }
-            });
 
-            function Correcto() {
-                ErrorNotification({
-                    message: 'Todos los campos son obligatorios!'
-                });
-            }
+                (function () {
+                    'use strict';
+                    window.addEventListener('load', function () {
+                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                        var forms = document.getElementsByClassName('needs-validation');
+                        // Loop over them and prevent submission
+                        var validation = Array.prototype.filter.call(forms, function (form) {
+                            form.addEventListener('submit', function (event) {
+                                if (form.checkValidity() === false) {
+                                    event.preventDefault();
+                                    ErrorNotification({
+                                        message: 'Las contraseñas no coinciden!'
 
-            function Editar(id) {
-                if (id) {
-                    tr_id = "#fila-" + id;
-                    nombres = $(tr_id).find(".userNombre").text();
-                    apellidos = $(tr_id).find(".userApellido").text();
-                    cedulas = $(tr_id).find(".userCedula").text();
-                    telefonos = $(tr_id).find(".userTelefono").text();
-                    teles = $(tr_id).find(".userTele").text();
-                    $('#form-id').val(id);
-                    $('#form-apellido').val(apellidos);
-                    $('#form-nombre').val(nombres);
-                    $('#form-cedula').val(cedulas);
-                    $('#form-telefono').val(telefonos);
-                    $('#form-tele').val(teles);
-                }
-            }
+                                    })
+                                    event.stopPropagation();
+                                }
+                                form.classList.add('was-validated');
+                            }, false);
+                        });
+                    }, false);
+                })();
 
-            function tableUpdate(user) {
-                $("#table_id #fila-" + user.id).children(".userData").each(function () {
-                    var atributos = $(this).attr("name");
+                $(document).ready(function () {
+                    var $formulario = $('#insert');
+                    $formulario.submit(function (event) {
+                        event.preventDefault();
+                        var $datos = $formulario.serialize();
 
-                    if (atributos === "nombre") {
-                        $(this).text(user.nombre);
-                    } else if (atributos === "apellido") {
-                        $(this).text(user.apellido);
-                    } else if (atributos === "telefono") {
-                        $(this).text(user.telefono);
-                    } else if (atributos === "cedula") {
-                        $(this).text(user.cedula);
-                    } else {
-                        $(this).text(user.tele);
+                        $.ajax({
+                            url: '{% url "usuario:signup"%}',
+                            method: "POST",
+                            data: $datos,
+                            success: function (data) {
+                                if (data.estado) {
+                                    Agregar(data.person);
+                                    Exito();
+                                } else
+                                    Error();
+                            },
+                        });
+
+                        function Agregar(user) {
+                            $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
+                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
+                                <td name="nombre" class="userNombre userData">${user.name}</td>
+                                <td name="apellido" class="userApellido userData">${user.apellido}</td>
+                                <td name="cedula" class="userCedula userData">0</td>
+                                <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
+                                <td name="celular">${user.celular}</td>
+                                <td name="tele" class="userTele userData">tele</td>
+                                <td><div id="colum-${user.id}">
+                                <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
+                                <button type="submit" onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
+                                </div></td>
+                                </tr>`);
+                        }
+
+                        function Exito() {
+                            Swal.fire(
+                                'Bien !',
+                                'Exitoso',
+                                'success'
+                            );
+                            $('#mymodal').modal('hide');
+                        }
+
+                        (function () {
+
+                            if (password_confirmation !== "" && password !== "") {
+
+                                document.getElementById('Prism').innerHTML = "ingrese la contraseña";
+                                document.getElementById('Prism2').innerHTML = "ingrese la contraseña";
+                            }
+                        })();
+
+
+                        function Error() {
+
+                            if (password != password_confirmation) {
+
+                                ErrorNotification({
+                                    message: 'Las contraseñas no coinciden!'
+                                });
+
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+
+                    });
+                })
+                ;
+
+
+                function soloLetras(e) {
+                    key = e.keyCode || e.which;
+                    tecla = String.fromCharCode(key).toLowerCase();
+                    letras = " áéíóúabcdefghijklmnñopqrstuvwxyz";
+                    especiales = "8-37-39-46";
+
+                    tecla_especial = false
+                    for (var i in especiales) {
+                        if (key == especiales[i]) {
+                            tecla_especial = true;
+                            break;
+                        }
                     }
 
+                    if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+                        ErrorNotification({
+                            message: 'Solo se permiten letras!'
+                        });
+
+                        return false;
+                    } else {
+                        document.getElementById('respuesta').innerHTML = "";
+                    }
+                }
+
+
+                function open_modal() {
+                    $("#modal_modificar").modal('show');
+                }
+
+                $("form#update").submit(function () {
+                    event.preventDefault();
+                    var id = $('input[name="formId"]').val().trim();
+                    var nombre = $('input[name="formNombre"]').val().trim();
+                    var apellido = $('input[name="formApellido"]').val().trim();
+                    var cedula = $('input[name="formCedula"]').val().trim();
+                    var telemercadeo = $('input[name="formTele"]').val().trim();
+                    var telefono = $('input[name="formTelefono"]').val().trim();
+
+                    if (nombre && apellido && cedula && telefono && telemercadeo) {
+                        $.ajax({
+                            url: '{% url "usuario:actualizar" %}',
+                            method: 'get',
+                            data: {
+                                'id': id,
+                                'nombre': nombre,
+                                'apellido': apellido,
+                                'cedula': cedula,
+                                'tele': telemercadeo,
+                                'telefono': telefono
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.user) {
+                                    Swal.fire(
+                                        'Bien !',
+                                        'Modificacion exitosa¡',
+                                        'success'
+                                    );
+
+                                    tableUpdate(data.user);
+                                } else {
+                                    ErrorNotification({
+                                        message: 'Todos los campos son obligatorios!'
+                                    });
+                                }
+                                $('#modal_modificar').modal('hide');
+                                return false;
+                            }
+                        });
+                    } else {
+                        Correcto();
+                    }
                 });
-            }
 
-        </script>
-    {% endblock %}
+                function Correcto() {
+                    ErrorNotification({
+                        message: 'Todos los campos son obligatorios!'
+                    });
+                }
 
+                function Editar(id) {
+                    if (id) {
+                        tr_id = "#fila-" + id;
+                        nombres = $(tr_id).find(".userNombre").text();
+                        apellidos = $(tr_id).find(".userApellido").text();
+                        cedulas = $(tr_id).find(".userCedula").text();
+                        telefonos = $(tr_id).find(".userTelefono").text();
+                        teles = $(tr_id).find(".userTele").text();
+                        $('#form-id').val(id);
+                        $('#form-apellido').val(apellidos);
+                        $('#form-nombre').val(nombres);
+                        $('#form-cedula').val(cedulas);
+                        $('#form-telefono').val(telefonos);
+                        $('#form-tele').val(teles);
+                    }
+                }
+
+                function tableUpdate(user) {
+                    $("#table_id #fila-" + user.id).children(".userData").each(function () {
+                        var atributos = $(this).attr("name");
+
+                        if (atributos === "nombre") {
+                            $(this).text(user.nombre);
+                        } else if (atributos === "apellido") {
+                            $(this).text(user.apellido);
+                        } else if (atributos === "telefono") {
+                            $(this).text(user.telefono);
+                        } else if (atributos === "cedula") {
+                            $(this).text(user.cedula);
+                        } else {
+                            $(this).text(user.tele);
+                        }
+
+                    });
+                }
+
+            </script>
+        {% endblock %}
+    </div>
 
 {% endblock %}
-</div>
-
-</div>
-
 <style>
     div.dataTables_wrapper
     .dataTables_length select {
