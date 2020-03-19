@@ -11,51 +11,84 @@
 
         <div class="container">
             <div class="row">
-                <div class="col">
-                    <div id="demo" onmouseup="unaFuncion()" class="row">
-                        <div class="col-lg-3 offset-lg-2">
-                            <div class="wrapper">
-                                <div id="wrapper">
-                                    <div id="container">
-                                        {% for llamada in llamadas_hoy %}
-                                            <div class="box">
-                                                <p class="nota">{{ llamada.entrega }}</p>
-                                                <p hidden>{{ llamada.id }}</p>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                    <div id="threshold">
-                                        <div class="threshold"></div>
-                                        <div class="threshold"></div>
+                <div class="col-sm-offset-3">
+                    <ul class="list-group">
+                        <li class="list-group-item text-muted"><i class="fa fa-dashboard fa-1x"></i> Actividad</li>
+                        <li class="list-group-item text-right">
+                        <span class="pull-left">
+                            <strong><i class="fas fa-sort-numeric-up"></i> Cantidad</strong>
+                        </span>&nbsp;
+                            <span id="cant_ll">{{ llamadas_hoy|length }}</span>
+                        </li>
+                        <li class="list-group-item text-right" id="cant_usu">
+                        <span class="pull-left">
+                            <strong><i class="fa fa-user"></i>Usuarios</strong></span>&nbsp;
+                            {{ usuario_conectado|length }}
+                        </li>
+                        <li class="list-group-item text-right">
+                        <span class="pull-left">
+                            <strong><i class="fas fa-sort-numeric-down-alt"></i> Restantes</strong>
+                        </span>&nbsp;
+                            <span id="llam_res"></span>
+                        </li>
+                        <li class="list-group-item text-right">
+                        <span class="pull-left">
+                            <strong><i class="far fa-hand-pointer"></i> Seleccionado</strong>
+                        </span>&nbsp;
+                            <span id="conteo"></span>
+                        </li>
+                        <li class="list-group-item text-right">
+                        <span class="pull-left">
+                            <strong><i class="fas fa-divide"></i> Division</strong>
+                        </span>&nbsp;
+                            <span id="division">
+                        </span>
+                        </li>
+                        <a id="nea" href="{% url 'archivo:asignar' %}" hidden></a>
+                    </ul>
+                </div>
+                <div class="col-sm">
+                    <div class="col">
+                        <div id="demo" onmouseup="unaFuncion()" class="row">
+                            <div class="col-lg">
+                                <div class="wrapper">
+                                    <div id="wrapper">
+                                        <div id="container">
+                                            {% for llamada in llamadas_hoy %}
+                                                <div class="box">
+                                                    <span class="nota"
+                                                          style="font-size: 60%">{{ llamada.texto_breve_material }}</span>
+                                                    <p hidden>{{ llamada.id }}</p>
+                                                </div>
+                                            {% empty %}
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="alert alert-info" role="alert">
+                                                        <span class="glyphicon glyphicon-exclamation-sign"></span> No
+                                                        hay llamadas para repartir!
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-sm">
                     {% include 'base/components/tablaUserConect.html' %}
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <h2 id="cant_ll" class="col-lg-1 offset-9">{{ llamadas_hoy|length }}</h2>
-                    <h2 id="cant_usu" class="col-lg-1 offset-9">{{ usuario_conectado|length }}</h2>
-                    <h2 id="conteo" class="col-lg-1 offset-9"></h2>
-                    <h2 id="llam_res" class="col-lg-1 offset-9"></h2>
-                    <h2 id="division" class="col-lg-1 offset-9"></h2>
-                    <a id="nea" href="{% url 'archivo:asignar' %}" hidden></a>
-                    <button class="btn btn-success" id="clickes">Enviar</button>
+                    <div class="d-flex justify-content-center mt-4">
+                        <button class="btn btn-success" id="clickes">Enviar</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-
     </div>
 
-    <div class="col"></div>
+
 
 
 

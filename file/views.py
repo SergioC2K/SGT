@@ -3,6 +3,7 @@ import datetime
 # Excel
 import pandas as pd
 # Django
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
@@ -35,6 +36,7 @@ def upload_excel(request):
         try:
             archivo = Archivo.objects.create(nombre=nombre)
             archivo.save()
+            messages.success(request, 'Importe con exito!')
         except IntegrityError as e:
             return render(request, 'archivo/fileimport.html', {"message": e})
 
@@ -162,11 +164,12 @@ def enviarLlamadas(request):
                 registro.save()
                 llam.estado = True
                 llam.save()
+
         return redirect('archivo:import')
 
 
 def ver_Llamadas(request):
-    usuario = request.user.pk
+    usuario = request.user.perfil.pk
     estados = Estado.objects.all()
     registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
     data = {
