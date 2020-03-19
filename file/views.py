@@ -8,11 +8,12 @@ from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, FormView, View
 from django.db.models import Q, Count
 from django.db import IntegrityError
+from django.urls import reverse_lazy
 # Modelos
-from file.forms import RealizarLlamada
+from file.forms import RealizarLlamada, EstadoForm
 from file.models import RegistroLlamada
 from file.models import LlamadasEntrantes, Archivo, Estado
 from usuario.models import Perfil
@@ -72,7 +73,6 @@ superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:
 
 
 @method_decorator(superuser_required, name='dispatch')
-
 class ListarArchivo(ListView):
     model = LlamadasEntrantes
     template_name = 'archivo/listar_archivo.html'
@@ -133,6 +133,7 @@ def repartir(request):
 
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
 
+
 @method_decorator(superuser_required, name='dispatch')
 class entregar(ListView):
     template_name = 'llamada/entregar.html'
@@ -166,7 +167,7 @@ def enviarLlamadas(request):
 
 
 def ver_Llamadas(request):
-    usuario = request.user.pk
+    usuario = request.user.perfil.pk
     estados = Estado.objects.all()
     registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
     data = {
@@ -272,3 +273,33 @@ def search(request):
     user_list = RegistroLlamada.objects.all()
     user_filter = RegistroLlamadaFilter(request.GET, queryset=user_list)
     return render(request, 'llamada/exportar.html', {'filter': user_filter})
+
+
+@method_decorator(superuser_required, name='dispatch')
+class CrearEstado(ListView, FormView):
+    model = Estado
+    form_class = EstadoForm
+    template_name = 'llamada/estados.html'
+    success_url = reverse_lazy('archivo:estado')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class ActualizarEstado(View):
+    def get(self, request):
+        idOtro = request.GET.get('id', None)
+        nombre1 = request.GET.get('nombre', None)
+
+        obj = Estado.objects.get(id=idOtro)
+        obj = Estado.objects.get(nombre=nombre1)
+        obj.save()
+
+        user = {
+            'id': obj.id, 'nombre': obj.nombre
+        }
+        data = {
+            'user': user
+        }
+        return JsonResponse(data=data)
