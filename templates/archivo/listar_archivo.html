@@ -4,6 +4,7 @@
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>LLamadas</title>
+
 {% endblock %}
 {% block main %}
 
@@ -11,7 +12,7 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-sm-offset-3">
+                <div class="col-sm-3">
                     <ul class="list-group">
                         <li class="list-group-item text-muted"><i class="fa fa-dashboard fa-1x"></i> Actividad</li>
                         <li class="list-group-item text-right">
@@ -77,7 +78,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm">
+                <div class="col">
                     {% include 'base/components/tablaUserConect.html' %}
                     <div class="d-flex justify-content-center mt-4">
                         <button class="btn btn-success" id="clickes">Enviar</button>
@@ -121,6 +122,7 @@
 
     <script src="{% static 'dist/js/codigo.js' %}"></script>
     <script src="{% static 'dist/js/code.js' %}"></script>
+
     <script>
         var urlAsignar = document.getElementById('nea').getAttribute('href');
         var aux = document.location.href.substr(0, 21);

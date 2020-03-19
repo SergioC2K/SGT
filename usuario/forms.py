@@ -1,12 +1,12 @@
 """Formularios de Usuario."""
 
-# Django
-from django.core.mail import send_mail
 from django import forms
-from SGT import settings
-from django.urls import reverse
 #  Models
 from django.contrib.auth.models import User
+# Django
+from django.core.mail import send_mail
+
+from SGT import settings
 from usuario.models import Perfil, Conectado
 
 ASUNTO = 'Usuario Creado'
@@ -94,12 +94,18 @@ class SignupForm(forms.Form):
             'aria - describedby': 'validationTooltipUsernamePrepend'
         })
     )
-    is_staff = forms.ChoiceField(label='Cargo', choices=CARGOS, widget=forms.RadioSelect(attrs={
-        'class': 'form-group',
+    is_staff = forms.ChoiceField(label='Cargo', choices=CARGOS, widget=forms.Select(attrs={
+        'class': 'form-control',
         'required': True,
 
     }))
-    cedula = forms.IntegerField()
+    cedula = forms.IntegerField(label='Cedula', widget=forms.NumberInput(attrs={
+        'id': 'validationTooltip07',
+        'class': 'form-control',
+        'required': True,
+        'placeholder': 'Cedula',
+
+    }))
 
     def clean_cedula(self):
         """Verificar cedula unica"""
