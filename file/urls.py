@@ -35,7 +35,7 @@ urlpatterns = [
     ),
     path(
         route='buzon/',
-        view=views.ver_Llamadas,
+        view=views.realizar_llamada,
         name='buzon'
     ),
     path(
@@ -98,15 +98,27 @@ urlpatterns = [
         view=views.ListFile,
         name='listFile'
     ),
-   path(
+    path(
         route='estadito',
         view=views.CrearEstado.as_view(),
         name='estado'
     ),
+    # esta ruta me retorna solo un template "reporte llamadas"
     path(
-      route='updatEstado',
-      view=views.ActualizarEstado.as_view(),
-      name='updatEstado'
+        route='reporte_llamada/',
+        view=views.reporte_llamada,
+        name='reporte_llamada'
     ),
+    # esta ruta solo es para llevarle lo solicitado a el template"reporte llamadas"
+    path(
+        route='llevar_reporte_llamada',
+        view=views.traer_reporte_llamada,
+        name='llevar_reporte_llamada'
+    ),
+    path(
+        route='completo',
+        view=views.reporte_general,
+        name='completo'
+    )
 ]
 

@@ -1,33 +1,30 @@
-<div class="col-10 offset-3">
-    <div class="caja">
-        <div style="font-size: 20px;
-    height: auto;
-    width: auto;
-    padding: 1px 5px ;
-    padding-top: 15px ;
-    padding-left: 20% ;
-    color: #006709;
-    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;">
-
-
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header bg-dark" id="headingOne">
+            <button class="btn btn-" style="color: #fff1f1" type="button" data-toggle="collapse"
+                    data-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                <i class="far fa-user-circle"></i> En linea
+            </button>
         </div>
-        <div class="row">
-            <div class="col-10 offset-1">
-                <div class="otra-caja">
-                    {% for usuario in usuario_conectado %}
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            {% for usuario in usuario_conectado %}
 
-                        <div id="hablalo" class="chat_people" style="cursor:pointer;">
-                            <p hidden>{{ usuario.pk }}</p>
-                            <div class="chat_img"><img src="" alt=""></div>
-                            <div class="chat_ib">
-                                <h5>{{ usuario.usuario.get_username }} <span class="green led"></span></h5>
-                            </div>
-                        </div>
-                    {% endfor %}
+                <div id="hablalo" class="chat_people" style="cursor:pointer;">
+                    <p hidden>{{ usuario.pk }}</p>
+                    <div class="chat_img">
+                        <img src="{{ user.perfil.foto.url }}" class="img rounded" alt="">
+                    </div>
+                    <div class="chat_ib">
+                        <h5><span class="green led"></span>{{ usuario.usuario.get_username }} </h5>
+                    </div>
                 </div>
-            </div>
+            {% empty %}
+                <div class="alert alert-info" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span> No
+                    No hay usuarios en linea!
+                </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-
-

@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="border-color:  #36876a">
+    <div class="modal-content" style="border-color: #36876a">
         <div class="modal-header">
-            <h5 class="modal-title"><i class="fa fa-user"></i>Modificar usuario</h5>
+            <h5 class="modal-title"><i class="fa fa-user"></i>Modificar :{{ user.perfil.usurio }}</h5>
             <button type="button" class="close" data-dismiss="modal"
                     aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -21,6 +21,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
+                                    <label for="form-nombre">Nombre</label>
                                     <input class="form-control" id="form-nombre" required type="text" name="formNombre"
                                            min="8"
                                            max="8"/>
@@ -29,6 +30,7 @@
                             </div>
                             <div class="col">
                                 <div class="form-group">
+                                    <label for="form-apellido">Apellido</label>
                                     <input class="form-control" id="form-apellido" required type="text"
                                            name="formApellido"
                                            min="8"
@@ -39,6 +41,8 @@
                         <div class="row">
                             <div class="col mt-4">
                                 <div class="form-group">
+                                    <label for="form-telefono">Telefono</label>
+
                                     <input class="form-control" id="form-telefono" type="text" name="formTelefono"
                                            min="8"
                                            max="15"/>
@@ -47,16 +51,15 @@
                             <div class="col mt-4">
 
                                 <div class="form-group">
-
+                                    <label for="form-tele">Celular</label>
                                     <input class="form-control" id="form-tele" type="text" name="formTele" min="8"
                                            max="15"/>
                                 </div>
                             </div>
                             <div class="col mt-4">
                                 <div class="form-group">
-
-
-                                    <input class="form-control" id="form-cedula" type="text" readonly name="formCedula"
+                                    <label for="form-tele">Cedula</label>
+                                    <input class="form-control" id="form-cedula" type="text" name="formCedula"
                                            min="8" max="15"/>
                                 </div>
                             </div>
@@ -70,7 +73,7 @@
                     {# INPUT #}
 
                     <div class="modal-footer">
-                        <button class="btn btn" style="background-color:  #36876a; color: #fff4f0"
+                        <button class="btn btn" style="background-color: #36876a; color: #fff4f0"
                                 stype="submit">Modificar
                         </button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

@@ -1,34 +1,33 @@
 {% extends 'base/base.html' %}
+{% load notifications_tags %}
 {% load static %}
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>Lista de usuarios</title>
     <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/css/css-jf.css' %}">
 {% endblock %}
 {% block main %}
     <!-- Container -->
     <div class="container mt-3">
-        <!-- Title -->
-        <div class="hk-pg-header">
-            <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"><i
-                    data-feather="user"></i></span></span>Usuarios</h4></div>
-        <!-- /Title -->
+
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <h5 class="hk-sec-title"></h5>
+                    <h3 class="hk-pg-title">
+                        <span class="glyphicon glyphicon-user"></span>Usuarios
+                        <button type="button" class="btn btn"
+                                style="background-color: #36876a; color: #fff4f0;margin-left: 85%"
+                                data-toggle="modal"
+                                data-target=".bd-example-modal-lg"><i
+                                class="fas fa-user-plus"></i> Nuevo
+                        </button>
+
+                    </h3>
                     <div class="row">
                         <div class="col-xl-12">
-                            <section class="hk-sec-wrapper">
-                                <h5 class="hk-sec-title">
-                                    <button type="button" class="btn btn"
-                                            style="background-color: #36876a; color: #fff4f0" data-toggle="modal"
-                                            data-target=".bd-example-modal-lg"><i
-                                            class="fas fa-user-plus"></i></button>
-                                    Registro
-                                </h5>
-                            </section>
+                            <hr>
                             <div class="row">
                                 <div class="col-sm">
 
@@ -51,18 +50,18 @@
                                             {% if object_list %}
                                                 {% for foo in object_list %}
                                                     <tr id="fila-{{ foo.pk }}">
-                                                        <td id="estado">
-                                                        <div id="activado">
-                                                            {% if foo.usuario.is_active %}
+                                                        <td id="activado-{{ foo.pk }}">
+                                                            <div>
+                                                                {% if foo.usuario.is_active %}
 
-                                                                <span class="badge badge-pill badge-success">Activo</span>
+                                                                    <span class="badge badge-pill badge-success">Activo</span>
 
-                                                            {% else %}
+                                                                {% else %}
 
-                                                                <span class="badge badge-pill badge-danger">Inactivo</span>
+                                                                    <span class="badge badge-pill badge-danger">Inactivo</span>
 
-                                                            {% endif %}
-                                                        </div>
+                                                                {% endif %}
+                                                            </div>
                                                         </td>
                                                         <td>{{ foo.usuario }}</td>
                                                         <td class="userNombre userData"
@@ -83,7 +82,7 @@
                                                                     </p>
 
                                                                 {% else %}
-                                                                    <div id="fila-{{ foo.pk }}">
+                                                                    <div>
                                                                     {% if foo.usuario.is_active %}
 
                                                                         <button type="submit"
@@ -117,7 +116,9 @@
                                             </tbody>
                                         </table>
                                     {% else %}
-                                        <h1>NO HAY DATOS PARA MOSTRAR</h1>
+                                        <div class="alert alert-info" role="alert">
+                                            No hay usuarios registrados
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -134,129 +135,9 @@
          aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-color:  #36876a">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="fa fa-user"></i> Registro de usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="container-fluid">
-
-                    <div class="container">
-
-                        <form id="insert" class="needs-validation"
-                              novalidate
-                              autocomplete="off" method="POST">
-                            {% csrf_token %}
-                            <div class="form-row">
-                                <div class="col-md-4 mb-3">
-                                    <label for="validationTooltip01">Nombres</label>
-
-
-                                    <input type="text" name="first_name" class="form-control" id="validationTooltip01"
-                                           placeholder="Nombres" required="" onkeypress="return soloLetras(event)"
-                                           maxlength="50"
-                                           minlength="2">
-                                    <div id="respuesta">
-
-                                    </div>
-                                    <div class="valid-tooltip">
-                                        Bien hecho!
-                                    </div>
-                                    <div class="invalid-tooltip">
-                                        Ingrese el nombre
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="validationTooltip02">Apellidos</label>
-                                    {# INPUT #}
-                                    <input type="text" name="last_name" class="form-control" id="validationTooltip02"
-                                           placeholder="Apellidos" required="" onkeypress="return soloLetras(event)"
-                                           maxlength="50"
-                                           minlength="2">
-                                    <div id="respuesta">
-
-                                    </div>
-                                    <div class="valid-tooltip">
-                                        Bien hecho!
-                                    </div>
-                                    <div class="invalid-tooltip">
-                                        Ingrese el apellido
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="validationTooltipUsername">Email</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                                <span class="input-group-text"
-                                                      id="validationTooltipUsernamePrepend">@</span>
-                                        </div>
-                                        {# INPUT #}
-                                        {{ form.email }}
-                                        <div class="invalid-tooltip">
-                                            Ingrese el email
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row mt-3">
-                                <div class="col-md-4 mb-3">
-                                    <label for="validationTooltip03">Nombre de
-                                        usuario</label>
-                                    {# INPUT #}
-                                    {{ form.username }}
-                                    <div class="invalid-tooltip">
-                                        Ingrese el nombre de usuario
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 mb-3">
-                                    <label for="validationTooltip04">Contraseña</label>
-                                    {# INPUT #}
-                                    {{ form.password }}
-                                    <div id="Prism2" class="invalid-tooltip">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="validationTooltip05">Confirmar
-                                        contraseña</label>
-                                    {{ form.password_confirmation }}
-                                    <div id="Prism" class="invalid-tooltip">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-2 mt-4 ">
-                                    <div class="form-group">
-                                        <label for="Cargo">Tipo de usuario</label>
-                                        {{ form.is_staff }}
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-2 mt-4 ">
-                                    <div class="form-group">
-                                        <label for="Cargo">Cedula</label>
-
-                                        {{ form.cedula }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn" style="background-color:  #36876a; color: #fff4f0" id="submit"
-                                        type="submit">Enviar
-                                </button>
-                                <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">Cancelar
-                                </button>
-                            </div>
-
-                        </form>
-
-                    </div>
-                </div>
-            </div>
+            {% include 'users/creacion_perfil.html' %}
         </div>
     </div>
-
     <!--Aca empieza el modal del modificar -->
     <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
 
@@ -273,8 +154,16 @@
         </footer>
 
         {% block javascript %}
-
             <script>
+                const successNotification = window.createNotification({
+                    theme: 'success',
+                    showDuration: 5000
+                });
+
+                const ErrorNotification = window.createNotification({
+                    theme: 'error',
+                    showDuration: 5000
+                });
                 let password = document.getElementById('validationTooltip04');
                 let password_confirmation = document.getElementById('validationTooltip05');
 
@@ -283,7 +172,46 @@
                         bfilter: false,
                         ordering: true,
                         searching: true,
-                        info: false
+                        info: false,
+                        "language": español
+                    });
+                });
+
+                var español = {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla =(",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                };
+                $(document).ready(function () {
+                    $('#table_id').DataTable({
+
+                        ordering: true,
+                        searching: true,
+                        info: false,
+
                     });
                 });
 
@@ -297,7 +225,7 @@
                         success: function (data) {
                             if (data.desactive) {
                                 $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a" style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
-                                $("#activado").html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
+                                $("#activado-" + id).html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
                                 Swal.fire(
                                     'Bien !',
                                     'Usuario inhabilitado',
@@ -306,8 +234,8 @@
                             }
                             if (!data.desactive) {
                                 $("#colum-" + id).html(`<button type="submit" class="btn btn-danger"  onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
-                                                        <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
-                                $("#activado").html(`<span class="badge badge-pill badge-success">Activo</span>`);
+                                                        <button type="submit" onclick="Editar(${id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
+                                $("#activado-" + id).html(`<span class="badge badge-pill badge-success">Activo</span>`);
                                 Swal.fire(
                                     'Bien !',
                                     'Usuario habilitado',
@@ -328,11 +256,10 @@
                             form.addEventListener('submit', function (event) {
                                 if (form.checkValidity() === false) {
                                     event.preventDefault();
-                                    Swal.fire(
-                                        'Error',
-                                        'Por favor complete los campos',
-                                        'error'
-                                    );
+                                    ErrorNotification({
+                                        message: 'Las contraseñas no coinciden!'
+
+                                    })
                                     event.stopPropagation();
                                 }
                                 form.classList.add('was-validated');
@@ -361,15 +288,18 @@
                         });
 
                         function Agregar(user) {
-                            $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
+                            $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
                                <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
-                                <td name="name">${user.name}</td>
-                                <td name="last">${user.apellido}</td>
-                                <td name="cedula">0</td>
-                                <td name="telefono_fijo">${user.telefono_fijo}</td>
+                                <td name="nombre" class="userNombre userData">${user.name}</td>
+                                <td name="apellido" class="userApellido userData">${user.apellido}</td>
+                                <td name="cedula" class="userCedula userData">0</td>
+                                <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
                                 <td name="celular">${user.celular}</td>
-                                <td><button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button></td>
-                                <td><button type="submit" class="btn btn-danger" onclick="Inhabilitar((${user.id})"><i class="fas fa-power-off"></i></button></td>
+                                <td name="tele" class="userTele userData">tele</td>
+                                <td><div id="colum-${user.id}">
+                                <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
+                                <button type="submit" onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
+                                </div></td>
                                 </tr>`);
                         }
 
@@ -384,37 +314,22 @@
 
                         (function () {
 
-                            if (password_confirmation != "" && password != "") {
+                            if (password_confirmation !== "" && password !== "") {
 
                                 document.getElementById('Prism').innerHTML = "ingrese la contraseña";
                                 document.getElementById('Prism2').innerHTML = "ingrese la contraseña";
                             }
-
                         })();
-
-                        function Malo() {
-
-
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error...',
-                                text: 'Las contraseñas no coinciden!',
-
-                            })
-
-                        }
 
 
                         function Error() {
 
                             if (password != password_confirmation) {
 
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error...',
-                                    text: 'Las contraseñas no coinciden!',
+                                ErrorNotification({
+                                    message: 'Las contraseñas no coinciden!'
+                                });
 
-                                })
                                 return false;
                             } else {
                                 return true;
@@ -441,12 +356,10 @@
                     }
 
                     if (letras.indexOf(tecla) == -1 && !tecla_especial) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Solo se permiten letras!',
+                        ErrorNotification({
+                            message: 'Solo se permiten letras!'
+                        });
 
-                        })
                         return false;
                     } else {
                         document.getElementById('respuesta').innerHTML = "";
@@ -490,7 +403,9 @@
 
                                     tableUpdate(data.user);
                                 } else {
-                                    alert("Todos los campos son requeridos");
+                                    ErrorNotification({
+                                        message: 'Todos los campos son obligatorios!'
+                                    });
                                 }
                                 $('#modal_modificar').modal('hide');
                                 return false;
@@ -502,11 +417,9 @@
                 });
 
                 function Correcto() {
-                    Swal.fire(
-                        'Mal !',
-                        'Llenar los campos',
-                        'error'
-                    );
+                    ErrorNotification({
+                        message: 'Todos los campos son obligatorios!'
+                    });
                 }
 
                 function Editar(id) {
@@ -547,8 +460,6 @@
 
             </script>
         {% endblock %}
-    </div>
-
     </div>
 
 {% endblock %}

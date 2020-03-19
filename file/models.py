@@ -8,9 +8,12 @@ from utils.models import BaseModel
 class Archivo(BaseModel, models.Model):
     nombre = models.CharField(max_length=50, unique=True)
 
+    def __str__(self):
+        return self.nombre
+
 
 class LlamadasEntrantes(BaseModel, models.Model):
-    archivo = models.ForeignKey(Archivo, on_delete=models.CASCADE)
+    archivo = models.ForeignKey('Archivo', on_delete=models.CASCADE)
     estado = models.BooleanField(default=False)
 
     nombre_solicitante = models.CharField(max_length=50)
@@ -43,10 +46,18 @@ class LlamadasEntrantes(BaseModel, models.Model):
     hora_inicio = models.CharField(max_length=50)
     hora_final = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.pk
+
 
 class Grabacion(BaseModel, models.Model):
+    # Url de donde va quedar almacenada la grabacion
+
     nombre = models.CharField(max_length=45)
     audio = models.FileField(upload_to='audio/mp3')
+
+    def __str__(self):
+        return self.nombre
 
 
 class Estado(BaseModel, models.Model):
@@ -63,8 +74,8 @@ class RegistroLlamada(BaseModel, models.Model):
     realizado = models.BooleanField(default=False, null=True)
     id_llamada = models.ForeignKey(LlamadasEntrantes, on_delete=models.PROTECT)
     id_usuario = models.ForeignKey(Perfil, null=True, on_delete=models.PROTECT)
-    id_estado = models.ForeignKey('Estado', null=True, blank=False, on_delete=models.PROTECT, related_name='estado')
+    id_estado = models.ForeignKey('Estado', null=True, blank=False, on_delete=models.PROTECT)
     id_grabacion = models.ForeignKey('Grabacion', null=True, on_delete=models.PROTECT)
 
     def __str__(self):
-        return str(self.fecha_entrega)
+        return str(self.id)

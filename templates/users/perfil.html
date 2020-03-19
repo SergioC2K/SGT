@@ -1,62 +1,81 @@
 {% load static %}
-{% load crispy_forms_tags %}
+
 
 <head>
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
-    <title>{{ user }}</title>
+    <title>Configuracion</title>
     <link rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/notifications.css' %}">
 </head>
 <body>
 {% block form %}
-    {% if request.user.is_anonymous %}
-        <a class="btn btn-success mt-2" href="{% url 'usuario:login' %}"><i class="fas fa-arrow-left"></i></a>
-    {% else %}
-        &nbsp;<a class="btn btn-success mt-2 justify-content-center" href="{% url 'file:buzon' %}"><i
-            class="fas fa-arrow-left"></i></a>
-    {% endif %}
-    <div class="container">
-        <div class="card" style="border-radius: 20px">
-            <div class="card-body">
-                <h5 class="card-title"><i class="fa fa-user"></i> Complete los siguientes campos para continuar
-                </h5>
+
+    <form method="POST" action="{% url 'usuario:perfil' %}" name="perfilform" id="perfilform"
+          enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container mt-2">
+            <div class="card">
+                <div class="card-title ml-2 mt-2">
+                    <h3><i class="fas fa-user-cog"></i> {{ user }}
+                        <a id="atras" href="{% url 'archivo:buzon' %}"
+                           class="btn btn-info"
+                           data-toggle="tooltip" data-placement="right" title="Regresar"><i class="fas fa-undo-alt"></i></a>
+                    </h3>
+
+                </div>
                 <hr>
-                <form method="POST" action="{% url 'usuario:perfil' %}" name="perfilform" id="perfilform"
-                      enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="media">
-                        <div class="media-body">
+                <div class="row">
+                    <div class="col-sm-3 "><!--left col-->
+                        <div class="text-center" style="margin-left: 10px">
+                            {% if perfil.foto %}
+                                <img src="{{ perfil.foto.url }}" class="avatar img-circle img-thumbnail"
+                                     alt="avatar">
+                            {% else %}
+                                <img src="{% static 'dist/img/avatar1.jpg' %}"
+                                     class="rounded-circle" width="130px" height="130px"/>
+                            {% endif %}
+
+                            <div class="upload-btn-wrapper m-2">
+                                <button class="btn-1">Subir foto</button>
+                                <input type="file" value="{{ perfil.foto }}" style="width:180px" name="foto" id="foto">
+
+                            </div>
+                        </div>
+                    </div><!--/col-3-->
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="home">
                             <div class="container">
-                                <div class="form-group" id="const">
-
-
-                                    {% if perfil.foto %}
-                                        <img src="{{ perfil.foto.url }}"
-                                             class="rounded-circle" width="130px" height="130px"/>
-                                    {% else %}
-                                        <img src="{% static 'dist/img/avatar1.jpg' %}"
-                                             class="rounded-circle" width="130px" height="130px"/>
-                                    {% endif %}
-
-
-                                    <input type="file" value="{{ perfil.foto }}" name="foto" id="foto">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="form-group " id="document-form">
+                                            <label for="cedula  ">Cedula</label>
+                                            <input class="form-control"
+                                                   id="cedula" name="cedula"
+                                                   maxlength="10"
+                                                   value="{{ perfil.cedula }}"
+                                                   placeholder="Documento de identidad"
+                                                   type="text"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="col">
+                                            <label>Nombres</label>
+                                            <input class="form-control"
+                                                   readonly onmousedown="return false"
+                                                   name="firts_name" id="firts_name"
+                                                   maxlength="15"
+                                                   required
+                                                   value="{{ user.first_name }}"
+                                                   type="text"/>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
 
+                            <div class="container">
                                 <div class="row">
                                     <div class="col">
-
-                                        <label>Nombres</label>
-
-                                        <input class="form-control"
-                                               readonly onmousedown="return false"
-                                               name="firts_name" id="firts_name"
-                                               maxlength="15"
-                                               required
-                                               value="{{ user.first_name }}"
-                                               type="text"/>
-
-                                    </div>
-                                    <div class="col">
-
                                         <label>Apellido</label>
                                         <input
                                                 class="form-control"
@@ -66,51 +85,7 @@
                                                 required
                                                 readonly
                                                 value="{{ user.last_name }}"/>
-
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col mt-4">
-                                        <label>Email</label>
-                                        <input
-                                                class="form-control"
-                                                type="text"
-                                                name="email"
-                                                placeholder=""
-                                                required
-                                                readonly
-                                                value="{{ user.email }}"/>
-                                    </div>
-                                    <div class="col mt-4">
-                                        <div class="form-group">
-                                            <label>Telefono fijo </label>
-                                            <input class="form-control"
-                                                   name="telefono_fijo" id="telefono_fijo"
-                                                   placeholder="Telefono fijo"
-                                                   value="{{ perfil.telefono_fijo }}"
-                                                   required
-                                                   type="text"/>
-                                        </div>
-                                    </div>
-                                    <div class="col mt-4">
-                                        <div class="form-group">
-                                            <label>Cedula </label>
-                                            <div class="form-group" id="document-form">
-                                                <input class="form-control"
-                                                       id="cedula" name="cedula"
-                                                       maxlength="10"
-                                                       value="{{ perfil.cedula }}"
-                                                       placeholder="Documento de identidad"
-                                                       type="text"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="container">
-                                <div class="row">
                                     <div class="col-sm">
                                         <div class="form-group">
                                             <label>Celular </label>
@@ -122,6 +97,38 @@
                                                        value="{{ perfil.celular }}"
                                                        type="text"/>
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm">
+
+                                        <div class="form-group">
+                                            <label>Telefono fijo </label>
+                                            <input class="form-control"
+                                                   name="telefono_fijo" id="telefono_fijo"
+                                                   placeholder="Telefono fijo"
+                                                   value="{{ perfil.telefono_fijo }}"
+                                                   required
+                                                   type="text"/>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    name="email"
+                                                    placeholder=""
+                                                    required
+                                                    readonly
+                                                    value="{{ user.email }}"/>
                                         </div>
                                     </div>
                                     <div class="col-sm">
@@ -138,23 +145,24 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="d-flex justify-content-around mt-5">
+
+                                    <img src="{% static 'dist/img/LogoSGT.png' %}" height="80" class="fixed-bottom">
+                                    <button type="submit" class="btn btn-success">Guardar cambios</button>
+                                    <a class="btn btn-dark" href="{% url 'usuario:cambio' %}">Cambiar contraseña</a>
+                                    <span style="color: gray;font-size: 13px">Ultima modificacion {{ perfil.modified }}</span>
+
+                                </div>
+                                <hr>
                             </div>
-                            <div class="card-footer justify-content-center">
-                                <br>
-                                <img src="{% static 'dist/img/LogoSGT.png' %}" height="80" class="fixed-bottom">
-                                <button type="submit" class="btn btn-success">Guardar cambios</button>
-                                <a class="btn btn-dark" href="{% url 'usuario:cambio' %}">Cambiar contraseña</a>
-                                <span style="color: gray;font-size: 13px">Ultima modificacion {{ perfil.modified }}</span>
-                            </div>
+    </form>
 
-                        </div>
+    <!--/tab-pane-->
 
-                    </div>
-                </form>
-            </div>
 
-        </div>
-    </div>
+
+
+
 
 {% endblock %}
 </body>
@@ -163,10 +171,28 @@
     <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
     <script src="{% static 'dist/popper.js/dist/umd/popper.min.js' %}"></script>
     <script src="{% static 'dist/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'dist/notifications.js' %}"></script>
     <script src="https://kit.fontawesome.com/c7e6a57cdf.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script>
 
+
+    <script>
+        const successNotification = window.createNotification({
+            theme: 'success',
+            showDuration: 5000
+        });
+        const ErrorNotification = window.createNotification({
+            theme: 'error',
+            showDuration: 5000
+        });
+        {% if form.errors %}
+            {% for field in form %}
+                {% if field.errors %}
+                    ErrorNotification({
+                        message: ' {{ field.label }}: {{ field.errors|striptags }}, {{ form.non_field_errors }}'
+                    });
+                {% endif %}
+            {% endfor %}
+        {% endif %}
 
         window.addEventListener('load', function () {
             document.querySelector('input[type="file"]').addEventListener('change', function () {
@@ -174,10 +200,13 @@
                 if (this.files && this.files[0]) {
                     let img = document.querySelector('img');
                     img.src = URL.createObjectURL(this.files[0]);
+                    successNotification({
+                        message: 'Foto importada con exito!'
+                    });
 
                 }
             })
-        })
+        });
 
 
         function setInputFilter(textbox, inputFilter) {
@@ -217,16 +246,51 @@
 <style>
 
     body {
-        background: rgba(194, 204, 142, 1);
-        background: -moz-radial-gradient(center, ellipse cover, rgba(194, 204, 142, 1) 0%, rgba(70, 175, 138, 1) 100%);
-        background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(194, 204, 142, 1)), color-stop(100%, rgba(70, 175, 138, 1)));
-        background: -webkit-radial-gradient(center, ellipse cover, rgba(194, 204, 142, 1) 0%, rgba(70, 175, 138, 1) 100%);
-        background: -o-radial-gradient(center, ellipse cover, rgba(194, 204, 142, 1) 0%, rgba(70, 175, 138, 1) 100%);
-        background: -ms-radial-gradient(center, ellipse cover, rgba(194, 204, 142, 1) 0%, rgba(70, 175, 138, 1) 100%);
-        background: radial-gradient(ellipse at center, rgba(194, 204, 142, 1) 0%, rgba(70, 175, 138, 1) 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2cc8e', endColorstr='#46af8a', GradientType=1);
+        background-image: url("{% static 'dist/img/Mojito.jpg' %}");
     }
 
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+
+    }
+
+    .btn-1 {
+        border: 2px solid gray;
+        color: gray;
+        background-color: white;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: bold;
+
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+
+    }
+
+    .card {
+        background: black;
+        color: #FFFFFF;
+        opacity: 0.9;
+        border-color: #0b2e13;
+        border-radius: 10px;
+    }
+
+    hr {
+        border: 1px solid #fff1f1;
+    }
+
+    #atras {
+        margin-left: 83%;
+    }
 </style>
 
 

@@ -1,8 +1,10 @@
 # Date
 import datetime
+from datetime import date
 # Excel
 import pandas as pd
 # Django
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
@@ -17,6 +19,7 @@ from file.forms import RealizarLlamada, EstadoForm
 from file.models import RegistroLlamada
 from file.models import LlamadasEntrantes, Archivo, Estado
 from usuario.models import Perfil
+from file.forms import SubirArchivoForm
 
 # Filtros
 from .filters import RegistroLlamadaFilter
@@ -30,43 +33,16 @@ horas_antes = hoy - datetime.timedelta(hours=12)
 @login_required
 def upload_excel(request):
     if request.method == 'POST':
-        nombre = request.FILES['myfile']
-        leido = pd.read_excel(nombre)
-        llamadas = []
-        try:
-            archivo = Archivo.objects.create(nombre=nombre)
-            archivo.save()
-        except IntegrityError as e:
-            return render(request, 'archivo/fileimport.html', {"message": e})
+        form = SubirArchivoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Las llamadas han sido cargadas al sistema')
+        else:
+            return render(request, 'archivo/fileimport.html', context={'form': form})
+    else:
+        form = SubirArchivoForm()
 
-        for data in leido.T.to_dict().values():
-            llamadas.append(
-                LlamadasEntrantes(
-                    archivo=archivo,
-                    nombre_solicitante=data['Nombre solicitante'],
-                    ident_fiscal=data['Ident.Fiscal Dest Mcia'],
-                    nombre_destinatario=data['Nombre destinatario'],
-                    direccion_des_mcia=data['Dirección Dest Mcia'],
-                    telefono=data['Teléfono 1'],
-                    telebox=data['Telebox'],
-                    zona_transporte=data['Zona de transporte'],
-                    material=data['Material'],
-                    texto_breve_material=data['Texto breve material'],
-                    documento_ventas=data['Documento de ventas'],
-                    entrega=data['Entrega'],
-                    num_pedido_cliente=data['Nº pedido cliente'],
-                    cantidad_pedido=data['Cantidad de pedido'],
-                    observaciones_inicial=data['Observaciones'],
-                    denom_articulos=data['Denom.gr-artículos'],
-                    localidad=data['localidad'],
-                    barrio=data['barrio'],
-                    ruta=data['ruta'],
-                    hora_inicio=data['hora inicial'],
-                    hora_final=data['hora final']
-                )
-            )
-        LlamadasEntrantes.objects.bulk_create(llamadas)
-    return render(request, 'archivo/fileimport.html')
+    return render(request, 'archivo/fileimport.html', context={'form': form})
 
 
 superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
@@ -202,40 +178,26 @@ def eliminarArchivo(request):
     return JsonResponse(data)
 
 
-def traer(request):
-    persona = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
-
-    data = {'nombre': consulta.id_llamada.nombre_destinatario,
-            'ruta': consulta.id_llamada.ruta,
-            'telefono': consulta.id_llamada.telefono,
-            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
-            'alm_soli': consulta.id_llamada.nombre_solicitante,
-            'localidad': consulta.id_llamada.localidad}
-
-    return JsonResponse(data)
-
-
 class ListFile(ListView):
     model = Perfil
     template_name = 'llamada/exportar.html'
 
 
-def realizar_llamada(request, number):
-    global llamadas, data
+def realizar_llamada(request):
+    global data
+    usuario = request.user
     if request.method == 'POST':
-        llamada = RegistroLlamada.objects.get(id=number)
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()
             data = {
                 'form': form,
                 'aprobado': 'ok',
-                'llamada': llamada,
                 'errores': form.errors
             }
             return render(request, template_name='llamada/Buzon.html', context=data)
         else:
+            llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
             data = {
                 'form': form.errors,
                 'No_Aprobado': 'NO',
@@ -244,10 +206,12 @@ def realizar_llamada(request, number):
             return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
-        llamada = RegistroLlamada.objects.get(id=number)
+        estados = Estado.objects.all()
+        llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
         data = {
             'form': form,
-            'llamada': llamada
+            'llamadas': llamada,
+            'estados': estados
         }
     return render(request, template_name='llamada/Buzon.html', context=data)
 
@@ -259,14 +223,19 @@ def pruebas_llamadas(request):
 
 
 def traer(request):
-    persona = request.GET.get('id', None)
-    consulta = RegistroLlamada.objects.get(id_llamada_id=persona)
-    data = {'nombre': consulta.id_llamada.nombre_destinatario, 'ruta': consulta.id_llamada.ruta,
-            'telefono': consulta.id_llamada.telefono,
-            'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
-            'alm_soli': consulta.id_llamada.nombre_solicitante,
-            'localidad': consulta.id_llamada.localidad}
-    return JsonResponse(data)
+    llamada = int(request.GET.get('id', None))
+    consulta = RegistroLlamada.objects.get(pk=llamada)
+    oelooo = consulta.pk
+    datos = {
+        'id_llamada': consulta.pk,
+        'nombre': consulta.id_llamada.nombre_destinatario,
+        'ruta': consulta.id_llamada.ruta,
+        'telefono': consulta.id_llamada.telefono,
+        'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
+        'alm_soli': consulta.id_llamada.nombre_solicitante,
+        'localidad': consulta.id_llamada.localidad
+    }
+    return JsonResponse(datos)
 
 
 def search(request):
@@ -303,3 +272,75 @@ class ActualizarEstado(View):
             'user': user
         }
         return JsonResponse(data=data)
+
+
+
+class CrearEstado(ListView, FormView):
+    model = Estado
+    form_class = EstadoForm
+    template_name = 'llamada/estados.html'
+
+
+
+
+
+
+#  Este metodo solo es para que me retorne al template
+def reporte_llamada(request):
+    return render(request, 'reportes/reporte_llamada.html')
+
+
+def traer_reporte_llamada(request):
+    # La variable dia me trae el valor de la fecha a consultar
+    dia = request.GET.get('valor', None)
+    fecha = date.today()
+    valor = int(dia)
+
+    if valor == 0:
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta').count()
+        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso').count()
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito
+        }
+
+    elif valor == 1:
+        ayer = fecha.day - 1
+        exito = RegistroLlamada.objects.filter(modified__day=ayer, id_estado__nombre='Exitoso').count()
+        no_contesta = RegistroLlamada.objects.filter(modified__day=ayer, id_estado__nombre='No contesta').count()
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito
+        }
+
+    elif valor == 2:
+        hoy = datetime.datetime.utcnow()
+        semana = hoy - datetime.timedelta(days=7)
+        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', modified__range=[semana, hoy]).count()
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta', modified__range=[semana, hoy]).count()
+
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito
+        }
+
+    elif valor == 3:
+        hoy = datetime.datetime.utcnow()
+        mes = hoy - datetime.timedelta(days=30)
+        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', modified__range=[mes, hoy]).count()
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta', modified__range=[mes, hoy]).count()
+
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito
+        }
+
+    return JsonResponse(data=data)
+
+
+def reporte_general(request):
+    entrantes = LlamadasEntrantes.objects.all()
+    registradas = RegistroLlamada.objects.all()
+    data = {'objeto': entrantes,
+            'registro': registradas}
+    return render(request,'reportes/reporte_general.html',data)

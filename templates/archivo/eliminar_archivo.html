@@ -40,16 +40,24 @@
 
         <script>
             function eliminar(id) {
-                Swal.fire({
-                    title: 'Desea eliminar el archivo?',
-                    text: "Verifique las llamadas realizadas!",
-                    icon: 'info',
+                 const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                });
+
+                swalWithBootstrapButtons.fire({
+                    title: 'Estas seguro?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#36876a',
-                    cancelButtonColor: '#409ec1',
-                    confirmButtonText: ' Eliminar!'
-                }).then(function (result) {
-                    if (result != false) {
+                    confirmButtonText: 'Si, Eliminar!',
+                    cancelButtonText: 'No, Emilinar!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.value) {
                         $.ajax({
                             url: '{% url "archivo:exterminar" %}',
                             data: {
@@ -66,6 +74,15 @@
                                 }
                             }
                         });
+                    } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                            'Cancelado',
+                            'Tu archivo esta seguro :)',
+                            'error'
+                        )
                     }
                 })
             }
@@ -84,7 +101,6 @@
                     'Eliminado correctamente',
                     'success'
                 )
-
             }
         </script>
     </div>

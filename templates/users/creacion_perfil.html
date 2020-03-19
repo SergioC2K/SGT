@@ -1,41 +1,120 @@
-{% extends 'base/base.html' %}
+<div class="modal-content" style="border-color:#36876a">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa fa-user"></i> Registro de usuario</h5>
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
-
-{% load crispy_forms_tags %}
-
-{% block main %}
-    <br>
-    <br>
-    <br>
-    <div class="container text-center mx-auto">
-        <form method="post">
+    <div class="container">
+        <form id="insert" class="needs-validation"
+              novalidate
+              autocomplete="off" method="POST">
             {% csrf_token %}
+            <div class="row">
+                <div class="col form-group">
+                    <label for="validationTooltip07">Cedula</label>
+                    {{ form.cedula }}
 
-            <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.usuario|as_crispy_field }}
+                    <div class="invalid-tooltip">
+                        Ingrese la cedula
+                    </div>
                 </div>
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.cedula|as_crispy_field }}
+                <div class="col form-group">
+
+                    <label for="validationTooltipUsername">Email</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
+                        </div>
+                        {# INPUT #}
+                        {{ form.email }}
+                        <div class="invalid-tooltip">
+                            Ingrese el email
+                        </div>
+                    </div>
                 </div>
             </div>
-            {{ form.telefono_fijo|as_crispy_field }}
-            {{ form.celular|as_crispy_field }}
-            <div class="form-row">
-                <div class="form-group col-md-6 mb-0">
-                    {{ form.foto|as_crispy_field }}
+
+            <div class="row mt-3">
+                <div class="col">
+                    <label for="validationTooltip01">Nombres</label>
+                    <input type="text" name="first_name" class="form-control"
+                           id="validationTooltip01"
+                           placeholder="Nombres" required="" onkeypress="return soloLetras(event)"
+                           maxlength="50"
+                           minlength="2">
+                    <div class="valid-tooltip">
+                        Bien hecho!
+                    </div>
+                    <div class="invalid-tooltip">
+                        Ingrese el nombre
+                    </div>
+
+                </div>
+                <div class="col">
+
+                    <label for="validationTooltip02">Apellidos</label>
+                    {# INPUT #}
+                    <input type="text" name="last_name" class="form-control"
+                           id="validationTooltip02"
+                           placeholder="Apellidos" required="" onkeypress="return soloLetras(event)"
+                           maxlength="50"
+                           minlength="2">
+
+                    <div class="valid-tooltip">
+                        Bien hecho!
+                    </div>
+                    <div class="invalid-tooltip">
+                        Ingrese el apellido
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="validationTooltip03">Nombre de
+                        usuario</label>
+                    {{ form.username }}
+                    <div class="invalid-tooltip">
+                        Ingrese el nombre de usuario
+                    </div>
                 </div>
             </div>
-            {{ form.celular_telemercadeo|as_crispy_field }}
-            <button type="submit" class="btn btn-primary">Sign in</button>
+            <div class="row mt-5">
+                <div class="col">
 
+                    <label for="validationTooltip04">Contraseña</label>
+                    {# INPUT #}
+                    {{ form.password }}
+                    <div id="Prism2" class="invalid-tooltip">
+                    </div>
+
+                </div>
+                <div class="col">
+                    <label for="validationTooltip05">Confirmar
+                        contraseña</label>
+                    {{ form.password_confirmation }}
+                    <div id="Prism" class="invalid-tooltip">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <label for="Cargo">Tipo de usuario</label>
+                    {{ form.is_staff }}
+                </div>
+            </div>
+
+            <div class="modal-footer mt-5">
+                <button class="btn btn-info"
+                        id="submit"
+                        type="submit">Enviar
+                </button>
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Cancelar
+                </button>
+            </div>
 
         </form>
+
     </div>
-{% endblock %}
-
-
-
-
+</div>
 
 
