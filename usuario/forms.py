@@ -150,7 +150,7 @@ class SignupForm(forms.Form):
         conexion.save()
         profile = Perfil(usuario=user, conexion=conexion, cedula=cedula)
         profile.save()
-        send_mail(ASUNTO, MENSAJE, EMAIL, [self.cleaned_data['email']], fail_silently=False)
+        send_mail(ASUNTO, MENSAJE, EMAIL, [self.cleaned_data['email']], fail_silently=True)
 
 
 class UserForm(forms.ModelForm):
