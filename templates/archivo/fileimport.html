@@ -9,14 +9,15 @@
 
 {% block main %}
     <div class="container mt-4">
-        <div class="hk-pg-header">
-            <h4 class="hk-pg-title">
-                    <span class="pg-title-icon">
-                    </span><i class="fas fa-file-excel"></i>&nbsp Importe de archivo </h4>
-        </div>
         <div class="container-fluid">
+
             <div class="card">
                 <div class="card-body">
+                    <h4 class="hk-pg-title card-title">
+                    <span class="pg-title-icon">
+                    </span><i class="fas fa-file-excel"></i>&nbsp;Importe de archivo
+                    </h4>
+                    <hr>
                     <div class="container">
                         <div class="custom-file col-md-6 ">
                             <form action="{% url 'archivo:importe' %}" method="POST" enctype="multipart/form-data">
@@ -25,7 +26,8 @@
                                     {{ form.archivo }}
                                 </div>
                                 <button class="btn btn"
-                                        style="background-color: #36876a; color: #fff1f1" id="btn" type="submit">Enviar
+                                        style="background-color: #36876a; color: #fff1f1" id="btn" type="submit">
+                                    Importar
                                 </button>
                                 {% if form.errors %}
                                     {% for errores in form.non_field_errors %}
@@ -45,9 +47,8 @@
             {% if errors %}
                 <div class="alert alert-danger alert-dismissible fade show ">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error: </span>
-                    <strong>Este archivo ya existe!</strong>
+                    <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Error este
+                        archivo ya existe!</strong>
                 </div>
             {% endif %}
         </div>
@@ -74,11 +75,24 @@
                         )
                     }
                 })
+
             </script>
         {% endblock %}
 
     </div>
+    <style>
+        #sampleContainer ol {
+            padding: 0px 0px 0px 15px;
+            margin: 0;
+        }
 
+        #sampleContainer input {
+            margin: 10px 0;
+        }
 
-
+        #result {
+            display: none;
+            color: red;
+        }
+    </style>
 {% endblock %}

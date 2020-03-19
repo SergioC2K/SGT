@@ -136,7 +136,7 @@ def enviarLlamadas(request):
 
 
 def ver_Llamadas(request):
-    usuario = request.user.pk
+    usuario = request.user.perfil.pk
     estados = Estado.objects.all()
     registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
     data = {

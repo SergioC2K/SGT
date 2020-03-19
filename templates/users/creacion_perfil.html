@@ -1,4 +1,4 @@
-<div class="modal-content" style="border-color:  #36876a">
+<div class="modal-content" style="border-color:#36876a">
     <div class="modal-header">
         <h5 class="modal-title"><i class="fa fa-user"></i> Registro de usuario</h5>
         <button type="button" class="close" data-dismiss="modal"
@@ -6,94 +6,115 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="container-fluid">
 
-        <div class="container">
+    <div class="container">
+        <form id="insert" class="needs-validation"
+              novalidate
+              autocomplete="off" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col form-group">
+                    <label for="validationTooltip07">Cedula</label>
+                    {{ form.cedula }}
 
-            <form id="insert" class="needs-validation"
-                  novalidate
-                  autocomplete="off" method="POST">
-                {% csrf_token %}
-                <div class="form-row">
-                    <div class="col-md-4 mb-3">
-                        <label for="validationTooltip01">Nombres</label>
-                        {{ form.first_name }}
-                        <div class="valid-tooltip">
-                            Bien hecho!
-                        </div>
-                        <div class="invalid-tooltip">
-                            Ingrese el nombre
-                        </div>
+                    <div class="invalid-tooltip">
+                        Ingrese la cedula
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="validationTooltip02">Apellidos</label>
+                </div>
+                <div class="col form-group">
+
+                    <label for="validationTooltipUsername">Email</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
+                        </div>
                         {# INPUT #}
-                        {{ form.last_name }}
-                        <div class="valid-tooltip">
-                            Bien hecho!
-                        </div>
+                        {{ form.email }}
                         <div class="invalid-tooltip">
-                            Ingrese el apellido
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="validationTooltipUsername">Email</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                                <span class="input-group-text"
-                                                      id="validationTooltipUsernamePrepend">@</span>
-                            </div>
-                            {# INPUT #}
-                            {{ form.email }}
-                            <div class="invalid-tooltip">
-                                Ingrese el email
-                            </div>
+                            Ingrese el email
                         </div>
                     </div>
                 </div>
-                <div class="form-row mt-3">
-                    <div class="col-md-4 mb-3">
-                        <label for="validationTooltip03">Nombre de
-                            usuario</label>
-                        {# INPUT #}
-                        {{ form.username }}
-                        <div class="invalid-tooltip">
-                            Ingrese el nombre de usuario
-                        </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <label for="validationTooltip01">Nombres</label>
+                    <input type="text" name="first_name" class="form-control"
+                           id="validationTooltip01"
+                           placeholder="Nombres" required="" onkeypress="return soloLetras(event)"
+                           maxlength="50"
+                           minlength="2">
+                    <div class="valid-tooltip">
+                        Bien hecho!
+                    </div>
+                    <div class="invalid-tooltip">
+                        Ingrese el nombre
                     </div>
 
-                    <div class="col-md-3 mb-3">
-                        <label for="validationTooltip04">Contraseña</label>
-                        {# INPUT #}
-                        {{ form.password }}
-                        <div id="Prism2" class="invalid-tooltip">
-                        </div>
+                </div>
+                <div class="col">
+
+                    <label for="validationTooltip02">Apellidos</label>
+                    {# INPUT #}
+                    <input type="text" name="last_name" class="form-control"
+                           id="validationTooltip02"
+                           placeholder="Apellidos" required="" onkeypress="return soloLetras(event)"
+                           maxlength="50"
+                           minlength="2">
+
+                    <div class="valid-tooltip">
+                        Bien hecho!
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="validationTooltip05">Confirmar
-                            contraseña</label>
-                        {{ form.password_confirmation }}
-                        <div id="Prism" class="invalid-tooltip">
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-2 mt-4 ">
-                        <div class="form-group">
-                            <label for="Cargo">Tipo de usuario</label>
-                            {{ form.is_staff }}
-                        </div>
+                    <div class="invalid-tooltip">
+                        Ingrese el apellido
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn" style="background-color:  #36876a; color: #fff4f0" id="submit"
-                            type="submit">Enviar
-                    </button>
-                    <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Cancelar
-                    </button>
+                <div class="col">
+                    <label for="validationTooltip03">Nombre de
+                        usuario</label>
+                    {{ form.username }}
+                    <div class="invalid-tooltip">
+                        Ingrese el nombre de usuario
+                    </div>
                 </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col">
 
-            </form>
+                    <label for="validationTooltip04">Contraseña</label>
+                    {# INPUT #}
+                    {{ form.password }}
+                    <div id="Prism2" class="invalid-tooltip">
+                    </div>
 
-        </div>
+                </div>
+                <div class="col">
+                    <label for="validationTooltip05">Confirmar
+                        contraseña</label>
+                    {{ form.password_confirmation }}
+                    <div id="Prism" class="invalid-tooltip">
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <label for="Cargo">Tipo de usuario</label>
+                    {{ form.is_staff }}
+                </div>
+            </div>
+
+            <div class="modal-footer mt-5">
+                <button class="btn btn-info"
+                        id="submit"
+                        type="submit">Enviar
+                </button>
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Cancelar
+                </button>
+            </div>
+
+        </form>
+
     </div>
 </div>
+
+

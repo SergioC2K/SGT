@@ -203,7 +203,8 @@ class actualizarUsu(View):
         perfil.save()
 
         user = {
-            'id': obj.id, 'nombre': obj.first_name, 'apellido': obj.last_name,
+            'id': obj.id,
+            'nombre': obj.first_name, 'apellido': obj.last_name,
             'cedula': perfil.cedula, 'telefono': perfil.telefono_fijo,
             'tele': perfil.celular_telemercadeo
         }
