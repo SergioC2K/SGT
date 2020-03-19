@@ -11,32 +11,39 @@
 
 {% block main %}
     <div class="hk-pg-wrapper">
-        <table class="table table-striped" id="Tablet">
-            <thead>
-            <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Accion</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% if object_list %}
-                {% for i in object_list %}
-                    <tr id="archivo-{{ i.pk }}">
-                        <td>{{ i.nombre }}</td>
-                        <td>{{ i.created }}</td>
-                        <td>
-                            <button class="btn btn-danger " onclick="eliminar({{ i.pk }}) ">
-                                <i class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
+        <div class="container">
+            <table class="table table-striped" id="Tablet">
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Accion</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if object_list %}
+                    {% for i in object_list %}
+                        <tr id="archivo-{{ i.pk }}">
+                            <td>{{ i.nombre }}</td>
+                            <td>{{ i.created }}</td>
+                            <td>
+                                <button class="btn btn-danger " onclick="eliminar({{ i.pk }}) ">
+                                    <i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
 
-                {% endfor %}
-            {% else %}
-                <h1 align="center">No hay archivos</h1>
-            {% endif %}
-            </tbody>
-        </table>
+                    {% endfor %}
+                    </table>
+
+                    </div>
+                {% else %}
+                    <div class="alert alert-info" role="alert">
+                        <h4><span class="glyphicon glyphicon-exclamation-sign"></span> No
+                            hay archivos!
+                        </h4>
+                    </div>
+                {% endif %}
 
         <script>
             function eliminar(id) {
