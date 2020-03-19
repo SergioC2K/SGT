@@ -117,7 +117,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form method="POST" action="{% url 'archivo:buzon' %}">
+                                <form method="POST" action="{% url 'archivo:buzon' %}" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <header>
                                         <div class="email-options">
@@ -150,7 +150,7 @@
                                                 </div>
                                                 <div class="col-sm">
                                                     <strong>Fecha de entrega</strong>
-
+                                                    {{ form.fecha_entrega }}
                                                 </div>
                                                 <div class="col-sm">
                                                     <!-- Button trigger modal -->
@@ -222,7 +222,7 @@
             var today = new Date();
             $('#fecha_entrega').datepicker({
                 uiLibrary: 'bootstrap4',
-                format: 'yyyy-dd-mm',
+                format: 'yyyy-mm-dd',
                 minDate: today
             });
 
