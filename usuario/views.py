@@ -15,6 +15,8 @@ from django.views.generic import ListView, UpdateView, FormView, View
 from django.contrib.auth.models import User
 
 # Forms
+from notifications.signals import notify
+
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil
 from django.contrib.auth.forms import PasswordChangeForm
@@ -37,6 +39,7 @@ class LoginViewUsuario(LoginView):
 
 
 def perfil(request):
+
     return render(request, 'users/perfil.html')
 
 
@@ -116,10 +119,12 @@ class ListarUsuario(ListView, FormView):
 def deshabilitar(request):
     id = request.GET.get('id', None)
     user = User.objects.get(pk=id)
-
+    admin = User.objects.filter(is_staff=True)
     if user.is_active:
         user.is_active = False
         user.save()
+        notify.send(user, recipient=admin, verb='perrras', action_object=admin)
+        alo = admin.notifications.mark_all_as_read()
         data = {'desactive': True}
     else:
         user.is_active = True
@@ -162,6 +167,7 @@ class UpdateProfileView(UpdateView):
     model = Perfil
     form_class = PerfilForm
     success_url = reverse_lazy('usuario:listar_usuario')
+
 
     def get_object(self, **kwargs):
         """Return user's profile."""

@@ -134,6 +134,7 @@ div::before, div::after {
 .box.ui-selected {
     background-color: #14677b;
     color: #f2f2f2;
+    text-shadow: 0 0 30px #fff
 }
 
 .box.ui-deselecting {
@@ -185,6 +186,7 @@ a, a:hover, a:focus, a:active {
     transition: all 0.5s;
     position: relative;
 }
+
 .btn-two span {
     z-index: 2;
     display: block;
@@ -192,6 +194,7 @@ a, a:hover, a:focus, a:active {
     width: 100%;
     height: 100%;
 }
+
 .btn-two::before {
     content: '';
     position: absolute;
@@ -204,6 +207,7 @@ a, a:hover, a:focus, a:active {
     border: 1px solid #14677b;
     background-color: rgba(255, 255, 255, 0.31);
 }
+
 .btn-two::after {
     content: '';
     position: absolute;
@@ -217,11 +221,13 @@ a, a:hover, a:focus, a:active {
     border-radius: 1px;
     background-color: rgba(39, 59, 226, 0.03);
 }
+
 .btn-two:hover::before {
-  transform: rotate(-45deg);
-  background-color: rgba(255,255,255,0);
+    transform: rotate(-45deg);
+    background-color: rgba(255, 255, 255, 0);
 }
+
 .btn-two:hover::after {
-  transform: rotate(45deg);
-  background-color: rgba(255,255,255,0);
+    transform: rotate(45deg);
+    background-color: rgba(255, 255, 255, 0);
 }

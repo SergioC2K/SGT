@@ -9,52 +9,33 @@
 
 {% block main %}
     <div class="container mt-4">
-        <div class="container-fluid">
+    <div class="container-fluid">
 
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="hk-pg-title card-title">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="hk-pg-title card-title">
                     <span class="pg-title-icon">
                     </span><i class="fas fa-file-excel"></i>&nbsp;Importe de archivo
-                    </h4>
-                    <hr>
-                    <div class="container">
-                        <div class="custom-file col-md-6 ">
-                            <form action="" method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <input type="text" id="nombre" name="nombre" hidden>
-                                <div class="form-group">
-                                    <input class="form-control" type="file" id="input" name="myfile"
-                                           onchange="papa()"
-                                           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
-                                </div>
-                                <button class="btn btn"
-                                        style="background-color: #36876a; color: #fff1f1" id="btn" type="submit">
-                                    Importar
-                                </button>
-                            </form>
-                        </div>
+                </h4>
+                <hr>
+                <div class="container">
+                    <div class="custom-file col-md-6 ">
+                        <form action="{% url 'archivo:importe' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="text" id="nombre" name="nombre" hidden>
+                            <div class="form-group">
+                                {{ form.archivo }}
+                            </div>
+                            <button class="btn btn"
+                                    style="background-color: #36876a; color: #fff1f1" id="btn" type="submit">
+                                Importar
+                            </button>
+
+                        </form>
                     </div>
                 </div>
             </div>
-            {% if errors %}
-                <div class="alert alert-danger alert-dismissible fade show ">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Error este
-                        archivo ya existe!</strong>
-                </div>
-            {% endif %}
         </div>
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-success alert-dismissible fade show ">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> {{ message }}
-                    </strong>
-                </div>
-            {% endfor %}
-
-        {% endif %}
 
 
     </div>
@@ -62,6 +43,11 @@
     <script>
         const ErrorNotification = window.createNotification({
             theme: 'error',
+            showDuration: 5000
+        });
+
+        const succcesNotification = window.createNotification({
+            theme: 'success',
             showDuration: 5000
         });
 
@@ -80,7 +66,25 @@
             }
 
 
-        })
+        });
+        {% if form.errors %}
+            {% for errores in form.non_field_errors %}
+
+                ErrorNotification({
+                    message: '{{ errores }}'
+
+                })
+            {% endfor %}
+        {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                succcesNotification({
+                    message: '{{ message }}'
+
+                })
+
+            {% endfor %}
+        {% endif %}
     </script>
 
 

@@ -39,6 +39,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'crispy_forms',
     'django_filters',
+    'notifications',
 ]
 LOCAL_APPS = [
     'file',

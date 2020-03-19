@@ -16,16 +16,16 @@ class ProfileCompleteMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        """Code to be executed for each request before the view is called."""
+        """Código que se ejecutará para cada solicitud antes de que se llame a la vista."""
         if not request.user.is_anonymous:
             if not request.user.is_staff:
                 perfil = request.user.perfil
-                if not perfil.cedula \
-                        and not perfil.telefono_fijo \
+                if not perfil.telefono_fijo \
                         and not perfil.celular \
                         and not perfil.celular_telemercadeo:
+                    request.log = True
                     if request.path not in [reverse('usuario:perfil'), reverse('usuario:logout')]:
                         return redirect('usuario:perfil')
-
+        request.log = False
         response = self.get_response(request)
         return response

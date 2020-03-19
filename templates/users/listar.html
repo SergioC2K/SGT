@@ -1,35 +1,31 @@
 {% extends 'base/base.html' %}
+{% load notifications_tags %}
 {% load static %}
 {% block title %}
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>Lista de usuarios</title>
     <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'dist/notifications.css' %}">
-    <script src="{% static 'dist/notifications.js' %}"></script>
 {% endblock %}
 {% block main %}
     <!-- Container -->
     <div class="container mt-3">
-        <!-- /Title -->
+
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
-                    <h5 class="hk-sec-title"></h5>
+                    <h3 class="hk-pg-title">
+                        <span class="glyphicon glyphicon-user"></span>Usuarios
+                            <button type="button" class="btn btn"
+                                style="background-color: #36876a; color: #fff4f0;margin-left: 85%"
+                                data-toggle="modal"
+                                data-target=".bd-example-modal-lg"><i
+                                class="fas fa-user-plus"></i> Nuevo
+                        </button>
+
+                    </h3>
                     <div class="row">
                         <div class="col-xl-12">
-                            <section class="hk-sec-wrapper">
-                                <h3 class="hk-pg-title">
-                                    <span class="pg-title-icon"><span
-                                            class="glyphicon glyphicon-user"></span></span>Usuarios
-                                    <button type="button" class="btn btn"
-                                            style="background-color: #36876a; color: #fff4f0;margin-left: 85%"
-                                            data-toggle="modal"
-                                            data-target=".bd-example-modal-lg"><i
-                                            class="fas fa-user-plus"></i> Nuevo
-                                    </button>
-                                </h3>
-                            </section>
                             <hr>
                             <div class="row">
                                 <div class="col-sm">
@@ -277,7 +273,7 @@
 
                     (function () {
 
-                        if (password_confirmation != "" && password != "") {
+                        if (password_confirmation !== "" && password !== "") {
 
                             document.getElementById('Prism').innerHTML = "ingrese la contraseña";
                             document.getElementById('Prism2').innerHTML = "ingrese la contraseña";

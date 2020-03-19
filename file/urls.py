@@ -16,7 +16,7 @@ urlpatterns = [
     path(
         route='importe/',
         view=ImporteControl.upload_excel,
-        name='import'
+        name='importe'
     ),
     path(
         route='entregar/',
@@ -35,7 +35,7 @@ urlpatterns = [
     ),
     path(
         route='buzon/',
-        view=views.ver_Llamadas,
+        view=views.realizar_llamada,
         name='buzon'
     ),
     path(
@@ -98,4 +98,9 @@ urlpatterns = [
         view=views.ListFile,
         name='listFile'
     ),
+    path(
+        route='estadito',
+        view=views.CrearEstado.as_view(),
+        name='estado'
+    )
 ]
