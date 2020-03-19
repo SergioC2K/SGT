@@ -47,7 +47,11 @@
                         </li>
                         <a id="nea" href="{% url 'archivo:asignar' %}" hidden></a>
                     </ul>
+                    <div class="d-flex justify-content-center mt-5">
+                        <button class="btn btn-two" id="clickes"><i class="fas fa-paper-plane"></i> Enviar</button>
+                    </div>
                 </div>
+
                 <div class="col-sm">
                     <div class="col">
                         <div id="demo" onmouseup="unaFuncion()" class="row">
@@ -80,14 +84,15 @@
                 </div>
                 <div class="col">
                     {% include 'base/components/tablaUserConect.html' %}
-                    <div class="d-flex justify-content-center mt-4">
-                        <button class="btn btn-outline-info" id="clickes">Enviar</button>
-                    </div>
+
                 </div>
             </div>
+
         </div>
 
     </div>
+
+
 
 
 
