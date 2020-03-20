@@ -185,28 +185,29 @@ def realizar_llamada(request):
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()
+            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
+
             data = {
                 'form': form,
-                'aprobado': 'ok',
-                'errores': form.errors
+                'llamadas': llamadas
             }
+            messages.success(request,'La llamada ha sido realizada')
             return render(request, template_name='llamada/Buzon.html', context=data)
         else:
-            llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
+            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
+            messages.error(request,'La llamada no es valida, verifique los campos y vuelva a intentarlo')
+
             data = {
                 'form': form.errors,
-                'No_Aprobado': 'NO',
-                'llamada': llamada
+                'llamada': llamadas
             }
             return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
-        estados = Estado.objects.all()
         llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
         data = {
             'form': form,
-            'llamadas': llamada,
-            'estados': estados
+            'llamadas': llamada
         }
     return render(request, template_name='llamada/Buzon.html', context=data)
 
@@ -220,7 +221,6 @@ def pruebas_llamadas(request):
 def traer(request):
     llamada = int(request.GET.get('id', None))
     consulta = RegistroLlamada.objects.get(pk=llamada)
-    oelooo = consulta.pk
     datos = {
         'id_llamada': consulta.pk,
         'nombre': consulta.id_llamada.nombre_destinatario,

@@ -218,49 +218,56 @@
     </style>
 
     {% block Javascript %}
-        <script>
-            var today = new Date();
-            $('#fecha_entrega').datepicker({
-                uiLibrary: 'bootstrap4',
-                format: 'yyyy-mm-dd',
-                minDate: today
-            });
-
-            function noCumplio() {
-                alert('Ha ocurrido un problema y no se cumplió con la tarea');
-            }
-
-            function recuperar(id) {
-                $.ajax({
-                    url: '{% url "archivo:traer" %}',
-                    data: {
-                        'id': id,
-                    },
-                    datatype: 'json',
-                    success: function (data) {
-                        if (data) {
-                            traiga(data, id);
-                            alert('La tarea ha sido terminada con exito');
-                        } else {
-                            noCumplio();
-                        }
-                    },
-                    error: noCumplio()
-                })
-            }
-
-            function traiga(user, id) {
-                debugger
-                $("#nombre_solicitante").val(user.nombre);
-                $("#ruta").val(user.ruta);
-                $("#telefono").val(user.telefono);
-                $("#direccion_des_mcia").val(user.direccion_des_mcia);
-                $("#alm_soli").val(user.alm_soli);
-                $("#localidad").val(user.localidad);
-                document.getElementById("id_llamada").value = id;
-            }
-        </script>
     {% endblock %}
+    <script>
+    const ErrorNotification = window.createNotification({
+        theme: 'error',
+        showDuration: 5000
+    });
+        ErrorNotification({
+            message: 'oelo'
+        });
+        var today = new Date();
+        $('#fecha_entrega').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'yyyy-mm-dd',
+            minDate: today
+        });
+
+        function noCumplio() {
+            alert('Ha ocurrido un problema y no se cumplió con la tarea');
+        }
+
+        function recuperar(id) {
+            $.ajax({
+                url: '{% url "archivo:traer" %}',
+                data: {
+                    'id': id,
+                },
+                datatype: 'json',
+                success: function (data) {
+                    if (data) {
+                        traiga(data, id);
+                        alert('La tarea ha sido terminada con exito');
+                    } else {
+                        noCumplio();
+                    }
+                },
+                error: noCumplio()
+            })
+        }
+
+        function traiga(user, id) {
+            debugger
+            $("#nombre_solicitante").val(user.nombre);
+            $("#ruta").val(user.ruta);
+            $("#telefono").val(user.telefono);
+            $("#direccion_des_mcia").val(user.direccion_des_mcia);
+            $("#alm_soli").val(user.alm_soli);
+            $("#localidad").val(user.localidad);
+            document.getElementById("id_llamada").value = id;
+        }
+    </script>
 {% endblock %}
 {% block scripts %}
     {{ block.super }}
