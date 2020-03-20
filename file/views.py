@@ -1,24 +1,25 @@
 # Date
 import datetime
 from datetime import date
-
+# Excel
+import pandas as pd
+# Django
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
-# Excel
-# Django
-from django.db.models import Count, Q
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, FormView
-
+from django.views.generic import ListView, UpdateView, FormView
+from django.db.models import Q, Count
+from django.db import IntegrityError
 # Modelos
 from file.forms import RealizarLlamada, EstadoForm
-from file.forms import SubirArchivoForm
-from file.models import LlamadasEntrantes, Archivo, Estado
 from file.models import RegistroLlamada
+from file.models import LlamadasEntrantes, Archivo, Estado
 from usuario.models import Perfil
+from file.forms import SubirArchivoForm
+
 # Filtros
 from .filters import RegistroLlamadaFilter
 
