@@ -36,15 +36,16 @@ div::before, div::after {
     content: "";
 }
 
+
 /* DEMO */
 .wrapper {
-    width: 600px;
+    width: 550px;
 }
 
 #container {
     width: 100%;
-    height: 60vh;
-    padding: 5px;
+    height: 75vh;
+    padding: 25px;
     overflow-y: auto;
     position: relative;
     display: flex;
@@ -52,6 +53,9 @@ div::before, div::after {
     justify-content: stretch;
     align-content: flex-start;
     transition: all 0.3s ease;
+    background-color: #333333;
+    border-radius: 2px;
+
 }
 
 #container.random {
@@ -92,20 +96,28 @@ div::before, div::after {
 .box {
     width: 77px;
     height: 71px;
-    color: #aaa;
     border-radius: 2px;
     margin: 0 5px 5px 0;
     position: relative;
     background-color: #eee;
     display: flex;
     align-items: center;
+    color: #ffffff !important;
     justify-content: center;
-    transition: all 100ms;
+    transition: all 0.3s ease 0s;
+
+
 }
 
 .box.ui-selectable, .box.selectable {
-    color: #fff;
-    background-color: #aaa;
+
+    color: #b5b5b5 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+    transition: all 0.3s ease 0s;
 }
 
 .box::after {
@@ -114,15 +126,19 @@ div::before, div::after {
 }
 
 .box.ui-selecting {
-    background-color: #006709;
+    background: #232526; /* fallback for old browsers */
+
+
 }
 
 .box.ui-selected {
-    background-color: #25c807;
+    background-color: #14677b;
+    color: #f2f2f2;
+    text-shadow: 0 0 30px #fff
 }
 
 .box.ui-deselecting {
-    background-color: rgba(0, 103, 10, 0.5);
+    background-color: rgba(0, 78, 20, 0.5);
 }
 
 .box.floated {
@@ -163,4 +179,55 @@ a, a:hover, a:focus, a:active {
 
 .dg .property-name {
     overflow: visible;
+}
+
+.btn-two {
+    color: black;
+    transition: all 0.5s;
+    position: relative;
+}
+
+.btn-two span {
+    z-index: 2;
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.btn-two::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: all 0.5s;
+    border: 1px solid #14677b;
+    background-color: rgba(255, 255, 255, 0.31);
+}
+
+.btn-two::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: all 0.5s;
+    border: 1px solid #14677b;
+    border-radius: 1px;
+    background-color: rgba(39, 59, 226, 0.03);
+}
+
+.btn-two:hover::before {
+    transform: rotate(-45deg);
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.btn-two:hover::after {
+    transform: rotate(45deg);
+    background-color: rgba(255, 255, 255, 0);
 }

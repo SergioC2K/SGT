@@ -1,28 +1,24 @@
 # Django
+from django.contrib import messages
 from django.contrib.auth import logout
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.forms import PasswordChangeForm
+# Models
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.core import serializers
 from django.utils.decorators import method_decorator
-from notifications.signals import notify
-
 # CB Views
 from django.views.generic import ListView, UpdateView, FormView, View
-
-# Exception
-from django.db.utils import IntegrityError
-# Models
-from django.contrib.auth.models import User
-
 # Forms
+from notifications.signals import notify
+
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
 
 
 class LoginViewUsuario(LoginView):
@@ -34,7 +30,6 @@ class LoginViewUsuario(LoginView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            messages.success(request, f"Bienvenido: {Perfil.usuario}")
             return HttpResponseRedirect(reverse_lazy('usuario:perfil'))
         return super(LoginViewUsuario, self).get(request, *args, **kwargs)
 
@@ -45,22 +40,22 @@ def perfil(request):
 
 def UserCreateView(request):
     if request.is_ajax():
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            perfil = Perfil.objects.get(usuario__username=form.cleaned_data['username'])
-            persona = {
-                'id': perfil.id,
-                'name': perfil.usuario.first_name,
-                'cedula': perfil.cedula,
-                'estado': perfil.usuario.is_active,
-                'apellido': perfil.usuario.last_name,
-                'telefono_fijo': perfil.telefono_fijo,
-                'celular': perfil.celular
-            }
-            data = {'estado': True, 'person': persona, 'form': form}
+        formula = SignupForm(request.POST)
+        userna = request.POST.get('username')
+        if formula.is_valid():
+            formula.save()
+            persona = User.objects.get(username=userna)
+            usuario = Perfil.objects.get(usuario_id=persona.pk)
+            d = {'id': usuario.id,
+                 'name': usuario.usuario.first_name,
+                 'cedula': usuario.cedula,
+                 'estado': usuario.usuario.is_active,
+                 'apellido': usuario.usuario.last_name,
+                 'telefono_fijo': usuario.telefono_fijo,
+                 'celular': usuario.celular}
+            data = {'estado': True, 'person': d}
         else:
-            data = {'errores': True, 'form': form.errors}
+            data = {'estado': False}
 
         return JsonResponse(data=data)
     else:
@@ -73,14 +68,16 @@ def cambio_contrasena(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)
+            update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Tu contrasena ha sido cambiada!')
             return redirect('usuario:logout')
         else:
             messages.error(request, 'Por favor corrija el error a continuación.')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'users/nuevaContrasena.html', context={'form': form})
+    return render(request, 'users/nuevaContrasena.html', {
+        'form': form
+    })
 
 
 @login_required
@@ -113,7 +110,6 @@ class ListarUsuario(ListView, FormView):
         return super().form_valid(form)
 
 
-# @user_passes_test(lambda u:u.is_staff, login_url=('perfil'))
 @login_required
 def deshabilitar(request):
     id = request.GET.get('id', None)
@@ -161,25 +157,20 @@ class ListEstado(ListView):
 
 
 class UpdateProfileView(UpdateView):
-    """Update profile view."""
-    template_name = 'users/perfil.html'
-    model = Perfil
-    slug_field = 'perfil'
-    query_pk_and_slug = True
-    pk_url_kwarg = 'perfil'
-    slug_url_kwarg = 'perfil'
-    success_url = reverse_lazy('usuario:listar_usuario')
-    fields = '__all__'
+        """Update profile view."""
+        template_name = 'users/perfil.html'
+        model = Perfil
+        form_class = PerfilForm
+        success_url = reverse_lazy('usuario:listar_usuario')
 
-    def get_object(self, **kwargs):
-        """Return user's profile."""
-        consulta = self.queryset
-        return consulta
+        def get_object(self, **kwargs):
+            """Return user's profile."""
+            return self.request.user.perfil
 
-    def get_success_url(self):
-        """Return to user's profile."""
-        username = self.object.usuario.username
-        return reverse('usuario:listar_usuario')
+        def get_success_url(self):
+            """Return to user's profile."""
+            username = self.object.usuario.username
+            return reverse('usuario:listar_usuario')
 
 
 class actualizarUsu(View):
@@ -203,8 +194,7 @@ class actualizarUsu(View):
         perfil.save()
 
         user = {
-            'id': obj.id,
-            'nombre': obj.first_name, 'apellido': obj.last_name,
+            'id': obj.id, 'nombre': obj.first_name, 'apellido': obj.last_name,
             'cedula': perfil.cedula, 'telefono': perfil.telefono_fijo,
             'tele': perfil.celular_telemercadeo
         }
