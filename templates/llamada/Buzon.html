@@ -56,167 +56,150 @@
                             </div>
                         </div>
                         <div class="emailapp-right">
-                            <form action="" method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <header>
-                                    <div class="email-options">
-                                        <i class="fas fa-clipboard-list"></i> Datos de llamada
-                                    </div>
-                                    <div class="row justify-content-around">
-                                        <button type="submit" class="btn"
-                                                style="background-color:#36876a;color: white">
-                                            Terminar llamada
-                                        </button>&nbsp;
-                                    </div>
-                                </header>
-                                <div class="emailapp-emails-list">
-                                    <div class="container mt-3">
-                                        <div class="row">
-                                            <div class="col-7">
-                                                <div class="form-group ">
-                                                    <strong>Nombre almacen</strong>
-                                                    <input type="text" class="form-control" readonly
-                                                           onmousedown="return false" id="alm_soli"
-                                                           name="alm_soli">
-                                                </div>
-                                            </div>
-                                            <div class="col-5">
-                                                <div class="form-group">
-                                                    <strong>Telefono</strong>
-                                                    <input type="text" class="form-control" id="telefono"
-                                                           readonly onmousedown="return false" name="telefono">
-                                                </div>
-                                            </div>
-                                            <div class="col-7">
-                                                <div class="form-group">
-                                                    <strong>Nombre cliente</strong>
-                                                    <input type="text" class="form-control" readonly
-                                                           onmousedown="return false" id="nombre_solicitante"
-                                                           name="nombre_solicitante">
-                                                </div>
-                                            </div>
 
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <strong>Localidad</strong>
-                                                    <input type="text" class="form-control" id="localidad"
-                                                           readonly onmousedown="return false" name="localidad"
-                                                           value="{{ call.localidad }}">
-                                                </div>
+                            <header>
+                                <div class="email-options">
+                                    <i class="fas fa-clipboard-list"></i> Datos de llamada
+                                </div>
+                            </header>
+                            <div class="emailapp-emails-list">
+                                <div class="container mt-3">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <div class="form-group ">
+                                                <strong>Nombre almacen</strong>
+                                                <input type="text" class="form-control" readonly
+                                                       onmousedown="return false" id="alm_soli"
+                                                       name="alm_soli">
+                                            </div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="form-group">
+                                                <strong>Telefono</strong>
+                                                <input type="text" class="form-control" id="telefono"
+                                                       readonly onmousedown="return false" name="telefono">
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <div class="form-group">
+                                                <strong>Nombre cliente</strong>
+                                                <input type="text" class="form-control" readonly
+                                                       onmousedown="return false" id="nombre_solicitante"
+                                                       name="nombre_solicitante">
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-9">
-                                                <div class="form-group">
-                                                    <strong>Direccion</strong>
-                                                    <input type="text" class="form-control" id="direccion_des_mcia"
-                                                           readonly onmousedown="return false"
-                                                           name="direccion_des_mcia">
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="form-group">
-                                                    <strong>Ruta</strong>
-                                                    <input type="text" class="form-control" id="ruta" name="ruta"
-                                                           readonly onmousedown="return false">
-                                                </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <strong>Localidad</strong>
+                                                <input type="text" class="form-control" id="localidad"
+                                                       readonly onmousedown="return false" name="localidad"
+                                                       value="{{ call.localidad }}">
                                             </div>
                                         </div>
                                     </div>
-                                    <form method="POST" action="{% url 'archivo:buzon' %}">
-                                        <header>
-                                            <div class="email-options">
-                                                <i class="fas fa-phone-alt"></i> Llamada
+
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <div class="form-group">
+                                                <strong>Direccion</strong>
+                                                <input type="text" class="form-control" id="direccion_des_mcia"
+                                                       readonly onmousedown="return false"
+                                                       name="direccion_des_mcia">
                                             </div>
-                                        </header>
-                                        <div class="card-body">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-sm-8">
-                                                        <div class="form-group ">
-                                                            <strong>Nombre contesta</strong>
-                                                            <input type="text" class="form-control" id="nombre_contesta"
-                                                                   name="nombre_contesta">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4 mt-4">
-                                                        <label class="custom-file-label pointer-event" for="customFile"><i
-                                                                class="fas fa-microphone-alt"></i>
-                                                            MP3
-                                                        </label>
-                                                        <input type="file" class="custom-file-input "
-                                                               id="customFile">
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <strong>Ruta</strong>
+                                                <input type="text" class="form-control" id="ruta" name="ruta"
+                                                       readonly onmousedown="return false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form method="POST" action="{% url 'archivo:buzon' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <header>
+                                        <div class="email-options">
+                                            <i class="fas fa-phone-alt"></i> Llamada
+                                        </div>
+                                    </header>
+                                    <div class="card-body">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    <div class="form-group ">
+                                                        <strong>Nombre contesta</strong>
+                                                        {{ form.nombre_contesta }}
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-sm">
-                                                        <div class="form-group">
-                                                            <strong>Resultado</strong>
-
-                                                            <select id="resultado_llamada" name="resultado_llamada"
-                                                                    class="form-control">
-                                                                <option selected value="">---</option>
-                                                                {% for estado in estados %}
-                                                                    <option value="{{ estado.pk }}">{{ estado }}</option>
-                                                                {% endfor %}
-                                                            </select>
-                                                        </div>
+                                                <div class="col-sm-4 mt-4">
+                                                    <label class="custom-file-label pointer-event" for="customFile"><i
+                                                            class="fas fa-microphone-alt"></i>
+                                                        MP3
+                                                    </label>
+                                                    {{ form.id_grabacion }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <strong>Resultado</strong>
+                                                        {{ form.id_estado }}
                                                     </div>
-                                                    <div class="col-sm">
-                                                        <strong>Fecha de entrega</strong>
-                                                        <input id="fecha_entrega" name="fecha_entrega" width="250"
-                                                               readonly/>
-                                                    </div>
-                                                    <div class="col-sm">
-                                                        <!-- Button trigger modal -->
-                                                        <button type="button" class="btn btn-primary mt-4"
-                                                                data-toggle="modal"
-                                                                data-target="#exampleModal">
-                                                            Observaciones
-                                                        </button>
-                                                        <!-- Modal -->
+                                                </div>
+                                                <div class="col-sm">
+                                                    <strong>Fecha de entrega</strong>
+                                                    {{ form.fecha_entrega }}
+                                                </div>
+                                                <div class="col-sm">
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-primary mt-4"
+                                                            data-toggle="modal"
+                                                            data-target="#exampleModal">
+                                                        Observaciones
+                                                    </button>
+                                                    <button type="submit"></button>
+                                                    <!-- Modal -->
 
-                                                        <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                             role="dialog" aria-labelledby="exampleModalLabel"
-                                                             aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">
-                                                                            <strong>Observaciones</strong></h5>
-                                                                        <button type="button" class="close"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                  <textarea class="form-control"
-                                                                            id="observaciones"
-                                                                            rows="5"></textarea>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                                data-dismiss="modal">x
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-"
-                                                                                style="background-color: #36876a;color: #fff1f1"><span
-                                                                                class="glyphicon glyphicon-ok"></span>
-                                                                        </button>
-                                                                    </div>
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                         role="dialog" aria-labelledby="exampleModalLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">
+                                                                        <strong>Observaciones</strong></h5>
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    {{ form.observaciones }}
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">x
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-"
+                                                                            style="background-color: #36876a;color: #fff1f1"><span
+                                                                            class="glyphicon glyphicon-ok"></span>
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        {{ form.id_llamada }}
-                                                    </div>
+                                                </div>
+                                                <div>
+                                                    {{ form.realizado }}
+                                                    {{ form.id_llamada }}
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                            </form>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -236,14 +219,17 @@
 
     {% block Javascript %}
         <script>
+            var today = new Date();
             $('#fecha_entrega').datepicker({
                 uiLibrary: 'bootstrap4',
-                format: 'yyyy-dd-mm',
+                format: 'yyyy-mm-dd',
+                minDate: today
             });
 
             function noCumplio() {
                 alert('Ha ocurrido un problema y no se cumplió con la tarea');
             }
+
             function recuperar(id) {
                 $.ajax({
                     url: '{% url "archivo:traer" %}',

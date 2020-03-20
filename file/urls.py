@@ -64,9 +64,9 @@ urlpatterns = [
         name='eliminar'
     ),
     path(
-      route='borrar',
-      view=views.eliminarArchivo,
-      name='exterminar'
+        route='borrar',
+        view=views.eliminarArchivo,
+        name='exterminar'
     ),
     path(
         route='traer',
@@ -102,5 +102,41 @@ urlpatterns = [
         route='estadito',
         view=views.CrearEstado.as_view(),
         name='estado'
+    ),
+    # esta ruta me retorna solo un template "reporte llamadas"
+    path(
+        route='reporte_llamada/',
+        view=views.reporte_llamada,
+        name='reporte_llamada'
+    ),
+    # esta ruta solo es para llevarle lo solicitado a el template"reporte llamadas"
+    path(
+        route='llevar_reporte_llamada',
+        view=views.traer_reporte_llamada,
+        name='llevar_reporte_llamada'
+    ),
+    # esta ruta me lleva a el metodo donde se exporta para aceb
+    path(
+        route='completo',
+        view=views.reporte_general,
+        name='completo'
+    ),
+    # esta ruta me retorna los datos en el template "reporte general"
+    path(
+        route='envio_general',
+        view=views.trer_reporte_general,
+        name='envio_general'
+    ),
+    # esta ruta me retorna solo un template "reporte usuario"
+    path(
+        route='reporte_usuario',
+        view=views.reporte_usuario,
+        name='reporte_usuario'
+    ),
+    # esta ruta es para llevarle lo solicitado a el template"reporte usuario"
+    path(
+        route='traer_reporte_usuario',
+        view=views.traer_reporte_usuario,
+        name="traer_reporte_usuario"
     )
 ]
