@@ -4,9 +4,11 @@
 {% block title %}
     <head>
         <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+        <link rel="stylesheet" href="{% static 'dist/notifications.css' %}">
         <title>Registro de llamada</title>
         <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
         <script src="{% static 'dist/gijgo/js/gijgo.min.js' %}"></script>
+        <script src="{% static 'dist/notifications.js' %}"></script>
     </head>
 {% endblock %}
 
@@ -123,6 +125,9 @@
                                         <div class="email-options">
                                             <i class="fas fa-phone-alt"></i> Llamada
                                         </div>
+                                        <button class="btn bg-dark" type="submit" style="color: #FFFFFF"
+                                                data-toggle="tooltip" data-placement="top" title="Realizar llamada"><i
+                                                class="fas fa-phone-alt"></i></button>
                                     </header>
                                     <div class="card-body">
                                         <div class="container">
@@ -134,70 +139,72 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-4 mt-4">
-                                                    <label class="custom-file-label pointer-event" for="customFile"><i
-                                                            class="fas fa-microphone-alt"></i>
-                                                        MP3
-                                                    </label>
-                                                    {{ form.id_grabacion }}
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
                                                     <div class="form-group">
-                                                        <strong>Resultado</strong>
-                                                        {{ form.id_estado }}
+                                                        <label class="custom-file-label pointer-event" for="customFile"><i
+                                                                class="fas fa-microphone-alt"></i>
+                                                            MP3
+                                                        </label>
+                                                        {{ form.id_grabacion }}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm">
-                                                    <strong>Fecha de entrega</strong>
-                                                    {{ form.fecha_entrega }}
-                                                </div>
-                                                <div class="col-sm">
-                                                    <!-- Button trigger modal -->
-                                                    <button type="button" class="btn btn-primary mt-4"
-                                                            data-toggle="modal"
-                                                            data-target="#exampleModal">
-                                                        Observaciones
-                                                    </button>
-                                                    <button type="submit"></button>
-                                                    <!-- Modal -->
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <div class="form-group">
+                                                            <strong>Resultado</strong>
+                                                            {{ form.id_estado }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <strong>Fecha de entrega</strong>
+                                                        {{ form.fecha_entrega }}
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-primary mt-4"
+                                                                data-toggle="modal"
+                                                                data-target="#exampleModal">
+                                                            Observaciones
+                                                        </button>
 
-                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                         role="dialog" aria-labelledby="exampleModalLabel"
-                                                         aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">
-                                                                        <strong>Observaciones</strong></h5>
-                                                                    <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    {{ form.observaciones }}
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">x
-                                                                    </button>
-                                                                    <button type="button" class="btn btn-"
-                                                                            style="background-color: #36876a;color: #fff1f1"><span
-                                                                            class="glyphicon glyphicon-ok"></span>
-                                                                    </button>
+                                                        <!-- Modal -->
+
+                                                        <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                             role="dialog" aria-labelledby="exampleModalLabel"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">
+                                                                            <strong>Observaciones</strong></h5>
+                                                                        <button type="button" class="close"
+                                                                                data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        {{ form.observaciones }}
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                                data-dismiss="modal">x
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-"
+                                                                                style="background-color: #36876a;color: #fff1f1"><span
+                                                                                class="glyphicon glyphicon-ok"></span>
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div>
-                                                    {{ form.realizado }}
-                                                    {{ form.id_llamada }}
+                                                    <div>
+                                                        {{ form.realizado }}
+                                                        {{ form.id_llamada }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -207,6 +214,9 @@
         </div>
     </div>
     <!--Scroll-->
+
+
+
     <style>
         #scroll {
             border: 1px solid;
@@ -220,7 +230,7 @@
     {% block Javascript %}
     {% endblock %}
     <script>
-      var today = new Date();
+        var today = new Date();
         $('#fecha_entrega').datepicker({
             uiLibrary: 'bootstrap4',
             format: 'yyyy-mm-dd',
@@ -230,14 +240,11 @@
             theme: 'error',
             showDuration: 5000
         });
-        ErrorNotification({
-            message: 'oelo'
+        const succcesNotification = window.createNotification({
+            theme: 'success',
+            showDuration: 5000
         });
 
-
-        function noCumplio() {
-            alert('Ha ocurrido un problema y no se cumplió con la tarea');
-        }
 
         function recuperar(id) {
             $.ajax({
@@ -249,12 +256,12 @@
                 success: function (data) {
                     if (data) {
                         traiga(data, id);
-                        alert('La tarea ha sido terminada con exito');
+
                     } else {
-                        noCumplio();
+
                     }
                 },
-                error: noCumplio()
+
             })
         }
 
@@ -268,10 +275,19 @@
             $("#localidad").val(user.localidad);
             document.getElementById("id_llamada").value = id;
         }
+        {% if messages %}
+            {% for message in messages %}
+                succcesNotification({
+                    message: '{{ message }}'
+
+                })
+
+            {% endfor %}
+        {% endif %}
     </script>
 {% endblock %}
 {% block scripts %}
     {{ block.super }}
-    <script src="{% static 'dist/js/division.js' %}"></script>
+
 {% endblock %}
 

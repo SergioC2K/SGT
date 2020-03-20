@@ -9,11 +9,11 @@ urlpatterns = [
         view=views.LoginViewUsuario.as_view(),
         name='login'
     ),
-        path(
-            route='cambio-contrasena/',
-            view=views.cambio_contrasena,
-            name='cambio'
-        ),
+    path(
+        route='cambio-contrasena/',
+        view=views.cambio_contrasena,
+        name='cambio'
+    ),
     path(
         route='logout/',
         view=views.logout_view,
@@ -39,11 +39,6 @@ urlpatterns = [
         route='deshabilitar/',
         view=views.deshabilitar,
         name='desactivar'
-    ),
-    path(
-        route='eliminar/',
-        view=views.deshabilitar,
-        name='eliminar'
     ),
     path(
         route='con/',
