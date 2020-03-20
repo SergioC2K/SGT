@@ -218,11 +218,12 @@
                     },
                     dataType: 'json',
                     success: function (data) {
+
                         if (data.desactive) {
-                            $("#colum-" + id).html(`<button" type="submit"class="btn btn" style="background-color: #36876a" style="color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
+                            $("#colum-" + id).html(`<button type="submit"class="btn btn" style="background-color: #36876a;color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
                             $("#activado").html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
                             Swal.fire(
-                                'Bien !',
+                                'Operacion exitosa !',
                                 'Usuario inhabilitado',
                                 'success'
                             );
@@ -232,7 +233,7 @@
                                                         <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
                             $("#activado").html(`<span class="badge badge-pill badge-success">Activo</span>`);
                             Swal.fire(
-                                'Bien !',
+                                'Operacion exitosa !',
                                 'Usuario habilitado',
                                 'success'
                             );
@@ -252,7 +253,7 @@
                             if (form.checkValidity() === false) {
                                 event.preventDefault();
                                 ErrorNotification({
-                                    message: 'Las contraseñas no coinciden!'
+                                    message: 'Campos Vacios!'
 
                                 })
                                 event.stopPropagation();

@@ -118,8 +118,6 @@ def deshabilitar(request):
     if user.is_active:
         user.is_active = False
         user.save()
-        notify.send(user, recipient=admin, verb='perrras', action_object=admin)
-        alo = admin.notifications.mark_all_as_read()
         data = {'desactive': True}
     else:
         user.is_active = True

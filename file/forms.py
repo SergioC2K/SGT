@@ -1,14 +1,13 @@
 """Formulario Modulo de Llamadas"""
+import datetime as fechas
 # Date
 from datetime import datetime
-import datetime as fechas
+
 # Excel
 import pandas as pd
-
 # Django
 from django import forms
 from django.core.exceptions import ValidationError
-
 # Modelos
 from django.core.validators import FileExtensionValidator
 
@@ -117,6 +116,8 @@ class RealizarLlamada(forms.Form):
             'id': 'fecha_entrega',
             'name': 'fecha_entrega',
             'width': '250',
+            'readonly': 'readonly'
+
         })
     )
     observaciones = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
@@ -175,7 +176,7 @@ class RealizarLlamada(forms.Form):
             llamada.fecha_entrega = data['fecha_entrega']
             llamada.observaciones = data['observaciones']
             llamada.realizado = data['realizado']
-            llamada.nombre_contesta= data['nombre_contesta']
+            llamada.nombre_contesta = data['nombre_contesta']
             estado = Estado.objects.get(id=data['id_estado'])
             llamada.id_estado = estado
             llamada.id_grabacion = grabacion
