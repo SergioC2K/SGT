@@ -29,12 +29,12 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for object in object_list %}
+                                    {% for otro in object_list %}
 
                                         <tr id="fila-{{ object.id }}">
-                                            <td> {{ object.id }}</td>
+                                            <td> {{ otro.id }}</td>
                                             <td class="userNombre userData"
-                                                name="nombre">{{ object.nombre }}</td>
+                                                name="nombre">{{ otro.nombre }}</td>
                                             <td>
                                                 <button class="btn btn-dark"><i class="fa fa-pencil" onclick="Editar({{ foo.pk }}),open_modal()"></i></button>
                                             </td>
