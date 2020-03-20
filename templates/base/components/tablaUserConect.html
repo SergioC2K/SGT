@@ -1,5 +1,5 @@
 <div id="mySidepanel" class="sidepanel">
-    <a href="javascript:void(0)" class="title-sidebar"><i class="fas fa-user-friends"></i> En linea
+    <a class="title-sidebar" style="color: #FFFFFF"><i class="fas fa-user-friends"></i> En linea
         <button class="btn btn-" id="cerrar" onclick="closeNav()">&times;</button>
     </a>
     <a>{% for usuario in usuario_conectado %}
@@ -10,7 +10,7 @@
 
                     <p hidden>{{ usuario.pk }}</p>
                     <div class="chat_ib">
-                        <h5><span class="green led"></span>{{ usuario.usuario.get_username }} </h5>
+                        <h5><span class="green led"></span>&nbsp;{{ usuario.usuario.get_username }} </h5>
                     </div>
                 </div>
             </li>
@@ -25,63 +25,6 @@
     </a>
 </div>
 
-
-<style>
-    .sidepanel {
-        width: 0;
-        position: fixed;
-        z-index: 1;
-        height: 250px;
-        top: 0;
-        background-color: rgba(20, 26, 37, 0.71);
-        overflow-x: hidden;
-        transition: 0.5s;
-        padding-top: 60px;
-        margin-top: 10%;
-        right: 0;
-        left: initial;
-        border-radius: 5px;
-    }
-
-    .sidepanel a {
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 10px;
-        color: #ffffff;
-        display: block;
-        transition: 0.3s;
-    }
-
-    .sidepanel .title-sidebar {
-        position: absolute;
-        top: 0;
-        left: 0px;
-        font-size: 20px;
-    }
-
-    .sidepanel #cerrar {
-        position: absolute;
-        top: 0;
-        margin-left: 40%;
-        font-size: 20px;
-
-    }
-
-    .openbtn {
-        font-size: 15px;
-        cursor: pointer;
-        background-color: #111;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-    }
-
-    .openbtn:hover {
-        background-color: #444;
-    }
-
-
-</style>
 <script>
     function openNav() {
         document.getElementById("mySidepanel").style.width = "250px";
