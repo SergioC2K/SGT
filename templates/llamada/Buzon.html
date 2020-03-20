@@ -220,19 +220,20 @@
     {% block Javascript %}
     {% endblock %}
     <script>
-    const ErrorNotification = window.createNotification({
-        theme: 'error',
-        showDuration: 5000
-    });
-        ErrorNotification({
-            message: 'oelo'
-        });
-        var today = new Date();
+      var today = new Date();
         $('#fecha_entrega').datepicker({
             uiLibrary: 'bootstrap4',
             format: 'yyyy-mm-dd',
             minDate: today
         });
+        const ErrorNotification = window.createNotification({
+            theme: 'error',
+            showDuration: 5000
+        });
+        ErrorNotification({
+            message: 'oelo'
+        });
+
 
         function noCumplio() {
             alert('Ha ocurrido un problema y no se cumplió con la tarea');

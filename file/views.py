@@ -185,22 +185,23 @@ class ListFile(ListView):
 
 def realizar_llamada(request):
     global data
+
     usuario = request.user
     if request.method == 'POST':
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()
-            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
+            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
 
             data = {
                 'form': form,
                 'llamadas': llamadas
             }
-            messages.success(request,'La llamada ha sido realizada')
+            messages.success(request, 'La llamada ha sido realizada')
             return render(request, template_name='llamada/Buzon.html', context=data)
         else:
-            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
-            messages.error(request,'La llamada no es valida, verifique los campos y vuelva a intentarlo')
+            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
+            messages.error(request, 'La llamada no es valida, verifique los campos y vuelva a intentarlo')
 
             data = {
                 'form': form.errors,
@@ -209,7 +210,7 @@ def realizar_llamada(request):
             return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
-        llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
+        llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
         data = {
             'form': form,
             'llamadas': llamada
@@ -272,7 +273,6 @@ class ActualizarEstado(View):
             'user': user
         }
         return JsonResponse(data=data)
-
 
 
 #  Este metodo solo es para que me retorne al template
