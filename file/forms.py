@@ -175,6 +175,7 @@ class RealizarLlamada(forms.Form):
             llamada.fecha_entrega = data['fecha_entrega']
             llamada.observaciones = data['observaciones']
             llamada.realizado = data['realizado']
+            llamada.nombre_contesta= data['nombre_contesta']
             estado = Estado.objects.get(id=data['id_estado'])
             llamada.id_estado = estado
             llamada.id_grabacion = grabacion
@@ -184,6 +185,7 @@ class RealizarLlamada(forms.Form):
             llamada.fecha_entrega = data['fecha_entrega']
             llamada.observaciones = data['observaciones']
             llamada.realizado = data['realizado']
+            llamada.nombre_contesta = data['nombre_contesta']
             estado = Estado.objects.get(id=data['id_estado'])
             llamada.id_estado = estado
             llamada.save()
