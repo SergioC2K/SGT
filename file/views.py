@@ -283,7 +283,7 @@ def traer_reporte_llamada(request):
     valor = int(dia)
 
     if valor == 0:
-        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta').count()
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='informacion').count()
         exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso').count()
         data = {
             'no_contesta': no_contesta,
