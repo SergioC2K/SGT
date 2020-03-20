@@ -7,10 +7,7 @@ from django.urls import path
 import file.views as ImporteControl
 from file import views
 
-from .filters import RegistroLlamadaFilter
-
 # Filtros
-from django_filters.views import FilterView
 
 urlpatterns = [
     path(
@@ -103,11 +100,7 @@ urlpatterns = [
         view=views.CrearEstado.as_view(),
         name='estado'
     ),
-    path(
-        route='updatEstado',
-        view=views.ActualizarEstado.as_view(),
-        name='updatEstado'
-    ),
+
     # esta ruta me retorna solo un template "reporte llamadas"
     path(
         route='reporte_llamada/',
@@ -145,4 +138,3 @@ urlpatterns = [
         name="traer_reporte_usuario"
     )
 ]
-
