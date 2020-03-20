@@ -1,31 +1,30 @@
 # Date
 import datetime
 from datetime import date
-# Excel
-import pandas as pd
-# Django
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, FormView, View
 from django.db.models import Q, Count
 from django.db import IntegrityError
 from django.urls import reverse_lazy
+from django.views.generic import ListView, FormView
+
 # Modelos
 from file.forms import RealizarLlamada, EstadoForm
-from file.models import RegistroLlamada
-from file.models import LlamadasEntrantes, Archivo, Estado
-from usuario.models import Perfil
 from file.forms import SubirArchivoForm
-
+from file.models import LlamadasEntrantes, Archivo, Estado
+from file.models import RegistroLlamada
+from usuario.models import Perfil
 # Filtros
 from .filters import RegistroLlamadaFilter
 
 hoy = datetime.date.today()
-manana = hoy + datetime.timedelta(days=1)
+manana = hoy + datetime.timedelta(days=2)
 dias_antes = hoy - datetime.timedelta(days=9)
 horas_antes = hoy - datetime.timedelta(hours=12)
 
@@ -124,16 +123,12 @@ class entregar(ListView):
 
 def enviarLlamadas(request):
     if request.method == 'POST':
-        #  Capturamos los valores ingresados en la reparticion de las llamadas con un array
         valor = request.POST.getlist('valor[]')
         operador = request.POST.getlist('usuario[]')
 
-        #  Segun la cantidad del array hacemos un for que recorra esa cantidad de datos
         for i in range(len(valor)):
-            #  Hacemos una consulta que nos traiga la cantidad de llamadas indicada en el array "valor"
             llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)).exclude(estado=True) \
                 [:int(valor[i])]
-            #  Recorremos la consulta anterior y la actualizamos segun el operador que indica el array "operador"
             for llam in llamadas:
                 registro = RegistroLlamada(id_llamada=llam, id_usuario_id=operador[i])
                 registro.save()
@@ -185,7 +180,6 @@ class ListFile(ListView):
 
 def realizar_llamada(request):
     global data
-
     usuario = request.user
     if request.method == 'POST':
         form = RealizarLlamada(request.POST, request.FILES, request.user)

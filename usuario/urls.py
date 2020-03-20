@@ -9,11 +9,11 @@ urlpatterns = [
         view=views.LoginViewUsuario.as_view(),
         name='login'
     ),
-    path(
-        route='cambio-contrasena/',
-        view=views.cambio_contrasena,
-        name='cambio'
-    ),
+        path(
+            route='cambio-contrasena/',
+            view=views.cambio_contrasena,
+            name='cambio'
+        ),
     path(
         route='logout/',
         view=views.logout_view,

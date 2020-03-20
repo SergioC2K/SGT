@@ -1,6 +1,4 @@
 {% load static %}
-
-
 <head>
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
     <title>Configuracion</title>
@@ -9,7 +7,6 @@
 </head>
 <body>
 {% block form %}
-
     <form method="POST" action="{% url 'usuario:perfil' %}" name="perfilform" id="perfilform"
           enctype="multipart/form-data">
         {% csrf_token %}
@@ -198,25 +195,8 @@
                 succcesNotification({
                     message: '{{ message }}'
 
-                });
+                })
 
-            {% endfor %}
-        {% endif %}
-        const successNotification = window.createNotification({
-            theme: 'success',
-            showDuration: 5000
-        });
-        const ErrorNotification = window.createNotification({
-            theme: 'error',
-            showDuration: 5000
-        });
-        {% if form.errors %}
-            {% for field in form %}
-                {% if field.errors %}
-                    ErrorNotification({
-                        message: ' {{ field.label }}: {{ field.errors|striptags }}, {{ form.non_field_errors }}'
-                    });
-                {% endif %}
             {% endfor %}
         {% endif %}
 
@@ -241,6 +221,7 @@
                         this.oldValue = this.value;
                         this.oldSelectionStart = this.selectionStart;
                         this.oldSelectionEnd = this.selectionEnd;
+
                     } else if (this.hasOwnProperty("oldValue")) {
                         this.value = this.oldValue;
                         this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
@@ -317,3 +298,6 @@
         margin-left: 83%;
     }
 </style>
+
+
+

@@ -1,12 +1,12 @@
 """Formularios de Usuario."""
 
-# Django
-from django.core.mail import send_mail
 from django import forms
-from SGT import settings
-from django.urls import reverse
 #  Models
 from django.contrib.auth.models import User
+# Django
+from django.core.mail import send_mail
+
+from SGT import settings
 from usuario.models import Perfil, Conectado
 
 ASUNTO = 'Usuario Creado'
@@ -94,11 +94,18 @@ class SignupForm(forms.Form):
             'aria - describedby': 'validationTooltipUsernamePrepend'
         })
     )
-    is_staff = forms.ChoiceField(label='Cargo', choices=CARGOS, widget=forms.RadioSelect(attrs={
-        'class': 'form-group',
+    is_staff = forms.ChoiceField(label='Cargo', choices=CARGOS, widget=forms.Select(attrs={
+        'class': 'form-control',
         'required': True,
+
     }))
-    cedula = forms.IntegerField()
+    cedula = forms.IntegerField(label='Cedula', widget=forms.NumberInput(attrs={
+        'id': 'validationTooltip07',
+        'class': 'form-control',
+        'required': True,
+        'placeholder': 'Cedula',
+
+    }))
 
     def clean_cedula(self):
         """Verificar cedula unica"""
@@ -106,10 +113,11 @@ class SignupForm(forms.Form):
         cedula_query = Perfil.objects.filter(cedula=cedula).exists()
         if cedula_query:
             raise forms.ValidationError('Cedula ya se encuentra registrada.')
-        return cedula
+        else:
+            return cedula
 
     def clean_email(self):
-        """Email sea unico"""
+        """Username sea unico"""
         email = self.cleaned_data['email']
         email_taken = User.objects.filter(email=email).exists()
         if email_taken:
@@ -122,6 +130,7 @@ class SignupForm(forms.Form):
         username_taken = User.objects.filter(username=username).exists()
         if username_taken:
             raise forms.ValidationError('Usuario ya se encuentra registrado.')
+
         return username
 
     def clean(self):
@@ -132,7 +141,8 @@ class SignupForm(forms.Form):
         password_confirmation = data['password_confirmation']
 
         if password != password_confirmation:
-            raise forms.ValidationError('Las contraseñas no coinciden')
+            raise forms.ValidationError('Las Contraseñas no coinciden')
+
         return data
 
     def save(self):
@@ -146,7 +156,7 @@ class SignupForm(forms.Form):
         conexion.save()
         profile = Perfil(usuario=user, conexion=conexion, cedula=cedula)
         profile.save()
-        send_mail(ASUNTO, MENSAJE, EMAIL, [self.cleaned_data['email']], fail_silently=True)
+        send_mail(ASUNTO, MENSAJE, EMAIL, [self.cleaned_data['email']], fail_silently=False)
 
 
 class UserForm(forms.ModelForm):
@@ -161,6 +171,3 @@ class PerfilForm(forms.ModelForm):
     class Meta:
         model = Perfil
         exclude = ['usuario', 'conexion']
-
-
-

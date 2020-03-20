@@ -10,6 +10,7 @@
 {% block main %}
     <div class="container mt-4">
         <div class="container-fluid">
+
             <div class="card">
                 <div class="card-body">
                     <h4 class="hk-pg-title card-title">
@@ -21,6 +22,7 @@
                         <div class="custom-file col-md-6 ">
                             <form action="{% url 'archivo:importe' %}" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
+                                <input type="text" id="nombre" name="nombre" hidden>
                                 <div class="form-group">
                                     {{ form.archivo }}
                                 </div>
@@ -28,79 +30,63 @@
                                         style="background-color: #36876a; color: #fff1f1" id="btn" type="submit">
                                     Importar
                                 </button>
-                                {% if form.errors %}
-                                    {% for errores in form.non_field_errors %}
-                                        {{ errores }}
-                                    {% endfor %}
-                                {% endif %}
-                                {% if messages %}
-                                    {% for message in messages %}
-                                        {{ message }}
-                                    {% endfor %}
-                                {% endif %}
+
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-            {% if errors %}
-                <div class="alert alert-danger alert-dismissible fade show ">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Error este
-                        archivo ya existe!</strong>
-                </div>
-            {% endif %}
+
+
         </div>
-
-
-        {% block scripts %}
-            {{ block.super }}
-        {% endblock %}
-
     </div>
-
+    <script src="{% static 'dist/notifications.js' %}"></script>
     <script>
+        const ErrorNotification = window.createNotification({
+            theme: 'error',
+            showDuration: 5000
+        });
+
+        const succcesNotification = window.createNotification({
+            theme: 'success',
+            showDuration: 5000
+        });
+
         function papa() {
             nombre = document.getElementById('input').files[0].name;
-            otra = document.getElementById('nombre').value = nombre;
-            var extension = /(.xls|xlsx)$/i;
-            if (!extension.exec(otra)) {
-                document.getElementById('input').value = '';
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Solo se pueden extensiones de tipo .xlsx/.xls',
-                });
-                return false;
-            }
+            document.getElementById('nombre').value = nombre;
         }
 
         document.getElementById('btn').addEventListener("click", function () {
             let file = document.getElementById('input');
             if (file.files.length == 0) {
                 event.preventDefault()
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Por favor seleccione un archivo!',
-                });
+                ErrorNotification({
+                    message: 'Seleccione un archivo!'
+                })
             }
-        })
+
+
+        });
+        {% if form.errors %}
+            {% for errores in form.non_field_errors %}
+
+                ErrorNotification({
+                    message: '{{ errores }}'
+
+                })
+            {% endfor %}
+        {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                succcesNotification({
+                    message: '{{ message }}'
+
+                })
+
+            {% endfor %}
+        {% endif %}
     </script>
-    </body>
-    <style>
-        #sampleContainer ol {
-            padding: 0px 0px 0px 15px;
-            margin: 0;
-        }
 
-        #sampleContainer input {
-            margin: 10px 0;
-        }
 
-        #result {
-            display: none;
-            color: red;
-        }
-    </style>
 {% endblock %}

@@ -11,51 +11,61 @@
 
 {% block main %}
     <div class="hk-pg-wrapper">
-        <table class="table table-striped" id="Tablet">
-            <thead>
-            <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Accion</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% if object_list %}
-                {% for i in object_list %}
-                    <tr id="archivo-{{ i.pk }}">
-                        <td>{{ i.nombre }}</td>
-                        <td>{{ i.created }}</td>
-                        <td>
-                            <button class="btn btn-danger " onclick="eliminar({{ i.pk }}) ">
-                                <i class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
+        <div class="container">
+            <table class="table table-striped" id="Tablet">
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Accion</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if object_list %}
+                    {% for i in object_list %}
+                        <tr id="archivo-{{ i.pk }}">
+                            <td>{{ i.nombre }}</td>
+                            <td>{{ i.created }}</td>
+                            <td>
+                                <button class="btn btn-danger " onclick="eliminar({{ i.pk }}) ">
+                                    <i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
 
-                {% endfor %}
-            {% else %}
-                <h1 align="center">No hay archivos</h1>
-            {% endif %}
-            </tbody>
-        </table>
+                    {% endfor %}
+                    </table>
+
+                    </div>
+                {% else %}
+                    <div class="alert alert-info" role="alert">
+                        <h4><span class="glyphicon glyphicon-exclamation-sign"></span> No
+                            hay archivos!
+                        </h4>
+                    </div>
+                {% endif %}
 
         <script>
             function eliminar(id) {
-                 const swalWithBootstrapButtons = Swal.mixin({
+                const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
+                        cancelButton: 'btn btn-danger',
+                        confirmButton: 'btn btn-success'
+
                     },
-                    buttonsStyling: false
+                    buttonsStyling: true
+
                 });
 
                 swalWithBootstrapButtons.fire({
                     title: 'Estas seguro?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
+                    text: "Desea eliminar el archivo?",
+                    icon: 'info',
                     showCancelButton: true,
-                    confirmButtonText: 'Si, Eliminar!',
-                    cancelButtonText: 'No, Emilinar!',
-                    reverseButtons: true
+
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Continuar',
+                    reverseButtons: false
                 }).then((result) => {
                     if (result.value) {
                         $.ajax({
@@ -80,8 +90,8 @@
                     ) {
                         swalWithBootstrapButtons.fire(
                             'Cancelado',
-                            'Tu archivo esta seguro :)',
-                            'error'
+                            'Tu archivo esta seguro',
+                            'info'
                         )
                     }
                 })
@@ -90,17 +100,19 @@
             function mensaje() {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: '{{ errors }}!',
+                    title: 'Error',
+                    text: 'Termine de repartir las llamadas!',
 
                 })
             }
+
             function bueni() {
                 Swal.fire(
-                    'Muy bien!',
+                    'Operacion Realizada    !',
                     'Eliminado correctamente',
                     'success'
                 )
+
             }
         </script>
     </div>
