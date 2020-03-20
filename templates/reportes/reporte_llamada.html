@@ -8,20 +8,28 @@
 
     </head>
 
+    <div class="container">
+        <div class="row">
+            <div class="col">
 
-    <div class="contenedor" id="lienzo">
-        <canvas id="Grafica" width="65" height="40"></canvas>
+                <canvas id="Grafica" width="65" height="40"></canvas>
+
+
+                <select class="custom-select mr-sm-2" onchange="funcion(this.value)" name="respuesta">
+                    <option value="0">Desde siempre</option>
+                    <option value="1">ultimo dia</option>
+                    <option value="2">ultima semana</option>
+                    <option value="3">ultima mes</option>
+                </select>
+
+            </div>
+            <div class="col-sm">
+
+            </div>
+        </div>
     </div>
 
 
-<div class="container-fluid col-md-5" >
-    <select class="custom-select mr-sm-2" onchange="funcion(this.value)" name="respuesta">
-        <option value="0">Desde siempre</option>
-        <option value="1">ultimo dia</option>
-        <option value="2">ultima semana</option>
-        <option value="3">ultima mes</option>
-      </select>
-</div>
     <script>
 
         function funcion(valor) {
@@ -39,7 +47,7 @@
 
         Canvas = document.getElementById("Grafica").getContext('2d');
         var myChart = new Chart(Canvas, {
-            type: "bar",
+            type: "horizontalBar",
             data: {
                 labels: ['col1', 'col2', 'col3'],
                 datasets: [{
@@ -68,18 +76,5 @@
             myChart.update();
         }
     </script>
-    <style>
-        .contenedor {
-            box-sizing: border-box;
-            float: left;
-            width: 65%;
-            padding: 15px;
-        }
-
-        .lienzo {
-            border: 2px solid #d9d9d9;
-        }
-
-
-    </style>
+   
 {% endblock %}
