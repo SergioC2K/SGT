@@ -1,25 +1,25 @@
 # Date
 import datetime
 from datetime import date
-# Excel
-import pandas as pd
-# Django
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView, FormView
+from django.views.generic import ListView, UpdateView, FormView, View
 from django.db.models import Q, Count
 from django.db import IntegrityError
+from django.urls import reverse_lazy
+from django.views.generic import ListView, FormView
+
 # Modelos
 from file.forms import RealizarLlamada, EstadoForm
-from file.models import RegistroLlamada
-from file.models import LlamadasEntrantes, Archivo, Estado
-from usuario.models import Perfil
 from file.forms import SubirArchivoForm
-
+from file.models import LlamadasEntrantes, Archivo, Estado
+from file.models import RegistroLlamada
+from usuario.models import Perfil
 # Filtros
 from .filters import RegistroLlamadaFilter
 
@@ -185,28 +185,29 @@ def realizar_llamada(request):
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
             form.save()
+            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
+
             data = {
                 'form': form,
-                'aprobado': 'ok',
-                'errores': form.errors
+                'llamadas': llamadas
             }
+            messages.success(request, 'La llamada ha sido realizada')
             return render(request, template_name='llamada/Buzon.html', context=data)
         else:
-            llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
+            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
+            messages.error(request, 'La llamada no es valida, verifique los campos y vuelva a intentarlo')
+
             data = {
                 'form': form.errors,
-                'No_Aprobado': 'NO',
-                'llamada': llamada
+                'llamada': llamadas
             }
             return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
-        estados = Estado.objects.all()
-        llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk)
+        llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
         data = {
             'form': form,
-            'llamadas': llamada,
-            'estados': estados
+            'llamadas': llamada
         }
     return render(request, template_name='llamada/Buzon.html', context=data)
 
@@ -220,7 +221,6 @@ def pruebas_llamadas(request):
 def traer(request):
     llamada = int(request.GET.get('id', None))
     consulta = RegistroLlamada.objects.get(pk=llamada)
-    oelooo = consulta.pk
     datos = {
         'id_llamada': consulta.pk,
         'nombre': consulta.id_llamada.nombre_destinatario,
@@ -239,10 +239,34 @@ def search(request):
     return render(request, 'llamada/exportar.html', {'filter': user_filter})
 
 
+@method_decorator(superuser_required, name='dispatch')
 class CrearEstado(ListView, FormView):
     model = Estado
     form_class = EstadoForm
     template_name = 'llamada/estados.html'
+    success_url = reverse_lazy('archivo:estado')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class ActualizarEstado(View):
+    def get(self, request):
+        idOtro = request.GET.get('id', None)
+        nombre1 = request.GET.get('nombre', None)
+
+        obj = Estado.objects.get(id=idOtro)
+        obj = Estado.objects.get(nombre=nombre1)
+        obj.save()
+
+        user = {
+            'id': obj.id, 'nombre': obj.nombre
+        }
+        data = {
+            'user': user
+        }
+        return JsonResponse(data=data)
 
 
 #  Este metodo solo es para que me retorne al template
