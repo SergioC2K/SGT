@@ -139,7 +139,7 @@ def enviarLlamadas(request):
                 registro.save()
                 llam.estado = True
                 llam.save()
-        return redirect('archivo:import')
+        return redirect('archivo:importe')
 
 
 def ver_Llamadas(request):
@@ -281,15 +281,13 @@ class CrearEstado(ListView, FormView):
     template_name = 'llamada/estados.html'
 
 
-
-
-
-
 #  Este metodo solo es para que me retorne al template
 def reporte_llamada(request):
     return render(request, 'reportes/reporte_llamada.html')
 
 
+#  Este metodo me va retornar las estadisticas de los estados
+#  Segun la fecha indicada por el usuario
 def traer_reporte_llamada(request):
     # La variable dia me trae el valor de la fecha a consultar
     dia = request.GET.get('valor', None)
@@ -317,7 +315,8 @@ def traer_reporte_llamada(request):
         hoy = datetime.datetime.utcnow()
         semana = hoy - datetime.timedelta(days=7)
         exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', modified__range=[semana, hoy]).count()
-        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta', modified__range=[semana, hoy]).count()
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta',
+                                                     modified__range=[semana, hoy]).count()
 
         data = {
             'no_contesta': no_contesta,
@@ -328,7 +327,8 @@ def traer_reporte_llamada(request):
         hoy = datetime.datetime.utcnow()
         mes = hoy - datetime.timedelta(days=30)
         exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', modified__range=[mes, hoy]).count()
-        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta', modified__range=[mes, hoy]).count()
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta',
+                                                     modified__range=[mes, hoy]).count()
 
         data = {
             'no_contesta': no_contesta,
@@ -338,9 +338,105 @@ def traer_reporte_llamada(request):
     return JsonResponse(data=data)
 
 
+#  Este metodo me retorna a la vista indicada
+def reporte_usuario(request):
+    usuario = Perfil.objects.all()
+
+    data = {
+        'usuario': usuario
+    }
+    return render(request, 'reportes/reporte_usuario.html', data)
+
+
+def traer_reporte_usuario(request):
+    dia = request.GET.get('valor', None)
+    usuario = request.GET.get('usuario', None)
+    fecha = date.today()
+    valor = int(dia)
+    id = int(usuario)
+
+    if valor == 0:
+        exito = RegistroLlamada.objects.filter(id_usuario=id, id_estado__nombre='Exitoso').count()
+        nombre = Perfil.objects.get(usuario_id=id)
+
+        data = {
+            'exito': exito,
+            'nombre': nombre.usuario.first_name
+        }
+
+    elif valor == 1:
+        ayer = fecha.day - 1
+        exito = RegistroLlamada.objects.filter(modified__day=ayer, id_usuario=id, id_estado__nombre='Exitoso').count()
+        no_contesta = RegistroLlamada.objects.filter(modified__day=ayer, id_usuario=id, id_estado=2).count()
+        nombre = Perfil.objects.get(usuario_id=id)
+
+        data = {
+            'exito': exito,
+            'no_contesta': no_contesta,
+            'nombre': nombre.usuario.first_name
+        }
+
+    elif valor == 2:
+        hoy = datetime.datetime.utcnow()
+        semana = hoy - datetime.timedelta(days=7)
+        exito = RegistroLlamada.objects.filter(modified__range=[semana, hoy],
+                                               id_usuario=id,
+                                               id_estado__nombre='Exitoso').count()
+        no_contesta = RegistroLlamada.objects.filter(modified__range=[semana, hoy],
+                                                     id_usuario=id,
+                                                     id_estado__nombre='No contesta').count()
+
+        nombre = Perfil.objects.get(usuario_id=id)
+
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito,
+            'nombre': nombre.usuario.first_name
+        }
+
+    elif valor == 3:
+        hoy = datetime.datetime.utcnow()
+        mes = hoy - datetime.timedelta(days=30)
+        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', id_usuario=id,
+                                               modified__range=[mes, hoy]).count()
+
+        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta', id_usuario=id,
+                                                     modified__range=[mes, hoy]).count()
+
+        nombre = Perfil.objects.get(usuario_id=id)
+
+        data = {
+            'no_contesta': no_contesta,
+            'exito': exito,
+            'nombre': nombre.usuario.first_name
+        }
+
+    return JsonResponse(data=data)
+
+
+#  Esta es el metodo donde el coordinador va exportar para enviar aceb
 def reporte_general(request):
-    entrantes = LlamadasEntrantes.objects.all()
-    registradas = RegistroLlamada.objects.all()
-    data = {'objeto': entrantes,
-            'registro': registradas}
-    return render(request,'reportes/reporte_general.html',data)
+    archivo = Archivo.objects.last()
+    registradas = RegistroLlamada.objects.filter(id_llamada__archivo_id=archivo)
+    data = {
+        'registro': registradas
+    }
+    return render(request, 'reportes/reporte_general.html', data)
+
+
+def trer_reporte_general(request):
+    diccionario = {}
+    respuesta = request.POST['respuesta']
+    valor = int(respuesta)
+    hoy = date.today()
+
+    if valor == 3:
+        hoy = datetime.datetime.utcnow()
+        mes = hoy - datetime.timedelta(days=30)
+        consulta = RegistroLlamada.objects.filter(modified__range=[mes, hoy])
+        if consulta:
+            diccionario = {'registro': consulta}
+        else:
+            diccionario = {'error': 'error'}
+
+    return render(request, template_name='reportes/reporte_general.html', context=diccionario)

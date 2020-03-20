@@ -193,6 +193,32 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                succcesNotification({
+                    message: '{{ message }}'
+
+                });
+
+            {% endfor %}
+        {% endif %}
+        const successNotification = window.createNotification({
+            theme: 'success',
+            showDuration: 5000
+        });
+        const ErrorNotification = window.createNotification({
+            theme: 'error',
+            showDuration: 5000
+        });
+        {% if form.errors %}
+            {% for field in form %}
+                {% if field.errors %}
+                    ErrorNotification({
+                        message: ' {{ field.label }}: {{ field.errors|striptags }}, {{ form.non_field_errors }}'
+                    });
+                {% endif %}
+            {% endfor %}
+        {% endif %}
 
         window.addEventListener('load', function () {
             document.querySelector('input[type="file"]').addEventListener('change', function () {
@@ -207,7 +233,6 @@
                 }
             })
         });
-
 
         function setInputFilter(textbox, inputFilter) {
             ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
@@ -292,6 +317,3 @@
         margin-left: 83%;
     }
 </style>
-
-
-

@@ -121,7 +121,7 @@ class RealizarLlamada(forms.Form):
     )
     observaciones = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
                                                                  'id': 'observaciones',
-                                                                 'rows': '2'
+                                                                 'rows': '5'
                                                                  })
                                     )
     realizado = forms.BooleanField(initial=True, widget=forms.HiddenInput())
