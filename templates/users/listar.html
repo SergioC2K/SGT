@@ -51,8 +51,8 @@
                                             {% if object_list %}
                                                 {% for foo in object_list %}
                                                     <tr id="fila-{{ foo.pk }}">
-                                                        <td id="estado">
-                                                            <div id="activado">
+                                                        <td id="activado-{{ foo.pk }}">
+                                                            <div >
                                                                 {% if foo.usuario.is_active %}
 
                                                                     <span class="badge badge-pill badge-success">Activo</span>
@@ -83,7 +83,7 @@
                                                                     </p>
 
                                                                 {% else %}
-                                                                    <div id="fila-{{ foo.pk }}">
+                                                                    <div>
                                                                     {% if foo.usuario.is_active %}
 
                                                                         <button type="submit"
@@ -227,7 +227,7 @@
 
                         if (data.desactive) {
                             $("#colum-" + id).html(`<button type="submit"class="btn btn" style="background-color: #36876a;color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
-                            $("#activado").html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
+                            $("#activado-" + id).html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
                             Swal.fire(
                                 'Operacion exitosa !',
                                 'Usuario inhabilitado',
@@ -236,8 +236,8 @@
                         }
                         if (!data.desactive) {
                             $("#colum-" + id).html(`<button type="submit" class="btn btn-danger"  onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
-                                                        <button type="submit" class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
-                            $("#activado").html(`<span class="badge badge-pill badge-success">Activo</span>`);
+                                                        <button type="submit" onclick="Editar(${id}),open_modal()"   class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
+                            $("#activado-" + id).html(`<span class="badge badge-pill badge-success">Activo</span>`);
                             Swal.fire(
                                 'Operacion exitosa !',
                                 'Usuario habilitado',
@@ -290,7 +290,7 @@
                     });
 
                     function Agregar(user) {
-                        $("#table_id > tbody:last-child").append(`<tr id="user-${user.id}">
+                        $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
                                <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
                                 <td name="nombre" class="userNombre userData">${user.name}</td>
                                 <td name="apellido" class="userApellido userData">${user.apellido}</td>

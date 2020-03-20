@@ -205,7 +205,8 @@ a, a:hover, a:focus, a:active {
     z-index: 1;
     transition: all 0.5s;
     border: 1px solid #14677b;
-    background-color: rgba(255, 255, 255, 0.31);
+    background-color: rgba(255, 255, 255, 0.31)
+
 }
 
 .btn-two::after {
@@ -219,12 +220,13 @@ a, a:hover, a:focus, a:active {
     transition: all 0.5s;
     border: 1px solid #14677b;
     border-radius: 1px;
-    background-color: rgba(39, 59, 226, 0.03);
+
 }
 
 .btn-two:hover::before {
     transform: rotate(-45deg);
     background-color: rgba(255, 255, 255, 0);
+
 }
 
 .btn-two:hover::after {
