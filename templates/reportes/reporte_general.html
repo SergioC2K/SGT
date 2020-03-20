@@ -15,13 +15,19 @@
 {% endblock %}
 
 {% block main %}
+
+    {% if dia %}
+        <h3 align="center">Llamadas del dia de hoy </h3>
+    {% endif %}
+
     <form method="post" action="{% url 'archivo:envio_general' %}">
         {% csrf_token %}
         <select name="respuesta">
             <option value="0">Desde siempre</option>
-            <option value="1">ultimo dia</option>
-            <option value="2">ultima semana</option>
-            <option value="3">ultima mes</option>
+            <option value="1">Ayer</option>
+            <option value="2">Ultima semana</option>
+            <option value="3">Ultima mes</option>
+            <option value="4">Ultimo archivo</option>
         </select>
         <button type="submit">Buscar</button>
     </form>
