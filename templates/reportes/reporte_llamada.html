@@ -1,63 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <title>Title</title>
-</head>
-<body>
-<select onchange="funcion(this.value)" name="respuesta">
-    <option value="0">Desde siempre</option>
-    <option value="1">ultimo dia</option>
-    <option value="2">ultima semana</option>
-    <option value="3">ultima mes</option>
-</select>
-<canvas id="Grafica" width="70" height="50"></canvas>
-</body>
-<script>
+{% extends 'base/base.html' %}
+{% load static %}
+{% block main %}
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    function funcion(valor) {
-        $.ajax({
-            method: 'GET',
-            url: '{% url 'archivo:llevar_reporte_llamada' %}',
+    </head>
+
+
+    <div class="contenedor" id="lienzo">
+        <canvas id="Grafica" width="65" height="40"></canvas>
+    </div>
+
+
+<div class="container-fluid col-md-5" >
+    <select class="custom-select mr-sm-2" onchange="funcion(this.value)" name="respuesta">
+        <option value="0">Desde siempre</option>
+        <option value="1">ultimo dia</option>
+        <option value="2">ultima semana</option>
+        <option value="3">ultima mes</option>
+      </select>
+</div>
+    <script>
+
+        function funcion(valor) {
+            $.ajax({
+                method: 'GET',
+                url: '{% url 'archivo:llevar_reporte_llamada' %}',
+                data: {
+                    'valor': valor
+                },
+                success: function (data) {
+                    dar(data);
+                }
+            });
+        }
+
+        Canvas = document.getElementById("Grafica").getContext('2d');
+        var myChart = new Chart(Canvas, {
+            type: "bar",
             data: {
-                'valor': valor
+                labels: ['col1', 'col2', 'col3'],
+                datasets: [{
+                    label: 'Num datos',
+                    data: [0, 0, 0],
+                    backgroundColor: [
+                        'rgb(66, 134, 244,0.5)',
+                        'rgb(74, 135, 72,0.5)',
+                        'rgb(229, 89, 50,0.5)'
+                    ]
+                }]
             },
-            success: function (data) {
-                dar(data);
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
             }
         });
-    }
 
-    Canvas = document.getElementById("Grafica").getContext('2d');
-    var myChart = new Chart(Canvas, {
-        type: "bar",
-        data: {
-            labels: ['col1', 'col2', 'col3'],
-            datasets: [{
-                label: 'Num datos',
-                data: [0, 0, 0],
-                backgroundColor: [
-                    'rgb(66, 134, 244,0.5)',
-                    'rgb(74, 135, 72,0.5)',
-                    'rgb(229, 89, 50,0.5)'
-                ]
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
+        function dar(data) {
+            myChart.data.datasets[0].data = [data.exito, data.no_contesta, data.exito];
+            myChart.update();
         }
-    });
-    function dar(data) {
-        myChart.data.datasets[0].data = [data.exito, data.no_contesta, data.exito];
-        myChart.update();
-    }
-</script>
-</html>
+    </script>
+    <style>
+        .contenedor {
+            box-sizing: border-box;
+            float: left;
+            width: 65%;
+            padding: 15px;
+        }
+
+        .lienzo {
+            border: 2px solid #d9d9d9;
+        }
+
+
+    </style>
+{% endblock %}

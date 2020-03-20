@@ -16,7 +16,7 @@ urlpatterns = [
     path(
         route='importe/',
         view=ImporteControl.upload_excel,
-        name='import'
+        name='importe'
     ),
     path(
         route='entregar/',
@@ -102,6 +102,11 @@ urlpatterns = [
         route='estadito',
         view=views.CrearEstado.as_view(),
         name='estado'
+    ),
+    path(
+        route='updatEstado',
+        view=views.ActualizarEstado.as_view(),
+        name='updatEstado'
     ),
     # esta ruta me retorna solo un template "reporte llamadas"
     path(
