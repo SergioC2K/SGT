@@ -238,6 +238,10 @@
             theme: 'error',
             showDuration: 5000
         });
+        const succcesNotification = window.createNotification({
+            theme: 'success',
+            showDuration: 5000
+        });
 
 
         function recuperar(id) {
@@ -282,6 +286,6 @@
 {% endblock %}
 {% block scripts %}
     {{ block.super }}
-    
+
 {% endblock %}
 
