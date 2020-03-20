@@ -275,12 +275,6 @@ class ActualizarEstado(View):
 
 
 
-class CrearEstado(ListView, FormView):
-    model = Estado
-    form_class = EstadoForm
-    template_name = 'llamada/estados.html'
-
-
 #  Este metodo solo es para que me retorne al template
 def reporte_llamada(request):
     return render(request, 'reportes/reporte_llamada.html')
