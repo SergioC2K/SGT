@@ -128,6 +128,17 @@
                 </section>
             </div>
         </div>
+        <div class="hk-footer-wrap container">
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <p>Creado por<a href="" class="text-dark" target="_blank">La Gerencia</a>
+                            © 2019</p>
+                    </div>
+
+                </div>
+            </footer>
+        </div>
     </div>
     <!-- /Container -->
     <div style="box-shadow: inset 0 0 20px #36876a" id="mymodal" class="modal fade bd-example-modal-lg" tabindex="-1"
@@ -143,16 +154,7 @@
     <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
 
     <!-- Footer -->
-    <div class="hk-footer-wrap container">
-    <footer class="footer">
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <p>Creado por<a href="" class="text-dark" target="_blank">La Gerencia</a>
-                    © 2019</p>
-            </div>
 
-        </div>
-    </footer>
 
     {% block javascript %}
         <script>
@@ -249,7 +251,7 @@
                             if (form.checkValidity() === false) {
                                 event.preventDefault();
                                 ErrorNotification({
-                                    message: 'Las contraseñas no coinciden!'
+                                    message: 'Todos los campos son obligatorios!'
 
                                 })
                                 event.stopPropagation();
@@ -259,7 +261,6 @@
                     });
                 }, false);
             })();
-
             $(document).ready(function () {
                 var $formulario = $('#insert');
                 $formulario.submit(function (event) {
@@ -275,7 +276,7 @@
                                 Agregar(data.person);
                                 Exito();
                             } else
-                                Error();
+                               Error();
                         },
                     });
 
@@ -349,10 +350,6 @@
                 }
 
                 if (letras.indexOf(tecla) == -1 && !tecla_especial) {
-                    ErrorNotification({
-                        message: 'Solo se permiten letras!'
-                    });
-
                     return false;
                 } else {
                     document.getElementById('respuesta').innerHTML = "";
@@ -409,6 +406,15 @@
                 }
             });
 
+            {% if form.errors %}
+                {% for field in form %}
+                    {% if field.errors %}
+                        ErrorNotification({
+                            message: ' {{ field.label }}: {{ field.errors|striptags }}, {{ form.non_field_errors }}'
+                        });
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             function Correcto() {
                 ErrorNotification({
                     message: 'Todos los campos son obligatorios!'
