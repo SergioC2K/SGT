@@ -1,31 +1,32 @@
 # Date
 import datetime
+
 # Excel
-import pandas as pd
 # Django
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView, FormView
 from django.db.models import Q, Count
-from django.db import IntegrityError
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, FormView
+
 # Modelos
 from file.forms import RealizarLlamada, EstadoForm
-from file.models import RegistroLlamada
-from file.models import LlamadasEntrantes, Archivo, Estado
-from usuario.models import Perfil
 from file.forms import SubirArchivoForm
-
+from file.models import LlamadasEntrantes, Archivo, Estado
+from file.models import RegistroLlamada
+from usuario.models import Perfil
 # Filtros
 from .filters import RegistroLlamadaFilter
 
 hoy = datetime.date.today()
-manana = hoy + datetime.timedelta(days=1)
+manana = hoy + datetime.timedelta(days=2)
 dias_antes = hoy - datetime.timedelta(days=9)
 horas_antes = hoy - datetime.timedelta(hours=12)
+
+
 
 
 @login_required
@@ -107,6 +108,7 @@ def repartir(request):
         return render(request, 'archivo/repartir.html', contexto)
 
     return render(request, 'archivo/repartir.html', {'error': 'No hay archivos para repartir'})
+
 
 @method_decorator(superuser_required, name='dispatch')
 class entregar(ListView):
@@ -242,6 +244,3 @@ class CrearEstado(ListView, FormView):
     model = Estado
     form_class = EstadoForm
     template_name = 'llamada/estados.html'
-
-
-
