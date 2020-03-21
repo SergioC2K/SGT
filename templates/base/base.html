@@ -16,7 +16,8 @@
         <link href="{% static 'vendors/vectormap/jquery-jvectormap-2.0.3.css' %}" rel="stylesheet" type="text/css"/>
         <!-- Toggles CSS -->
         <link href="{% static 'vendors/jquery-toggles/css/toggles.css' %}" rel="stylesheet" type="text/css">
-        <link href="{% static 'vendors/jquery-toggles/css/themes/toggles-light.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'vendors/jquery-toggles/css/themes/toggles-light.css' %}" rel="stylesheet"
+              type="text/css">
         <!-- Tablesaw table CSS -->
         <link href="{% static 'vendors/tablesaw/dist/tablesaw.css' %}" rel="stylesheet" type="text/css"/>
         <!-- Toastr CSS -->
@@ -50,6 +51,17 @@
     <div class="hk-pg-wrapper">
         {% block main %}
         {% endblock %}
+        <div class="hk-footer-wrap container">
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-md-6  col-sm-12">
+                        <p>Creado por<a href="" class="text-dark" target="_blank">La Gerencia</a>
+                            © 2019</p>
+                    </div>
+
+                </div>
+            </footer>
+        </div>
     </div>
 </div>
 

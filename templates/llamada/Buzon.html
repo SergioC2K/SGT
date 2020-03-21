@@ -145,66 +145,64 @@
                                                             MP3
                                                         </label>
                                                         {{ form.id_grabacion }}
-                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-sm">
-                                                        <div class="form-group">
-                                                            <strong>Resultado</strong>
-                                                            {{ form.id_estado }}
-                                                        </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm">
+                                                    <div class="form-group">
+                                                        <strong>Resultado</strong>
+                                                        {{ form.id_estado }}
                                                     </div>
-                                                    <div class="col-sm">
-                                                        <strong>Fecha de entrega</strong>
-                                                        {{ form.fecha_entrega }}
-                                                    </div>
-                                                    <div class="col-sm">
-                                                        <!-- Button trigger modal -->
-                                                        <button type="button" class="btn btn-primary mt-4"
-                                                                data-toggle="modal"
-                                                                data-target="#exampleModal">
-                                                            Observaciones
-                                                        </button>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <strong>Fecha de entrega</strong>
+                                                    {{ form.fecha_entrega }}
+                                                </div>
+                                                <div class="col-sm">
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-primary mt-4"
+                                                            data-toggle="modal"
+                                                            data-target="#exampleModal">
+                                                        Observaciones
+                                                    </button>
 
-                                                        <!-- Modal -->
+                                                    <!-- Modal -->
 
-                                                        <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                             role="dialog" aria-labelledby="exampleModalLabel"
-                                                             aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">
-                                                                            <strong>Observaciones</strong></h5>
-                                                                        <button type="button" class="close"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        {{ form.observaciones }}
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                                data-dismiss="modal">x
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-"
-                                                                                style="background-color: #36876a;color: #fff1f1"><span
-                                                                                class="glyphicon glyphicon-ok"></span>
-                                                                        </button>
-                                                                    </div>
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                         role="dialog" aria-labelledby="exampleModalLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">
+                                                                        <strong>Observaciones</strong></h5>
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    {{ form.observaciones }}
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-outline-success"
+                                                                            data-dismiss="modal"><span
+                                                                            class="glyphicon glyphicon-ok"></span>
+                                                                    </button>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        {{ form.realizado }}
-                                                        {{ form.id_llamada }}
-                                                    </div>
+                                                </div>
+                                                <div>
+                                                    {{ form.realizado }}
+                                                    {{ form.id_llamada }}
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>

@@ -12,7 +12,6 @@
 {% block main %}
     <!-- Container -->
     <div class="container mt-3">
-
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
@@ -24,14 +23,12 @@
                                 data-target=".bd-example-modal-lg"><i
                                 class="fas fa-user-plus"></i> Nuevo
                         </button>
-
                     </h3>
                     <div class="row">
                         <div class="col-xl-12">
                             <hr>
                             <div class="row">
                                 <div class="col-sm">
-
                                     {% if object_list %}
                                         <table id="table_id" class="table table-hover"
                                                style="width:100%">
@@ -118,43 +115,29 @@
                                         </table>
                                     {% else %}
                                         <div class="alert alert-info" role="alert">
-                                            No hay usuarios registrados
+                                            <span class="glyphicon glyphicon-info-sign"></span> No hay usuarios
+                                            registrados
                                         </div>
                                     {% endif %}
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </section>
+                <div style="box-shadow: inset 0 0 20px #36876a" id="mymodal" class="modal fade bd-example-modal-lg"
+                     tabindex="-1"
+                     role="dialog"
+                     aria-labelledby="myLargeModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        {% include 'users/creacion_perfil.html' %}
+                    </div>
+                </div>
+                <!--Aca empieza el modal del modificar -->
+                <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
             </div>
         </div>
-        <div class="hk-footer-wrap container">
-            <footer class="footer">
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        <p>Creado por<a href="" class="text-dark" target="_blank">La Gerencia</a>
-                            © 2019</p>
-                    </div>
-
-                </div>
-            </footer>
-        </div>
     </div>
-    <!-- /Container -->
-    <div style="box-shadow: inset 0 0 20px #36876a" id="mymodal" class="modal fade bd-example-modal-lg" tabindex="-1"
-         role="dialog"
-         aria-labelledby="myLargeModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            {% include 'users/creacion_perfil.html' %}
-        </div>
-    </div>
-    <!--Aca empieza el modal del modificar -->
-    <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
-
-    <!-- Footer -->
-
 
     {% block javascript %}
         <script>
@@ -174,6 +157,9 @@
 
             $(document).ready(function () {
                 $('#table_id').DataTable({
+                    "scrollX": true,
+                    "scrollY": "200px",
+                    "scrollCollapse": true,
                     bfilter: false,
                     ordering: true,
                     searching: true,
@@ -440,19 +426,8 @@
 
         </script>
     {% endblock %}
-
-
 {% endblock %}
-</div>
 
-</div>
 
-<style>
-    div.dataTables_wrapper
-    .dataTables_length select {
-        width: 100%;
-        float: none;
-        text-align: center;
-        margin-top: 1.5rem !important;
-    }
-</style>
+
+
