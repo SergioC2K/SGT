@@ -5,14 +5,13 @@ from datetime import date
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core import serializers
+from django.db.models import Q, Count
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from django.utils.decorators import method_decorator
-from django.views.generic import ListView, UpdateView, FormView, View
-from django.db.models import Q, Count
-from django.db import IntegrityError
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, FormView
+from django.views.generic import View
 
 # Modelos
 from file.forms import RealizarLlamada, EstadoForm
@@ -257,14 +256,15 @@ class ActualizarEstado(View):
         nombre1 = request.GET.get('nombre', None)
 
         obj = Estado.objects.get(id=idOtro)
-        obj = Estado.objects.get(nombre=nombre1)
+        obj.nombre = nombre1
         obj.save()
 
-        user = {
-            'id': obj.id, 'nombre': obj.nombre
+        estado = {
+            'id': obj.id,
+            'nombre': obj.nombre
         }
         data = {
-            'user': user
+            'estado': estado
         }
         return JsonResponse(data=data)
 

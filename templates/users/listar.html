@@ -52,7 +52,7 @@
                                                 {% for foo in object_list %}
                                                     <tr id="fila-{{ foo.pk }}">
                                                         <td id="activado-{{ foo.pk }}">
-                                                            <div >
+                                                            <div>
                                                                 {% if foo.usuario.is_active %}
 
                                                                     <span class="badge badge-pill badge-success">Activo</span>
@@ -98,7 +98,7 @@
                                                                             <i class="fa fa-pencil"></i>
                                                                         </button>
                                                                     {% else %}
-                                                                        <button id="btn-{{ foor.pk }}" type="submit"
+                                                                        <button id="btn-{{ foo.pk }}" type="submit"
                                                                                 class="btn btn"
                                                                                 style="background-color: #36876a"
                                                                                 onclick="Inhabilitar({{ foo.pk }})">
@@ -164,6 +164,8 @@
 
     {% block javascript %}
         <script>
+
+
             const successNotification = window.createNotification({
                 theme: 'success',
                 showDuration: 5000
@@ -185,6 +187,7 @@
                     "language": español
                 });
             });
+
 
             var español = {
                 "sProcessing": "Procesando...",
@@ -270,27 +273,9 @@
                 }, false);
             })();
 
-            $(document).ready(function () {
-                var $formulario = $('#insert');
-                $formulario.submit(function (event) {
-                    event.preventDefault();
-                    var $datos = $formulario.serialize();
 
-                    $.ajax({
-                        url: '{% url "usuario:signup"%}',
-                        method: "POST",
-                        data: $datos,
-                        success: function (data) {
-                            if (data.estado) {
-                                Agregar(data.person);
-                                Exito();
-                            } else
-                                Error();
-                        },
-                    });
-
-                    function Agregar(user) {
-                        $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
+            function Agregar(user) {
+                $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
                                <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
                                 <td name="username" class="userNombre userData">${user.username}</td>
                                 <td name="nombre" class="userNombre userData">${user.name}</td>
@@ -303,44 +288,25 @@
                                 <button type="submit" onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
                                 </div></td>
                                 </tr>`);
-                    }
+            }
 
-                    function Exito() {
-                        Swal.fire(
-                            'Bien !',
-                            'Exitoso',
-                            'success'
-                        );
-                        $('#mymodal').modal('hide');
-                    }
+            function Exito() {
+                Swal.fire(
+                    'Operacion Exitosa!',
+                    'Registro completado',
+                    'success'
+                );
+                $('#mymodal').modal('hide');
+            }
 
-                    (function () {
+            (function () {
 
-                        if (password_confirmation !== "" && password !== "") {
+                if (password_confirmation !== "" && password !== "") {
 
-                            document.getElementById('Prism').innerHTML = "ingrese la contraseña";
-                            document.getElementById('Prism2').innerHTML = "ingrese la contraseña";
-                        }
-                    })();
-
-
-                    function Error() {
-
-                        if (password != password_confirmation) {
-
-                            ErrorNotification({
-                                message: 'Las contraseñas no coinciden!'
-                            });
-
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-
-                });
-            })
-            ;
+                    document.getElementById('Prism').innerHTML = "ingrese la contraseña";
+                    document.getElementById('Prism2').innerHTML = "ingrese la contraseña";
+                }
+            })();
 
 
             function soloLetras(e) {
@@ -455,6 +421,28 @@
 
                 });
             }
+
+            $(document).ready(function () {
+                var $formulario = $('#insert');
+                $formulario.submit(function (event) {
+                    event.preventDefault();
+                    var $datos = $formulario.serialize();
+                    debugger
+                    $.ajax({
+                        url: '{% url "usuario:signup"%}',
+                        method: "POST",
+                        data: $datos,
+                        success: function (data) {
+                            if (data.estado) {
+                                Agregar(data.person);
+                                Exito();
+                            } else if (data.errors) {
+                                alert(data)
+                            }
+                        },
+                    });
+                });
+            });
 
         </script>
     {% endblock %}
