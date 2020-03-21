@@ -96,9 +96,16 @@ urlpatterns = [
         name='listFile'
     ),
     path(
-        route='estadito',
+        route='create_estado',
         view=views.CrearEstado.as_view(),
         name='estado'
+    ),
+
+    path(
+        route='update_estado',
+        view=views.ActualizarEstado.as_view(),
+        name='UpdateEstado'
+
     ),
 
     # esta ruta me retorna solo un template "reporte llamadas"

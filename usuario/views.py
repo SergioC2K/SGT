@@ -14,11 +14,12 @@ from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 # CB Views
 from django.views.generic import ListView, UpdateView, FormView, View
-# Forms
-from notifications.signals import notify
 
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil
+
+
+# Forms
 
 
 class LoginViewUsuario(LoginView):
@@ -53,9 +54,9 @@ def UserCreateView(request):
                  'apellido': usuario.usuario.last_name,
                  'telefono_fijo': usuario.telefono_fijo,
                  'celular': usuario.celular}
-            data = {'estado': True, 'person': d}
+            data = {'estado': True, 'person': d, 'form': formula}
         else:
-            data = {'estado': False}
+            data = {'errors': True, 'form': formula.non_field_errors}
 
         return JsonResponse(data=data)
     else:
@@ -155,20 +156,20 @@ class ListEstado(ListView):
 
 
 class UpdateProfileView(UpdateView):
-        """Update profile view."""
-        template_name = 'users/perfil.html'
-        model = Perfil
-        form_class = PerfilForm
-        success_url = reverse_lazy('usuario:listar_usuario')
+    """Update profile view."""
+    template_name = 'users/perfil.html'
+    model = Perfil
+    form_class = PerfilForm
+    success_url = reverse_lazy('usuario:listar_usuario')
 
-        def get_object(self, **kwargs):
-            """Return user's profile."""
-            return self.request.user.perfil
+    def get_object(self, **kwargs):
+        """Return user's profile."""
+        return self.request.user.perfil
 
-        def get_success_url(self):
-            """Return to user's profile."""
-            username = self.object.usuario.username
-            return reverse('usuario:listar_usuario')
+    def get_success_url(self):
+        """Return to user's profile."""
+        username = self.object.usuario.username
+        return reverse('usuario:listar_usuario')
 
 
 class actualizarUsu(View):

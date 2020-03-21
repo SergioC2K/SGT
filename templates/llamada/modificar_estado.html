@@ -8,21 +8,18 @@
             </button>
         </div>
         <div class="container-fluid">
-
             <div class="container">
-
                 <form id="update"
                       autocomplete="off">
                     {% csrf_token %}
-
-
                     <input class="form-control" id="form-id" type="hidden" name="formId"/>
                     <div class="container mt-4">
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="form-nombre">Nombre</label>
-                                    <input class="form-control" id="NombreEstado" required type="text" name="NombreEstado"
+                                    <label for="NombreEstado">Nombre</label>
+                                    <input class="form-control" id="NombreEstado" required type="text"
+                                           name="NombreEstado"
                                            min="8"
                                            max="8"/>
 
@@ -36,7 +33,7 @@
 
                     <div class="modal-footer">
                         <button class="btn btn" style="background-color: #36876a; color: #fff4f0"
-                                stype="submit">Modificar
+                                type="submit">Modificar
                         </button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
@@ -48,4 +45,4 @@
         </div>
     </div>
 </div>
-</div>
+

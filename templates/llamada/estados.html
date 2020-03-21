@@ -30,13 +30,15 @@
                                     </thead>
                                     <tbody>
                                     {% for object in object_list %}
-
-                                        <tr id="fila-{{ object.id }}">
+                                        <tr id="fila-{{ object.pk }}">
                                             <td> {{ object.id }}</td>
-                                            <td class="userNombre userData"
+                                            <td class="NombreEstado userData"
                                                 name="nombre">{{ object.nombre }}</td>
                                             <td>
-                                                <button class="btn btn-dark"><i class="fa fa-pencil" onclick="Editar({{ foo.pk }}),open_modal()"></i></button>
+                                                <button class="btn btn-dark"
+                                                        onclick="Editar({{ object.pk }}),open_modal()"><i
+                                                        class="fa fa-pencil"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -75,81 +77,81 @@
         </div>
     </div>
     <!-- modificar estado---->
-      <div class="modal fade" id="modal_modificar"> {% include 'llamada/modificar_estado.html' %}</div>
+    <div class="modal fade" id="modal_modificar"> {% include 'llamada/modificar_estado.html' %}</div>
 
     {% block javascript %}
         <script>
-          function open_modal() {
-                    $("#modal_modificar").modal('show');
-                }
-
-                $("form#update").submit(function () {
-                    event.preventDefault();
-                    var id1 = $('input[name="formId"]').val().trim();
-                    var nombre1 = $('input[name="formNombre"]').val().trim();
+            function open_modal() {
+                $("#modal_modificar").modal('show');
+            }
 
 
-                    if (nombre) {
-                        $.ajax({
-                            url: '{% url "archivo:updatEstado" %}',
-                            method: 'get',
-                            data: {
-                                'id': id1,
-                                'nombre': nombre1,
+            $("form#update").submit(function () {
+                event.preventDefault();
+                var id1 = $('input[name="formId"]').val().trim();
+                var nombre1 = $('input[name="NombreEstado"]').val().trim();
+                if (nombre1) {
+                    $.ajax({
+                        url: '{% url "archivo:UpdateEstado" %}',
+                        method: 'get',
+                        data: {
+                            'id': id1,
+                            'nombre': nombre1,
 
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                if (data.user) {
-                                    Swal.fire(
-                                        'Bien !',
-                                        'Modificacion exitosa¡',
-                                        'success'
-                                    );
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.estado) {
+                                Swal.fire(
+                                    'Bien !',
+                                    'Modificacion exitosa¡',
+                                    'success'
+                                );
 
-                                    tableUpdate(data.user);
-                                } else {
-                                    alert("Todos los campos son requeridos");
-                                }
-                                $('#modal_modificar').modal('hide');
-                                return false;
+                                tableUpdate(data.estado);
+                            } else {
+                                alert("Todos los campos son requeridos");
                             }
-                        });
-                    } else {
-                        Correcto();
-                    }
-                });
-
-                function Correcto() {
-                    Swal.fire(
-                        'Mal !',
-                        'Llenar los campos',
-                        'error'
-                    );
-                }
-
-                function Editar(id) {
-                    if (id) {
-                        tr_id = "#fila-" + id;
-                        nombre = $(tr_id).find(".NombreEstado").text();
-
-                        $('#form-id').val(id);
-                        $('#NombreEstado').val(nombre);
-
-                    }
-                }
-
-                function tableUpdate(user) {
-                    $("#table_id #fila-" + user.id).children(".userData").each(function () {
-                        var atributos = $(this).attr("name");
-
-                        if (atributos === "nombre") {
-                            $(this).text(user.nombre);
-
+                            $('#modal_modificar').modal('hide');
+                            return false;
                         }
-
                     });
+                } else {
+                    Correcto();
                 }
+            });
+
+            function Correcto() {
+                Swal.fire(
+                    'Mal !',
+                    'Llenar los campos',
+                    'error'
+                );
+            }
+
+            function Editar(id) {
+                debugger
+                if (id) {
+                    tr_id = "#fila-" + id;
+                    nombre = $(tr_id).find(".NombreEstado").text();
+
+                    $('#form-id').val(id);
+                    $('#NombreEstado').val(nombre);
+
+                }
+            }
+
+            function tableUpdate(user) {
+                $("#table_id #fila-" + user.id).children(".userData").each(function () {
+                    var atributos = $(this).attr("name");
+
+                    if (atributos === "nombre") {
+                        $(this).text(user.nombre);
+
+                    }
+
+                });
+            }
 
         </script>
     {% endblock %}
