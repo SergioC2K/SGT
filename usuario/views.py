@@ -47,6 +47,7 @@ def UserCreateView(request):
             persona = User.objects.get(username=userna)
             usuario = Perfil.objects.get(usuario_id=persona.pk)
             d = {'id': usuario.id,
+                 'username': usuario.usuario.username,
                  'name': usuario.usuario.first_name,
                  'cedula': usuario.cedula,
                  'estado': usuario.usuario.is_active,
@@ -192,9 +193,13 @@ class actualizarUsu(View):
         perfil.save()
 
         user = {
-            'id': obj.id, 'nombre': obj.first_name, 'apellido': obj.last_name,
-            'cedula': perfil.cedula, 'telefono': perfil.telefono_fijo,
-            'tele': perfil.celular_telemercadeo
+            'id': obj.id,
+            'nombre': obj.first_name,
+            'apellido': obj.last_name,
+            'cedula': perfil.cedula,
+            'telefono': perfil.telefono_fijo,
+            'tele': perfil.celular_telemercadeo,
+
         }
 
         data = {

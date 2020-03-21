@@ -292,12 +292,12 @@
                     function Agregar(user) {
                         $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
                                <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
+                                <td name="username" class="userNombre userData">${user.username}</td>
                                 <td name="nombre" class="userNombre userData">${user.name}</td>
                                 <td name="apellido" class="userApellido userData">${user.apellido}</td>
-                                <td name="cedula" class="userCedula userData">0</td>
+                                <td name="cedula" class="userCedula userData">${user.cedula}</td>
                                 <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
-                                <td name="celular">${user.celular}</td>
-                                <td name="tele" class="userTele userData">tele</td>
+                                <td name="tele" class="userTele userData">${user.celular}</td>
                                 <td><div id="colum-${user.id}">
                                 <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
                                 <button type="submit" onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
@@ -458,7 +458,6 @@
 
         </script>
     {% endblock %}
-
 
 {% endblock %}
 </div>
