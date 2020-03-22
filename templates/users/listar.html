@@ -12,6 +12,7 @@
 {% block main %}
     <!-- Container -->
     <div class="container mt-3">
+
         <div class="row">
             <div class="col-xl-12">
                 <section class="hk-sec-wrapper">
@@ -23,12 +24,14 @@
                                 data-target=".bd-example-modal-lg"><i
                                 class="fas fa-user-plus"></i> Nuevo
                         </button>
+
                     </h3>
                     <div class="row">
                         <div class="col-xl-12">
                             <hr>
                             <div class="row">
                                 <div class="col-sm">
+
                                     {% if object_list %}
                                         <table id="table_id" class="table table-hover"
                                                style="width:100%">
@@ -121,23 +124,38 @@
                                     {% endif %}
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </section>
-                <div style="box-shadow: inset 0 0 20px #36876a" id="mymodal" class="modal fade bd-example-modal-lg"
-                     tabindex="-1"
-                     role="dialog"
-                     aria-labelledby="myLargeModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        {% include 'users/creacion_perfil.html' %}
-                    </div>
-                </div>
-                <!--Aca empieza el modal del modificar -->
-                <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
             </div>
         </div>
+        <div class="hk-footer-wrap container">
+            <footer class="footer">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <p>Creado por<a href="" class="text-dark" target="_blank">La Gerencia</a>
+                            © 2019</p>
+                    </div>
+
+                </div>
+            </footer>
+        </div>
     </div>
+    <!-- /Container -->
+    <div style="box-shadow: inset 0 0 20px #36876a" id="mymodal" class="modal fade bd-example-modal-lg" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myLargeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            {% include 'users/creacion_perfil.html' %}
+        </div>
+    </div>
+    <!--Aca empieza el modal del modificar -->
+    <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
+
+    <!-- Footer -->
+
 
     {% block javascript %}
         <script>
@@ -157,9 +175,6 @@
 
             $(document).ready(function () {
                 $('#table_id').DataTable({
-                    "scrollX": true,
-                    "scrollY": "200px",
-                    "scrollCollapse": true,
                     bfilter: false,
                     ordering: true,
                     searching: true,
@@ -257,12 +272,12 @@
             function Agregar(user) {
                 $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
                                <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
+                                <td name="username" class="userNombre userData">${user.username}</td>
                                 <td name="nombre" class="userNombre userData">${user.name}</td>
                                 <td name="apellido" class="userApellido userData">${user.apellido}</td>
-                                <td name="cedula" class="userCedula userData">0</td>
+                                <td name="cedula" class="userCedula userData">${user.cedula}</td>
                                 <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
-                                <td name="celular">${user.celular}</td>
-                                <td name="tele" class="userTele userData">tele</td>
+                                <td name="tele" class="userTele userData">${user.celular}</td>
                                 <td><div id="colum-${user.id}">
                                 <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
                                 <button type="submit" onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
@@ -426,8 +441,19 @@
 
         </script>
     {% endblock %}
+
+
 {% endblock %}
+</div>
 
+</div>
 
-
-
+<style>
+    div.dataTables_wrapper
+    .dataTables_length select {
+        width: 100%;
+        float: none;
+        text-align: center;
+        margin-top: 1.5rem !important;
+    }
+</style>

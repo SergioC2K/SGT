@@ -1,78 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}
+
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+    <title>Reporte de usuario</title>
+    <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'dist/Datatables/FileSaver.min.js' %}"></script>
+    <script src="{% static 'dist/Datatables/xlsx.full.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <title>Title</title>
-</head>
-<body>
-{# Este es el de las fechas #}
-<select name="fecha" id="fecha">
-    <option value="0">Desde siempre</option>
-    <option value="1">ultimo dia</option>
-    <option value="2">ultima semana</option>
-    <option value="3">ultima mes</option>
-</select>
-{# Este es el de los usuario #}
-<select name="usuario" id="usuario">
-    {% for a in usuario %}
-        <option value="{{ a.pk }}">{{ a.usuario.first_name }}</option>
-    {% endfor %}
-</select>
 
-<button type="button" onclick="funcion()">Buscar</button>
 
-<canvas id="Grafica" width="70" height="50"></canvas>
-</body>
-<script>
 
-    function funcion() {
-        var usuario = document.getElementById('usuario').value;
-        var valor = document.getElementById('fecha').value;
-        $.ajax({
-            method: 'GET',
-            url: '{% url 'archivo:traer_reporte_usuario' %}',
+{% endblock %}
+
+{% block main %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+
+                <canvas id="Grafica" width="65" height="40"></canvas>
+
+                {# Este es el de las fechas #}
+<strong>Selecciona el rango de ejecucion </strong>
+                <select class="custom-select mr-sm-2" name="fecha" id="fecha">
+                    <option value="0">Desde siempre</option>
+                    <option value="1">ultimo dia</option>
+                    <option value="2">ultima semana</option>
+                    <option value="3">ultima mes</option>
+                </select>
+                {# Este es el de los usuario #}
+            <strong>Selecciona el operador </strong>
+                <select class="custom-select mr-sm-2" name="usuario" id="usuario">
+                    {% for a in usuario %}
+                        <option value="{{ a.pk }}">{{ a.usuario.first_name }}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn" style="background-color: #36876a; color: #fff4f0;margin-left: 85%"
+            onclick="funcion()"><i class="fas fa-search"></i>Buscar</button>
+    <script>
+
+        function funcion() {
+            var usuario = document.getElementById('usuario').value;
+            var valor = document.getElementById('fecha').value;
+            $.ajax({
+                method: 'GET',
+                url: '{% url 'archivo:traer_reporte_usuario' %}',
+                data: {
+                    'valor': valor,
+                    'usuario': usuario
+                },
+                success: function (data) {
+                    dar(data);
+                }
+            });
+        }
+
+        Canvas = document.getElementById("Grafica").getContext('2d');
+        var myChart = new Chart(Canvas, {
+            type: "bar",
             data: {
-                'valor': valor,
-                'usuario': usuario
+                labels: ['Exito', 'No contesta', 'Aplaza'],
+                datasets: [{
+                    label: 'Num datos',
+                    data: [0, 0, 0],
+                    backgroundColor: [
+                        'rgb(66, 134, 244,0.5)',
+                        'rgb(74, 135, 72,0.5)',
+                        'rgb(229, 89, 50,0.5)'
+                    ]
+                }]
             },
-            success: function (data) {
-                dar(data);
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
             }
         });
-    }
 
-    Canvas = document.getElementById("Grafica").getContext('2d');
-    var myChart = new Chart(Canvas, {
-        type: "bar",
-        data: {
-            labels: ['Exito', 'No contesta', 'Aplaza'],
-            datasets: [{
-                label: 'Num datos',
-                data: [0, 0, 0],
-                backgroundColor: [
-                    'rgb(66, 134, 244,0.5)',
-                    'rgb(74, 135, 72,0.5)',
-                    'rgb(229, 89, 50,0.5)'
-                ]
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
+        function dar(data) {
+            myChart.data.datasets[0].data = [5, data.no_contesta, data.exito];
+            myChart.data.datasets[0].label = data.nombre;
+            myChart.update();
         }
-    });
+    </script>
 
-    function dar(data) {
-        myChart.data.datasets[0].data = [5, data.no_contesta, data.exito];
-        myChart.data.datasets[0].label = data.nombre;
-        myChart.update();
-    }
-</script>
-</html>
+    <style>
+        .container {
+            width: 50%;
+            height: 80%;
+            margin: 0 auto;
+        }
+
+        .grafica {
+            border: 1px solid #d9d9d9;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+{% endblock %}

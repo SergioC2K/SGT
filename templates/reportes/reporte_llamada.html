@@ -2,7 +2,7 @@
 {% load static %}
 {% block main %}
     <head>
-        <meta charset="UTF-8">
+
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -21,9 +21,6 @@
                     <option value="2">ultima semana</option>
                     <option value="3">ultima mes</option>
                 </select>
-
-            </div>
-            <div class="col-sm">
 
             </div>
         </div>
@@ -76,5 +73,17 @@
             myChart.update();
         }
     </script>
-   
+    <style>
+        .container {
+            width: 50%;
+            height: 80%;
+            margin: 0 auto;
+        }
+
+        .grafica {
+            border: 1px solid #d9d9d9;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 {% endblock %}
