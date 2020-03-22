@@ -58,10 +58,9 @@
                             </div>
                         </div>
                         <div class="emailapp-right">
-
                             <header>
                                 <div class="email-options">
-                                    <i class="fas fa-clipboard-list"></i> Datos de llamada
+                                    <i class="fas fa-clipboard-list"></i> Informacion del Cliente
                                 </div>
                             </header>
                             <div class="emailapp-emails-list">
@@ -70,23 +69,30 @@
                                         <div class="col-7">
                                             <div class="form-group ">
                                                 <strong>Nombre almacen</strong>
-                                                <input type="text" class="form-control" readonly
-                                                       onmousedown="return false" id="alm_soli"
+                                                <input type="text" class="form-control"
+                                                       readonly
+                                                       onmousedown="return false"
+                                                       id="alm_soli"
                                                        name="alm_soli">
                                             </div>
                                         </div>
                                         <div class="col-5">
                                             <div class="form-group">
                                                 <strong>Telefono</strong>
-                                                <input type="text" class="form-control" id="telefono"
-                                                       readonly onmousedown="return false" name="telefono">
+                                                <input type="text" class="form-control"
+                                                       id="telefono"
+                                                       readonly
+                                                       onmousedown="return false"
+                                                       name="telefono">
                                             </div>
                                         </div>
                                         <div class="col-7">
                                             <div class="form-group">
                                                 <strong>Nombre cliente</strong>
-                                                <input type="text" class="form-control" readonly
-                                                       onmousedown="return false" id="nombre_solicitante"
+                                                <input type="text" class="form-control"
+                                                       readonly
+                                                       onmousedown="return false"
+                                                       id="nombre_solicitante"
                                                        name="nombre_solicitante">
                                             </div>
                                         </div>
@@ -94,8 +100,11 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <strong>Localidad</strong>
-                                                <input type="text" class="form-control" id="localidad"
-                                                       readonly onmousedown="return false" name="localidad"
+                                                <input type="text" class="form-control"
+                                                       id="localidad"
+                                                       readonly
+                                                       onmousedown="return false"
+                                                       name="localidad"
                                                        value="{{ call.localidad }}">
                                             </div>
                                         </div>
@@ -105,105 +114,32 @@
                                         <div class="col-9">
                                             <div class="form-group">
                                                 <strong>Direccion</strong>
-                                                <input type="text" class="form-control" id="direccion_des_mcia"
-                                                       readonly onmousedown="return false"
+                                                <input type="text" class="form-control"
+                                                       id="direccion_des_mcia"
+                                                       readonly
+                                                       onmousedown="return false"
                                                        name="direccion_des_mcia">
                                             </div>
                                         </div>
                                         <div class="col-2">
                                             <div class="form-group">
                                                 <strong>Ruta</strong>
-                                                <input type="text" class="form-control" id="ruta" name="ruta"
-                                                       readonly onmousedown="return false">
+                                                <input type="text" class="form-control"
+                                                       id="ruta"
+                                                       name="ruta"
+                                                       readonly
+                                                       onmousedown="return false">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <form method="POST" action="{% url 'archivo:buzon' %}" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <header>
-                                        <div class="email-options">
-                                            <i class="fas fa-phone-alt"></i> Llamada
-                                        </div>
-                                        <button class="btn bg-dark" type="submit" style="color: #FFFFFF"
-                                                data-toggle="tooltip" data-placement="top" title="Realizar llamada"><i
-                                                class="fas fa-phone-alt"></i></button>
-                                    </header>
-                                    <div class="card-body">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-sm-8">
-                                                    <div class="form-group ">
-                                                        <strong>Nombre contesta</strong>
-                                                        {{ form.nombre_contesta }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 mt-4">
-                                                    <div class="form-group">
-                                                        <label class="custom-file-label pointer-event" for="customFile"><i
-                                                                class="fas fa-microphone-alt"></i>
-                                                            MP3
-                                                        </label>
-                                                        {{ form.id_grabacion }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm">
-                                                    <div class="form-group">
-                                                        <strong>Resultado</strong>
-                                                        {{ form.id_estado }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm">
-                                                    <strong>Fecha de entrega</strong>
-                                                    {{ form.fecha_entrega }}
-                                                </div>
-                                                <div class="col-sm">
-                                                    <!-- Button trigger modal -->
-                                                    <button type="button" class="btn btn-primary mt-4"
-                                                            data-toggle="modal"
-                                                            data-target="#exampleModal">
-                                                        Observaciones
-                                                    </button>
+                                <div class="d-flex justify-content-center mt-3 modal-footer">
+                                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg">Comenzar
 
-                                                    <!-- Modal -->
-
-                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                         role="dialog" aria-labelledby="exampleModalLabel"
-                                                         aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">
-                                                                        <strong>Observaciones</strong></h5>
-                                                                    <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    {{ form.observaciones }}
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-outline-success"
-                                                                            data-dismiss="modal"><span
-                                                                            class="glyphicon glyphicon-ok"></span>
-                                                                    </button>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    {{ form.realizado }}
-                                                    {{ form.id_llamada }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </button>
+                                </div>
+                                <hr>
                             </div>
                         </div>
                     </div>
@@ -211,7 +147,84 @@
             </div>
         </div>
     </div>
-    <!--Scroll-->
+    <!--datos de la llamada en el modal-->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+
+                        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-headset"></i> Realizar
+                            llamada
+
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'archivo:buzon' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="form-group ">
+                                        <strong>Nombre contesta</strong>
+                                        {{ form.nombre_contesta }}
+                                    </div>
+                                </div>
+                                <div class="col mt-4">
+                                    <div class="form-group">
+                                        <label class="custom-file-label pointer-event" for="customFile"><i
+                                                class="fas fa-microphone-alt"></i>
+                                            MP3
+                                        </label>
+                                        {{ form.id_grabacion }}
+                                    </div>
+                                </div>
+                                <div class="col-md-offset-8 ml-3">
+                                    <div class="form-group">
+                                        <strong>Resultado</strong>
+                                        {{ form.id_estado }}
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <strong>Fecha de entrega</strong>
+                                        {{ form.fecha_entrega }}
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <strong>Observaciones</strong>
+                                    {{ form.observaciones }}
+                                </div>
+                                <div>
+                                    {{ form.realizado }}
+                                    {{ form.id_llamada }}
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="d-flex justify-content-center">
+                                    <button class="btn bg-dark " type="submit"
+                                            style="color: #FFFFFF;"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Realizar llamada"><i
+                                            class="fas fa-phone-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -222,7 +235,13 @@
 
             overflow-y: scroll;
             overflow-x: hidden;
+
         }
+
+        textarea {
+            resize: none
+        }
+
     </style>
 
     {% block Javascript %}
@@ -280,8 +299,10 @@
 
                 })
 
+
             {% endfor %}
         {% endif %}
+
     </script>
 {% endblock %}
 {% block scripts %}
