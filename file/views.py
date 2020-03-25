@@ -279,48 +279,100 @@ def reporte_llamada(request):
 def traer_reporte_llamada(request):
     # La variable dia me trae el valor de la fecha a consultar
     dia = request.GET.get('valor', None)
-    fecha = date.today()
+
     valor = int(dia)
 
     if valor == 0:
-        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='informacion').count()
-        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso').count()
+        exito = RegistroLlamada.objects.filter(id_estado=2, realizado=1).count()
+        no_contesta = RegistroLlamada.objects.filter(id_estado=1, realizado=1).count()
+        datos_errados = RegistroLlamada.objects.filter(id_estado=3, realizado=1).count()
+        CLEAL = RegistroLlamada.objects.filter(id_estado=4, realizado=1).count()
+        ZNCUB = RegistroLlamada.objects.filter(id_estado=5, realizado=1).count()
+        CLAPLE = RegistroLlamada.objects.filter(id_estado=6, realizado=1).count()
+        CLINOSOL = RegistroLlamada.objects.filter(id_estado=7, realizado=1).count()
+        ALCOMPE = RegistroLlamada.objects.filter(id_estado=8, realizado=1).count()
+        CLDES = RegistroLlamada.objects.filter(id_estado=9, realizado=1).count()
         data = {
+            'exito': exito,
             'no_contesta': no_contesta,
-            'exito': exito
+            'datos_errados': datos_errados,
+            'CLEAL': CLEAL,
+            'ZNCUB': ZNCUB,
+            'CLAPLE': CLAPLE,
+            'CLINOSOL': CLINOSOL,
+            'ALCOMPE': ALCOMPE,
+            'CLDES': CLDES,
         }
 
     elif valor == 1:
-        ayer = fecha.day - 1
-        exito = RegistroLlamada.objects.filter(modified__day=ayer, id_estado__nombre='Exitoso').count()
-        no_contesta = RegistroLlamada.objects.filter(modified__day=ayer, id_estado__nombre='No contesta').count()
+        hoy = datetime.datetime.utcnow()
+        ayer = hoy - datetime.timedelta(hours=24)
+        exito = RegistroLlamada.objects.filter(modified__range=[ayer, hoy], id_estado=2, realizado=1).count()
+        no_contesta = RegistroLlamada.objects.filter(modified__range=[ayer, hoy], id_estado=1, realizado=1).count()
+        datos_errados = RegistroLlamada.objects.filter(modified__range=[ayer, hoy], id_estado=3, realizado=1).count()
+        CLEAL = RegistroLlamada.objects.filter(modified__range=[ayer, hoy], id_estado=4, realizado=1).count()
+        ZNCUB = RegistroLlamada.objects.filter(modified__range=[ayer, hoy], id_estado=5, realizado=1).count()
+        CLAPLE = RegistroLlamada.objects.filter(modified__range=[ayer, hoy], id_estado=6, realizado=1).count()
+        CLINOSOL = RegistroLlamada.objects.filter(modified__range=[ayer, hoy], id_estado=7, realizado=1).count()
+        ALCOMPE = RegistroLlamada.objects.filter(modified__range=[ayer, hoy], id_estado=8, realizado=1).count()
+        CLDES = RegistroLlamada.objects.filter(modified__range=[ayer, hoy], id_estado=9, realizado=1).count()
         data = {
+            'exito': exito,
             'no_contesta': no_contesta,
-            'exito': exito
+            'datos_errados': datos_errados,
+            'CLEAL': CLEAL,
+            'ZNCUB': ZNCUB,
+            'CLAPLE': CLAPLE,
+            'CLINOSOL': CLINOSOL,
+            'ALCOMPE': ALCOMPE,
+            'CLDES': CLDES,
         }
 
     elif valor == 2:
         hoy = datetime.datetime.utcnow()
         semana = hoy - datetime.timedelta(days=7)
-        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', modified__range=[semana, hoy]).count()
-        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta',
-                                                     modified__range=[semana, hoy]).count()
-
+        exito = RegistroLlamada.objects.filter(modified__range=[semana, hoy], id_estado=2, realizado=1).count()
+        no_contesta = RegistroLlamada.objects.filter(modified__range=[semana, hoy], id_estado=1, realizado=1).count()
+        datos_errados = RegistroLlamada.objects.filter(modified__range=[semana, hoy], id_estado=3, realizado=1).count()
+        CLEAL = RegistroLlamada.objects.filter(modified__range=[semana, hoy], id_estado=4, realizado=1).count()
+        ZNCUB = RegistroLlamada.objects.filter(modified__range=[semana, hoy], id_estado=5, realizado=1).count()
+        CLAPLE = RegistroLlamada.objects.filter(modified__range=[semana, hoy], id_estado=6, realizado=1).count()
+        CLINOSOL = RegistroLlamada.objects.filter(modified__range=[semana, hoy], id_estado=7, realizado=1).count()
+        ALCOMPE = RegistroLlamada.objects.filter(modified__range=[semana, hoy], id_estado=8, realizado=1).count()
+        CLDES = RegistroLlamada.objects.filter(modified__range=[semana, hoy], id_estado=9, realizado=1).count()
         data = {
+            'exito': exito,
             'no_contesta': no_contesta,
-            'exito': exito
+            'datos_errados': datos_errados,
+            'CLEAL': CLEAL,
+            'ZNCUB': ZNCUB,
+            'CLAPLE': CLAPLE,
+            'CLINOSOL': CLINOSOL,
+            'ALCOMPE': ALCOMPE,
+            'CLDES': CLDES,
         }
-
     elif valor == 3:
         hoy = datetime.datetime.utcnow()
         mes = hoy - datetime.timedelta(days=30)
-        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', modified__range=[mes, hoy]).count()
-        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta',
-                                                     modified__range=[mes, hoy]).count()
-
+        exito = RegistroLlamada.objects.filter(modified__range=[mes, hoy], id_estado=2, realizado=1).count()
+        no_contesta = RegistroLlamada.objects.filter(modified__range=[mes, hoy], id_estado=1, realizado=1).count()
+        datos_errados = RegistroLlamada.objects.filter(modified__range=[mes, hoy], id_estado=3, realizado=1).count()
+        CLEAL = RegistroLlamada.objects.filter(modified__range=[mes, hoy], id_estado=4, realizado=1).count()
+        ZNCUB = RegistroLlamada.objects.filter(modified__range=[mes, hoy], id_estado=5, realizado=1).count()
+        CLAPLE = RegistroLlamada.objects.filter(modified__range=[mes, hoy], id_estado=6, realizado=1).count()
+        CLINOSOL = RegistroLlamada.objects.filter(modified__range=[mes, hoy], id_estado=7, realizado=1).count()
+        ALCOMPE = RegistroLlamada.objects.filter(modified__range=[mes, hoy], id_estado=8, realizado=1).count()
+        CLDES = RegistroLlamada.objects.filter(modified__range=[mes, hoy], id_estado=9, realizado=1).count()
         data = {
+            'exito': exito,
             'no_contesta': no_contesta,
-            'exito': exito
+            'datos_errados': datos_errados,
+            'CLEAL': CLEAL,
+            'ZNCUB': ZNCUB,
+            'CLAPLE': CLAPLE,
+            'CLINOSOL': CLINOSOL,
+            'ALCOMPE': ALCOMPE,
+            'CLDES': CLDES,
         }
 
     return JsonResponse(data=data)
@@ -339,64 +391,151 @@ def reporte_usuario(request):
 def traer_reporte_usuario(request):
     dia = request.GET.get('valor', None)
     usuario = request.GET.get('usuario', None)
-    fecha = date.today()
     valor = int(dia)
     id = int(usuario)
 
     if valor == 0:
-        exito = RegistroLlamada.objects.filter(id_usuario=id, id_estado__nombre='Exitoso').count()
+        exito = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
+                                               id_estado=2).count()
+        no_contesta = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
+                                                     id_estado=1).count()
+        datos_errados = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
+                                                       id_estado=3).count()
+        CLEAL = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
+                                               id_estado=4).count()
+        ZNCUB = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
+                                               id_estado=5).count()
+        CLAPLE = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
+                                                id_estado=6).count()
+        CLINOSOL = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
+                                                  id_estado=7).count()
+        ALCOMPE = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
+                                                 id_estado=8).count()
+        CLDES = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
+                                               id_estado=9).count()
         nombre = Perfil.objects.get(usuario_id=id)
 
         data = {
             'exito': exito,
+            'no_contesta': no_contesta,
+            'datos_errados': datos_errados,
+            'CLEAL': CLEAL,
+            'ZNCUB': ZNCUB,
+            'CLAPLE': CLAPLE,
+            'CLINOSOL': CLINOSOL,
+            'ALCOMPE': ALCOMPE,
+            'CLDES': CLDES,
             'nombre': nombre.usuario.first_name
         }
 
     elif valor == 1:
-        ayer = fecha.day - 1
-        exito = RegistroLlamada.objects.filter(modified__day=ayer, id_usuario=id, id_estado__nombre='Exitoso').count()
-        no_contesta = RegistroLlamada.objects.filter(modified__day=ayer, id_usuario=id, id_estado=2).count()
+        ayer = datetime.datetime.utcnow()
+        var = ayer - datetime.timedelta(hours=24)
+        exito = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
+                                               id_estado=2).count()
+        no_contesta = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
+                                                     id_estado=1).count()
+        datos_errados = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
+                                                       id_estado=3).count()
+        CLEAL = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
+                                               id_estado=4).count()
+        ZNCUB = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
+                                               id_estado=5).count()
+        CLAPLE = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
+                                                id_estado=6).count()
+        CLINOSOL = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
+                                                  id_estado=7).count()
+        ALCOMPE = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
+                                                 id_estado=8).count()
+        CLDES = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
+                                               id_estado=9).count()
         nombre = Perfil.objects.get(usuario_id=id)
 
         data = {
             'exito': exito,
             'no_contesta': no_contesta,
+            'datos_errados': datos_errados,
+            'CLEAL': CLEAL,
+            'ZNCUB': ZNCUB,
+            'CLAPLE': CLAPLE,
+            'CLINOSOL': CLINOSOL,
+            'ALCOMPE': ALCOMPE,
+            'CLDES': CLDES,
             'nombre': nombre.usuario.first_name
         }
-
     elif valor == 2:
         hoy = datetime.datetime.utcnow()
         semana = hoy - datetime.timedelta(days=7)
-        exito = RegistroLlamada.objects.filter(modified__range=[semana, hoy],
-                                               id_usuario=id,
-                                               id_estado__nombre='Exitoso').count()
-        no_contesta = RegistroLlamada.objects.filter(modified__range=[semana, hoy],
-                                                     id_usuario=id,
-                                                     id_estado__nombre='No contesta').count()
+        exito = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
+                                               id_estado=2).count()
+        no_contesta = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
+                                                     id_estado=1).count()
+        datos_errados = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
+                                                       id_estado=3).count()
+        CLEAL = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
+                                               id_estado=4).count()
+        ZNCUB = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
+                                               id_estado=5).count()
+        CLAPLE = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
+                                                id_estado=6).count()
+        CLINOSOL = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
+                                                  id_estado=7).count()
+        ALCOMPE = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
+                                                 id_estado=8).count()
+        CLDES = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
+                                               id_estado=9).count()
 
         nombre = Perfil.objects.get(usuario_id=id)
 
         data = {
-            'no_contesta': no_contesta,
             'exito': exito,
+            'no_contesta': no_contesta,
+            'datos_errados': datos_errados,
+            'CLEAL': CLEAL,
+            'ZNCUB': ZNCUB,
+            'CLAPLE': CLAPLE,
+            'CLINOSOL': CLINOSOL,
+            'ALCOMPE': ALCOMPE,
+            'CLDES': CLDES,
             'nombre': nombre.usuario.first_name
+
         }
 
     elif valor == 3:
         hoy = datetime.datetime.utcnow()
         mes = hoy - datetime.timedelta(days=30)
-        exito = RegistroLlamada.objects.filter(id_estado__nombre='Exitoso', id_usuario=id,
-                                               modified__range=[mes, hoy]).count()
-
-        no_contesta = RegistroLlamada.objects.filter(id_estado__nombre='No contesta', id_usuario=id,
-                                                     modified__range=[mes, hoy]).count()
-
+        exito = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
+                                               id_estado=2).count()
+        no_contesta = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
+                                                     id_estado=1).count()
+        datos_errados = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
+                                                       id_estado=3).count()
+        CLEAL = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
+                                               id_estado=4).count()
+        ZNCUB = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
+                                               id_estado=5).count()
+        CLAPLE = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
+                                                id_estado=6).count()
+        CLINOSOL = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
+                                                  id_estado=7).count()
+        ALCOMPE = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
+                                                 id_estado=8).count()
+        CLDES = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
+                                               id_estado=9).count()
         nombre = Perfil.objects.get(usuario_id=id)
 
         data = {
-            'no_contesta': no_contesta,
             'exito': exito,
+            'no_contesta': no_contesta,
+            'datos_errados': datos_errados,
+            'CLEAL': CLEAL,
+            'ZNCUB': ZNCUB,
+            'CLAPLE': CLAPLE,
+            'CLINOSOL': CLINOSOL,
+            'ALCOMPE': ALCOMPE,
+            'CLDES': CLDES,
             'nombre': nombre.usuario.first_name
+
         }
 
     return JsonResponse(data=data)
@@ -464,3 +603,4 @@ def trer_reporte_general(request):
         }
 
     return render(request, template_name='reportes/reporte_general.html', context=diccionario)
+

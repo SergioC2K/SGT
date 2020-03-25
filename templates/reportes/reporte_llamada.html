@@ -44,16 +44,22 @@
 
         Canvas = document.getElementById("Grafica").getContext('2d');
         var myChart = new Chart(Canvas, {
-            type: "horizontalBar",
+            type: "bar",
             data: {
-                labels: ['col1', 'col2', 'col3'],
+                labels: ['Exito', 'No contesta', 'Aplaza', 'No cubre', 'Solicita almacen', 'Desiste', 'Almacen compromete', 'Datos errados', 'No sabe'],
                 datasets: [{
                     label: 'Num datos',
-                    data: [0, 0, 0],
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
                     backgroundColor: [
                         'rgb(66, 134, 244,0.5)',
-                        'rgb(74, 135, 72,0.5)',
-                        'rgb(229, 89, 50,0.5)'
+                        'rgba(36,243,179,0.77)',
+                        'rgba(83,229,105,0.87)',
+                        'rgb(229, 89, 50,0.5)',
+                        'rgb(229, 89, 50,0.5)',
+                        'rgb(229,0,46)',
+                        'rgb(229, 89, 50,0.5)',
+                        'rgba(229,105,85,0.82)',
+                        'rgb(229, 89, 50,0.5)',
                     ]
                 }]
             },
@@ -69,14 +75,16 @@
         });
 
         function dar(data) {
-            myChart.data.datasets[0].data = [data.exito, data.no_contesta, data.exito];
+            myChart.data.datasets[0].data = [data.exito, data.no_contesta, data.CLAPLE, data.ZNCUB, data.CLEAL, data.CLDES, data.ALCOMPE, data.datos_errados, data.CLINOSOL];
+            myChart.data.datasets[0].label = data.nombre;
             myChart.update();
         }
     </script>
+
     <style>
         .container {
-            width: 50%;
-            height: 80%;
+            width: 70%;
+            height: 90%;
             margin: 0 auto;
         }
 
