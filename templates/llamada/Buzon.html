@@ -4,11 +4,11 @@
 {% block title %}
     <head>
         <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
-        <link rel="stylesheet" href="{% static 'dist/notifications.css' %}">
+
         <title>Registro de llamada</title>
         <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
         <script src="{% static 'dist/gijgo/js/gijgo.min.js' %}"></script>
-        <script src="{% static 'dist/notifications.js' %}"></script>
+
     </head>
 {% endblock %}
 
@@ -182,8 +182,9 @@
                                         <label class="custom-file-label pointer-event" for="customFile"><i
                                                 class="fas fa-microphone-alt"></i>
                                             MP3
+                                            {{ form.id_grabacion }}
                                         </label>
-                                        {{ form.id_grabacion }}
+
                                     </div>
                                 </div>
                                 <div class="col-md-offset-8 ml-3">
@@ -224,26 +225,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-    <style>
-        #scroll {
-            border: 1px solid;
-            height: 600px;
-
-            overflow-y: scroll;
-            overflow-x: hidden;
-
-        }
-
-        textarea {
-            resize: none
-        }
-
-    </style>
-
     {% block Javascript %}
     {% endblock %}
     <script>
@@ -253,15 +234,6 @@
             format: 'yyyy-mm-dd',
             minDate: today
         });
-        const ErrorNotification = window.createNotification({
-            theme: 'error',
-            showDuration: 5000
-        });
-        const succcesNotification = window.createNotification({
-            theme: 'success',
-            showDuration: 5000
-        });
-
 
         function recuperar(id) {
             $.ajax({
@@ -292,16 +264,7 @@
             $("#localidad").val(user.localidad);
             document.getElementById("id_llamada").value = id;
         }
-        {% if messages %}
-            {% for message in messages %}
-                succcesNotification({
-                    message: '{{ message }}'
 
-                })
-
-
-            {% endfor %}
-        {% endif %}
 
     </script>
 {% endblock %}

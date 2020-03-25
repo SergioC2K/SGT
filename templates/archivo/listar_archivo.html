@@ -52,6 +52,7 @@
                 </div>
                 <div class="col-sm">
                     <div class="col">
+                        <p><i class="far fa-hand-pointer"></i> Seleccione las llamadas que desee:</p>
                         <div id="demo" onmouseup="unaFuncion()" class="row">
                             <div class="col-lg">
                                 <div class="wrapper">
@@ -60,7 +61,7 @@
                                             {% for llamada in llamadas_hoy %}
                                                 <div class="box">
                                                     <span class="nota"
-                                                          style="font-size: 60%">{{ llamada.texto_breve_material }}</span>
+                                                          style="font-size: 60%">{{ llamada.ruta }}</span>
                                                     <p hidden>{{ llamada.id }}</p>
                                                 </div>
                                             {% empty %}
@@ -70,12 +71,9 @@
                                                         hay llamadas para repartir!
                                                     </div>
                                                 </div>
-
                                             {% endfor %}
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -84,10 +82,13 @@
                 <div class="col">
                     {% include 'base/components/tablaUserConect.html' %}
                 </div>
+                <button class="openbtn" onclick="openNav()"><i class="fa fa-user"></i>Usuarios en linea
+                </button>
             </div>
+
+
         </div>
-        <button class="openbtn" onclick="openNav()"><i class="fa fa-user"></i>Usuarios en linea
-        </button>
+
     </div>
 
 

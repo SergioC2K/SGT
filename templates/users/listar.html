@@ -160,16 +160,6 @@
     {% block javascript %}
         <script>
 
-
-            const successNotification = window.createNotification({
-                theme: 'success',
-                showDuration: 5000
-            });
-
-            const ErrorNotification = window.createNotification({
-                theme: 'error',
-                showDuration: 5000
-            });
             let password = document.getElementById('validationTooltip04');
             let password_confirmation = document.getElementById('validationTooltip05');
 
@@ -444,16 +434,4 @@
 
 
 {% endblock %}
-</div>
 
-</div>
-
-<style>
-    div.dataTables_wrapper
-    .dataTables_length select {
-        width: 100%;
-        float: none;
-        text-align: center;
-        margin-top: 1.5rem !important;
-    }
-</style>

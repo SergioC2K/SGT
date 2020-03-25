@@ -625,9 +625,9 @@ input[type="radio"]:checked + div::before {
     right: 0;
     left: initial;
     border-radius: 5px;
-    -webkit-box-shadow: inset -24px -15px 107px 10px rgba(20, 103, 123, 0.31);
-    -moz-box-shadow: inset -24px -15px 107px 10px rgba(20, 103, 123, 0.31);
-    box-shadow: inset -24px -15px 107px 10px rgba(20, 103, 123, 0.31);
+    -webkit-box-shadow: inset -24px -15px 107px 10px rgba(62, 150, 120, 0.79);
+    -moz-box-shadow: inset -24px -15px 107px 10px rgba(62, 150, 120, 0.79);
+    box-shadow: inset -24px -15px 107px 10px rgba(62, 150, 120, 0.79);
 
 }
 
@@ -661,8 +661,9 @@ input[type="radio"]:checked + div::before {
     cursor: pointer;
     background-color: #111;
     color: white;
-    padding: 10px 15px;
-    border: none;
+    padding: 5px 10px;
+    border: #fff1f1;
+    border-radius: 4px 4px 4px 4px;
 }
 
 .openbtn:hover {

@@ -16,12 +16,18 @@
 
 {% block main %}
     <div class="container card-sm bg-white" style="border-radius: 5px">
+
+        <h3 class="hk-pg-title mt-2">
+            <i class="fa fa-search"></i> Reportes
+            <button class="btn btn-outline-success float-lg-right col-sm-3" id="button-a" data-toggle="tooltip"
+                    data-placement="top" title="Exportar excel">
+                Exportar
+            </button>
+        </h3>
+
+        <hr>
         <form method="post" action="{% url 'archivo:envio_general' %}">
             {% csrf_token %}
-            <h3 class="hk-pg-title mt-2">
-                <i class="fa fa-search"></i> Reportes
-            </h3>
-            <hr>
             <div class="container ">
                 <div class="row card-body">
                     <div class="col-sm">
@@ -35,10 +41,6 @@
                     <div class="col-sm">
                         <button class="btn btn-outline-info ml-4" data-toggle="tooltip" data-placement="top"
                                 title="Buscar datos" type="submit">Buscar
-                        </button>
-                        <button class="btn btn-outline-success ml-3" id="button-a" data-toggle="tooltip"
-                                data-placement="top" title="Exportar excel">
-                            Exportar
                         </button>
                     </div>
                 </div>
@@ -55,8 +57,10 @@
                 <th scope="col">Material</th>
                 <th scope="col">Destinatario</th>
                 <th scope="col">Telefono</th>
-                <th scope="col">N.Contesta</th>
-                <th scope="col">F.Entrega</th>
+                <th scope="col" data-toggle="tooltip"
+                    data-placement="top" title="Nombre contesta">Contesta</th>
+                <th scope="col" data-toggle="tooltip"
+                    data-placement="top" title="Fecha de Entrega ">Fecha</th>
                 <th scope="col">Audio</th>
                 <th scope="col">Estado</th>
             </tr>
