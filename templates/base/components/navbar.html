@@ -68,14 +68,19 @@
                     </div>
                 </div>
             </a>
+
             <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
                 <a id="oelo" class="dropdown-item" href="{% url 'usuario:perfil' %}"><i
                         class="dropdown-icon zmdi zmdi-account"></i><span>Perfil</span></a>
 
 
-                <a class="dropdown-item" href="{% url 'file:estado' %}"><i
-                        class="dropdown-icon zmdi zmdi-settings"></i><span>Configuracion</span></a>
-                <div class="dropdown-divider"></div>
+                {% if user.is_staff %}
+                    <a class="dropdown-item" href="{% url 'file:estado' %}"><i
+                            class="dropdown-icon zmdi zmdi-settings"></i><span>Configuracion</span></a>
+                    <div class="dropdown-divider"></div>
+                {% endif %}
+
+
                 <div id="conexionsita">
                     {% if request.user.perfil.conexion.estado %}
                         <div id="conectado" class="sub-dropdown-menu show-on-hover">
@@ -104,7 +109,7 @@
                 <div class="dropdown-divider"></div>
                 {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'usuario:logout' %}"><i
-                            class="dropdown-icon zmdi zmdi-power"></i><span>Cerrar Sesíon</span></a>
+                            class="dropdown-icon zmdi zmdi-power" id="logout"></i><span>Cerrar Sesíon</span></a>
                 {% else %}
 
                 {% endif %}
@@ -121,6 +126,17 @@
     </div>
 </form>
 <script>
+
+    $(function () {
+        $('a#logout').click(function () {
+            if (confirm('Are you sure to logout')) {
+                return true;
+            }
+
+            return false;
+        });
+    });
+
     function puntoAzul() {
         return `<span class="badge badge-primary badge-indicator badge-indicator-sm badge-pill pulse"></span>`
     }

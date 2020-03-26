@@ -58,7 +58,8 @@
                                                 llamadas</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'archivo:eliminar' %}">Administrar archivo</a>
+                                            <a class="nav-link" href="{% url 'archivo:eliminar' %}">Administrar
+                                                archivo</a>
                                         </li>
 
                                     </ul>
@@ -66,63 +67,69 @@
                             </ul>
                         </li>
 
-                    {% endif %}
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                           data-target="#content_drp">
-                            <i class="fas fa-poll"></i>
-                            <span class="nav-link-text">Resultados</span>
-                        </a>
-                        <ul id="content_drp" class="nav flex-column collapse collapse-level-1">
-                            <li class="nav-item">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'archivo:completo' %}">Exportar archivos</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'archivo:reporte_llamada' %}">Llamadas realizadas</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                               data-target="#content_drp">
+                                <i class="fas fa-poll"></i>
+                                <span class="nav-link-text">Resultados</span>
+                            </a>
+                            <ul id="content_drp" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'archivo:completo' %}">Exportar
+                                                archivos</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'archivo:reporte_llamada' %}">Llamadas
+                                                realizadas</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
                            data-target="#utilities_drp">
                             <i class="fa fa-money-check-alt"></i>
                             <span class="nav-link-text">Liquidaciones</span>
                         </a>
-                        <ul id="utilities_drp" class="nav flex-column collapse collapse-level-1">
-                            <li class="nav-item">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'archivo:reporte_usuario' %}">Reportes</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    {% if user.is_staff %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
-                               data-target="#forms_drp">
-                                <i class="fa fa-user-alt"></i>
-                                <span class="nav-link-text">Usuarios</span>
-                            </a>
-                            <ul id="forms_drp" class="nav flex-column collapse collapse-level-1">
+                        {% if user.is_staff %}
+                            <ul id="utilities_drp" class="nav flex-column collapse collapse-level-1">
                                 <li class="nav-item">
                                     <ul class="nav flex-column">
-
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'usuario:listar_usuario' %}">Operadores</a>
+                                            <a class="nav-link" href="{% url 'archivo:reporte_usuario' %}">Reportes</a>
                                         </li>
-
                                     </ul>
                                 </li>
                             </ul>
-                        </li>
-                    {% endif %}
+
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" data-toggle="collapse"
+                                   data-target="#forms_drp">
+                                    <i class="fa fa-user-alt"></i>
+                                    <span class="nav-link-text">Usuarios</span>
+                                </a>
+                                <ul id="forms_drp" class="nav flex-column collapse collapse-level-1">
+                                    <li class="nav-item">
+                                        <ul class="nav flex-column">
+
+                                            <li class="nav-item">
+                                                <a class="nav-link"
+                                                   href="{% url 'usuario:listar_usuario' %}">Operadores</a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
                 </ul>
             </div>
         </div>

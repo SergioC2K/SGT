@@ -13,11 +13,23 @@
         <div class="container mt-2">
             <div class="card">
                 <div class="card-title ml-2 mt-2">
-                    <h3><i class="fas fa-user-cog"></i> {{ user }}
-                        <a id="atras" href="{% url 'archivo:buzon' %}"
-                           class="btn btn-info"
-                           data-toggle="tooltip" data-placement="right" title="Regresar"><i class="fas fa-undo-alt"></i></a>
-                    </h3>
+                    {% if request.var %}
+
+                        <h3><i class="fas fa-user-cog"></i> Complete los siguientes campos para continuar
+                            <a id="atras" href="{% url 'usuario:logout' %}"
+                               class="btn btn-info"
+                               data-toggle="tooltip" data-placement="right" title="Regresar"><i
+                                    class="fas fa-undo-alt"></i></a>
+                        </h3>
+                    {% else %}
+                        <h3><i class="fas fa-user-cog"></i> {{ user }}
+                            <a id="atras" href="{% url 'archivo:buzon' %}"
+                               class="btn btn-info"
+                               data-toggle="tooltip" data-placement="right" title="Regresar"><i
+                                    class="fas fa-undo-alt"></i></a>
+                        </h3>
+                    {% endif %}
+
 
                 </div>
                 <hr>

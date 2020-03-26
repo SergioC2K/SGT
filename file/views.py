@@ -272,6 +272,7 @@ class ActualizarEstado(View):
 
 
 #  Este metodo solo es para que me retorne al template
+
 def reporte_llamada(request):
     return render(request, 'reportes/reporte_llamada.html')
 
@@ -381,6 +382,7 @@ def traer_reporte_llamada(request):
 
 
 #  Este metodo me retorna a la vista indicada
+@user_passes_test(lambda u: u.is_staff)
 def reporte_usuario(request):
     usuario = Perfil.objects.all()
 
@@ -544,6 +546,7 @@ def traer_reporte_usuario(request):
 
 
 #  Esta es el metodo donde el coordinador va exportar para enviar aceb
+@user_passes_test(lambda u: u.is_staff)
 def reporte_general(request):
     hoy = datetime.datetime.utcnow()
     hora = hoy - datetime.timedelta(hours=24)
