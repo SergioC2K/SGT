@@ -184,6 +184,10 @@ def realizar_llamada(request):
     if request.method == 'POST':
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
+            if int(request.POST['id_estado']) in [2, 3, 4, 5, 6, 7, 8, 9]:
+                form.cleaned_data['precio'] = 350
+                if request.user.is_staff:
+                    form.cleaned_data['precio'] = 450
             form.save()
             llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
 
@@ -229,7 +233,7 @@ def traer(request):
         'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
         'alm_soli': consulta.id_llamada.nombre_solicitante,
         'localidad': consulta.id_llamada.localidad,
-        'observacion':consulta.id_llamada.observaciones_inicial
+        'observacion': consulta.id_llamada.observaciones_inicial
     }
     return JsonResponse(datos)
 

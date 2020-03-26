@@ -186,6 +186,7 @@ class RealizarLlamada(forms.Form):
             llamada.nombre_contesta = data['nombre_contesta']
             estado = Estado.objects.get(id=data['id_estado'])
             llamada.id_estado = estado
+            llamada.precio = data['precio']
             llamada.id_grabacion = grabacion
             llamada.save()
         else:
@@ -196,6 +197,7 @@ class RealizarLlamada(forms.Form):
             llamada.nombre_contesta = data['nombre_contesta']
             estado = Estado.objects.get(id=data['id_estado'])
             llamada.id_estado = estado
+            llamada.precio = data['precio']
             llamada.save()
 
 
@@ -215,6 +217,5 @@ class EstadoForm(forms.ModelForm):
                 'id': 'estado1',
                 'name': 'estado1'
             }
-
             )
         }
