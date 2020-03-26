@@ -227,7 +227,8 @@ def traer(request):
         'telefono': consulta.id_llamada.telefono,
         'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
         'alm_soli': consulta.id_llamada.nombre_solicitante,
-        'localidad': consulta.id_llamada.localidad
+        'localidad': consulta.id_llamada.localidad,
+        'observacion':consulta.id_llamada.observaciones_inicial
     }
     return JsonResponse(datos)
 

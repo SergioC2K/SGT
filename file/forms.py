@@ -115,14 +115,14 @@ class RealizarLlamada(forms.Form):
             'class': 'form-control',
             'id': 'fecha_entrega',
             'name': 'fecha_entrega',
-            'width': '250',
+            'width': '180',
             'readonly': 'readonly'
 
         })
     )
     observaciones = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
                                                                  'id': 'observaciones',
-                                                                 'rows': '5'
+                                                                 'rows': '3'
                                                                  })
                                     )
     realizado = forms.BooleanField(initial=True, widget=forms.HiddenInput())
@@ -136,9 +136,9 @@ class RealizarLlamada(forms.Form):
         })
 
     )
-    id_grabacion = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'custom-file-input',
-                                                                          'id': 'customFile',
-                                                                          'required': False
+    id_grabacion = forms.FileField(widget=forms.ClearableFileInput(attrs={'id': 'MP3FILE',
+                                                                          'required': False,
+                                                                          'data - badge': 'true'
                                                                           })
                                    )
     id_llamada = forms.CharField(widget=forms.HiddenInput(attrs={
