@@ -180,6 +180,7 @@ class ListFile(ListView):
 def realizar_llamada(request):
     global data
     usuario = request.user
+    alo = 1
     if request.method == 'POST':
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():

@@ -148,6 +148,13 @@ class RealizarLlamada(forms.Form):
 
     }))
 
+    precio = forms.IntegerField(
+        initial=50,
+        max_value=510,
+        min_value=50,
+        widget=forms.HiddenInput()
+    )
+
     def clean_fecha_entrega(self):
         """Verificar que la fecha de entrega ingresada sea mayor a la actual"""
         try:
