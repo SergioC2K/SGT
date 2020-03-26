@@ -12,96 +12,103 @@
     <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+
 {% endblock %}
 
 {% block main %}
-    <div class="hk-auth-wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <canvas id="Grafica" width="65" height="40"></canvas>
 
-                    {# Este es el de las fechas #}
-                    <strong>Selecciona el rango de ejecucion </strong>
-                    <select class="custom-select mr-sm-2" name="fecha" id="fecha">
-                        <option value="0">Desde siempre</option>
-                        <option value="1">ultimo dia</option>
-                        <option value="2">ultima semana</option>
-                        <option value="3">ultima mes</option>
-                    </select>
-                    {# Este es el de los usuario #}
-                    <strong>Selecciona el operador </strong>
-                    <select class="custom-select mr-sm-2" name="usuario" id="usuario">
-                        {% for a in usuario %}
-                            <option value="{{ a.pk }}">{{ a.usuario.first_name }}</option>
-                        {% endfor %}
-                    </select>
+    <div class="container">
+        <div class="row">
+            <div class="col">
 
-                </div>
+
+                <canvas id="Grafica" width="65" height="40"></canvas>
+
+                {# Este es el de las fechas #}
+                <strong>Selecciona el rango de ejecucion </strong>
+                <select class="custom-select mr-sm-2" name="fecha" id="fecha">
+                    <option value="0">Desde siempre</option>
+                    <option value="1">ultimo dia</option>
+                    <option value="2">ultima semana</option>
+                    <option value="3">ultima mes</option>
+                </select>
+                {# Este es el de los usuario #}
+                <strong>Selecciona el operador </strong>
+                <select class="custom-select mr-sm-2" name="usuario" id="usuario">
+                    {% for a in usuario %}
+                        <option value="{{ a.pk }}">{{ a.usuario.first_name }}</option>
+                    {% endfor %}
+                </select>
+
             </div>
         </div>
-        <button type="button" class="btn btn" style="background-color: #36876a; color: #fff4f0;margin-left: 85%"
-                onclick="funcion()"><i class="fas fa-search"></i>Buscar
-        </button>
     </div>
-    {% block javascript %}
-        <script>
+    <button type="button" class="btn btn" style="background-color: #36876a; color: #fff4f0;margin-left: 85%"
+            onclick="funcion()"><i class="fas fa-search"></i>Buscar
+    </button>
+    <script>
 
-            function funcion() {
-                var usuario = document.getElementById('usuario').value;
-                var valor = document.getElementById('fecha').value;
-                $.ajax({
-                    method: 'GET',
-                    url: '{% url 'archivo:traer_reporte_usuario' %}',
-                    data: {
-                        'valor': valor,
-                        'usuario': usuario
-                    },
-                    success: function (data) {
-                        dar(data);
-                    }
-                });
-            }
-
-            Canvas = document.getElementById("Grafica").getContext('2d');
-            var myChart = new Chart(Canvas, {
-                type: "bar",
+        function funcion() {
+            var usuario = document.getElementById('usuario').value;
+            var valor = document.getElementById('fecha').value;
+            $.ajax({
+                method: 'GET',
+                url: '{% url 'archivo:traer_reporte_usuario' %}',
                 data: {
-                    labels: ['Exito', 'No contesta', 'Aplaza'],
-                    datasets: [{
-                        label: 'Num datos',
-                        data: [0, 0, 0],
-                        backgroundColor: [
-                            'rgb(66, 134, 244,0.5)',
-                            'rgb(74, 135, 72,0.5)',
-                            'rgb(229, 89, 50,0.5)'
-                        ]
-                    }]
+                    'valor': valor,
+                    'usuario': usuario
                 },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
+                success: function (data) {
+                    dar(data);
                 }
             });
+        }
 
-            function dar(data) {
-                myChart.data.datasets[0].data = [5, data.no_contesta, data.exito];
-                myChart.data.datasets[0].label = data.nombre;
-                myChart.update();
+        Canvas = document.getElementById("Grafica").getContext('2d');
+        var myChart = new Chart(Canvas, {
+            type: "bar",
+            data: {
+                labels: ['Exito', 'No contesta', 'Aplaza', 'No cubre', 'Solicita almacen', 'Desiste', 'Almacen compromete', 'Datos errados', 'No sabe'],
+                datasets: [{
+                    label: 'Num datos',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    backgroundColor: [
+                        'rgb(66, 134, 244,0.5)',
+                        'rgba(36,243,179,0.77)',
+                        'rgba(83,229,105,0.87)',
+                        'rgb(229, 89, 50,0.5)',
+                        'rgb(229, 89, 50,0.5)',
+                        'rgb(229,0,46)',
+                        'rgb(229, 89, 50,0.5)',
+                        'rgba(229,105,85,0.82)',
+                        'rgb(229, 89, 50,0.5)',
+                    ]
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
             }
-        </script>
-    {% endblock %}
+        });
 
+        function dar(data) {
+            myChart.data.datasets[0].data = [data.exito, data.no_contesta, data.CLAPLE, data.ZNCUB, data.CLEAL, data.CLDES, data.ALCOMPE, data.datos_errados, data.CLINOSOL];
+            myChart.data.datasets[0].label = data.nombre;
+            myChart.update();
+        }
+    </script>
 
     <style>
         .container {
-            width: 50%;
-            height: 80%;
+            width: 70%;
+            height: 90%;
             margin: 0 auto;
         }
 
