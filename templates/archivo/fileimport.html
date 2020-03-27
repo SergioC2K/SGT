@@ -44,7 +44,17 @@
     <script>
         function papa() {
             nombre = document.getElementById('input').files[0].name;
-            document.getElementById('nombre').value = nombre;
+            otra = document.getElementById('nombre').value = nombre;
+            var extension = /(.xls|xlsx)$/i;
+            if (!extension.exec(otra)) {
+                document.getElementById('input').value = '';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Solo se pueden extensiones de tipo .xlsx/.xls',
+                });
+                return false;
+            }
         }
     </script>
 
