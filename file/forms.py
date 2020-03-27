@@ -22,19 +22,15 @@ class SubirArchivoForm(forms.Form):
             attrs={
                 'class': 'form-control',
                 'accept': 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }),
-        validators=[FileExtensionValidator(allowed_extensions=['xlsx'])]
+            })
     )
-
     def clean(self):
-        data = super().clean()
         data = super().clean()
         if not data:
             raise forms.ValidationError('El archivo no se puede subir al sistema')
         archivo = data['archivo']
         nombre_existe = Archivo.objects.filter(nombre=archivo.name).exists()
-
-        if len(archivo.name) <= 5 and archivo.name[-5:] != '.xlsx':
+        if len(archivo.name) <= 5 or archivo.name[-5:] != '.xlsx':
             raise forms.ValidationError('Ese tipo de archivo no se puede subir al sistema')
         if nombre_existe:
             raise forms.ValidationError('Este archivo ya fue cargado al sistema')

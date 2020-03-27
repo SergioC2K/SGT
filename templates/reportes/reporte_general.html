@@ -106,9 +106,12 @@
                     "language": español
                 });
             });
+            function excel_exporte() {
+                var wb = XLSX.utils.table_to_book(document.getElementById('table'), {sheet: "Sheet JS"});
+                var wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
+                return wbout
+            }
 
-            var wb = XLSX.utils.table_to_book(document.getElementById('table'), {sheet: "Sheet JS"});
-            var wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
 
             function s2ab(s) {
                 var buf = new ArrayBuffer(s.length);
@@ -129,7 +132,7 @@
                     confirmButtonText: 'Si deseo exportar!'
                 }).then((result) => {
                     if (result.value) {
-                        saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
+                        saveAs(new Blob([s2ab(excel_exporte())], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
                         Swal.fire(
                             'Exportado!',
                             'Su reporte esta listo',
