@@ -18,8 +18,8 @@ from django.views.generic import ListView, UpdateView, FormView, View
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil
 
-
-# Forms
+# decorador para clases
+superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
 
 class LoginViewUsuario(LoginView):
@@ -42,10 +42,10 @@ def perfil(request):
 def UserCreateView(request):
     if request.is_ajax():
         formula = SignupForm(request.POST)
-        userna = request.POST.get('username')
+        username = request.POST.get('username')
         if formula.is_valid():
             formula.save()
-            persona = User.objects.get(username=userna)
+            persona = User.objects.get(username=username)
             usuario = Perfil.objects.get(usuario_id=persona.pk)
             d = {'id': usuario.id,
                  'username': usuario.usuario.username,
@@ -57,7 +57,7 @@ def UserCreateView(request):
                  'celular': usuario.celular}
             data = {'estado': True, 'person': d, 'form': formula}
         else:
-            data = {'errors': True, 'form': formula.non_field_errors}
+            data = {'estado': True, 'form': formula}
 
         return JsonResponse(data=data)
     else:
@@ -88,8 +88,6 @@ def logout_view(request):
     logout(request)
     return redirect('usuario:login')
 
-
-superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
 @method_decorator(superuser_required, name='dispatch')
 class ListarUsuario(ListView, FormView):

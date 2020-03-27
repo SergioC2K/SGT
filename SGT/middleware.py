@@ -24,7 +24,6 @@ class ProfileCompleteMiddleware:
                         and not perfil.celular \
                         and not perfil.celular_telemercadeo:
                     request.var = True
-
                     if request.path not in [reverse('usuario:perfil'), reverse('usuario:logout')]:
                         return redirect('usuario:perfil')
         response = self.get_response(request)

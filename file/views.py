@@ -1,6 +1,5 @@
 # Date
 import datetime
-from datetime import date
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -612,4 +611,3 @@ def trer_reporte_general(request):
         }
 
     return render(request, template_name='reportes/reporte_general.html', context=diccionario)
-

@@ -172,7 +172,6 @@
 
 
 
-
 {% endblock %}
 </body>
 {% block javascript %}
@@ -206,9 +205,7 @@
             {% for message in messages %}
                 succcesNotification({
                     message: '{{ message }}'
-
-                })
-
+                });
             {% endfor %}
         {% endif %}
 
@@ -243,6 +240,7 @@
                 });
             });
         }
+
 
 
         setInputFilter(document.getElementById("telefono_fijo"), function (value) {

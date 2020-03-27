@@ -77,11 +77,9 @@
                                                             name="tele">{{ foo.celular_telemercadeo }}</td>
                                                         <td>
                                                             <div id="colum-{{ foo.pk }}">
-
                                                                 {% if foo.usuario == request.user %}
                                                                     <p><i class="fas fa-users-cog"></i>Coordinador
                                                                     </p>
-
                                                                 {% else %}
                                                                     <div>
                                                                     {% if foo.usuario.is_active %}
@@ -91,7 +89,6 @@
                                                                                 onclick="Inhabilitar({{ foo.pk }})">
                                                                             <i class="fas fa-power-off"></i>
                                                                         </button>
-
                                                                         <button
                                                                                 class="btn btn-dark"
                                                                                 onclick="Editar({{ foo.pk }}),open_modal()">
@@ -102,9 +99,8 @@
                                                                                 class="btn btn"
                                                                                 style="background-color: #36876a"
                                                                                 onclick="Inhabilitar({{ foo.pk }})">
-                                                                            <i
-                                                                                    style="color: #fff1f1"
-                                                                                    class="fas fa-power-off"></i>
+                                                                            <i style="color: #fff1f1"
+                                                                               class="fas fa-power-off"></i>
                                                                         </button>
                                                                     {% endif %}
                                                                 {% endif %}
@@ -124,7 +120,7 @@
                                     {% endif %}
                                 </div>
                             </div>
-
+                            <button onclick="Exito()">asdas</button>
                         </div>
                     </div>
                 </section>
@@ -173,7 +169,7 @@
                 });
             });
 
-
+            //traducion de lenguaje a español para datatable
             var español = {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -202,6 +198,12 @@
                     "colvis": "Visibilidad"
                 }
             };
+
+            function campos_obligatorios() {
+                ErrorNotification({
+                    message: 'Todos los campos son obligatorios!'
+                });
+            }
 
 
             function Inhabilitar(id) {
@@ -246,10 +248,7 @@
                         form.addEventListener('submit', function (event) {
                             if (form.checkValidity() === false) {
                                 event.preventDefault();
-                                ErrorNotification({
-                                    message: 'Campos Vacios!'
-
-                                })
+                                campos_obligatorios();
                                 event.stopPropagation();
                             }
                             form.classList.add('was-validated');
@@ -257,23 +256,6 @@
                     });
                 }, false);
             })();
-
-
-            function Agregar(user) {
-                $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
-                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
-                                <td name="username" class="userNombre userData">${user.username}</td>
-                                <td name="nombre" class="userNombre userData">${user.name}</td>
-                                <td name="apellido" class="userApellido userData">${user.apellido}</td>
-                                <td name="cedula" class="userCedula userData">${user.cedula}</td>
-                                <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
-                                <td name="tele" class="userTele userData">${user.celular}</td>
-                                <td><div id="colum-${user.id}">
-                                <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
-                                <button type="submit" onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
-                                </div></td>
-                                </tr>`);
-            }
 
             function Exito() {
                 Swal.fire(
@@ -311,7 +293,7 @@
                 if (letras.indexOf(tecla) == -1 && !tecla_especial) {
                     return false;
                 } else {
-                    document.getElementById('respuesta').innerHTML = "";
+                    return true;
                 }
             }
 
@@ -352,24 +334,18 @@
 
                                 tableUpdate(data.user);
                             } else {
-                                ErrorNotification({
-                                    message: 'Todos los campos son obligatorios!'
-                                });
+                                campos_obligatorios();
+
                             }
                             $('#modal_modificar').modal('hide');
                             return false;
                         }
                     });
                 } else {
-                    Correcto();
+                    campos_obligatorios();
                 }
             });
 
-            function Correcto() {
-                ErrorNotification({
-                    message: 'Todos los campos son obligatorios!'
-                });
-            }
 
             function Editar(id) {
                 if (id) {
@@ -407,27 +383,45 @@
                 });
             }
 
+            function Agregar(user) {
+                $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
+                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
+                                <td name="username" class="userNombre userData">${user.username}</td>
+                                <td name="nombre" class="userNombre userData">${user.name}</td>
+                                <td name="apellido" class="userApellido userData">${user.apellido}</td>
+                                <td name="cedula" class="userCedula userData">${user.cedula}</td>
+                                <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
+                                <td name="tele" class="userTele userData">${user.celular}</td>
+                                <td><div id="colum-${user.id}">
+                                <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
+                                <button onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
+                                </div></td>
+                                </tr>`);
+            }
+
             $(document).ready(function () {
                 var $formulario = $('#insert');
                 $formulario.submit(function (event) {
                     event.preventDefault();
-                    var $datos = $formulario.serialize();
+                    let $datos = $formulario.serialize();
                     debugger
                     $.ajax({
                         url: '{% url "usuario:signup"%}',
                         method: "POST",
                         data: $datos,
                         success: function (data) {
+                            debugger
                             if (data.estado) {
                                 Agregar(data.person);
                                 Exito();
-                            } else if (data.errors) {
-                                alert(data)
+                            } else {
+                                alert('')
                             }
-                        },
+                        }
                     });
                 });
             });
+
 
         </script>
     {% endblock %}
