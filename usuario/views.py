@@ -55,9 +55,9 @@ def UserCreateView(request):
                  'apellido': usuario.usuario.last_name,
                  'telefono_fijo': usuario.telefono_fijo,
                  'celular': usuario.celular}
-            data = {'estado': True, 'person': d, 'form': formula}
+            data = {'estado': True, 'person': d}
         else:
-            data = {'estado': True, 'form': formula}
+            data = {'estado': False, 'form': formula.errors}
 
         return JsonResponse(data=data)
     else:

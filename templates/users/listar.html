@@ -120,7 +120,6 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            <button onclick="Exito()">asdas</button>
                         </div>
                     </div>
                 </section>
@@ -151,13 +150,21 @@
     <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
 
     <!-- Footer -->
+    <style>
+        .rojo {
+            color: #a20000
+        }
 
+        .verde {
+            color: #3fee36
+        }
+    </style>
 
     {% block javascript %}
         <script>
 
-            let password = document.getElementById('validationTooltip04');
-            let password_confirmation = document.getElementById('validationTooltip05');
+            var password = document.getElementById('validationTooltip04');
+            var password_confirmation = document.getElementById('validationTooltip05');
 
             $(document).ready(function () {
                 $('#table_id').DataTable({
@@ -400,22 +407,50 @@
             }
 
             $(document).ready(function () {
+
+                $('#submit').prop('disabled', true)
+                $(password_confirmation).keyup(function () {
+                    if (password_confirmation.value === password.value) {
+                        $('#submit').prop('disabled', false)
+                        document.getElementById('Okey').innerHTML = "<span class=\"glyphicon glyphicon-ok verde\"></span>"
+
+                    } else {
+                        $('#submit').prop('disabled', true)
+                        document.getElementById('Okey').innerHTML = "<span class=\"glyphicon glyphicon-remove rojo\"></span>"
+                    }
+                })
+            });
+
+
+            $(document).ready(function () {
                 var $formulario = $('#insert');
                 $formulario.submit(function (event) {
                     event.preventDefault();
                     let $datos = $formulario.serialize();
-                    debugger
+
                     $.ajax({
                         url: '{% url "usuario:signup"%}',
                         method: "POST",
                         data: $datos,
                         success: function (data) {
-                            debugger
                             if (data.estado) {
                                 Agregar(data.person);
                                 Exito();
                             } else {
-                                alert('')
+                                if (data.form) {
+                                    if (data.form.username) {
+                                        ErrorNotification({message: `${data.form.username}`});
+                                    }
+                                    if (data.form.cedula) {
+                                        ErrorNotification({message: `${data.form.cedula}`});
+                                    }
+                                    if (data.form.email) {
+
+                                        ErrorNotification({message: `${data.form.email}`});
+                                    }
+
+
+                                }
                             }
                         }
                     });
