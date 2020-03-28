@@ -38,7 +38,7 @@
                 <strong>Selecciona el operador </strong>
                 <select class="custom-select mr-sm-2" name="usuario" id="usuario">
                     {% for a in usuario %}
-                        <option value="{{ a.pk }}">{{ a.usuario.first_name }}</option>
+                        <option value="{{ a.pk }}">{{ a.usuario.username }}</option>
                     {% endfor %}
                 </select>
 

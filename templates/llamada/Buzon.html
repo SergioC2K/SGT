@@ -22,23 +22,24 @@
             <div class="col-xl-12 pa-0">
                 <div class="emailapp-wrap">
                     <div class="email-box">
-                        <div class="emailapp-left">
+                        <div class="emailapp-right">
                             <header>
                                 <span class=""><i class="fas fa-mobile"></i> Llamadas</span>
                             </header>
-                            <div class="emailapp-emails-list" id="scroll">
+                            <div class="emailapp-emails-list bg-white" id="scroll">
                                 <div class="nicescroll-bar">
                                     <div class="media-body">
                                         {% if llamadas %}
                                             {% for foo in llamadas %}
-                                                <div class="email-head">
-                                                    <a onclick="recuperar({{ foo.pk }})"
+                                                <div class="email-subject-head email-attachment">
+                                                    <a onclick="recuperar({{ foo.pk }}),open_modal()"
                                                        class="media read-email btn btn-block" data-toggle="tooltip"
                                                        data-placement="top"
                                                        title="{{ foo.id_llamada.texto_breve_material }}">
                                                         <div class="email-subject">
                                                             <div data-offset="0">
-                                                                <div class="email-head"><span class="badge badge-info">{{ foo.id_llamada.ruta }}</span> {{ foo.id_llamada.nombre_destinatario }}
+                                                                <div class="email-head"><span
+                                                                        class="badge badge-info">{{ foo.id_llamada.ruta }}</span> {{ foo.id_llamada.nombre_destinatario }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -47,8 +48,8 @@
                                                 <hr>
                                             {% endfor %}
                                         {% else %}
-                                            <div class="row justify-content-center">
-                                                <div class="alert alert-info mt-3" role="alert">
+                                            <div class="row justify-content-center p-lg-5 ">
+                                                <div class="alert alert-info" role="alert">
                                                     <span class="glyphicon glyphicon-info-sign"></span> No tienes
                                                     Llamadas pendientes!
                                                 </div>
@@ -58,21 +59,45 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="emailapp-right">
-                            <header>
-                                <div class="email-options">
-                                    <i class="fas fa-clipboard-list"></i> Tu Progreso
-                                </div>
-                            </header>
-                            <div class="emailapp-emails-list">
+                        <div class="emailapp-left bg-white">
+                            <div class="email-options mt-3 ml-3">
+                                <i class="fas fa-clipboard-list"></i> Tu Progreso
+                                <hr class="mt-4">
+                            </div>
+                            <div class="col-sm-12">
+                                <ul class="list-group">
 
-                                <div class="d-flex justify-content-center mt-3 modal-footer">
-                                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
-                                            data-target=".bd-example-modal-lg">Comenzar
 
-                                    </button>
-                                </div>
-                                <hr>
+                                    <li class="list-group-item text-muted"><i class="fa fa-dashboard fa-1x"></i>
+                                        Actividad <span
+                                                class="badge badge-light" data-toggle="tooltip"
+                                                data-placement="right"
+                                                title="Numero de llamadas"></span>
+                                    </li>
+
+
+                                    <li class="list-group-item text-right">
+                                        <span class="pull-left"><strong><i class="fas fa-sort-numeric-up"></i> Llamadas realizadas</strong></span>&nbsp;
+                                        <span id="cant_ll"></span>
+                                    </li>
+
+                                    <li class="list-group-item text-right"><span class="pull-left"><strong><i
+                                            class="fas fa-sort-numeric-down-alt"></i> Llamadas restantes</strong></span>&nbsp;
+                                        <span id="llam_res">{{ llamadas.count }}</span>
+                                    </li>
+
+
+                                        <li class="list-group-item text-right"><span class="pull-left"><strong>
+                                        <i class="fas fa-check-circle"></i> Llamadas con exito</strong></span>&nbsp;
+                                            <span id="llam_res"></span>
+                                        </li>
+
+                                    <li class="list-group-item text-right"><span class="pull-left"><strong>
+                                        <i class="fas fa-phone-slash"></i> No contestados</strong></span>&nbsp;
+                                        <span id="llam_res"></span>
+                                    </li>
+
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -80,8 +105,10 @@
             </div>
         </div>
     </div>
+    </div>
     <!--datos de la llamada en el modal-->
-    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade bd-example-modal-lg" id="modal_call" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
@@ -170,9 +197,9 @@
                                             </div>
                                             <strong>Observacion inicial</strong>
                                             <textarea class="form-control" id="observacion"
-                                                           name="observacion"
-                                                           readonly
-                                                           onmousedown="return false"></textarea>
+                                                      name="observacion"
+                                                      readonly
+                                                      onmousedown="return false"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -235,6 +262,11 @@
     {% block Javascript %}
     {% endblock %}
     <script>
+
+        function open_modal() {
+            $("#modal_call").modal('show');
+        }
+
         $('#MP3FILE').filestyle({
             input: false,
             btnClass: 'btn-info mt-4',
@@ -249,6 +281,7 @@
             format: 'yyyy-mm-dd',
             minDate: today
         });
+
 
         function recuperar(id) {
             $.ajax({
@@ -281,6 +314,21 @@
             document.getElementById("id_llamada").value = id;
         }
 
+        function funcion() {
+            var usuario = document.getElementById('usuario').value;
+            var valor = document.getElementById('fecha').value;
+            $.ajax({
+                method: 'GET',
+                url: '{% url 'archivo:traer_reporte_usuario' %}',
+                data: {
+                    'valor': valor,
+                    'usuario': usuario
+                },
+                success: function (data) {
+                    dar(data);
+                }
+            });
+        }
 
     </script>
 {% endblock %}

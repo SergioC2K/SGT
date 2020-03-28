@@ -35,6 +35,7 @@
                                     {% if object_list %}
                                         <table id="table_id" class="table table-hover"
                                                style="width:100%">
+
                                             <thead class="thead-dark">
                                             <tr>
                                                 <th>Estado</th>
@@ -65,7 +66,7 @@
                                                             </div>
                                                         </td>
                                                         <td>{{ foo.usuario }}</td>
-                                                        <td class="userNombre userData"
+                                                        <td style="" class="userNombre userData"
                                                             name="nombre">{{ foo.usuario.first_name }}</td>
                                                         <td class="userApellido userData"
                                                             name="apellido">{{ foo.usuario.last_name }}</td>
@@ -75,7 +76,7 @@
                                                             name="telefono">{{ foo.telefono_fijo }}</td>
                                                         <td class="userTele userData"
                                                             name="tele">{{ foo.celular_telemercadeo }}</td>
-                                                        <td>
+                                                        <td width="30%">
                                                             <div id="colum-{{ foo.pk }}">
                                                                 {% if foo.usuario == request.user %}
                                                                     <p><i class="fas fa-users-cog"></i>Coordinador
@@ -85,14 +86,20 @@
                                                                     {% if foo.usuario.is_active %}
 
                                                                         <button type="submit"
-                                                                                class="btn btn-danger "
-                                                                                onclick="Inhabilitar({{ foo.pk }})">
-                                                                            <i class="fas fa-power-off"></i>
+                                                                                class="btn btn-danger  btn-sm"
+                                                                                onclick="Inhabilitar({{ foo.pk }})"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="Desactivar usuario">
+                                                                            <i class="fas fa-power-off fa-x1"></i>
                                                                         </button>
                                                                         <button
-                                                                                class="btn btn-dark"
-                                                                                onclick="Editar({{ foo.pk }}),open_modal()">
-                                                                            <i class="fa fa-pencil"></i>
+                                                                                class="btn btn-dark  btn-sm"
+                                                                                onclick="Editar({{ foo.pk }}),open_modal()"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="Modificar usuario">
+                                                                            <i class="fa fa-pencil fa-1x"></i>
                                                                         </button>
                                                                     {% else %}
                                                                         <button id="btn-{{ foo.pk }}" type="submit"
@@ -172,7 +179,9 @@
                     ordering: true,
                     searching: true,
                     info: false,
-                    "language": español
+                    "language": español,
+                    "scrollX": true
+
                 });
             });
 
@@ -333,16 +342,10 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.user) {
-                                Swal.fire(
-                                    'Bien !',
-                                    'Modificacion exitosa¡',
-                                    'success'
-                                );
-
+                                succcesNotification({message: 'Modificacion exitosa!'});
                                 tableUpdate(data.user);
                             } else {
                                 campos_obligatorios();
-
                             }
                             $('#modal_modificar').modal('hide');
                             return false;
@@ -399,7 +402,7 @@
                                 <td name="cedula" class="userCedula userData">${user.cedula}</td>
                                 <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
                                 <td name="tele" class="userTele userData">${user.celular}</td>
-                                <td><div id="colum-${user.id}">
+                                <td width="30%"><div id="colum-${user.id}">
                                 <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
                                 <button onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
                                 </div></td>

@@ -188,6 +188,7 @@ def realizar_llamada(request):
                 if request.user.is_staff:
                     form.cleaned_data['precio'] = 450
             form.save()
+            otra_call = RegistroLlamada.objects.all()
             llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
 
             data = {
