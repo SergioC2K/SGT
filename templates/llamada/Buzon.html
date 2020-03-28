@@ -314,21 +314,6 @@
             document.getElementById("id_llamada").value = id;
         }
 
-        function funcion() {
-            var usuario = document.getElementById('usuario').value;
-            var valor = document.getElementById('fecha').value;
-            $.ajax({
-                method: 'GET',
-                url: '{% url 'archivo:traer_reporte_usuario' %}',
-                data: {
-                    'valor': valor,
-                    'usuario': usuario
-                },
-                success: function (data) {
-                    dar(data);
-                }
-            });
-        }
 
     </script>
 {% endblock %}
