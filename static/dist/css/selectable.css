@@ -249,7 +249,7 @@ a, a:hover, a:focus, a:active {
 
 
 #scroll {
-    border: 1px ;
+    border: 1px;
     height: 600px;
 
     overflow-y: scroll;

@@ -33,9 +33,9 @@
                     <div class="col-sm">
                         <select name="respuesta" class="form-control">
                             <option value="0">Desde siempre</option>
-                            <option value="1">ultimo dia</option>
-                            <option value="2">ultima semana</option>
-                            <option value="3">ultima mes</option>
+                            <option value="1">Ultimo dia</option>
+                            <option value="2">Ultima semana</option>
+                            <option value="3">Ultimo mes</option>
                         </select>
                     </div>
                     <div class="col-sm">
@@ -127,9 +127,9 @@
                     text: "Verifique los datos de la tabla!",
                     icon: 'info',
                     showCancelButton: true,
-                    confirmButtonColor: '#36876a',
-                    cancelButtonColor: '#409ec1',
-                    confirmButtonText: 'Si deseo exportar!'
+                    confirmButtonColor: 'info',
+                    cancelButtonColor: '#595d65',
+                    confirmButtonText: 'Exportar!'
                 }).then((result) => {
                     if (result.value) {
                         saveAs(new Blob([s2ab(excel_exporte())], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
