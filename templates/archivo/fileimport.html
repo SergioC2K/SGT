@@ -22,11 +22,10 @@
                         <div class="custom-file col-md-6 ">
                             <form action="{% url 'archivo:importe' %}" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <input type="text" id="nombre" name="nombre" hidden>
                                 <div class="form-group">
                                     {{ form.archivo }}
                                 </div>
-                                <button class="btn btn-outline-success" id="btn " type="submit" data-toggle="tooltip"
+                                <button class="btn btn-outline-success" id="btn" type="submit" data-toggle="tooltip"
                                         data-placement="bottom" title="Importar archivo excel!">
                                     Importar
                                 </button>
@@ -43,8 +42,9 @@
 
     <script>
         function papa() {
-            nombre = document.getElementById('input').files[0].name;
-            otra = document.getElementById('nombre').value = nombre;
+            debugger
+            archivo = document.getElementById('nombre');
+            otra = archivo.value;
             var extension = /(.xls|xlsx)$/i;
             if (!extension.exec(otra)) {
                 document.getElementById('input').value = '';
