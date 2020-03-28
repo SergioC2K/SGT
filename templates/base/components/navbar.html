@@ -68,14 +68,19 @@
                     </div>
                 </div>
             </a>
+
             <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
                 <a id="oelo" class="dropdown-item" href="{% url 'usuario:perfil' %}"><i
                         class="dropdown-icon zmdi zmdi-account"></i><span>Perfil</span></a>
 
 
-                <a class="dropdown-item" href="{% url 'file:estado' %}"><i
-                        class="dropdown-icon zmdi zmdi-settings"></i><span>Configuracion</span></a>
-                <div class="dropdown-divider"></div>
+                {% if user.is_staff %}
+                    <a class="dropdown-item" href="{% url 'file:estado' %}"><i
+                            class="dropdown-icon zmdi zmdi-settings"></i><span>Configuracion</span></a>
+                    <div class="dropdown-divider"></div>
+                {% endif %}
+
+
                 <div id="conexionsita">
                     {% if request.user.perfil.conexion.estado %}
                         <div id="conectado" class="sub-dropdown-menu show-on-hover">
@@ -104,7 +109,7 @@
                 <div class="dropdown-divider"></div>
                 {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'usuario:logout' %}"><i
-                            class="dropdown-icon zmdi zmdi-power"></i><span>Cerrar Sesíon</span></a>
+                            class="dropdown-icon zmdi zmdi-power" id="logout"></i><span>Cerrar Sesíon</span></a>
                 {% else %}
 
                 {% endif %}
@@ -121,9 +126,12 @@
     </div>
 </form>
 <script>
+
+
     function puntoAzul() {
         return `<span class="badge badge-primary badge-indicator badge-indicator-sm badge-pill pulse"></span>`
     }
+
     function nohayNotificaciones() {
         return `                    <a href="javascript:void(0);" class="dropdown-item">
                         <div class="media">
@@ -137,6 +145,7 @@
                         </div>
                     </a>`
     }
+
     function parte(actor, queHizo, haceCuanto, tipo) {
         return `            <a href="javascript:void(0);" class="dropdown-item">
                         <div class="media">
@@ -289,6 +298,53 @@
         }
     }
 
+    {# Alertas y notificaciones #}
+    const ErrorNotification = window.createNotification({
+        theme: 'error',
+        showDuration: 5000
+    });
+
+    const succcesNotification = window.createNotification({
+        theme: 'success',
+        showDuration: 5000
+    });
+    const InfoNotification = window.createNotification({
+        theme: 'info',
+        showDuration: 5000
+    });
+
+    {# validacion de tipo de mensaje #}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                succcesNotification({message: '{{ message }}'});
+            {% elif message.tags == 'error'  %}
+                ErrorNotification({message: '{{ message }}'});
+            {% elif message.tags == 'info'  %}
+                InfoNotification({message: '{{ message }}'});
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {# validacion de tipo de mensaje con campos #}
+    {% if form.errors %}
+        {% for field in form %}
+            {% if field.errors %}
+                ErrorNotification({
+                    message: '{{ field.label }}: {{ field.errors|striptags }}, {{ form.non_field_errors }}'
+                });
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {# validacion de archivo existente #}
+    {% if form.errors %}
+        {% for errores in form.non_field_errors %}
+
+            ErrorNotification({
+                message: '{{ errores }}'
+
+            })
+        {% endfor %}
+    {% endif %}
 
 </script>
 <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>

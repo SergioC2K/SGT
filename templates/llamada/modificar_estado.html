@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content" style="border-color: #36876a">
         <div class="modal-header">
-            <h5 class="modal-title"><i class="fa fa-user"></i>Modificar :{{ file.Estado.nombre }}</h5>
+            <h5 class="modal-title"><i class="fa fa-user"></i>Modificar</h5>
             <button type="button" class="close" data-dismiss="modal"
                     aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -9,8 +9,7 @@
         </div>
         <div class="container-fluid">
             <div class="container">
-                <form id="update"
-                      autocomplete="off">
+                <form id="Estado_U" autocomplete="off">
                     {% csrf_token %}
                     <input class="form-control" id="form-id" type="hidden" name="formId"/>
                     <div class="container mt-4">
@@ -25,22 +24,15 @@
 
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
-
-
                     <div class="modal-footer">
-                        <button class="btn btn" style="background-color: #36876a; color: #fff4f0"
+                        <button class="btn btn-info"
                                 type="submit">Modificar
                         </button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
-
-
                 </form>
-
             </div>
         </div>
     </div>

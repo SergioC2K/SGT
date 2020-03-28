@@ -1,9 +1,9 @@
 # Date
 import datetime
-from datetime import date
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 from django.core import serializers
 from django.db.models import Q, Count
 from django.http import HttpResponse, JsonResponse
@@ -180,10 +180,16 @@ class ListFile(ListView):
 def realizar_llamada(request):
     global data
     usuario = request.user
+    alo = 1
     if request.method == 'POST':
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
+            if int(request.POST['id_estado']) in [2, 3, 4, 5, 6, 7, 8, 9]:
+                form.cleaned_data['precio'] = 350
+                if request.user.is_staff:
+                    form.cleaned_data['precio'] = 450
             form.save()
+            otra_call = RegistroLlamada.objects.all()
             llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
 
             data = {
@@ -227,7 +233,8 @@ def traer(request):
         'telefono': consulta.id_llamada.telefono,
         'direccion_des_mcia': consulta.id_llamada.direccion_des_mcia,
         'alm_soli': consulta.id_llamada.nombre_solicitante,
-        'localidad': consulta.id_llamada.localidad
+        'localidad': consulta.id_llamada.localidad,
+        'observacion': consulta.id_llamada.observaciones_inicial
     }
     return JsonResponse(datos)
 
@@ -270,6 +277,7 @@ class ActualizarEstado(View):
 
 
 #  Este metodo solo es para que me retorne al template
+
 def reporte_llamada(request):
     return render(request, 'reportes/reporte_llamada.html')
 
@@ -279,6 +287,11 @@ def reporte_llamada(request):
 def traer_reporte_llamada(request):
     # La variable dia me trae el valor de la fecha a consultar
     dia = request.GET.get('valor', None)
+    usuario = Perfil.objects.all()
+
+    data = {
+        'usuario': usuario
+    }
 
     valor = int(dia)
 
@@ -379,6 +392,7 @@ def traer_reporte_llamada(request):
 
 
 #  Este metodo me retorna a la vista indicada
+@user_passes_test(lambda u: u.is_staff)
 def reporte_usuario(request):
     usuario = Perfil.objects.all()
 
@@ -542,6 +556,7 @@ def traer_reporte_usuario(request):
 
 
 #  Esta es el metodo donde el coordinador va exportar para enviar aceb
+@user_passes_test(lambda u: u.is_staff)
 def reporte_general(request):
     hoy = datetime.datetime.utcnow()
     hora = hoy - datetime.timedelta(hours=24)
@@ -603,4 +618,3 @@ def trer_reporte_general(request):
         }
 
     return render(request, template_name='reportes/reporte_general.html', context=diccionario)
-

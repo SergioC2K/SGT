@@ -22,12 +22,11 @@
                         <div class="custom-file col-md-6 ">
                             <form action="{% url 'archivo:importe' %}" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <input type="text" id="nombre" name="nombre" hidden>
                                 <div class="form-group">
                                     {{ form.archivo }}
                                 </div>
-                                <button class="btn btn-outline-success" id="btn " type="submit"  data-toggle="tooltip"
-                                data-placement="bottom" title="Importar archivo excel!">
+                                <button class="btn btn-outline-success" id="btn" type="submit" data-toggle="tooltip"
+                                        data-placement="bottom" title="Importar archivo excel!">
                                     Importar
                                 </button>
 
@@ -40,52 +39,23 @@
 
         </div>
     </div>
-    <script src="{% static 'dist/notifications.js' %}"></script>
+
     <script>
-        const ErrorNotification = window.createNotification({
-            theme: 'error',
-            showDuration: 5000
-        });
-
-        const succcesNotification = window.createNotification({
-            theme: 'success',
-            showDuration: 5000
-        });
-
         function papa() {
-            nombre = document.getElementById('input').files[0].name;
-            document.getElementById('nombre').value = nombre;
-        }
-
-        document.getElementById('btn').addEventListener("click", function () {
-            let file = document.getElementById('input');
-            if (file.files.length == 0) {
-                event.preventDefault()
-                ErrorNotification({
-                    message: 'Seleccione un archivo!'
-                })
+            debugger
+            archivo = document.getElementById('nombre');
+            otra = archivo.value;
+            var extension = /(.xls|xlsx)$/i;
+            if (!extension.exec(otra)) {
+                document.getElementById('input').value = '';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Solo se pueden extensiones de tipo .xlsx/.xls',
+                });
+                return false;
             }
-
-
-        });
-        {% if form.errors %}
-            {% for errores in form.non_field_errors %}
-
-                ErrorNotification({
-                    message: '{{ errores }}'
-
-                })
-            {% endfor %}
-        {% endif %}
-        {% if messages %}
-            {% for message in messages %}
-                succcesNotification({
-                    message: '{{ message }}'
-
-                })
-
-            {% endfor %}
-        {% endif %}
+        }
     </script>
 
 

@@ -52,6 +52,7 @@
                 </div>
                 <div class="col-sm">
                     <div class="col">
+                        <p><i class="far fa-hand-pointer"></i> Seleccione las llamadas que desee:</p>
                         <div id="demo" onmouseup="unaFuncion()" class="row">
                             <div class="col-lg">
                                 <div class="wrapper">
@@ -70,13 +71,9 @@
                                                         hay llamadas para repartir!
                                                     </div>
                                                 </div>
-
-
                                             {% endfor %}
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -85,10 +82,13 @@
                 <div class="col">
                     {% include 'base/components/tablaUserConect.html' %}
                 </div>
+                <button class="openbtn" onclick="openNav()"><i class="fa fa-user"></i>Usuarios en linea
+                </button>
             </div>
+
+
         </div>
-        <button class="openbtn" onclick="openNav()"><i class="fa fa-user"></i>Usuarios en linea
-        </button>
+
     </div>
 
 

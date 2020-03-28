@@ -1,5 +1,10 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% block title %}
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+    <title>Estados</title>
+    <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
+{% endblock %}
 
 {% block main %}
     <div class="container mt-3">
@@ -21,7 +26,7 @@
                                        style="width:60%">
                                     <thead class="thead-dark">
                                     <tr>
-                                        <th>Id</th>
+                                        <th>#</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
 
@@ -56,7 +61,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo estado</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -85,8 +90,7 @@
                 $("#modal_modificar").modal('show');
             }
 
-
-            $("form#update").submit(function () {
+            $("form#Estado_U").submit(function () {
                 event.preventDefault();
                 var id1 = $('input[name="formId"]').val().trim();
                 var nombre1 = $('input[name="NombreEstado"]').val().trim();
@@ -103,14 +107,13 @@
                         success: function (data) {
                             if (data.estado) {
                                 Swal.fire(
-                                    'Bien !',
-                                    'Modificacion exitosa¡',
+                                    'Operacion exitosa !',
+                                    'Estado modificado¡',
                                     'success'
                                 );
-
                                 tableUpdate(data.estado);
                             } else {
-                                alert("Todos los campos son requeridos");
+                                alert("Campo Vacio");
                             }
                             $('#modal_modificar').modal('hide');
                             return false;

@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="{% static 'dist/css/css-jf.css' %}">
         <link rel="stylesheet" href="{% static 'dist/css/selectable.css' %}">
         <link rel="stylesheet" href="{% static 'dist/notifications.css' %}">
+        <script src="{% static 'dist/notifications.js' %}"></script>
 
     {% endblock %}
 </head>
@@ -51,7 +52,6 @@
     <div class="hk-pg-wrapper">
         {% block main %}
         {% endblock %}
-
     </div>
 </div>
 
@@ -78,6 +78,7 @@
                 }
             })
         })
+
     </script>
 {% endblock %}
 

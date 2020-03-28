@@ -11,15 +11,15 @@ from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
-from django.utils.decorators import method_decorator
 # CB Views
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, FormView, View
 
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil
 
-
-# Forms
+# decorador para clases
+superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
 
 
 class LoginViewUsuario(LoginView):
@@ -42,10 +42,10 @@ def perfil(request):
 def UserCreateView(request):
     if request.is_ajax():
         formula = SignupForm(request.POST)
-        userna = request.POST.get('username')
+        username = request.POST.get('username')
         if formula.is_valid():
             formula.save()
-            persona = User.objects.get(username=userna)
+            persona = User.objects.get(username=username)
             usuario = Perfil.objects.get(usuario_id=persona.pk)
             d = {'id': usuario.id,
                  'username': usuario.usuario.username,
@@ -55,9 +55,9 @@ def UserCreateView(request):
                  'apellido': usuario.usuario.last_name,
                  'telefono_fijo': usuario.telefono_fijo,
                  'celular': usuario.celular}
-            data = {'estado': True, 'person': d, 'form': formula}
+            data = {'estado': True, 'person': d}
         else:
-            data = {'errors': True, 'form': formula.non_field_errors}
+            data = {'estado': False, 'form': formula.errors}
 
         return JsonResponse(data=data)
     else:
@@ -89,10 +89,7 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
-
-
-
+@method_decorator(superuser_required, name='dispatch')
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
@@ -161,7 +158,7 @@ class UpdateProfileView(UpdateView):
     template_name = 'users/perfil.html'
     model = Perfil
     form_class = PerfilForm
-    success_url = reverse_lazy('usuario:listar_usuario')
+    success_url = reverse_lazy('archivo:buzon')
 
     def get_object(self, **kwargs):
         """Return user's profile."""
@@ -170,7 +167,7 @@ class UpdateProfileView(UpdateView):
     def get_success_url(self):
         """Return to user's profile."""
         username = self.object.usuario.username
-        return reverse('usuario:listar_usuario')
+        return reverse('archivo:buzon')
 
 
 class actualizarUsu(View):

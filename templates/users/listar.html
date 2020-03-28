@@ -35,6 +35,7 @@
                                     {% if object_list %}
                                         <table id="table_id" class="table table-hover"
                                                style="width:100%">
+
                                             <thead class="thead-dark">
                                             <tr>
                                                 <th>Estado</th>
@@ -65,7 +66,7 @@
                                                             </div>
                                                         </td>
                                                         <td>{{ foo.usuario }}</td>
-                                                        <td class="userNombre userData"
+                                                        <td style="" class="userNombre userData"
                                                             name="nombre">{{ foo.usuario.first_name }}</td>
                                                         <td class="userApellido userData"
                                                             name="apellido">{{ foo.usuario.last_name }}</td>
@@ -75,36 +76,38 @@
                                                             name="telefono">{{ foo.telefono_fijo }}</td>
                                                         <td class="userTele userData"
                                                             name="tele">{{ foo.celular_telemercadeo }}</td>
-                                                        <td>
+                                                        <td width="30%">
                                                             <div id="colum-{{ foo.pk }}">
-
                                                                 {% if foo.usuario == request.user %}
                                                                     <p><i class="fas fa-users-cog"></i>Coordinador
                                                                     </p>
-
                                                                 {% else %}
                                                                     <div>
                                                                     {% if foo.usuario.is_active %}
 
                                                                         <button type="submit"
-                                                                                class="btn btn-danger "
-                                                                                onclick="Inhabilitar({{ foo.pk }})">
-                                                                            <i class="fas fa-power-off"></i>
+                                                                                class="btn btn-danger  btn-sm"
+                                                                                onclick="Inhabilitar({{ foo.pk }})"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="Desactivar usuario">
+                                                                            <i class="fas fa-power-off fa-x1"></i>
                                                                         </button>
-
                                                                         <button
-                                                                                class="btn btn-dark"
-                                                                                onclick="Editar({{ foo.pk }}),open_modal()">
-                                                                            <i class="fa fa-pencil"></i>
+                                                                                class="btn btn-dark  btn-sm"
+                                                                                onclick="Editar({{ foo.pk }}),open_modal()"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="Modificar usuario">
+                                                                            <i class="fa fa-pencil fa-1x"></i>
                                                                         </button>
                                                                     {% else %}
                                                                         <button id="btn-{{ foo.pk }}" type="submit"
                                                                                 class="btn btn"
                                                                                 style="background-color: #36876a"
                                                                                 onclick="Inhabilitar({{ foo.pk }})">
-                                                                            <i
-                                                                                    style="color: #fff1f1"
-                                                                                    class="fas fa-power-off"></i>
+                                                                            <i style="color: #fff1f1"
+                                                                               class="fas fa-power-off"></i>
                                                                         </button>
                                                                     {% endif %}
                                                                 {% endif %}
@@ -124,7 +127,6 @@
                                     {% endif %}
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </section>
@@ -155,23 +157,21 @@
     <div class="modal fade" id="modal_modificar"> {% include 'users/modificar_perfil.html' %}</div>
 
     <!-- Footer -->
+    <style>
+        .rojo {
+            color: #a20000
+        }
 
+        .verde {
+            color: #3fee36
+        }
+    </style>
 
     {% block javascript %}
         <script>
 
-
-            const successNotification = window.createNotification({
-                theme: 'success',
-                showDuration: 5000
-            });
-
-            const ErrorNotification = window.createNotification({
-                theme: 'error',
-                showDuration: 5000
-            });
-            let password = document.getElementById('validationTooltip04');
-            let password_confirmation = document.getElementById('validationTooltip05');
+            var password = document.getElementById('validationTooltip04');
+            var password_confirmation = document.getElementById('validationTooltip05');
 
             $(document).ready(function () {
                 $('#table_id').DataTable({
@@ -179,11 +179,13 @@
                     ordering: true,
                     searching: true,
                     info: false,
-                    "language": español
+                    "language": español,
+                    "scrollX": true
+
                 });
             });
 
-
+            //traducion de lenguaje a español para datatable
             var español = {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -212,6 +214,12 @@
                     "colvis": "Visibilidad"
                 }
             };
+
+            function campos_obligatorios() {
+                ErrorNotification({
+                    message: 'Todos los campos son obligatorios!'
+                });
+            }
 
 
             function Inhabilitar(id) {
@@ -256,10 +264,7 @@
                         form.addEventListener('submit', function (event) {
                             if (form.checkValidity() === false) {
                                 event.preventDefault();
-                                ErrorNotification({
-                                    message: 'Campos Vacios!'
-
-                                })
+                                campos_obligatorios();
                                 event.stopPropagation();
                             }
                             form.classList.add('was-validated');
@@ -267,23 +272,6 @@
                     });
                 }, false);
             })();
-
-
-            function Agregar(user) {
-                $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
-                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
-                                <td name="username" class="userNombre userData">${user.username}</td>
-                                <td name="nombre" class="userNombre userData">${user.name}</td>
-                                <td name="apellido" class="userApellido userData">${user.apellido}</td>
-                                <td name="cedula" class="userCedula userData">${user.cedula}</td>
-                                <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
-                                <td name="tele" class="userTele userData">${user.celular}</td>
-                                <td><div id="colum-${user.id}">
-                                <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
-                                <button type="submit" onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
-                                </div></td>
-                                </tr>`);
-            }
 
             function Exito() {
                 Swal.fire(
@@ -321,7 +309,7 @@
                 if (letras.indexOf(tecla) == -1 && !tecla_especial) {
                     return false;
                 } else {
-                    document.getElementById('respuesta').innerHTML = "";
+                    return true;
                 }
             }
 
@@ -354,32 +342,20 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.user) {
-                                Swal.fire(
-                                    'Bien !',
-                                    'Modificacion exitosa¡',
-                                    'success'
-                                );
-
+                                succcesNotification({message: 'Modificacion exitosa!'});
                                 tableUpdate(data.user);
                             } else {
-                                ErrorNotification({
-                                    message: 'Todos los campos son obligatorios!'
-                                });
+                                campos_obligatorios();
                             }
                             $('#modal_modificar').modal('hide');
                             return false;
                         }
                     });
                 } else {
-                    Correcto();
+                    campos_obligatorios();
                 }
             });
 
-            function Correcto() {
-                ErrorNotification({
-                    message: 'Todos los campos son obligatorios!'
-                });
-            }
 
             function Editar(id) {
                 if (id) {
@@ -417,12 +393,44 @@
                 });
             }
 
+            function Agregar(user) {
+                $("#table_id > tbody:last-child").append(`<tr id="fila-${user.id}">
+                               <td name="activo"><span class="badge badge-pill badge-success">Activo</span></td>
+                                <td name="username" class="userNombre userData">${user.username}</td>
+                                <td name="nombre" class="userNombre userData">${user.name}</td>
+                                <td name="apellido" class="userApellido userData">${user.apellido}</td>
+                                <td name="cedula" class="userCedula userData">${user.cedula}</td>
+                                <td name="telefono" class="userTelefono userData">${user.telefono_fijo}</td>
+                                <td name="tele" class="userTele userData">${user.celular}</td>
+                                <td width="30%"><div id="colum-${user.id}">
+                                <button type="submit" class="btn btn-danger" onclick="Inhabilitar(${user.id})"><i class="fas fa-power-off"></i></button>
+                                <button onclick="Editar(${user.id}),open_modal()" class="btn btn-dark"><i class="fa fa-pencil"></i></button>
+                                </div></td>
+                                </tr>`);
+            }
+
+            $(document).ready(function () {
+
+                $('#submit').prop('disabled', true)
+                $(password_confirmation).keyup(function () {
+                    if (password_confirmation.value === password.value) {
+                        $('#submit').prop('disabled', false)
+                        document.getElementById('Okey').innerHTML = "<span class=\"glyphicon glyphicon-ok verde\"></span>"
+
+                    } else {
+                        $('#submit').prop('disabled', true)
+                        document.getElementById('Okey').innerHTML = "<span class=\"glyphicon glyphicon-remove rojo\"></span>"
+                    }
+                })
+            });
+
+
             $(document).ready(function () {
                 var $formulario = $('#insert');
                 $formulario.submit(function (event) {
                     event.preventDefault();
-                    var $datos = $formulario.serialize();
-                    debugger
+                    let $datos = $formulario.serialize();
+
                     $.ajax({
                         url: '{% url "usuario:signup"%}',
                         method: "POST",
@@ -431,29 +439,31 @@
                             if (data.estado) {
                                 Agregar(data.person);
                                 Exito();
-                            } else if (data.errors) {
-                                alert(data)
+                            } else {
+                                if (data.form) {
+                                    if (data.form.username) {
+                                        ErrorNotification({message: `${data.form.username}`});
+                                    }
+                                    if (data.form.cedula) {
+                                        ErrorNotification({message: `${data.form.cedula}`});
+                                    }
+                                    if (data.form.email) {
+
+                                        ErrorNotification({message: `${data.form.email}`});
+                                    }
+
+
+                                }
                             }
-                        },
+                        }
                     });
                 });
             });
+
 
         </script>
     {% endblock %}
 
 
 {% endblock %}
-</div>
 
-</div>
-
-<style>
-    div.dataTables_wrapper
-    .dataTables_length select {
-        width: 100%;
-        float: none;
-        text-align: center;
-        margin-top: 1.5rem !important;
-    }
-</style>

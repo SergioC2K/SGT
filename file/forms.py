@@ -22,19 +22,15 @@ class SubirArchivoForm(forms.Form):
             attrs={
                 'class': 'form-control',
                 'accept': 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }),
-        validators=[FileExtensionValidator(allowed_extensions=['xlsx'])]
+            })
     )
-
     def clean(self):
-        data = super().clean()
         data = super().clean()
         if not data:
             raise forms.ValidationError('El archivo no se puede subir al sistema')
         archivo = data['archivo']
         nombre_existe = Archivo.objects.filter(nombre=archivo.name).exists()
-
-        if len(archivo.name) <= 5 and archivo.name[-5:] != '.xlsx':
+        if len(archivo.name) <= 5 or archivo.name[-5:] != '.xlsx':
             raise forms.ValidationError('Ese tipo de archivo no se puede subir al sistema')
         if nombre_existe:
             raise forms.ValidationError('Este archivo ya fue cargado al sistema')
@@ -115,14 +111,14 @@ class RealizarLlamada(forms.Form):
             'class': 'form-control',
             'id': 'fecha_entrega',
             'name': 'fecha_entrega',
-            'width': '250',
+            'width': '180',
             'readonly': 'readonly'
 
         })
     )
     observaciones = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
                                                                  'id': 'observaciones',
-                                                                 'rows': '5'
+                                                                 'rows': '3'
                                                                  })
                                     )
     realizado = forms.BooleanField(initial=True, widget=forms.HiddenInput())
@@ -136,9 +132,9 @@ class RealizarLlamada(forms.Form):
         })
 
     )
-    id_grabacion = forms.FileField(widget=forms.ClearableFileInput(attrs={'class': 'custom-file-input',
-                                                                          'id': 'customFile',
-                                                                          'required': False
+    id_grabacion = forms.FileField(widget=forms.ClearableFileInput(attrs={'id': 'MP3FILE',
+                                                                          'required': False,
+                                                                          'data - badge': 'true'
                                                                           })
                                    )
     id_llamada = forms.CharField(widget=forms.HiddenInput(attrs={
@@ -147,6 +143,13 @@ class RealizarLlamada(forms.Form):
         'name': 'id_llamada',
 
     }))
+
+    precio = forms.IntegerField(
+        initial=50,
+        max_value=510,
+        min_value=50,
+        widget=forms.HiddenInput()
+    )
 
     def clean_fecha_entrega(self):
         """Verificar que la fecha de entrega ingresada sea mayor a la actual"""
@@ -179,6 +182,7 @@ class RealizarLlamada(forms.Form):
             llamada.nombre_contesta = data['nombre_contesta']
             estado = Estado.objects.get(id=data['id_estado'])
             llamada.id_estado = estado
+            llamada.precio = data['precio']
             llamada.id_grabacion = grabacion
             llamada.save()
         else:
@@ -189,6 +193,7 @@ class RealizarLlamada(forms.Form):
             llamada.nombre_contesta = data['nombre_contesta']
             estado = Estado.objects.get(id=data['id_estado'])
             llamada.id_estado = estado
+            llamada.precio = data['precio']
             llamada.save()
 
 
@@ -208,6 +213,5 @@ class EstadoForm(forms.ModelForm):
                 'id': 'estado1',
                 'name': 'estado1'
             }
-
             )
         }
