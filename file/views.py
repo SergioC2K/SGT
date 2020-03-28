@@ -3,6 +3,7 @@ import datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 from django.core import serializers
 from django.db.models import Q, Count
 from django.http import HttpResponse, JsonResponse
@@ -286,6 +287,11 @@ def reporte_llamada(request):
 def traer_reporte_llamada(request):
     # La variable dia me trae el valor de la fecha a consultar
     dia = request.GET.get('valor', None)
+    usuario = Perfil.objects.all()
+
+    data = {
+        'usuario': usuario
+    }
 
     valor = int(dia)
 
