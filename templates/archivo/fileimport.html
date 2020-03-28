@@ -48,7 +48,11 @@
             var extension = /(.xls|xlsx)$/i;
             if (!extension.exec(otra)) {
                 document.getElementById('input').value = '';
-            alert('sada')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Solo se pueden extensiones de tipo .xlsx/.xls',
+                });
                 return false;
             }
         }
