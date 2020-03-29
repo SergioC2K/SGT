@@ -20,12 +20,15 @@
 {% block main %}
 
     <div class="container bg-white mt-2 cp">
-        <strong class="d-flex justify-content-center m-1"><i class="fas fa-chart-bar mt-1"></i>&nbsp;Estadisticas de usuario</strong>
+        <strong class="d-flex justify-content-center m-1"><i class="fas fa-chart-bar mt-1"></i>&nbsp;Estadisticas de
+            usuario</strong>
         <hr>
         <div class="row">
+
             <div class="col-sm-10">
 
-
+                <div id="liquidacion" name="liquidacion">
+                </div>
                 <canvas id="Grafica" width="55" height="30"></canvas>
 
                 {# Este es el de las fechas #}
@@ -69,6 +72,7 @@
                     'usuario': usuario
                 },
                 success: function (data) {
+                    $("#liquidacion").html(`<strong>Total a pagar</strong><h4>${data.liquidacion.suma}</h4>`);
                     dar(data);
                 }
             });
@@ -108,7 +112,7 @@
 
         function dar(data) {
             myChart.data.datasets[0].data = [data.exito, data.no_contesta, data.CLAPLE, data.ZNCUB, data.CLEAL, data.CLDES, data.ALCOMPE, data.datos_errados, data.CLINOSOL];
-            myChart.data.datasets[0].label = data.usuario;
+            myChart.data.datasets[0].label = data.nombre;
             myChart.update();
         }
     </script>

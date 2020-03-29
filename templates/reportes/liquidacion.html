@@ -1,129 +1,169 @@
 {% extends 'base/base.html' %}
+
 {% load static %}
 
-
 {% block title %}
-    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
-    <title>Liquidacion</title>
+    <head>
+        <link rel="icon" type="image/png" sizes="192x192" href="{% static 'dist/img/LogoSGT.png' %}">
+        <title>Mi Reporte</title>
+        <script src="{% static 'dist/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/FileSaver.min.js' %}"></script>
+        <script src="{% static 'dist/Datatables/xlsx.full.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
+
+    </head>
 {% endblock %}
 
 {% block main %}
+    <div class="container card-sm bg-white" style="border-radius: 5px">
 
-     <div class="row">
-                <div class="col-xl-12">
-                    <section class="hk-sec-wrapper">
-                        <h5 class="hk-sec-title"><input class="form-control" type="search" placeholder="Buscador"
-                                                        aria-label="Search"></h5>
+        <h3 class="hk-pg-title mt-2">
+            <i class="fa fa-search"></i> Reportes
+            <button class="btn btn-outline-success float-lg-right col-sm-3" id="button-a" data-toggle="tooltip"
+                    data-placement="top" title="Exportar excel">
+                Exportar
+            </button>
+        </h3>
 
-                        <div class="row">
-                            <div class="col-sm">
-                                <div class="table-wrap">
+        <hr>
+        <form method="post" action="{% url 'archivo:llevar_liquidacion' %}">
+            {% csrf_token %}
+            <div class="container ">
+                <div class="row card-body">
+                    <div class="col-sm-3">
+                        <select name="meses" class="form-control">
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
 
-                                    <table class="table tablesaw table-bordered table-hover  mb-0"
-                                           data-tablesaw-mode="swipe" data-tablesaw-sortable
-                                           data-tablesaw-sortable-switch data-tablesaw-minimap
-                                           data-tablesaw-mode-switch>
+                        </select>
 
-                                        <thead>
-                                        <tr>
-                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">
-                                                Operador
-                                            </th>
-                                            <th scope="col" data-tablesaw-sortable-col
-                                                data-tablesaw-sortable-default-col data-tablesaw-priority="3">Numero de
-                                                llamadas
-                                            </th>
-                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">
-                                                Fecha
-                                            </th>
-                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1"><abbr
-                                                    title="Rotten Tomato Rating">Efectividad</abbr></th>
-                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">
-                                                Ganancia
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Sergio orejas marcadas</a>
-                                            </td>
-                                            <td>1</td>
-                                            <td>20/07/2019</td>
-                                            <td>83%</td>
-                                            <td>$230.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Juan Felipe Leño</a></td>
-                                            <td>2</td>
-                                            <td>20/07/2019</td>
-                                            <td>88%</td>
-                                            <td>$210.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Johnatan Gramos Tussy</a>
-                                            </td>
-                                            <td>3</td>
-                                            <td>09/08/2019</td>
-                                            <td>92%</td>
-                                            <td>$150.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Esperanza Gomez</a></td>
-                                            <td>4</td>
-                                            <td>09/08/2019</td>
-                                            <td>96%</td>
-                                            <td>$150.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Mia Khalifa</a></td>
-                                            <td>5</td>
-                                            <td>09/08/2019</td>
-                                            <td>89%</td>
-                                            <td>$150.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Andres Dobby Uchima</a></td>
-                                            <td>6</td>
-                                            <td>09/08/2019</td>
-                                            <td>78%</td>
-                                            <td>$150.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Gisella</a></td>
-                                            <td>7</td>
-                                            <td>09/08/2019</td>
-                                            <td>36%</td>
-                                            <td>$150.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Cristian Serna</a></td>
-                                            <td>8</td>
-                                            <td>09/08/2019</td>
-                                            <td>95%</td>
-                                            <td>$150.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Doris Serna</a></td>
-                                            <td>9</td>
-                                            <td>09/08/2019</td>
-                                            <td>92%</td>
-                                            <td>$150.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title"><a href="javascript:void(0)">Sebastian Giraldo</a></td>
-                                            <td>10</td>
-                                            <td>09/08/2019</td>
-                                            <td>18%</td>
-                                            <td>$150.000</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    </div>
+
+
+                    <div class="col p-3">
+
+                        <button type="submit" class="btn btn-outline-info"
+                                style="margin-left: 100%"
+                                ><i class="fas fa-search"></i> Buscar
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
+        <table class="tablesaw  tablesaw-bar table-hover " id="table">
+            <thead class="table-borderless">
+            <tr>
+                <th scope="col">Nombre Operador</th>
+                <th scope="col">Total llamadas</th>
+                <th scope="col">Total liquidado</th>
+            </tr>
+            </thead>
+            <tbody>
 
+
+                <tr class="tablesaw-sortable-arrow table-info">
+                    <td>{{ nombre }}</td>
+                    <td>{{ total }}</td>
+                    <td>{{ consulta.suma }}</td>
+                </tr>
+
+
+            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-info-sign"></span> No hay llamadas!
+            </div>
+
+            </tbody>
+        </table>
+    </div>
+    {% block javascript %}
+        <script>
+            $(document).ready(function () {
+                $('#table').DataTable({
+                    "scrollX": true,
+                    "scrollY": "400px",
+                    "scrollCollapse": true,
+                    bfilter: false,
+                    ordering: true,
+                    searching: true,
+                    info: false,
+                    "language": español
+                });
+            });
+
+            function excel_exporte() {
+                var wb = XLSX.utils.table_to_book(document.getElementById('table'), {sheet: "Sheet JS"});
+                var wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
+                return wbout
+            }
+
+
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            $("#button-a").click(function () {
+
+                Swal.fire({
+                    title: 'Desea exportar los datos?',
+                    text: "Verifique los datos de la tabla!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#36876a',
+                    cancelButtonColor: '#409ec1',
+                    confirmButtonText: 'Si deseo exportar!'
+                }).then((result) => {
+                    if (result.value) {
+                        saveAs(new Blob([s2ab(excel_exporte())], {type: "application/octet-stream"}), 'Telemercadeo.xlsx');
+                        Swal.fire(
+                            'Exportado!',
+                            'Su reporte esta listo',
+                            'success'
+                        )
+                    }
+                })
+            });
+
+            var español = {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ Registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "buttons": {
+                    "copy": "Copiar",
+                    "colvis": "Visibilidad"
+                }
+            };
+        </script>
+    {% endblock %}
 {% endblock %}
