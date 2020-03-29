@@ -570,11 +570,16 @@ def reporte_general(request):
 
 def trer_reporte_general(request):
     diccionario = {}
+    realizado1 = request.POST['realizado1']
     respuesta = request.POST['respuesta']
     valor = int(respuesta)
+    valor1 = int(realizado1)
 
     if valor == 0:
-        consulta = RegistroLlamada.objects.all()
+        if valor1 == 0:
+            consulta = RegistroLlamada.objects.filter(realizado=1)
+        else:
+            consulta = RegistroLlamada.objects.all()
         if consulta:
             diccionario = {'registro': consulta}
         else:
@@ -582,8 +587,13 @@ def trer_reporte_general(request):
 
     elif valor == 1:
         hoy = datetime.datetime.utcnow()
-        horas = hoy - datetime.timedelta(hours=36)
-        consulta = RegistroLlamada.objects.filter(modified__range=[hoy, horas])
+        horas = hoy - datetime.timedelta(hours=24)
+
+        if valor1 == 0:
+            consulta = RegistroLlamada.objects.filter(modified__range=[horas, hoy], realizado=1)
+
+        else:
+            consulta = RegistroLlamada.objects.filter(modified__range=[horas, hoy])
 
         if consulta:
             diccionario = {'registro': consulta}
@@ -593,7 +603,11 @@ def trer_reporte_general(request):
     elif valor == 2:
         hoy = datetime.datetime.utcnow()
         semana = hoy - datetime.timedelta(days=7)
-        consulta = RegistroLlamada.objects.filter(modified__range=[semana, hoy])
+
+        if valor1 == 0:
+            consulta = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1)
+        else:
+            consulta = RegistroLlamada.objects.filter(modified__range=[semana, hoy])
 
         if consulta:
             diccionario = {'registro': consulta}
@@ -603,7 +617,11 @@ def trer_reporte_general(request):
     elif valor == 3:
         hoy = datetime.datetime.utcnow()
         mes = hoy - datetime.timedelta(days=30)
-        consulta = RegistroLlamada.objects.filter(modified__range=[mes, hoy])
+
+        if valor1 == 0:
+            consulta = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1)
+        else:
+            consulta = RegistroLlamada.objects.filter(modified__range=[mes, hoy])
 
         if consulta:
             diccionario = {'registro': consulta}
@@ -612,9 +630,18 @@ def trer_reporte_general(request):
 
     elif valor == 4:
         archivo = Archivo.objects.last()
-        registradas = RegistroLlamada.objects.filter(id_llamada__archivo_id=archivo)
+        if valor1 == 0:
+            registradas = RegistroLlamada.objects.filter(id_llamada__archivo_id=archivo, realizado=1)
+        else:
+            registradas = RegistroLlamada.objects.filter(id_llamada__archivo_id=archivo)
+
         diccionario = {
             'registro': registradas
         }
 
     return render(request, template_name='reportes/reporte_general.html', context=diccionario)
+
+
+
+
+

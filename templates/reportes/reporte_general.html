@@ -30,12 +30,21 @@
             {% csrf_token %}
             <div class="container ">
                 <div class="row card-body">
-                    <div class="col-sm">
+                    <div class="col-sm-3">
                         <select name="respuesta" class="form-control">
                             <option value="0">Desde siempre</option>
                             <option value="1">ultimo dia</option>
                             <option value="2">ultima semana</option>
                             <option value="3">ultima mes</option>
+                            <option value="4">ultimo archivo</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-sm-3">
+                          <select name="realizado1" class="form-control">
+                            <option value="0">Llamadas realizadas</option>
+                            <option value="1">Todas las llamadas</option>
                         </select>
                     </div>
                     <div class="col-sm">
@@ -79,7 +88,7 @@
                         <td>{{ i.id_llamada.telefono }}</td>
                         <td>{{ i.nombre_contesta }}</td>
                         <td>{{ i.fecha_entrega }}</td>
-                        <td>{{ i.id_grabacion.audio.url }}</td>
+                        <td><a href="{{ i.id_grabacion.audio.url }}">{{ i.id_grabacion }}</a></td>
                         <td>{{ i.id_estado.nombre }}</td>
                     </tr>
                 {% endfor %}

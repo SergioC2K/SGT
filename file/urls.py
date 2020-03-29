@@ -143,5 +143,7 @@ urlpatterns = [
         route='traer_reporte_usuario',
         view=views.traer_reporte_usuario,
         name="traer_reporte_usuario"
-    )
+    ),
+
+
 ]
