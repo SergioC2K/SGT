@@ -89,7 +89,7 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-@method_decorator(superuser_required, name='dispatch')
+#@method_decorator(superuser_required, name='dispatch')
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
