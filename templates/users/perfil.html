@@ -10,7 +10,7 @@
     <form method="POST" action="{% url 'usuario:perfil' %}" name="perfilform" id="perfilform"
           enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="container mt-2">
+        <div class="container mt-5">
             <div class="card">
                 <div class="card-title ml-2 mt-2">
                     {% if request.var %}
@@ -180,7 +180,7 @@
     <script src="{% static 'dist/popper.js/dist/umd/popper.min.js' %}"></script>
     <script src="{% static 'dist/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'dist/notifications.js' %}"></script>
-    <script src="https://kit.fontawesome.com/c7e6a57cdf.js" crossorigin="anonymous"></script>
+    <script src="{% static 'dist/iconos_font_awesome.js' %}"></script>
 
 
     <script>
@@ -203,7 +203,7 @@
         {% endif %}
         {% if messages %}
             {% for message in messages %}
-                succcesNotification({
+                successNotification({
                     message: '{{ message }}'
                 });
             {% endfor %}
@@ -240,7 +240,6 @@
                 });
             });
         }
-
 
 
         setInputFilter(document.getElementById("telefono_fijo"), function (value) {
