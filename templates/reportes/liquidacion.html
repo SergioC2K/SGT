@@ -26,40 +26,42 @@
         </h3>
 
         <hr>
-        <form method="post" action="{% url 'archivo:llevar_liquidacion' %}">
-            {% csrf_token %}
-            <div class="container ">
-                <div class="row card-body">
-                    <div class="col-sm-3">
-                        <select name="meses" class="form-control">
-                            <option value="1">Enero</option>
-                            <option value="2">Febrero</option>
-                            <option value="3">Marzo</option>
-                            <option value="4">Abril</option>
-                            <option value="5">Mayo</option>
-                            <option value="6">Junio</option>
-                            <option value="7">Julio</option>
-                            <option value="8">Agosto</option>
-                            <option value="9">Septiembre</option>
-                            <option value="10">Octubre</option>
-                            <option value="11">Noviembre</option>
-                            <option value="12">Diciembre</option>
+        <div class="col">
+            <form method="post" action="{% url 'archivo:llevar_liquidacion' %}">
+                {% csrf_token %}
+                <div class="container ">
+                    <div class="row card-body">
+                        <div class="col-sm-3">
+                            <select name="meses" class="form-control">
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
 
-                        </select>
+                            </select>
 
-                    </div>
+                        </div>
 
 
-                    <div class="col p-3">
+                        <div class="col p-3">
 
-                        <button type="submit" class="btn btn-outline-info"
-                                style="margin-left: 100%"
-                                ><i class="fas fa-search"></i> Buscar
-                        </button>
+                            <button type="submit" class="btn btn-outline-info"
+                                    style="margin-left: 100%"
+                            ><i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
         <table class="tablesaw  tablesaw-bar table-hover " id="table">
             <thead class="table-borderless">
             <tr>
@@ -71,17 +73,11 @@
             <tbody>
 
 
-                <tr class="tablesaw-sortable-arrow table-info">
-                    <td>{{ nombre }}</td>
-                    <td>{{ total }}</td>
-                    <td>{{ consulta.suma }}</td>
-                </tr>
-
-
-            <div class="alert alert-info">
-                <span class="glyphicon glyphicon-info-sign"></span> No hay llamadas!
-            </div>
-
+            <tr class="tablesaw-sortable-arrow table-info">
+                <td>{{ nombre }}</td>
+                <td>{{ total }}</td>
+                <td>{{ consulta.suma }}</td>
+            </tr>
             </tbody>
         </table>
     </div>

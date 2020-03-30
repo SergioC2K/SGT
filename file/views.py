@@ -3,7 +3,6 @@ import datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import User
 from django.core import serializers
 from django.db.models import Q, Count, Sum
 from django.http import HttpResponse, JsonResponse
@@ -666,8 +665,7 @@ def liquidacion_operador(request):
 
     #  con estas consultas se esta trayendo la liquidacion del operador
     consultica = Perfil.objects.get(usuario=usuario)
-    consulta = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=mes).aggregate(
-        suma=Sum('precio'))
+    consulta = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=mes).aggregate(suma=Sum('precio'))
     total = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=mes).count()
     data = {
         'consulta': consulta,
