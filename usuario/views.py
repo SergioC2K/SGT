@@ -36,6 +36,7 @@ class LoginViewUsuario(LoginView):
 
 
 def perfil(request):
+
     return render(request, 'users/perfil.html')
 
 
@@ -89,7 +90,7 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-@method_decorator(superuser_required, name='dispatch')
+#@method_decorator(superuser_required, name='dispatch')
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
@@ -158,6 +159,7 @@ class UpdateProfileView(UpdateView):
     template_name = 'users/perfil.html'
     model = Perfil
     form_class = PerfilForm
+    success_message = 'Perfil Actualido con exito'
     success_url = reverse_lazy('archivo:buzon')
 
     def get_object(self, **kwargs):

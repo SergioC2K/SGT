@@ -90,7 +90,7 @@
                         <td>{{ i.id_llamada.telefono }}</td>
                         <td>{{ i.nombre_contesta }}</td>
                         <td>{{ i.fecha_entrega }}</td>
-                        <td><a href="{{ i.id_grabacion.audio.url }}">{{ i.id_grabacion }}</a></td>
+                        <td><i class="fas fa-play-circle"><a href="{{ i.id_grabacion.audio.url }}">{{ i.id_grabacion }}</a></td>
                         <td>{{ i.id_estado.nombre }}</td>
                     </tr>
                 {% endfor %}
