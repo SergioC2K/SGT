@@ -199,15 +199,17 @@ def realizar_llamada(request):
                     form.cleaned_data['precio'] = 450
             form.save()
             confir = RegistroLlamada.objects.filter(id_usuario=request.user.perfil,
-                                                    created__range=(horas_antes, manana)).exclude(
-                realizado=True).exists()
+                                                    created__range=(horas_antes, manana)) \
+                .exclude(realizado=True).exists()
             if not confir:
                 notify.send(
                     sender=request.user,
                     recipient=User.objects.filter(is_staff=True),
                     verb='Ha terminado las llamadas asignadas en el dia'
                 )
-            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
+            llamadas = RegistroLlamada.objects.filter(id_usuario=request.user.perfil,
+                                                      created__range=(horas_antes, manana)).exclude(
+                realizado=True)
 
             data = {
                 'form': form,
@@ -216,21 +218,39 @@ def realizar_llamada(request):
             messages.success(request, 'La llamada ha sido realizada')
             return render(request, template_name='llamada/Buzon.html', context=data)
         else:
-            llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
+            llamadas = RegistroLlamada.objects.all()
+
+            llamadas_restantes = llamadas.filter(id_usuario=request.user.perfil,
+                                                 created__range=(horas_antes, manana)).exclude(
+                realizado=True)
+
             messages.error(request, 'La llamada no es valida, verifique los campos y vuelva a intentarlo')
 
             data = {
                 'form': form.errors,
-                'llamada': llamadas
+                'llamadas': llamadas_restantes
             }
             return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
-        llamada = RegistroLlamada.objects.filter(id_usuario=request.user.perfil, created__range=(horas_antes, manana)) \
-            .exclude(realizado=True)
+        llamadas = RegistroLlamada.objects.all()
+        llamadas_restantes = llamadas.filter(id_usuario=request.user.perfil,
+                                             created__range=(horas_antes, manana)).exclude(
+            realizado=True)
+        llamadas_hechas = llamadas.filter(id_usuario=request.user.perfil,
+                                          created__range=(horas_antes, manana)).exclude(
+            realizado=False)
+        llamadas_noco = llamadas.filter(id_usuario=request.user.perfil,
+                                        created__range=(horas_antes, manana),
+                                        id_estado__nombre='No contesta'
+                                        ).exclude(realizado=False)
+        llamadas_exito = len(llamadas_hechas) - len(llamadas_noco)
         data = {
             'form': form,
-            'llamadas': llamada
+            'llamadas': llamadas_restantes,
+            'llamadas_hechas': llamadas_hechas,
+            'llamadas_noco': llamadas_noco,
+            'llamadas_exito': llamadas_exito
         }
     return render(request, template_name='llamada/Buzon.html', context=data)
 

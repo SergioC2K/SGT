@@ -78,7 +78,7 @@
 
                                     <li class="list-group-item text-right">
                                         <span class="pull-left"><strong><i class="fas fa-sort-numeric-up"></i> Llamadas realizadas</strong></span>&nbsp;
-                                        <span id="cant_ll"></span>
+                                        <span id="cant_ll">{{ llamadas_hechas.count }}</span>
                                     </li>
 
                                     <li class="list-group-item text-right"><span class="pull-left"><strong><i
@@ -89,12 +89,12 @@
 
                                     <li class="list-group-item text-right"><span class="pull-left"><strong>
                                         <i class="fas fa-check-circle"></i> Llamadas con exito</strong></span>&nbsp;
-                                        <span id="llam_res"></span>
+                                        <span id="llam_res">{{ llamadas_exito }}</span>
                                     </li>
 
                                     <li class="list-group-item text-right"><span class="pull-left"><strong>
                                         <i class="fas fa-phone-slash"></i> No contestados</strong></span>&nbsp;
-                                        <span id="llam_res"></span>
+                                        <span id="llam_res">{{ llamadas_noco.count }}</span>
                                     </li>
 
                                 </ul>
