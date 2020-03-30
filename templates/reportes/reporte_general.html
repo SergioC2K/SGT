@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="col-sm-3">
-                        <select name="realizado1" class="form-control">
+                          <select name="realizado1" class="form-control">
                             <option value="0">Llamadas realizadas</option>
                             <option value="1">Todas las llamadas</option>
                         </select>
@@ -59,23 +59,17 @@
             <thead class="table-borderless">
             <tr>
                 <th scope="col">Solicitante</th>
-                <th scope="col">Destinatario</th>
                 <th scope="col">Ruta</th>
                 <th scope="col">Cantidad</th>
-                <th scope="col">Hora inicio</th>
-                <th scope="col">Hora final</th>
-                <th scope="col">Entrega</th>
                 <th scope="col">Barrio</th>
                 <th scope="col">Localidad</th>
                 <th scope="col">Material</th>
-                <th scope="col">Direccion</th>
+                <th scope="col">Destinatario</th>
                 <th scope="col">Telefono</th>
                 <th scope="col" data-toggle="tooltip"
-                    data-placement="top" title="Nombre contesta">Contesta
-                </th>
+                    data-placement="top" title="Nombre contesta">Contesta</th>
                 <th scope="col" data-toggle="tooltip"
-                    data-placement="top" title="Fecha de Entrega ">Fecha
-                </th>
+                    data-placement="top" title="Fecha de Entrega ">Fecha</th>
                 <th scope="col">Audio</th>
                 <th scope="col">Estado</th>
             </tr>
@@ -85,21 +79,16 @@
                 {% for i in registro %}
                     <tr class="tablesaw-sortable-arrow table-info">
                         <td>{{ i.id_llamada.nombre_solicitante }}</td>
-                        <td>{{ i.id_llamada.nombre_destinatario }}</td>
                         <td>{{ i.id_llamada.ruta }}</td>
                         <td>{{ i.id_llamada.cantidad_pedido }}</td>
-                        <td>{{ i.id_llamada.hora_inicio }}</td>
-                        <td>{{ i.id_llamada.hora_final }}</td>
-                        <td>{{ i.id_llamada.entrega }}</td>
                         <td>{{ i.id_llamada.barrio }}</td>
                         <td>{{ i.id_llamada.localidad }}</td>
                         <td>{{ i.id_llamada.material }}</td>
-                        <td>{{ i.id_llamada.direccion_des_mcia }}</td>
+                        <td>{{ i.id_llamada.nombre_destinatario }}</td>
                         <td>{{ i.id_llamada.telefono }}</td>
                         <td>{{ i.nombre_contesta }}</td>
                         <td>{{ i.fecha_entrega }}</td>
-                        <td><i class="fas fa-play-circle"><a
-                                href="{{ i.id_grabacion.audio.url }}">{{ i.id_grabacion }}</a></td>
+                        <td><i class="fas fa-play-circle"><a href="{{ i.id_grabacion.audio.url }}">{{ i.id_grabacion }}</a></td>
                         <td>{{ i.id_estado.nombre }}</td>
                     </tr>
                 {% endfor %}
@@ -126,7 +115,6 @@
                     "language": español
                 });
             });
-
             function excel_exporte() {
                 var wb = XLSX.utils.table_to_book(document.getElementById('table'), {sheet: "Sheet JS"});
                 var wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
