@@ -46,7 +46,7 @@
                         <a id="nea" href="{% url 'archivo:asignar' %}" hidden></a>
                     </ul>
                     <div class="d-flex justify-content-center mt-5">
-                        <button class="btn btn-two" id="clickes"><i class="fas fa-paper-plane"></i> Enviar</button>
+                        <button class="btn btn-two faa-vertical animated-hover" id="clickes"><i class="fas fa-paper-plane"></i> Enviar</button>
 
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                                             {% empty %}
                                                 <div class="d-flex justify-content-center">
                                                     <div class="alert alert-info" role="alert">
-                                                        <span class="glyphicon glyphicon-exclamation-sign"></span> No
+                                                        <span class="glyphicon glyphicon-exclamation-sign  faa-burst animated"></span> No
                                                         hay llamadas para repartir!
                                                     </div>
                                                 </div>
@@ -82,7 +82,7 @@
                 <div class="col">
                     {% include 'base/components/tablaUserConect.html' %}
                 </div>
-                <button class="openbtn" onclick="openNav()"><i class="fa fa-user"></i>Usuarios en linea
+                <button class="openbtn" onclick="openNav()"><i class="fa fa-user faa-bounce animated-hover"></i>Usuarios en linea
                 </button>
             </div>
 

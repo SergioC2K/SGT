@@ -9,7 +9,7 @@
             </button>
 
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid" id="loader_pr">
 
             <div class="container">
 
@@ -89,23 +89,19 @@
 
 
 <script>
-    function setInputFilter(textbox, inputFilter) {
-        ["input", "keydown", "keyup"].forEach(function (event) {
-            textbox.addEventListener(event, function () {
-                if (inputFilter(this.value)) {
-                    this.oldValue = this.value;
-                    this.oldSelectionStart = this.selectionStart;
-                    this.oldSelectionEnd = this.selectionEnd;
 
-                } else if (this.hasOwnProperty("oldValue")) {
-                    this.value = this.oldValue;
-                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-                } else {
-                    this.value = "";
-                }
-            });
-        });
-    }
+
+    $('#loader_pr').waitMe({
+
+        effect: 'bounce',
+
+        text: 'Espere un momento',
+
+        bg: rgba(255, 255, 255, 0.7),
+
+        color: #000
+
+    });
 
 
     $("input#form-nombre").bind('keypress', function (event) {

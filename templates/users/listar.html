@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'dist/bootstrap/dist/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'dist/notifications.css' %}">
     <script src="{% static 'dist/notifications.js' %}"></script>
+
 {% endblock %}
 {% block main %}
     <!-- Container -->
@@ -22,7 +23,7 @@
                                 style="background-color: #36876a; color: #fff4f0;margin-left: 85%"
                                 data-toggle="modal"
                                 data-target=".bd-example-modal-lg"><i
-                                class="fas fa-user-plus"></i> Nuevo
+                                class="fas fa-user-plus faa-horizontal animated-hover"></i> Nuevo
                         </button>
 
                     </h3>
@@ -91,7 +92,7 @@
                                                                                 data-toggle="tooltip"
                                                                                 data-placement="top"
                                                                                 title="Desactivar usuario">
-                                                                            <i class="fas fa-power-off fa-x1"></i>
+                                                                            <i class="fas fa-power-off fa-x1  faa-flash animated-hover"></i>
                                                                         </button>
                                                                         <button
                                                                                 class="btn btn-dark  btn-sm"
@@ -99,7 +100,7 @@
                                                                                 data-toggle="tooltip"
                                                                                 data-placement="top"
                                                                                 title="Modificar usuario">
-                                                                            <i class="fa fa-pencil fa-1x"></i>
+                                                                            <i class="fa fa-pencil fa-1x faa-wrench animated-hover"></i>
                                                                         </button>
                                                                     {% else %}
                                                                         <button id="btn-{{ foo.pk }}" type="submit"
@@ -107,7 +108,7 @@
                                                                                 style="background-color: #36876a"
                                                                                 onclick="Inhabilitar({{ foo.pk }})">
                                                                             <i style="color: #fff1f1"
-                                                                               class="fas fa-power-off"></i>
+                                                                               class="fas fa-power-off  faa-flash animated-hover"></i>
                                                                         </button>
                                                                     {% endif %}
                                                                 {% endif %}
@@ -185,6 +186,8 @@
                 });
             });
 
+
+
             //traducion de lenguaje a español para datatable
             var español = {
                 "sProcessing": "Procesando...",
@@ -232,7 +235,7 @@
                     success: function (data) {
 
                         if (data.desactive) {
-                            $("#colum-" + id).html(`<button type="submit"class="btn btn" style="background-color: #36876a;color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>`);
+                            $("#colum-" + id).html(`<button type="submit"class="btn btn" style="background-color: #36876a;color: #fff1f1" onclick="Inhabilitar(${id})"><i class="fas fa-power-off  faa-flash animated-hover"></i></button>`);
                             $("#activado-" + id).html(`<span class="badge badge-pill badge-danger">Inactivo</span>`);
                             Swal.fire(
                                 'Operacion exitosa !',
@@ -241,8 +244,8 @@
                             );
                         }
                         if (!data.desactive) {
-                            $("#colum-" + id).html(`<button type="submit" class="btn btn-danger"  onclick="Inhabilitar(${id})"><i class="fas fa-power-off"></i></button>
-                                                        <button type="submit" onclick="Editar(${id}),open_modal()"   class="btn btn-dark"><i class="fa fa-pencil"></i></button>`);
+                            $("#colum-" + id).html(`<button type="submit" class="btn btn-danger"  onclick="Inhabilitar(${id})"><i class="fas fa-power-off  faa-flash animated-hover"></i></button>
+                                                        <button type="submit" onclick="Editar(${id}),open_modal()"   class="btn btn-dark"><i class="fa fa-pencil faa-wrench animated-hover"></i></button>`);
                             $("#activado-" + id).html(`<span class="badge badge-pill badge-success">Activo</span>`);
                             Swal.fire(
                                 'Operacion exitosa !',
