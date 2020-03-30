@@ -26,7 +26,8 @@
                 <span id="punticoAzul" class="badge-wrap">
                     <span class="badge badge-primary badge-indicator badge-indicator-sm badge-pill pulse"></span></span></a>
             <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                <h6 class="dropdown-header">Notificaciones <a href="#" class="">Ver todas</a></h6>
+                <h6 class="dropdown-header">Notificaciones <a onclick="notichecked()" href="#" class="">Marcar todas como
+                    vistas</a></h6>
                 <div id="cuadroNotificaciones" class="notifications-nicescroll-bar">
 
                 </div>
@@ -234,7 +235,7 @@
                     </a>`
     }
 
-    function parte(actor, queHizo, haceCuanto, tipo) {
+    function parte(actor, queHizo, haceCuanto, tipo, objetivo) {
         return `            <a href="javascript:void(0);" class="dropdown-item">
                         <div class="media">
                             <div class="media-img-wrap">
@@ -248,7 +249,7 @@
                             <div class="media-body">
                                 <div>
                                     <div class="notifications-text"><span
-                                            class="text-dark text-capitalize">${actor}</span>${queHizo}</div>
+                                            class="text-dark text-capitalize">${actor}</span> ${queHizo} ${objetivo}</div>
                                     <div class="notifications-time">${haceCuanto}</div>
                                 </div>
                             </div>
@@ -257,19 +258,19 @@
                     <div class="dropdown-divider"></div>`;
     }
 
-    function notificacion(actor, queHizo, haceCuanto, tipo) {
+    function notificacion(actor, queHizo, haceCuanto, tipo, objetivo) {
         if (tipo === "info") {
             const info = "info-outline";
-            return parte(actor, queHizo, haceCuanto, info);
+            return parte(actor, queHizo, haceCuanto, info, objetivo);
         } else if (tipo === "success") {
             const success = 'notifications-active';
-            return parte(actor, queHizo, haceCuanto, success);
+            return parte(actor, queHizo, haceCuanto, success, objetivo);
         } else if (tipo === "warning") {
             const warning = "alert-circle-o";
-            return parte(actor, queHizo, haceCuanto, warning);
+            return parte(actor, queHizo, haceCuanto, warning, objetivo);
         } else if (tipo === "error") {
             const error = "alert-octagon";
-            return parte(actor, queHizo, haceCuanto, error);
+            return parte(actor, queHizo, haceCuanto, error, objetivo);
         }
     }
 
@@ -279,6 +280,8 @@
         var $cantidadNotificaciones = document.getElementById("numeritoN");
         var $puntoAzul = document.getElementById("punticoAzul");
         if (data.unread_count > 0) {
+            var oe = data.unread_list;
+
             var cantidad = data.unread_list.length;
             var notificaciones = [];
             for (var i = 0; i < cantidad; i++) {
@@ -286,7 +289,8 @@
                 var queHizo = data.unread_list[i].verb;
                 var haceCuanto = data.unread_list[i].timestamp;
                 var tipo = data.unread_list[i].level;
-                notificaciones += notificacion(actor, queHizo, haceCuanto, tipo);
+                var objetivo = data.unread_list[i].target_content_type;
+                notificaciones += notificacion(actor, queHizo, haceCuanto, tipo, objetivo);
             }
             $puntoAzul.innerHTML = puntoAzul();
             $cuadroNotificaciones.innerHTML = notificaciones;
@@ -296,6 +300,16 @@
             $puntoAzul.innerHTML = "";
             $cuadroNotificaciones.innerHTML = nohayNotificaciones()
         }
+    }
+
+    function notichecked() {
+        $.ajax({
+            method: 'GET',
+            url: '{% url 'usuario:notichecked' %}',
+            success: function (data) {
+                alert('oe')
+            }
+        });
     }
 
     {# Alertas y notificaciones #}
@@ -338,14 +352,12 @@
     {# validacion de archivo existente #}
     {% if form.errors %}
         {% for errores in form.non_field_errors %}
-
             ErrorNotification({
                 message: '{{ errores }}'
-
-            })
+            });
         {% endfor %}
     {% endif %}
 
 </script>
 <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
-{% register_notify_callbacks refresh_period=60 callbacks='fill_notification_badge,  my_special_notification_callback' %}
+{% register_notify_callbacks refresh_period=5 callbacks='fill_notification_badge,  my_special_notification_callback' %}

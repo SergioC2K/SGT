@@ -3,6 +3,7 @@ import datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 from django.core import serializers
 from django.db.models import Q, Count, Sum
 from django.http import HttpResponse, JsonResponse
@@ -20,6 +21,7 @@ from file.models import RegistroLlamada
 from usuario.models import Perfil
 # Filtros
 from .filters import RegistroLlamadaFilter
+from notifications.signals import notify
 
 hoy = datetime.date.today()
 manana = hoy + datetime.timedelta(days=2)
@@ -34,6 +36,12 @@ def upload_excel(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Las llamadas han sido cargadas al sistema')
+            notify.send(
+                sender=request.user,
+                recipient=User.objects.filter(username=request.user.username),
+                verb='Ha cargado un archivo al sistema'
+            )
+
         else:
             return render(request, 'archivo/fileimport.html', context={'form': form})
     else:
@@ -85,9 +93,11 @@ def registro_llamada(request):
             llamada_repartida = LlamadasEntrantes.objects.get(id=llamadas[i])
             llamada_repartida.estado = True
             llamada_repartida.save()
-        devolver_llamadas = LlamadasEntrantes.objects.filter(created__range=(horas_antes, manana)) \
-            .exclude(estado=True)
-        qsssss = serializers.serialize('json', devolver_llamadas, fields=('pk', 'entrega'))
+
+        confir = RegistroLlamada.objects.filter(id_usuario=request.user.perfil, created__range=(horas_antes, manana)) \
+            .exclude(realizado=True)
+
+        qsssss = serializers.serialize('json', confir, fields=('pk', 'entrega'))
     return HttpResponse(qsssss, content_type='application/json')
 
 
@@ -138,7 +148,8 @@ def enviarLlamadas(request):
 def ver_Llamadas(request):
     usuario = request.user.perfil.pk
     estados = Estado.objects.all()
-    registro = RegistroLlamada.objects.filter(id_usuario_id=usuario)
+    registro = RegistroLlamada.objects.filter(id_usuario=request.user.perfil, created__range=(horas_antes, manana)) \
+        .exclude(realizado=True)
     data = {
         'diccionario': registro,
         'estados': estados
@@ -179,7 +190,6 @@ class ListFile(ListView):
 def realizar_llamada(request):
     global data
     usuario = request.user
-    alo = 1
     if request.method == 'POST':
         form = RealizarLlamada(request.POST, request.FILES, request.user)
         if form.is_valid():
@@ -188,7 +198,15 @@ def realizar_llamada(request):
                 if request.user.is_staff:
                     form.cleaned_data['precio'] = 450
             form.save()
-            otra_call = RegistroLlamada.objects.all()
+            confir = RegistroLlamada.objects.filter(id_usuario=request.user.perfil,
+                                                    created__range=(horas_antes, manana)).exclude(
+                realizado=True).exists()
+            if not confir:
+                notify.send(
+                    sender=request.user,
+                    recipient=User.objects.filter(is_staff=True),
+                    verb='Ha terminado las llamadas asignadas en el dia'
+                )
             llamadas = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
 
             data = {
@@ -208,7 +226,8 @@ def realizar_llamada(request):
             return render(request, template_name='llamada/Buzon.html', context=data)
     else:
         form = RealizarLlamada()
-        llamada = RegistroLlamada.objects.filter(id_usuario_id=usuario.perfil.pk).exclude(realizado=True)
+        llamada = RegistroLlamada.objects.filter(id_usuario=request.user.perfil, created__range=(horas_antes, manana)) \
+            .exclude(realizado=True)
         data = {
             'form': form,
             'llamadas': llamada
@@ -665,7 +684,8 @@ def liquidacion_operador(request):
 
     #  con estas consultas se esta trayendo la liquidacion del operador
     consultica = Perfil.objects.get(usuario=usuario)
-    consulta = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=mes).aggregate(suma=Sum('precio'))
+    consulta = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=mes).aggregate(
+        suma=Sum('precio'))
     total = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=mes).count()
     data = {
         'consulta': consulta,
@@ -679,7 +699,7 @@ def llevar_liquidacion(request):
     valor = request.POST['meses']
     usuario = request.user
 
-    #con estas consultas se esta trayendo la liquidacion del operador
+    # con estas consultas se esta trayendo la liquidacion del operador
     consultica = Perfil.objects.get(usuario=usuario)
     consulta = RegistroLlamada.objects.filter(id_usuario=consultica.id, realizado=1, modified__month=valor).aggregate(
         suma=Sum('precio'))

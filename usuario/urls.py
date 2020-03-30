@@ -55,4 +55,9 @@ urlpatterns = [
         view=views.actualizarUsu.as_view(),
         name='actualizar'
     ),
+    path(
+        route='notichecked',
+        view=views.notificaciones_checked,
+        name='notichecked'
+    ),
 ]

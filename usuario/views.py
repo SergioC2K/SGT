@@ -17,6 +17,7 @@ from django.views.generic import ListView, UpdateView, FormView, View
 
 from usuario.forms import SignupForm, PerfilForm
 from usuario.models import Perfil
+from notifications.signals import notify
 
 # decorador para clases
 superuser_required = user_passes_test(lambda u: u.is_staff, login_url=('usuario:perfil'))
@@ -36,7 +37,6 @@ class LoginViewUsuario(LoginView):
 
 
 def perfil(request):
-
     return render(request, 'users/perfil.html')
 
 
@@ -46,6 +46,12 @@ def UserCreateView(request):
         username = request.POST.get('username')
         if formula.is_valid():
             formula.save()
+            notify.send(
+                actor=request.user,
+                recipient=User.objects.filter(is_staff=True),
+                verb='creo usuario: ',
+                action_object=User.objects.filter(username=formula.username)
+            )
             persona = User.objects.get(username=username)
             usuario = Perfil.objects.get(usuario_id=persona.pk)
             d = {'id': usuario.id,
@@ -73,6 +79,11 @@ def cambio_contrasena(request):
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Tu contrasena ha sido cambiada!')
+            notify.send(
+                actor=request.user,
+                recipient=User.objects.filter(username=request.user.username),
+                verb='Su contraseña fue cambiada con exito'
+            )
             return redirect('usuario:logout')
         else:
             messages.error(request, 'Por favor corrija el error a continuación.')
@@ -90,7 +101,7 @@ def logout_view(request):
     return redirect('usuario:login')
 
 
-#@method_decorator(superuser_required, name='dispatch')
+# @method_decorator(superuser_required, name='dispatch')
 class ListarUsuario(ListView, FormView):
     model = Perfil
     form_class = SignupForm
@@ -114,15 +125,29 @@ class ListarUsuario(ListView, FormView):
 def deshabilitar(request):
     id = request.GET.get('id', None)
     user = User.objects.get(pk=id)
-    admin = User.objects.filter(is_staff=True)
-    if user.is_active:
-        user.is_active = False
-        user.save()
-        data = {'desactive': True}
-    else:
-        user.is_active = True
-        user.save()
-        data = {'desactive': False}
+    if request.user.is_staff:
+        if user.is_active:
+            user.is_active = False
+            user.save()
+            notify.send(
+                actor=user,
+                recipient=User.objects.filter(is_staff=True),
+                verb='Ha sido deshabilitado para operar',
+                sender=user,
+                target=user,
+            )
+            data = {'desactive': True}
+        else:
+            user.is_active = True
+            user.save()
+            notify.send(
+                recipient=User.objects.filter(is_staff=True),
+                verb='Ha sido habilitado para operar',
+                action_object=user,
+                target=user,
+                sender=user,
+            )
+            data = {'desactive': False}
 
     return JsonResponse(data)
 
@@ -159,7 +184,7 @@ class UpdateProfileView(UpdateView):
     template_name = 'users/perfil.html'
     model = Perfil
     form_class = PerfilForm
-    success_message = 'Perfil Actualido con exito'
+    success_message = 'Perfil Actualizado con exito'
     success_url = reverse_lazy('archivo:buzon')
 
     def get_object(self, **kwargs):
@@ -191,6 +216,13 @@ class actualizarUsu(View):
         perfil.celular_telemercadeo = telemercadeo
         perfil.telefono_fijo = telefono1
         perfil.save()
+        notify.send(
+            recipient=User.objects.filter(is_staff=True),
+            verb='Ha sido actualizado',
+            action_object=obj,
+            target=obj,
+            sender=obj,
+        )
 
         user = {
             'id': obj.id,
@@ -207,3 +239,9 @@ class actualizarUsu(View):
         }
 
         return JsonResponse(data=data)
+
+
+def notificaciones_checked(request):
+    admin = User.objects.get(pk=request.user.id)
+    admin.notifications.mark_all_as_read()
+    return HttpResponse(request, 'reportes/liquidacion.html', data)
