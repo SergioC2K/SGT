@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="col-sm-3">
-                          <select name="realizado1" class="form-control">
+                        <select name="realizado1" class="form-control">
                             <option value="0">Llamadas realizadas</option>
                             <option value="1">Todas las llamadas</option>
                         </select>
@@ -67,9 +67,11 @@
                 <th scope="col">Destinatario</th>
                 <th scope="col">Telefono</th>
                 <th scope="col" data-toggle="tooltip"
-                    data-placement="top" title="Nombre contesta">Contesta</th>
+                    data-placement="top" title="Nombre contesta">Contesta
+                </th>
                 <th scope="col" data-toggle="tooltip"
-                    data-placement="top" title="Fecha de Entrega ">Fecha</th>
+                    data-placement="top" title="Fecha de Entrega ">Fecha
+                </th>
                 <th scope="col">Audio</th>
                 <th scope="col">Estado</th>
             </tr>
@@ -115,6 +117,7 @@
                     "language": español
                 });
             });
+
             function excel_exporte() {
                 var wb = XLSX.utils.table_to_book(document.getElementById('table'), {sheet: "Sheet JS"});
                 var wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
