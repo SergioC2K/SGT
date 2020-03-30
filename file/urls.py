@@ -143,5 +143,17 @@ urlpatterns = [
         route='traer_reporte_usuario',
         view=views.traer_reporte_usuario,
         name="traer_reporte_usuario"
+    ),
+    path(
+        route='liquidacion_usuario',
+        view=views.liquidacion_operador,
+        name='liquidacion_usuario'
+    ),
+    path(
+        route='llevar_liquidacion',
+        view=views.llevar_liquidacion,
+        name='llevar_liquidacion'
     )
+
+
 ]

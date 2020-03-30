@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -409,6 +409,8 @@ def traer_reporte_usuario(request):
     id = int(usuario)
 
     if valor == 0:
+        liquidacion = RegistroLlamada.objects.filter(id_usuario=id, realizado=1).aggregate(suma=Sum('precio'))
+
         exito = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
                                                id_estado=2).count()
         no_contesta = RegistroLlamada.objects.filter(realizado=1, id_usuario=id,
@@ -439,12 +441,17 @@ def traer_reporte_usuario(request):
             'CLINOSOL': CLINOSOL,
             'ALCOMPE': ALCOMPE,
             'CLDES': CLDES,
-            'nombre': nombre.usuario.first_name
+            'nombre': nombre.usuario.first_name,
+            'liquidacion': liquidacion
         }
 
     elif valor == 1:
         ayer = datetime.datetime.utcnow()
         var = ayer - datetime.timedelta(hours=24)
+
+        liquidacion = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id).aggregate(
+            suma=Sum('precio'))
+
         exito = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
                                                id_estado=2).count()
         no_contesta = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
@@ -475,11 +482,15 @@ def traer_reporte_usuario(request):
             'CLINOSOL': CLINOSOL,
             'ALCOMPE': ALCOMPE,
             'CLDES': CLDES,
-            'nombre': nombre.usuario.first_name
+            'nombre': nombre.usuario.first_name,
+            'liquidacion': liquidacion
         }
     elif valor == 2:
         hoy = datetime.datetime.utcnow()
         semana = hoy - datetime.timedelta(days=7)
+
+        liquidacion = RegistroLlamada.objects.filter(modified__range=[semana, hoy],
+                                                     realizado=1, id_usuario=id).aggregate(suma=Sum('precio'))
         exito = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
                                                id_estado=2).count()
         no_contesta = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1, id_usuario=id,
@@ -511,13 +522,16 @@ def traer_reporte_usuario(request):
             'CLINOSOL': CLINOSOL,
             'ALCOMPE': ALCOMPE,
             'CLDES': CLDES,
-            'nombre': nombre.usuario.first_name
-
+            'nombre': nombre.usuario.first_name,
+            'liquidacion': liquidacion
         }
 
     elif valor == 3:
         hoy = datetime.datetime.utcnow()
         mes = hoy - datetime.timedelta(days=30)
+
+        liquidacion = RegistroLlamada.objects.filter(modified__range=[mes, hoy],
+                                                     realizado=1, id_usuario=id).aggregate(suma=Sum('precio'))
         exito = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
                                                id_estado=2).count()
         no_contesta = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1, id_usuario=id,
@@ -548,8 +562,8 @@ def traer_reporte_usuario(request):
             'CLINOSOL': CLINOSOL,
             'ALCOMPE': ALCOMPE,
             'CLDES': CLDES,
-            'nombre': nombre.usuario.first_name
-
+            'nombre': nombre.usuario.first_name,
+            'liquidacion': liquidacion
         }
 
     return JsonResponse(data=data)
@@ -570,11 +584,16 @@ def reporte_general(request):
 
 def trer_reporte_general(request):
     diccionario = {}
+    realizado1 = request.POST['realizado1']
     respuesta = request.POST['respuesta']
     valor = int(respuesta)
+    valor1 = int(realizado1)
 
     if valor == 0:
-        consulta = RegistroLlamada.objects.all()
+        if valor1 == 0:
+            consulta = RegistroLlamada.objects.filter(realizado=1)
+        else:
+            consulta = RegistroLlamada.objects.all()
         if consulta:
             diccionario = {'registro': consulta}
         else:
@@ -582,8 +601,13 @@ def trer_reporte_general(request):
 
     elif valor == 1:
         hoy = datetime.datetime.utcnow()
-        horas = hoy - datetime.timedelta(hours=36)
-        consulta = RegistroLlamada.objects.filter(modified__range=[hoy, horas])
+        horas = hoy - datetime.timedelta(hours=24)
+
+        if valor1 == 0:
+            consulta = RegistroLlamada.objects.filter(modified__range=[horas, hoy], realizado=1)
+
+        else:
+            consulta = RegistroLlamada.objects.filter(modified__range=[horas, hoy])
 
         if consulta:
             diccionario = {'registro': consulta}
@@ -593,7 +617,11 @@ def trer_reporte_general(request):
     elif valor == 2:
         hoy = datetime.datetime.utcnow()
         semana = hoy - datetime.timedelta(days=7)
-        consulta = RegistroLlamada.objects.filter(modified__range=[semana, hoy])
+
+        if valor1 == 0:
+            consulta = RegistroLlamada.objects.filter(modified__range=[semana, hoy], realizado=1)
+        else:
+            consulta = RegistroLlamada.objects.filter(modified__range=[semana, hoy])
 
         if consulta:
             diccionario = {'registro': consulta}
@@ -603,7 +631,13 @@ def trer_reporte_general(request):
     elif valor == 3:
         hoy = datetime.datetime.utcnow()
         mes = hoy - datetime.timedelta(days=30)
-        consulta = RegistroLlamada.objects.filter(modified__range=[mes, hoy])
+
+        cualquiera = hoy.month
+
+        if valor1 == 0:
+            consulta = RegistroLlamada.objects.filter(modified__range=[mes, hoy], realizado=1)
+        else:
+            consulta = RegistroLlamada.objects.filter(modified__month=cualquiera + 1)
 
         if consulta:
             diccionario = {'registro': consulta}
@@ -612,9 +646,49 @@ def trer_reporte_general(request):
 
     elif valor == 4:
         archivo = Archivo.objects.last()
-        registradas = RegistroLlamada.objects.filter(id_llamada__archivo_id=archivo)
+        if valor1 == 0:
+            registradas = RegistroLlamada.objects.filter(id_llamada__archivo_id=archivo, realizado=1)
+        else:
+            registradas = RegistroLlamada.objects.filter(id_llamada__archivo_id=archivo)
+
         diccionario = {
             'registro': registradas
         }
 
     return render(request, template_name='reportes/reporte_general.html', context=diccionario)
+
+
+def liquidacion_operador(request):
+    usuario = request.user
+    #  con esta consulta se va a traer el mes actual
+    fecha = datetime.datetime.now()
+    mes = fecha.month
+
+    #  con estas consultas se esta trayendo la liquidacion del operador
+    consultica = Perfil.objects.get(usuario=usuario)
+    consulta = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=mes).aggregate(
+        suma=Sum('precio'))
+    total = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=mes).count()
+    data = {
+        'consulta': consulta,
+        'nombre': usuario.username,
+        'total': total
+    }
+    return render(request, 'reportes/liquidacion.html', data)
+
+
+def llevar_liquidacion(request):
+    valor = request.POST['meses']
+    usuario = request.user
+
+    #  con estas consultas se esta trayendo la liquidacion del operador
+    consultica = Perfil.objects.get(usuario=usuario)
+    consulta = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=valor).aggregate(
+        suma=Sum('precio'))
+    total = RegistroLlamada.objects.filter(id_usuario=consultica.id, modified__month=valor).count()
+    data = {
+        'consulta': consulta,
+        'nombre': usuario.username,
+        'total': total
+    }
+    return render(request, 'reportes/liquidacion.html', data)
