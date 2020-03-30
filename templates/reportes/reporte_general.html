@@ -90,8 +90,8 @@
                         <td>{{ i.id_llamada.telefono }}</td>
                         <td>{{ i.nombre_contesta }}</td>
                         <td>{{ i.fecha_entrega }}</td>
-                        <td><i class="fas fa-play-circle"><a href="{{ i.id_grabacion.audio.url }}">{{ i.id_grabacion }}</a></td>
                         <td>{{ i.id_estado.nombre }}</td>
+                        <td><a href="{{ i.id_grabacion.audio.url }}">{{ i.id_grabacion }}</a></td>
                     </tr>
                 {% endfor %}
             {% endif %}
@@ -114,7 +114,7 @@
                     ordering: true,
                     searching: true,
                     info: false,
-                    "language": español
+                    "language": espaniol
                 });
             });
 
@@ -154,7 +154,7 @@
                 })
             });
 
-            var español = {
+            var espaniol = {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ Registros",
                 "sZeroRecords": "No se encontraron resultados",
