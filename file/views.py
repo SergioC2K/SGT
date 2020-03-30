@@ -679,7 +679,7 @@ def llevar_liquidacion(request):
     valor = request.POST['meses']
     usuario = request.user
 
-    #  con estas consultas se esta trayendo la liquidacion del operador
+    #con estas consultas se esta trayendo la liquidacion del operador
     consultica = Perfil.objects.get(usuario=usuario)
     consulta = RegistroLlamada.objects.filter(id_usuario=consultica.id, realizado=1, modified__month=valor).aggregate(
         suma=Sum('precio'))

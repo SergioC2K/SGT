@@ -18,7 +18,7 @@
     <div class="container card-sm bg-white" style="border-radius: 5px">
 
         <h3 class="hk-pg-title mt-2">
-            <i class="fa fa-search"></i> Reportes
+            <i class="fas fa-hand-holding-usd"></i> Liquidaciones
             <button class="btn btn-outline-success float-lg-right col-sm-3" id="button-a" data-toggle="tooltip"
                     data-placement="top" title="Exportar excel">
                 Exportar
@@ -26,75 +26,79 @@
         </h3>
 
         <hr>
-        <div class="col">
-            <form method="post" action="{% url 'archivo:llevar_liquidacion' %}">
-                {% csrf_token %}
-                <div class="container ">
-                    <div class="row card-body">
-                        <div class="col-sm-3">
-                            <select name="meses" class="form-control">
-                                <option value="1">Enero</option>
-                                <option value="2">Febrero</option>
-                                <option value="3">Marzo</option>
-                                <option value="4">Abril</option>
-                                <option value="5">Mayo</option>
-                                <option value="6">Junio</option>
-                                <option value="7">Julio</option>
-                                <option value="8">Agosto</option>
-                                <option value="9">Septiembre</option>
-                                <option value="10">Octubre</option>
-                                <option value="11">Noviembre</option>
-                                <option value="12">Diciembre</option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="col p-3">
-
-                            <button type="submit" class="btn btn-outline-info"
-                                    style="margin-left: 100%"
-                            ><i class="fas fa-search"></i> Buscar
-                            </button>
+        <div class="row mt-4 card-body">
+            <div class="col">
+                <table class="tablesaw  tablesaw-bar table-hover" id="table">
+                    <thead class="table-borderless">
+                    <tr>
+                        <th scope="col">Nombre Operador</th>
+                        <th scope="col">Total llamadas</th>
+                        <th scope="col">Total liquidado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="tablesaw-sortable-arrow table-info">
+                        <td>{{ nombre }}</td>
+                        <td>{{ total }}</td>
+                        <td>{{ consulta.suma }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col">
+                <form method="post" action="{% url 'archivo:llevar_liquidacion' %}">
+                    {% csrf_token %}
+                    <div class="container ">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <strong>Meses</strong>
+                                <select name="meses" class="form-control">
+                                    <option value="1">Enero</option>
+                                    <option value="2">Febrero</option>
+                                    <option value="3">Marzo</option>
+                                    <option value="4">Abril</option>
+                                    <option value="5">Mayo</option>
+                                    <option value="6">Junio</option>
+                                    <option value="7">Julio</option>
+                                    <option value="8">Agosto</option>
+                                    <option value="9">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-outline-info mt-4"><i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-        <table class="tablesaw  tablesaw-bar table-hover " id="table">
-            <thead class="table-borderless">
-            <tr>
-                <th scope="col">Nombre Operador</th>
-                <th scope="col">Total llamadas</th>
-                <th scope="col">Total liquidado</th>
-            </tr>
-            </thead>
-            <tbody>
-
-
-            <tr class="tablesaw-sortable-arrow table-info">
-                <td>{{ nombre }}</td>
-                <td>{{ total }}</td>
-                <td>{{ consulta.suma }}</td>
-            </tr>
-            </tbody>
-        </table>
+    </div>
+    <div class="hk-footer-wrap container">
+        <footer class="footer">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <p>Creado por<a href="https://hencework.com/" class="text-dark" target="_blank">La Gerencia</a>
+                        © 2019</p>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <p class="d-inline-block">Follow us</p>
+                    <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                            class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>
+                    <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                            class="btn-icon-wrap"><i class="fa fa-twitter"></i></span></a>
+                    <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                            class="btn-icon-wrap"><i class="fa fa-google-plus"></i></span></a>
+                </div>
+            </div>
+        </footer>
     </div>
     {% block javascript %}
         <script>
-            $(document).ready(function () {
-                $('#table').DataTable({
-                    "scrollX": true,
-                    "scrollY": "400px",
-                    "scrollCollapse": true,
-                    bfilter: false,
-                    ordering: true,
-                    searching: true,
-                    info: false,
-                    "language": español
-                });
-            });
+
 
             function excel_exporte() {
                 var wb = XLSX.utils.table_to_book(document.getElementById('table'), {sheet: "Sheet JS"});

@@ -87,10 +87,10 @@
                                     </li>
 
 
-                                        <li class="list-group-item text-right"><span class="pull-left"><strong>
+                                    <li class="list-group-item text-right"><span class="pull-left"><strong>
                                         <i class="fas fa-check-circle"></i> Llamadas con exito</strong></span>&nbsp;
-                                            <span id="llam_res"></span>
-                                        </li>
+                                        <span id="llam_res"></span>
+                                    </li>
 
                                     <li class="list-group-item text-right"><span class="pull-left"><strong>
                                         <i class="fas fa-phone-slash"></i> No contestados</strong></span>&nbsp;
@@ -105,7 +105,27 @@
             </div>
         </div>
     </div>
+    <div class="hk-footer-wrap container">
+        <footer class="footer">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <p>Creado por<a href="https://hencework.com/" class="text-dark" target="_blank">La Gerencia</a>
+                        © 2019</p>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <p class="d-inline-block">Follow us</p>
+                    <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                            class="btn-icon-wrap"><i class="fa fa-facebook"></i></span></a>
+                    <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                            class="btn-icon-wrap"><i class="fa fa-twitter"></i></span></a>
+                    <a href="#" class="d-inline-block btn btn-icon btn-icon-only btn-indigo btn-icon-style-4"><span
+                            class="btn-icon-wrap"><i class="fa fa-google-plus"></i></span></a>
+                </div>
+            </div>
+        </footer>
     </div>
+
+
     <!--datos de la llamada en el modal-->
     <div class="modal fade bd-example-modal-lg" id="modal_call" tabindex="-1" role="dialog"
          aria-labelledby="myLargeModalLabel"
@@ -259,6 +279,7 @@
         </div>
 
     </div>
+
     {% block Javascript %}
     {% endblock %}
     <script>
