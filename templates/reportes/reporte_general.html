@@ -36,16 +36,13 @@
                             <option value="1">Ultimo dia</option>
                             <option value="2">Ultima semana</option>
                             <option value="3">Ultimo mes</option>
-                            <option value="1">ultimo dia</option>
-                            <option value="2">ultima semana</option>
-                            <option value="3">ultima mes</option>
-                            <option value="4">ultimo archivo</option>
+                            <option value="4">Ultimo archivo</option>
                         </select>
 
                     </div>
 
                     <div class="col-sm-3">
-                          <select name="realizado1" class="form-control">
+                        <select name="realizado1" class="form-control">
                             <option value="0">Llamadas realizadas</option>
                             <option value="1">Todas las llamadas</option>
                         </select>
@@ -70,9 +67,11 @@
                 <th scope="col">Destinatario</th>
                 <th scope="col">Telefono</th>
                 <th scope="col" data-toggle="tooltip"
-                    data-placement="top" title="Nombre contesta">Contesta</th>
+                    data-placement="top" title="Nombre contesta">Contesta
+                </th>
                 <th scope="col" data-toggle="tooltip"
-                    data-placement="top" title="Fecha de Entrega ">Fecha</th>
+                    data-placement="top" title="Fecha de Entrega ">Fecha
+                </th>
                 <th scope="col">Audio</th>
                 <th scope="col">Estado</th>
             </tr>
@@ -91,7 +90,8 @@
                         <td>{{ i.id_llamada.telefono }}</td>
                         <td>{{ i.nombre_contesta }}</td>
                         <td>{{ i.fecha_entrega }}</td>
-                        <td><a href="{{ i.id_grabacion.audio.url }}">{{ i.id_grabacion }}</a></td>
+                        <td><i class="fas fa-play-circle"><a
+                                href="{{ i.id_grabacion.audio.url }}">{{ i.id_grabacion }}</a></td>
                         <td>{{ i.id_estado.nombre }}</td>
                     </tr>
                 {% endfor %}
@@ -118,6 +118,7 @@
                     "language": español
                 });
             });
+
             function excel_exporte() {
                 var wb = XLSX.utils.table_to_book(document.getElementById('table'), {sheet: "Sheet JS"});
                 var wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});

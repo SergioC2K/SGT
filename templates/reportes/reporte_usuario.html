@@ -25,39 +25,53 @@
         <hr>
         <div class="row">
 
-            <div class="col-sm-10">
+            <div class="col-8">
+                <canvas id="Grafica" width="38" height="30"></canvas>
+            </div>
+            <div class="col-4">
+                <ul class="list-group mt-2">
+                    <li class="list-group-item text-muted"><i class="fas fa-hand-holding-usd"></i> Ganancias</li>
+                    <li class="list-group-item text-center">
+                        <strong><i class="fas fa-coins"></i> Total a pagar:
+                            <span id="liquidacion" name="liquidacion"></span>
+                        </strong>
 
-                <div id="liquidacion" name="liquidacion">
-                </div>
-                <canvas id="Grafica" width="55" height="30"></canvas>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-                {# Este es el de las fechas #}
-                <div class="col">
-                    <strong>Selecciona el rango de ejecucion </strong>
-                    <select class="custom-select mr-sm-2  col-sm-4" name="fecha" id="fecha">
-                        <option value="0">Desde siempre</option>
-                        <option value="1">Ultimo dia</option>
-                        <option value="2">Ultima semana</option>
-                        <option value="3">Ultimo mes</option>
-                    </select>
-                </div>
+        <div class="row card-footer">
 
-                {# Este es el de los usuario #}
-                <div class="col p-3">
-                    <strong>Selecciona el operador </strong>
-                    <select class="custom-select mr-sm-2 col-sm-4" name="usuario" id="usuario">
-                        {% for a in usuario %}
-                            <option value="{{ a.pk }}">{{ a.usuario.username }}</option>
-                        {% endfor %}
-                    </select>
-                    <button type="button" class="btn btn-outline-info"
-                            style="margin-left: 100%"
-                            onclick="funcion()"><i class="fas fa-search"></i> Buscar
-                    </button>
-                </div>
+            {# Este es el de las fechas #}
+            <div class="col-sm">
+                <strong>Rango de ejecucion </strong>
+                <select class="custom-select mr-sm-2" name="fecha" id="fecha">
+                    <option value="0">Desde siempre</option>
+                    <option value="1">Ultimo dia</option>
+                    <option value="2">Ultima semana</option>
+                    <option value="3">Ultimo mes</option>
+                </select>
+            </div>
+
+            {# Este es el de los usuario #}
+            <div class="col-sm-5">
+                <strong>Operador</strong>
+                <select class="custom-select mr-sm-2 col-sm" name="usuario" id="usuario">
+                    {% for a in usuario %}
+                        <option value="{{ a.pk }}">{{ a.usuario.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-outline-info mt-4" onclick="funcion()"><i
+                        class="fas fa-search"></i> Buscar
+                </button>
             </div>
         </div>
     </div>
+    </div>
+
 
     <script>
 
@@ -72,7 +86,7 @@
                     'usuario': usuario
                 },
                 success: function (data) {
-                    $("#liquidacion").html(`<strong>Total a pagar</strong><h4>${data.liquidacion.suma}</h4>`);
+                    $("#liquidacion").html(`$${data.liquidacion.suma}`);
                     dar(data);
                 }
             });
