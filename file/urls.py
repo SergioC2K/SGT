@@ -154,6 +154,4 @@ urlpatterns = [
         view=views.llevar_liquidacion,
         name='llevar_liquidacion'
     )
-
-
 ]
