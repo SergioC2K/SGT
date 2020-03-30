@@ -10,7 +10,7 @@ from SGT import settings
 from usuario.models import Perfil, Conectado
 
 ASUNTO = 'Usuario Creado'
-MENSAJE = 'Usuario creado correctamente por favor ingrese en el siguiente link'
+MENSAJE = 'Usuario creado correctamente dirijase a la pagina para continuar'
 EMAIL = settings.EMAIL_HOST_USER
 
 
