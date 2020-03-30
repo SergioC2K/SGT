@@ -59,12 +59,16 @@
             <thead class="table-borderless">
             <tr>
                 <th scope="col">Solicitante</th>
+                <th scope="col">Destinatario</th>
                 <th scope="col">Ruta</th>
                 <th scope="col">Cantidad</th>
+                <th scope="col">Hora inicio</th>
+                <th scope="col">Hora final</th>
+                <th scope="col">Entrega</th>
                 <th scope="col">Barrio</th>
                 <th scope="col">Localidad</th>
                 <th scope="col">Material</th>
-                <th scope="col">Destinatario</th>
+                <th scope="col">Direccion</th>
                 <th scope="col">Telefono</th>
                 <th scope="col" data-toggle="tooltip"
                     data-placement="top" title="Nombre contesta">Contesta</th>
@@ -79,12 +83,16 @@
                 {% for i in registro %}
                     <tr class="tablesaw-sortable-arrow table-info">
                         <td>{{ i.id_llamada.nombre_solicitante }}</td>
+                        <td>{{ i.id_llamada.nombre_destinatario }}</td>
                         <td>{{ i.id_llamada.ruta }}</td>
                         <td>{{ i.id_llamada.cantidad_pedido }}</td>
+                        <td>{{ i.id_llamada.hora_inicio }}</td>
+                        <td>{{ i.id_llamada.hora_final }}</td>
+                        <td>{{ i.id_llamada.entrega }}</td>
                         <td>{{ i.id_llamada.barrio }}</td>
                         <td>{{ i.id_llamada.localidad }}</td>
                         <td>{{ i.id_llamada.material }}</td>
-                        <td>{{ i.id_llamada.nombre_destinatario }}</td>
+                        <td>{{ i.id_llamada.direccion_des_mcia }}</td>
                         <td>{{ i.id_llamada.telefono }}</td>
                         <td>{{ i.nombre_contesta }}</td>
                         <td>{{ i.fecha_entrega }}</td>

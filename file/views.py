@@ -449,6 +449,9 @@ def traer_reporte_usuario(request):
     elif valor == 1:
         ayer = datetime.datetime.utcnow()
         var = ayer - datetime.timedelta(hours=24)
+
+        liquidacion = RegistroLlamada.objects.filter(id_usuario=id, realizado=1).aggregate(suma=Sum('precio'))
+
         exito = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
                                                id_estado=2).count()
         no_contesta = RegistroLlamada.objects.filter(modified__range=[var, ayer], realizado=1, id_usuario=id,
@@ -479,7 +482,8 @@ def traer_reporte_usuario(request):
             'CLINOSOL': CLINOSOL,
             'ALCOMPE': ALCOMPE,
             'CLDES': CLDES,
-            'nombre': nombre.usuario.first_name
+            'nombre': nombre.usuario.first_name,
+            'liquidacion': liquidacion
         }
     elif valor == 2:
         hoy = datetime.datetime.utcnow()
