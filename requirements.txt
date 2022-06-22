@@ -12,7 +12,7 @@ jsonfield==3.1.0
 MarkupPy==1.14
 mutagen==1.44.0
 mysqlclient==1.4.6
-numpy==1.17.4
+numpy==1.22.0
 odfpy==1.4.0
 openpyxl==3.0.0
 pandas==0.25.3
